@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Blockr.iml" filepath="$PROJECT_DIR$/.idea/Blockr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Blockr.iml" filepath="$PROJECT_DIR$/Blockr.iml" />
     </modules>
   </component>
 </project>
