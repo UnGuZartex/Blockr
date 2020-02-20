@@ -32,7 +32,7 @@ connectors is near a compatible opposite connector of another block.
  The user then moves the mouse cursor inside the Program Area, and then releases the left mouse key.
  2. The system changes the position of the block from the previous position to the mouse position.
 ### Extensions
-1a. When the user moves the mouse cursor outside the Program Area and Palette
+1a. When the user releases the mouse cursor outside the Program Area and Palette
 1. The system doesn't change the block's position.
 
 1b. When the user hasn't moved over a block in the Program Area
@@ -60,7 +60,10 @@ connectors is near a compatible opposite connector of another block.
  1. No action occurs
  
 1b. When the user presses another key than the left mouse button
- 1. No action considering deleting occurs.
+ 1. No action considering deleting occurs
+ 
+1c. When the user releases the mouse cursor outside the Program Area and Palette
+ 1. No action occurs
  
 2a. When the maximum amount of blocks was inside the Program Area
  1. The system deletes the block from the Program Area
