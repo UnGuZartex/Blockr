@@ -9,6 +9,5 @@ public class ProgramGUI {
         java.awt.EventQueue.invokeLater(() -> {
           canvas.show();
         });
-        System.out.println("Kip");
     }
 }
