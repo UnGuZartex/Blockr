@@ -50,7 +50,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
-.idea
+.idea/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -104,6 +104,7 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
+
 *.war
 *.nar
 *.ear
