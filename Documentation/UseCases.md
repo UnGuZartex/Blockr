@@ -56,6 +56,12 @@ connectors is near a compatible opposite connector of another block.
  2. The system deletes the block from the Program Area.
  
 ### Extensions
+1a. When the user hasn't moved over a block in the Program Area
+ 1. No action occurs
+ 
+1b. When the user presses another key than the left mouse button
+ 1. No action considering deleting occurs.
+ 
 2a. When the maximum amount of blocks was inside the Program Area
  1. The system deletes the block from the Program Area
  2. The system adds back all possible blocks to the Palette
