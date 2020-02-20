@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e322bd9d-0d7c-49a7-a626-c775e968f424" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Tests/ProgramTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main/GUI/CanvasWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Program.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Blockr/Main/Program.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/GUI/ProgramGUI.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -49,6 +49,9 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\BachProef\Code\DingNet-1.2.0(1)\Blockr\src\Main\GUI" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -63,12 +66,12 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Program" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main.Program" />
+    <configuration name="ProgramGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main.GUI.ProgramGUI" />
       <module name="Blockr" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Main.*" />
+          <option name="PATTERN" value="Main.GUI.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -78,7 +81,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Program" />
+        <item itemvalue="Application.ProgramGUI" />
       </list>
     </recent_temporary>
   </component>
@@ -93,7 +96,7 @@
       <option name="presentableId" value="Default" />
       <updated>1582195018117</updated>
       <workItem from="1582195026522" duration="396000" />
-      <workItem from="1582196274822" duration="260000" />
+      <workItem from="1582196274822" duration="1315000" />
     </task>
     <servers />
   </component>
