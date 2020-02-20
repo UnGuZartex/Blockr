@@ -4,7 +4,9 @@
 1. The user moves the mouse cursor over a block in the Palette, then presses the left mouse key, then moves the mouse 
 cursor to the Program Area, and then releases the left mouse key.
 
-2. The system adds a new block of the same type to the ProgramArea at the position of the mouse.
+2. The system adds a new block of the same type to the Program Area at the position of the mouse.
+
+3. The system adds a new block of the same type to the Palette.
 
 ### Extensions
 1a. When the user releases the mouse key, one of the block’s 
@@ -38,24 +40,24 @@ connectors is near a compatible opposite connector of another block.
  
 1c. When the user presses another key than the left mouse button
  1. No action considering moving occurs.
- 
-1d. When the user moves the mouse cursor outside the Program but inside the Palette:
-    This only occurs if the maximum amount of blocks was inside the Program Area
-    
-   1. 
- 
+
+1d. When the user presses the mouse key and the block is connected to other blocks
+ 1. The system disconnects the block and all underlying blocks from the blocks above
+ 2. The system moves the block and all underlying blocks to the new position
+
+1e. When the user releases the mouse key, one of the block’s 
+connectors is near a compatible opposite connector of another block.
+ 1. The block is inserted into an existing group of connected blocks at the matching connection point.
 ## Use Case 3: Delete Program Block
+
 ### Main Success Scenario
 1. The user moves the mouse cursor over a block in the Program Area, then presses the left mouse key. 
-The user then moves the mouse cursor outside of Program Area, and then releases the left mouse key.
-2. The system removes that block from the Program Area
-
+ The user then moves the mouse cursor to the Palette, and then releases the left mouse key.
+ 2. The system deletes the block from the Program Area.
+ 
 ### Extensions
-1a. 
-
-
-## Use Case 3: Start Program
-### Main Success Scenario
-### Extensions
+2a. When the maximum amount of blocks was inside the Program Area
+ 1. The system deletes the block from the Program Area
+ 2. The system adds back all possible blocks to the Palette
 
 
