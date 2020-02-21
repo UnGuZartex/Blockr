@@ -72,18 +72,18 @@ The user is aware of the new position of the block. The position of the block ge
  2. The system moves the block.
 
 1e. When the user presses the left mouse key while hovering over a block that has a bottom plug or right socket that is connected to another compatible plug or socket and then moves the mouse
- 1. The system identifies the group of other blocks that are connected to this block.
+    1. The system identifies the group of other blocks that are connected to this block.
  
-     1a. The block has a top socket or left plug that is connected to another compatible plug or socket 
-         1. The system disconnects the block from the compatible plug or socket.
+         1a. The block has a top socket or left plug that is connected to another compatible plug or socket 
+             1. The system disconnects the block from the compatible plug or socket.
   
-     1b. The block has a top socket that is connected to the plug of a cavity
-         1. The system disconnects the block from the plug of the cavity.
-         2. The system identifies the last connected block in the cavity.
-         3. The system disconnects the last connected block from the socket of the cavity
+         1b. The block has a top socket that is connected to the plug of a cavity
+             1. The system disconnects the block from the plug of the cavity.
+             2. The system identifies the last connected block in the cavity.
+             3. The system disconnects the last connected block from the socket of the cavity
    
    
- 2. The system moves the group of blocks as one entity. 
+     2. The system moves the group of blocks as one entity. 
 
 
 ## Use Case 3: Delete Program Block
