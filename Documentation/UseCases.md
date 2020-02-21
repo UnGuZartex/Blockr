@@ -57,18 +57,34 @@ The user is aware of the new position of the block. The position of the block ge
 1-2b. When the user releases the left mouse key, the block is above another block with a free socket
  2. The system connects the plug of the block to the socket of the other block.
 
-1a. When the user releases the mouse cursor outside the Program Area and Palette
+1a. When the user releases the left mouse key outside the Program Area and Palette
  1. The system doesn't change the block's position.
 
-1b. When the user releases the mouse cursor inside the Palette.
+1b. When the user releases the left mouse key inside the Palette.
  1. The system executes <ins>Delete Program Block</ins>.
  
-1c. When the user presses another key than the left mouse button
+1c. When the user presses another key than the left mouse key
  1. No action considering moving occurs.
 
-1d. When the user presses the mouse key and the block is connected to other blocks
- 1. The system disconnects the block on it's socket.
- 2. The system system drags all blocks which are connected through the socket as one entity.
+1d. When the user presses the left mouse key while hovering over a block that has a plug or a socket that is connected to another  compatible plug or socket and then moves the mouse
+ 1. The system disconnects the block from the connected plugs and sockets.
+ 2. The system moves the block.
+  1-2a The block that has a bottom plug or right socket that is connected to another compatible plug or socket
+   
+
+1d. When the user presses the left mouse key while hovering over a block that has a top socket or left plug that is connected to another compatible plug or socket  and then moves the mouse
+ 1. The system disconnects the block from the compatible plug(s) or socket(s).
+ 2. The system moves the block.
+
+1e. When the user presses the left mouse key while hovering over a block that has a bottom plug or right socket that is connected to another compatible plug or socket and then moves the mouse
+ 1. The system identifies the group of other blocks that are connected to this block.
+  1a. The block has a top socket or left plug that is connected to another compatible plug or socket 
+   1. The system disconnects the block from the compatible plug or socket.
+  1b. The block has a top socket that is connected to the plug of a cavity
+     2. The system disconnects the block from the plug of the cavity.
+     3. The system identifies the last connected block in the cavity.
+     4. The system disconnects the last connected block from the socket of the cavity.
+ 2. The system moves the group of blocks as one entity. 
 
 
 ## Use Case 3: Delete Program Block
