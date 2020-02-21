@@ -452,8 +452,8 @@ m2=1
     </coordinates>
     <panel_attributes>lt=-
 m1=1
-m2=0..1
-&lt; Has</panel_attributes>
+m2=1
+◄ Has</panel_attributes>
     <additional_attributes>140.0;260.0;60.0;260.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
