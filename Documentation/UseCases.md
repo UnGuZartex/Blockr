@@ -17,13 +17,13 @@ The user is aware of the position of the block in the Program Area. List of bloc
 
 ### Extensions
 1a. When the user releases the mouse key outside of the Program Area
- 1. No action occurs, no block is added to the Program Area.
+ 1. No further action occurs, no block is added to the Program Area.
 
 1b. When the mouse isn't on a block in the Palette at the moment the user presses the left mouse key
- 1. No action occurs.
+ 1. No further action occurs.
  
 1c. When the user presses another key than the left mouse button
- 1. No action considering adding occurs.
+ 1. No further action considering adding occurs.
 
 1-2a. When the user releases the left mouse key, the new block is below another existing block with a free plug
  1. The system adds the new block to the Program Area. 
@@ -100,13 +100,13 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  
 ### Extensions
 1a. When the user hasn't moved over a block in the Program Area
- 1. No action occurs.
+ 1. No further action occurs.
  
 1b. When the user presses another key than the left mouse button
- 1. No action considering deleting occurs.
+ 1. No further action considering deleting occurs.
  
 1c. When the user releases the mouse cursor outside the Program Area and Palette
- 1. No action occurs.
+ 1. No further action occurs.
  
 1d. When the user presses the mouse key and the block is connected to other blocks
  1. The system disconnects the block on it's socket.
