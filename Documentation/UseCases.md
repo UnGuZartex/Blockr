@@ -52,7 +52,7 @@ The user is aware of the new position of the block. The position of the block ge
  
 ### Extensions
 1-2a. When the user releases the left mouse key, the block is below another block with a free plug
- 2. The system connects the socket of the block to the plug of the ohter block. 
+ 2. The system connects the socket of the block to the plug of the other block. 
 
 1-2b. When the user releases the left mouse key, the block is above another block with a free socket
  2. The system connects the plug of the block to the socket of the other block.
