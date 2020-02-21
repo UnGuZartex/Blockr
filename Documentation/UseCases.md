@@ -70,3 +70,57 @@ connectors is near a compatible opposite connector of another block.
  2. The system adds back all possible blocks to the Palette
 
 
+
+## Use Case 4: Execute Program Step
+
+### Main Success Scenario
+
+1. The user presses F5.
+2. The system identifies the program in the Program Area.
+3. The system evaluates the first block and highlights it.
+4. The system changes the state of the robot in the Game World accordingly to the block.  
+
+### Extensions
+
+1a. When the system is already busy executing a step in the program
+1. The system ignores the second call from the user.
+
+2a. When multiple sets of connected blocks are present in the Program Area
+1. The system doesn't evaluate any set of blocks.
+
+3a. When some block has already been executed in the program
+1. The system unhiglights this block.
+2. The system executes the next block and hightlights this. 
+
+3b. When the block to execute is a loop block
+1. The system highlights the loop block.
+2. The system evaluates the loop condition. 
+3. The system determines the block to go to for the next iteration. 
+
+3c. When the block to execute is contained in a loop block
+1. The system highlights the loop block in which the block to execute is contained. 
+
+4a. When the the block doesn't affect the robot's state
+1. The system doesn't affect the robot state in the Game World.
+
+4b. When the robots position is changed to an invalid place in the Game World
+1. The system shows an error message to the user.
+2. The system resets the execution of the program.
+
+
+## Use Case 5: Rest Program
+
+### Main Success Scenario
+
+1. The user presses Escape.
+2. The system places the robot on the starting position in the Game World.
+3. The system unhighlights the highlighted block in the Program Area.
+
+### Extensions
+
+2a. When the robot is already in the starting position in the Game World 
+1. The system doesn't change the Game World.
+
+3a. When there is no highlighted block in the Program Area
+1. The system keeps all blocks unhighlighted.
+
