@@ -41,7 +41,7 @@ The user is aware of the position of the block in the Program Area. List of bloc
 ## Use Case 2: Move Program Block
 
 ### Precondition
-There is a block in the Program Area.
+There is at least one block present in the Program Area.
 
 ### Success Guarantee (Postcondition)
 The user is aware of the new position of the block. The position of the block gets updated to the new position.
@@ -88,10 +88,10 @@ The user is aware of the new position of the block. The position of the block ge
 ## Use Case 3: Delete Program Block
 
 ### Precondition
-There is a block in the Program Area.
+There is at least one block present in the Program Area.
 
 ### Success Guarantee (Postcondition)
-The user is aware that the block is deleted. The block gets deleted from the Program Area. The amount of blocks which can still be placed is updated.
+The user is aware that the block is deleted. The block gets removed from the Program Area and the other blocks correctly updated. The amount of blocks which can still be placed is updated.
 
 ### Main Success Scenario
 1. The user moves the mouse cursor over a block in the Program Area, then presses the left mouse key. The user then moves the mouse cursor to the Palette, and then releases the left mouse key.
@@ -124,7 +124,7 @@ The user is aware that the block is deleted. The block gets deleted from the Pro
 There is only one set of connected blocks in the Program Area.
 
 ### Success Guarantee (Postcondition)
-The user is aware that a step of the program is executed. The Game World gets updated with the commands in following the step. 
+The user is aware that a step of the program is executed. The Game World gets updated based on the block used in following the step. 
 
 ### Main Success Scenario
 1. The user presses F5.
@@ -158,7 +158,7 @@ The user is aware that a step of the program is executed. The Game World gets up
  1. The system unhighlights this block. 
  2. The system system chooses the loop block as next block to execute.
 
-4a. When the the block doesn't affect the robot's state
+4a. When the block doesn't affect the robot's state
  1. The system doesn't change the robot's state in the Game World.
 
 4b. When the robot's position is changed to an invalid place in the Game World
