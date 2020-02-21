@@ -32,7 +32,7 @@ connectors is near a compatible opposite connector of another block.
 4a. When the maximum amount of blocks in the Program Area has been reached.
  1. The system removes all blocks from the Palette.
  
-## Use Case 2: Moving Program Block
+## Use Case 2: Move Program Block
 ### Precondition
 There is a block in the Program Area
 ### Success Guarantee (Postcondition)
