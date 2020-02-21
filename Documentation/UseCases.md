@@ -66,9 +66,8 @@ The user is aware of the new position of the block. The position of the block ge
 1c. When the user presses another key than the left mouse key
  1. No action considering moving occurs.
 
-1d. When the user presses the left mouse key while hovering over a block that has a top socket or left plug that is connected to another compatible plug or socket  and then moves the mouse
-
- 1. The system disconnects the block from the compatible plug(s) or socket(s).
+1d. When the user presses the left mouse key while hovering over a block that has a plug and/or socket connected to another compatible plug and/or socket of one other block or cavity and then moves the mouse
+ 1. The system disconnects the block from the compatible plug and/or socket.
  2. The system moves the block.
 
 1e. When the user presses the left mouse key while hovering over a block that has a bottom plug or right socket that is connected to another compatible plug or socket and then moves the mouse
@@ -78,9 +77,10 @@ The user is aware of the new position of the block. The position of the block ge
       1. The system disconnects the block from the compatible plug or socket.
              
      1b. The block has a top socket that is connected to the plug of a cavity
+     
       1. The system disconnects the block from the plug of the cavity.
       2. The system identifies the last connected block in the cavity.
-      3. The system disconnects the last connected block from the socket of the cavity
+      3. The system disconnects the last connected block from the socket of the cavity.
              
  2. The system moves the group of blocks as one entity. 
 
