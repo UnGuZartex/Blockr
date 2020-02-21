@@ -80,8 +80,9 @@ The user is aware of the new position of the block. The position of the block ge
   1b. The block has a top socket that is connected to the plug of a cavity
    1. The system disconnects the block from the plug of the cavity.
    2. The system identifies the last connected block in the cavity.
-   3. The system disconnects the last connected block from the socket of the cavity.
-     
+   3. The system disconnects the last connected block from the socket of the cavity
+   
+   
  2. The system moves the group of blocks as one entity. 
 
 
