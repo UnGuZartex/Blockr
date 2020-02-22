@@ -16,30 +16,16 @@ The user is aware of the position of the block in the Program Area. List of bloc
 4. The system adds a new block of the same type to the Palette.
 
 ### Extensions
-1-2a. When the user releases the left mouse key, the new block is near another existing block
-   1. The system connects the new block to the other existing block.
-      1a. When the new block is below the existing block with a free plug
-         1. The system connects the socket of the new block to the plug of the other existing block.
-      1b. When the new block is above another existing block with a free socket
-         1. The system connects the plug of the new block to the socket of the other existing block.
-      1c. When the block is on top of two existing connected blocks
-         1. The system disconnects the plug and socket of the two existing connected blocks.
-         2. The system connects the socket of the new block to the plug of the top existing block in the connection.
-         3. The system connects the plug of the new block to the socket of the bottom existing block in the connection. 
-      1d. When the new block is near the cavity of an empty loop block
-         1. The system adds the new block to the cavity of the loop block.
-         2. The system connects the socket of the new block to the plug of the cavity of the loop block.
-      1e. When the new block is near the cavity of a non-empty loop block
-         1. The system adds the new block to the cavity of the loop block. 
-         2. The system connects the new block accordingly to the blocks which are already in the loop block.
+1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
+ 1. The system adds a new block of the same type to the Program Area; the new block is inserted into an existing group of connected blocks at the matching connection point.
          
-1a. When the user releases the mouse key outside of the Program Area
+1b. When the user releases the mouse key outside of the Program Area
  1. No further action occurs, no block is added to the Program Area.
 
-1b. When the mouse isn't on a block in the Palette at the moment the user presses the left mouse key
+1c. When the mouse isn't on a block in the Palette at the moment the user presses the left mouse key
  1. No further action occurs.
  
-1c. When the user presses another key than the left mouse button
+1d. When the user presses another key than the left mouse button
  1. No further action considering adding occurs.
 
 4a. When there can't be placed any more blocks in the Program Area
@@ -60,49 +46,35 @@ The user is aware of the new position of the block. The position of the block ge
  2. The system changes the position of the block from the previous position to the mouse position.
  
 ### Extensions
-1-2a. When the user releases the left mouse key, the block is near another block
-   1. The system connects the block to the other block.
-      1a. When the block is below another block with a free plug
-         1. The system connects the socket of the block to the plug of the other block.
-      1b. When the block is above another block with a free socket
-         1. The system connects the plug of the block to the socket of the other block.
-      1c. When the block is on top of two connected blocks
-         1. The system disconnects the two plug and socket of the two connected blocks.
-         2. The system connects the socket of the block to the plug of the top block in the connection.
-         3. The system connects the plug of the block to the socket of the bottom block in the connection. 
-      1d. When the block is near the cavity of an empty loop block
-         1. The system adds the block to the cavity of the loop block.
-         2. The system connects the socket of the block to the plug of the cavity of the loop block.
-      1e. When the block is near the cavity of a non-empty loop block
-         1. The system adds the block to the cavity of the loop block. 
-         2. The system connects the block accordingly to the blocks which are already in the loop block.
+1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
+ 1. The system adds a new block of the same type to the Program Area; the new block is inserted into an existing group of connected blocks at the matching connection point.
          
-1a. When the user releases the left mouse key outside the Program Area and Palette
+1b. When the user releases the left mouse key outside the Program Area and Palette
  1. The system doesn't change the block's position.
 
-1b. When the user releases the left mouse key inside the Palette.
+1c. When the user releases the left mouse key inside the Palette.
  1. The system executes <ins>Delete Program Block</ins>.
  
-1c. When the user presses another key than the left mouse key
+1d. When the user presses another key than the left mouse key
  1. No action considering moving occurs.
 
-1d. When the user presses the left mouse key while hovering over a block that has a plug and/or socket connected to another compatible plug and/or socket of one other block or cavity and then moves the mouse
- 1. The system disconnects the block from the compatible plug and/or socket.
- 2. The system moves the block.
+1e. When the user moves the cursor over a block which is connected to another through the socket and clicks the left mouse key
+ 1. The system disconnects the socket of the clicked block from the plug of the block above.
+ 2. The system keeps all other connections.
+ 3. The system moves the group of blocks as one entity. 
+ 
+1f. When the user moves the cursor over a block which is connected through other blocks but not in on the top socket and clicks the left mouse key
+ 1. The system moves the group of blocks as one entity.
 
-1e. When the user presses the left mouse key while hovering over a block that has a bottom plug or right socket that is connected to another compatible plug or socket and then moves the mouse
- 1. The system identifies the group of other blocks that are connected to this block.
-    
-     1a. The block has a top socket or left plug that is connected to another compatible plug or socket
-      1. The system disconnects the block from the compatible plug or socket.
-             
-     1b. The block has a top socket that is connected to the plug of a cavity
-     
-      1. The system disconnects the block from the plug of the cavity.
-      2. The system identifies the last connected block in the cavity.
-      3. The system disconnects the last connected block from the socket of the cavity.
-             
- 2. The system moves the group of blocks as one entity. 
+1g. When the user moves the cursor over a block which is in the cavity of the if/while block and clicks the left mouse key
+ 1. The system disconnects the the socket of the clicked block from the plug of the plug above (the loop block or a different block in the cavity).
+ 2. The system disconnects the socket of the cavity from plug of the connected block.
+ 3. The system keeps all other connections of the clicked block.
+ 4. The system connects the socket from the cavity to the plug which was connected to the clicked block.
+ 5. The system moves the group of blocks as one entity. 
+
+1h. When the user moves the cursor over a conditional block of an if/while block and clicks the left mouse key
+ 1. The system disconnects the socket of the conditional block from the corresponding plug of the if/while block. 
 
 
 ## Use Case 3: Delete Program Block
@@ -131,7 +103,25 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 1d. When the user presses the mouse key and the block is connected to other blocks
  1. The system disconnects the block on it's socket.
  2. The system system drags all blocks which are connected through the socket as one entity.
- 3. The system sees all the blocks as one entity.
+ 3. The system sees all the blocks as one entity..
+ 
+1e. When the user moves the cursor over a block which is connected to another through the socket and clicks the left mouse key
+ 1. The system disconnects the socket of the clicked block from the plug of the block above.
+ 2. The system keeps all other connections.
+ 3. The system moves the group of blocks as one entity. 
+ 
+1f. When the user moves the cursor over a block which is connected through other blocks but not in on the top socket and clicks the left mouse key
+ 1. The system moves the group of blocks as one entity.
+
+1g. When the user moves the cursor over a block which is in the cavity of the if/while block and clicks the left mouse key
+ 1. The system disconnects the the socket of the clicked block from the plug of the plug above (the loop block or a different block in the cavity).
+ 2. The system disconnects the socket of the cavity from plug of the connected block.
+ 3. The system keeps all other connections of the clicked block.
+ 4. The system connects the socket from the cavity to the plug which was connected to the clicked block.
+ 5. The system moves the group of blocks as one entity. 
+
+1h. When the user moves the cursor over a conditional block of an if/while block and clicks the left mouse key
+ 1. The system disconnects the socket of the conditional block from the corresponding plug of the if/while block. 
  
 2a. When the maximum amount of blocks was inside the Program Area
  1. The system deletes the block from the Program Area.
