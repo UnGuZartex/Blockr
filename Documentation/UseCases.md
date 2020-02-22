@@ -16,6 +16,23 @@ The user is aware of the position of the block in the Program Area. List of bloc
 4. The system adds a new block of the same type to the Palette.
 
 ### Extensions
+1-2a. When the user releases the left mouse key, the new block is near another existing block
+   1. The system connects the new block to the other existing block.
+      1a. When the new block is below the existing block with a free plug
+         1. The system connects the socket of the new block to the plug of the other existing block.
+      1b. When the new block is above another existing block with a free socket
+         1. The system connects the plug of the new block to the socket of the other existing block.
+      1c. When the block is on top of two existing connected blocks
+         1. The system disconnects the plug and socket of the two existing connected blocks.
+         2. The system connects the socket of the new block to the plug of the top existing block in the connection.
+         3. The system connects the plug of the new block to the socket of the bottom existing block in the connection. 
+      1d. When the new block is near the cavity of an empty loop block
+         1. The system adds the new block to the cavity of the loop block.
+         2. The system connects the socket of the new block to the plug of the cavity of the loop block.
+      1e. When the new block is near the cavity of a non-empty loop block
+         1. The system adds the new block to the cavity of the loop block. 
+         2. The system connects the new block accordingly to the blocks which are already in the loop block.
+         
 1a. When the user releases the mouse key outside of the Program Area
  1. No further action occurs, no block is added to the Program Area.
 
@@ -24,14 +41,6 @@ The user is aware of the position of the block in the Program Area. List of bloc
  
 1c. When the user presses another key than the left mouse button
  1. No further action considering adding occurs.
-
-1-2a. When the user releases the left mouse key, the new block is below another existing block with a free plug
- 1. The system adds the new block to the Program Area. 
- 2. The system connects the socket of the new block to the plug of the existing block. 
-
-1-2b. When the user releases the left mouse key, the new block is above another existing block with a free socket
- 1. The system adds the new block to the Program Area.
- 2. The system connects the plug of the new block to the socket of the existing block.
 
 4a. When there can't be placed any more blocks in the Program Area
  1. The system doesn't add the block back to the Palette.
@@ -51,12 +60,23 @@ The user is aware of the new position of the block. The position of the block ge
  2. The system changes the position of the block from the previous position to the mouse position.
  
 ### Extensions
-1-2a. When the user releases the left mouse key, the block is below another block with a free plug
- 2. The system connects the socket of the block to the plug of the other block. 
-
-1-2b. When the user releases the left mouse key, the block is above another block with a free socket
- 2. The system connects the plug of the block to the socket of the other block.
-
+1-2a. When the user releases the left mouse key, the block is near another block
+   1. The system connects the block to the other block.
+      1a. When the block is below another block with a free plug
+         1. The system connects the socket of the block to the plug of the other block.
+      1b. When the block is above another block with a free socket
+         1. The system connects the plug of the block to the socket of the other block.
+      1c. When the block is on top of two connected blocks
+         1. The system disconnects the two plug and socket of the two connected blocks.
+         2. The system connects the socket of the block to the plug of the top block in the connection.
+         3. The system connects the plug of the block to the socket of the bottom block in the connection. 
+      1d. When the block is near the cavity of an empty loop block
+         1. The system adds the block to the cavity of the loop block.
+         2. The system connects the socket of the block to the plug of the cavity of the loop block.
+      1e. When the block is near the cavity of a non-empty loop block
+         1. The system adds the block to the cavity of the loop block. 
+         2. The system connects the block accordingly to the blocks which are already in the loop block.
+         
 1a. When the user releases the left mouse key outside the Program Area and Palette
  1. The system doesn't change the block's position.
 
