@@ -12,7 +12,7 @@ The user is aware of the position of the block in the Program Area. List of bloc
 ### Main Success Scenario
 1. The user moves the mouse cursor over a block in the Palette, then presses the left mouse key, then moves the mouse cursor to the Program Area with the block visually following the cursor, and then releases the left mouse key.
 2. The system adds a new block of the same type to the Program Area at the position of the mouse.
-3. The system decrements the amount of blocks which still can be used.
+3. The system decreases the amount of blocks which still can be used.
 4. The system adds a new block of the same type to the Palette.
 
 ### Extensions
@@ -28,7 +28,7 @@ The user is aware of the position of the block in the Program Area. List of bloc
 1d. When the user presses another key than the left mouse button
  1. No further action considering adding occurs.
 
-4a. When there can't be placed any more blocks in the Program Area
+4a. When no more blocks can be placed in the Program Area
  1. The system doesn't add the block back to the Palette.
  2. The system removes all other blocks from the Palette. 
 
@@ -47,7 +47,7 @@ The user is aware of the new position of the block. The position of the block ge
  
 ### Extensions
 1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
- 1. The system adds a new block of the same type to the Program Area; the new block is inserted into an existing group of connected blocks at the matching connection point.
+ 1. The system inserts the block into an existing group of connected blocks at the matching connection point.
          
 1b. When the user releases the left mouse key outside the Program Area and Palette
  1. The system doesn't change the block's position.
@@ -66,18 +66,18 @@ The user is aware of the new position of the block. The position of the block ge
 1f. When the user moves the cursor over a block which is connected through other blocks but not in on the top socket and clicks the left mouse key
  1. The system moves the group of blocks as one entity.
 
-1g. When the user moves the cursor over a block which is in the cavity of the if/while block and clicks the left mouse key
- 1. The system disconnects the the socket of the clicked block from the plug of the plug above (the loop block or a different block in the cavity).
- 2. The system disconnects the socket of the cavity from plug of the connected block.
+1g. When the user moves the cursor over a block that is in the cavity of a/an while/if block and clicks the left mouse key
+ 1. The system disconnects the socket of the clicked block from the plug of the block above (the loop block or a different block in the cavity).
+ 2. The system disconnects the socket of the cavity from the plug of the connected block.
  3. The system keeps all other connections of the clicked block.
- 4. The system connects the socket from the cavity to the plug which was connected to the clicked block.
+ 4. The system connects the socket from the cavity to the plug that was connected to the clicked block.
  5. The system moves the group of blocks as one entity. 
 
-1h. When the user moves the cursor over a conditional block of an if/while block and clicks the left mouse key
- 1. The system disconnects the socket of the conditional block from the corresponding plug of the if/while block. 
+1h. When the user moves the cursor over a conditional block of a/an while/if block and clicks the left mouse key
+ 1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
 
 
-## Use Case 3: Delete Program Block
+## Use Case 3: Delete Program Block //TODO EVALUATE USE OF THIS
 
 ### Precondition
 There is at least one block present in the Program Area.
@@ -114,7 +114,7 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  1. The system moves the group of blocks as one entity.
 
 1g. When the user moves the cursor over a block which is in the cavity of the if/while block and clicks the left mouse key
- 1. The system disconnects the the socket of the clicked block from the plug of the plug above (the loop block or a different block in the cavity).
+ 1. The system disconnects the the socket of the clicked block from the plug of the block above (the loop block or a different block in the cavity).
  2. The system disconnects the socket of the cavity from plug of the connected block.
  3. The system keeps all other connections of the clicked block.
  4. The system connects the socket from the cavity to the plug which was connected to the clicked block.
@@ -134,13 +134,13 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 There is only one set of connected blocks in the Program Area.
 
 ### Success Guarantee (Postcondition)
-The user is aware that a step of the program is executed. The Game World gets updated based on the block used in following the step. 
+The user is aware that a step of the program is executed. The Game World gets updated based on the block used in the following step. 
 
 ### Main Success Scenario
 1. The user presses F5.
 2. The system identifies the program in the Program Area.
 3. The system evaluates the first block and highlights it.
-4. The system changes the state of the robot in the Game World accordingly to the executed block.  
+4. The system changes the state of the robot in the Game World according to the executed block.  
 
 ### Extensions
 1a. When the system is already busy executing a step in the program
@@ -148,7 +148,7 @@ The user is aware that a step of the program is executed. The Game World gets up
 
 3-4a. When the block to evaluate is the last block of the program.
  1. The system evaluates this block and highlights it. 
- 2. The system changes the state of the robot in the Game World accordingly to the executed block.
+ 2. The system changes the state of the robot in the Game World according to the executed block.
  3. The system shows a message according to whether or not the robot has reached the goal. 
 
 3a. When the execution of the program has already started
@@ -166,7 +166,7 @@ The user is aware that a step of the program is executed. The Game World gets up
 
 3d. When the block which has been executed last is the end of a loop block
  1. The system unhighlights this block. 
- 2. The system system chooses the loop block as next block to execute.
+ 2. The system chooses the loop block as next block to execute.
 
 4a. When the block doesn't affect the robot's state
  1. The system doesn't change the robot's state in the Game World.
