@@ -42,16 +42,17 @@ The user is aware of the new position of the block. The position of the block ge
 
 1b. When the user moves the cursor over a block that is not in a cavity which is connected to another block through the socket and then presses the left mouse key
  1. The system disconnects the socket of the clicked block from the plug of the block above.
- 2. The system keeps all other connections.
+ 2. The system identifies the potential group of connected blocks of the clicked block.
  3. The system moves the group of blocks as one entity. 
  
 1c. When the user moves the cursor over a block that is not in a cavity which is connected to other blocks but not with the top socket and then presses the left mouse key
- 1. The system moves the group of blocks as one entity.
+ 1. The system identifies the potential group of connected blocks of the clicked block.
+ 2. The system moves the group of blocks as one entity.
 
 1d. When the user moves the cursor over a block that is in the cavity of a/an while/if block and then presses the left mouse key
  1. The system disconnects the socket of the clicked block from the plug of the block above (the loop block or a different block in the cavity).
  2. The system disconnects the socket of the cavity from the plug of the connected block.
- 3. The system keeps all other connections of the clicked block.
+ 3. The system identifies the potential group of connected blocks of the clicked block.
  4. The system connects the socket from the cavity to the plug that was connected to the clicked block.
  5. The system moves the group of blocks as one entity. 
 
