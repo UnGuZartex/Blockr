@@ -19,7 +19,7 @@ The user is aware of the position of the block in the Program Area. List of bloc
 1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
  1. The system adds a new block of the same type to the Program Area; the new block is inserted into an existing group of connected blocks at the matching connection point.
  
-4a. When no more blocks can be placed in the Program Area
+4a. When the maximum amount of blocks in the Program Area has been reached
  1. The system doesn't add the block back to the Palette.
  2. The system removes all other blocks from the Palette. 
 
