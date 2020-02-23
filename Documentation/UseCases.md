@@ -109,10 +109,10 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  1. The system adds back all possible blocks to the Palette.
 
 
-## Use Case 4: Start Program Step
+## Use Case 4: Run Program
 
 ### Precondition
-There is only one group of connected blocks in the Program Area. All if and while blocks in thus group must have a condition connected to it.
+There is only one group of connected blocks in the Program Area. All if and while blocks in thus group must have a condition block connected to them.
 
 ### Success Guarantee (Postcondition)
 The user is aware that a step of the program is executed. The Game World gets updated based on the block used in the following step. 
