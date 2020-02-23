@@ -96,7 +96,7 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  2. The system moves the conditional block and its still connected blocks (if any) as one entity.
   
 3a. When the maximum amount of blocks is inside the Program Area
- 1. The system adds back all possible blocks to the Palette.
+ 1. The system adds one block of each type back to the Palette.
 
 
 ## Use Case 4: Run Program
