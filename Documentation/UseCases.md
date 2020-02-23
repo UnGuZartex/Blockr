@@ -149,5 +149,5 @@ The user is aware that the program is running. The Game World gets updated based
 4b. When the robot's position is changed to an invalid place in the Game World
  1. The system shows a failure message to the user.
 
-5a. The robot did not reach the goal
+5a. When the robot did not reach the goal
  1. The system shows a failure message to the user.
