@@ -115,6 +115,7 @@ The user is aware that the program is running. The Game World gets updated based
 4. The system changes the state of the robot in the Game World according to the block.
 
 Repeat 1-4 untill the last block has been executed.
+
 5. The system shows a message that the robot reached the goal.
 
 ### Extensions
