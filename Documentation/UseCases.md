@@ -28,6 +28,9 @@ The user is aware of the position of the block in the Program Area. List of bloc
 1d. When the user presses another key than the left mouse button
  1. No further action considering adding occurs.
 
+2-4. When a number of blocks in the program area have been executed
+ 1. The system performs <ins>Reset Program</ins> manually. 
+ 
 4a. When no more blocks can be placed in the Program Area
  1. The system doesn't add the block back to the Palette.
  2. The system removes all other blocks from the Palette. 
@@ -76,6 +79,9 @@ The user is aware of the new position of the block. The position of the block ge
 1h. When the user moves the cursor over a conditional block of a/an while/if block and clicks the left mouse key
  1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
 
+2. When a number of blocks in the program area have been executed
+ 1. The system performs <ins>Reset Program</ins> manually. 
+
 
 ## Use Case 3: Delete Program Block //TODO EVALUATE USE OF THIS
 
@@ -123,6 +129,9 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 1h. When the user moves the cursor over a conditional block of an if/while block and clicks the left mouse key
  1. The system disconnects the socket of the conditional block from the corresponding plug of the if/while block. 
  
+2-3. When a number of blocks in the program area have been executed
+ 1. The system performs <ins>Reset Program</ins> manually. 
+  
 2a. When the maximum amount of blocks was inside the Program Area
  1. The system deletes the block from the Program Area.
  2. The system adds back all possible blocks to the Palette.
