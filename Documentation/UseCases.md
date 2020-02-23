@@ -95,7 +95,7 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
  2. The system moves the conditional block and its still connected blocks (if any) as one entity.
   
-3a. When the maximum amount of blocks was inside the Program Area
+3a. When the maximum amount of blocks is inside the Program Area
  1. The system adds back all possible blocks to the Palette.
 
 
