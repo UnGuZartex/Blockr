@@ -114,16 +114,12 @@ The user is aware that the program is running. The Game World gets updated based
 3. The system evaluates the next block to execute in the program and highlights it.
 4. The system changes the state of the robot in the Game World according to the block.
 
-Repeat 1-4 untill the last block has been executed.
+ Repeat 1-4 untill the last block has been executed.
 
 5. The system shows a message that the robot reached the goal.
 
 ### Extensions
-*a. At any time, when the user presses escape.
- 1. The system sets the state of the Game World to the initial state.
- 2. The system unhighlights all blocks which are highlighted. 
-
-*b. At any time, when the user moves, adds or deletes a block
+*a. At any time, when the user presses escape, moves, adds or deletes a block
  1. The system sets the state of the Game World to the initial state.
  2. The system unhighlights all blocks which are highlighted. 
 
@@ -151,4 +147,7 @@ Repeat 1-4 untill the last block has been executed.
  1. The system doesn't change the robot's state in the Game World.
 
 4b. When the robot's position is changed to an invalid place in the Game World
- 1. The system shows an error message to the user.
+ 1. The system shows a failure message to the user.
+
+5a. The robot did not reach the goal
+ 1. The system shows a failure message to the user.
