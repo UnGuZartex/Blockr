@@ -18,9 +18,6 @@ The user is aware of the position of the block in the Program Area. List of bloc
 ### Extensions
 1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
  1. The system adds a new block of the same type to the Program Area; the new block is inserted into an existing group of connected blocks at the matching connection point.
-
-2-4a. When a number of blocks in the program area have been executed
- 1. The system performs <ins>Reset Program</ins> manually. 
  
 4a. When no more blocks can be placed in the Program Area
  1. The system doesn't add the block back to the Palette.
@@ -60,10 +57,7 @@ The user is aware of the new position of the block. The position of the block ge
 
 1e. When the user moves the cursor over a conditional block of a/an while/if block and clicks the left mouse key
  1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
-
-2a. When a number of blocks in the program area have been executed
- 1. The system performs <ins>Reset Program</ins> manually. 
-
+ 
 
 ## Use Case 3: Delete Program Block
 
@@ -101,9 +95,6 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 
 1e. When the user moves the cursor over a conditional block of a/an while/if block and clicks the left mouse key
  1. The system disconnects the socket of the conditional block from the corresponding plug of the if/while block. 
- 
-2-3a. When a number of blocks in the program area have been executed
- 1. The system performs <ins>Reset Program</ins> manually. 
   
 3a. When the maximum amount of blocks was inside the Program Area
  1. The system adds back all possible blocks to the Palette.
@@ -112,43 +103,46 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 ## Use Case 4: Run Program
 
 ### Precondition
-There is only one group of connected blocks in the Program Area. All if and while blocks in thus group must have a condition block connected to them.
+There is only one group of connected blocks in the Program Area. All if and while blocks in the group must have a condition connected to it.
 
 ### Success Guarantee (Postcondition)
-The user is aware that a step of the program is executed. The Game World gets updated based on the block used in the following step. 
+The user is aware that the program is running. The Game World gets updated based on the program. 
 
 ### Main Success Scenario
 1. The user presses F5.
-2. The system identifies the program in the Program Area.
-3. The system evaluates the first block and highlights it.
-4. The system changes the state of the robot in the Game World according to the executed block.  
+2. The system unhighlights the last block which has been executed.
+3. The system evaluates the next block to execute in the program and highlights it.
+4. The system changes the state of the robot in the Game World according to the block.
+Repeat 1-4 untill the last block has been executed.
+5. The system shows a message that the robot reached the goal.
 
 ### Extensions
+*a. At any time, when the user presses escape.
+ 1. The system sets the state of the Game World to the initial state.
+ 2. The system unhighlights all blocks which are highlighted. 
+
+*b. At any time, when the user moves, adds or deletes a block
+ 1. The system sets the state of the Game World to the initial state.
+ 2. The system unhighlights all blocks which are highlighted. 
+
 1a. When the system is already busy executing a step in the program
  1. The system ignores the second call from the user.
 
-3-4a. When the block to evaluate has no blocks connected to it's socket
- 1. The system evaluates this block and highlights it. 
- 2. The system changes the state of the robot in the Game World according to the executed block.
- 3. The system shows a message according to whether or not the robot has reached the goal. 
+2-3a. When no block has been executed yet
+ 1. The system evaluates the first block of the program and highlights it
 
-3a. When the execution of the program has already started
- 1. The system unhighlights the block which has been executed last.
- 2. The system evaluates the block which is connected to the plug of the last block which has been executed last.
- 3. The system highlights the block which has been executed. 
-
-3b. When the block to execute is a/an while/if block
+3a. When the block to execute is a/an while/if block
  1. The system highlights the while/if block and the condition connected to it.
  2. The system evaluates the condition. 
  3. The system determines the block to go to for the next iteration. 
 
-3c. When the block to execute is contained in the cavity of a/an while/if block
- 1. The system highlights the while/if block in which the block to execute is contained. 
+3b. When the block to execute is contained in the cavity of a/an while/if block
+ 1. The system highlights the while/if block in which the block to execute is contained and evaluates the block.
 
-3d. When the block to execute is the last block contained in the cavity of a while block
+3c. When the block to execute is the last block contained in the cavity of a while block
  1. The system chooses the while block itself again as next block to execute.
 
-3e. When the block to execute is the last block contained in the cavity of an if block
+3d. When the block to execute is the last block contained in the cavity of an if block
  1. The system chooses the block connected to the plug of the if statement as next block to execute.
 
 4a. When the block doesn't affect the robot's state
@@ -156,25 +150,3 @@ The user is aware that a step of the program is executed. The Game World gets up
 
 4b. When the robot's position is changed to an invalid place in the Game World
  1. The system shows an error message to the user.
- 2. The system executes <ins> Reset Program</ins> manually (without the user pressing escape).
-
-
-## Use Case 5: Reset Program
-
-### Precondition
-The application itself is fully loaded in and available for the user.
-
-### Success Guarantee (Postcondition)
-The user is aware the reset has occurred. The program gets set back to the initial state (this being no block evaluated). The Game World gets reset to the initial state.
-
-### Main Success Scenario
-1. The user presses Escape.
-2. The system places the robot on the starting position in the Game World.
-3. The system unhighlights the highlighted block in the Program Area.
-
-### Extensions
-2a. When the robot is already in the starting position in the Game World 
- 1. The system doesn't change the Game World.
-
-3a. When there is no highlighted block in the Program Area
- 1. The system keeps all blocks unhighlighted.
