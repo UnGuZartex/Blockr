@@ -45,7 +45,7 @@ The user is aware of the new position of the block. The position of the block ge
  2. The system keeps all other connections.
  3. The system moves the group of blocks as one entity. 
  
-1c. When the user moves the cursor over a block which is connected to other blocks but not in on the top socket and clicks the left mouse key
+1c. When the user moves the cursor over a block which is connected to other blocks but not with the top socket and clicks the left mouse key
  1. The system moves the group of blocks as one entity.
 
 1d. When the user moves the cursor over a block that is in the cavity of a/an while/if block and clicks the left mouse key
@@ -83,7 +83,7 @@ The user is aware that the block is deleted. The block gets removed from the Pro
  2. The system keeps all other connections.
  3. The system moves the group of blocks as one entity. 
  
-1c. When the user moves the cursor over a block which is connected through other blocks but not in on the top socket and clicks the left mouse key
+1c. When the user moves the cursor over a block which is connected through other blocks but not with the top socket and clicks the left mouse key
  1. The system moves the group of blocks as one entity.
 
 1d. When the user moves the cursor over a block which is in the cavity of a/an while/if block and clicks the left mouse key
