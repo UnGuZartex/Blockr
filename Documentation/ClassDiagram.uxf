@@ -1,33 +1,33 @@
-<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>680</x><y>330</y><w>210</w><h>70</h></coordinates><panel_attributes>_Block_
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><help_text>Nice Notes</help_text><element><id>UMLClass</id><coordinates><x>680</x><y>330</y><w>210</w><h>70</h></coordinates><panel_attributes>_Block_
 --
+height:Int
 --
 execute()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>330</y><w>210</w><h>70</h></coordinates><panel_attributes>_Socket_
 --
 Block:
-Orientation</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>250</y><w>210</w><h>70</h></coordinates><panel_attributes>_Plug_
+Orientation
+Plug</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>240</y><w>210</w><h>70</h></coordinates><panel_attributes>_Plug_
 --
 Block:
-Orientation</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1260</x><y>480</y><w>210</w><h>70</h></coordinates><panel_attributes>_Robot_
+Orientation
+Socket</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>480</y><w>210</w><h>70</h></coordinates><panel_attributes>_Robot_
 --
 Direction: Direction
-positionCell</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1260</x><y>570</y><w>210</w><h>110</h></coordinates><panel_attributes>_enum: Direction_
+PositionPair:[x,y]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>570</y><w>210</w><h>110</h></coordinates><panel_attributes>_enum: Direction_
 --
 UP
 DOWN
 LEFT
 RIGHT
 --
-changeDirection(Direction)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>300</y><w>210</w><h>70</h></coordinates><panel_attributes>_Cell_
+changeDirection(Direction)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>360</y><w>210</w><h>70</h></coordinates><panel_attributes>_Cell_
 --
+CellType
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1150</x><y>390</y><w>210</w><h>70</h></coordinates><panel_attributes>_Wall_
---
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1410</x><y>390</y><w>210</w><h>70</h></coordinates><panel_attributes>_Goal_
---
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>190</y><w>210</w><h>60</h></coordinates><panel_attributes>_Grid_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>280</y><w>210</w><h>60</h></coordinates><panel_attributes>_Grid_
 --
 Cells[][]
-Robot</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>0</y><w>210</w><h>70</h></coordinates><panel_attributes>_GameWorld_
+Robot</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>100</y><w>210</w><h>70</h></coordinates><panel_attributes>_GameWorld_
 --
 Grid
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>240</y><w>210</w><h>70</h></coordinates><panel_attributes>_Program_
@@ -35,7 +35,7 @@ Grid
 --
 isValid()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>330</y><w>210</w><h>70</h></coordinates><panel_attributes>_BlockEvaluator_
 --
-RobotStateChanger</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>_Palette_
+Robot:Robot</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>_Palette_
 --
 Block[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>620</y><w>210</w><h>70</h></coordinates><panel_attributes>_CavityBlock_
 --
@@ -43,7 +43,8 @@ rightSocket:Socket
 Cavity:Cavity</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>710</y><w>210</w><h>70</h></coordinates><panel_attributes>_Cavity_
 --
 plug:Plug
-socket:Socket</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>_ProgramArea_
+socket:Socket
+height:Int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>_ProgramArea_
 --
 Program[]
 --
@@ -54,9 +55,7 @@ BOTTOM
 LEFT
 RIGHT
 --
-isOpposite(Orientation,Orientation)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>409</y><w>210</w><h>70</h></coordinates><panel_attributes>_RobotStateChanger_
---
-Robot:Robot</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>459</y><w>210</w><h>60</h></coordinates><panel_attributes>_ConditionalBlock_
+isOpposite(Orientation,Orientation)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>459</y><w>210</w><h>60</h></coordinates><panel_attributes>_ConditionalBlock_
 --
 leftPlug: Plug</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>459</y><w>210</w><h>70</h></coordinates><panel_attributes>_FunctionalBlock_
 --
@@ -65,7 +64,19 @@ bottomPlug:Plug</panel_attributes><additional_attributes></additional_attributes
 --
 rightSocket: Socket</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>570</x><y>619</y><w>210</w><h>70</h></coordinates><panel_attributes>_StatementBlock_
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>90</y><w>210</w><h>70</h></coordinates><panel_attributes>_Initializer_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>190</y><w>210</w><h>70</h></coordinates><panel_attributes>_Initializer_
 --</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>487</y><w>210</w><h>70</h></coordinates><panel_attributes>_StateChecker_
 --
-Robot:Robot</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+Robot:Robot</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>300</y><w>210</w><h>110</h></coordinates><panel_attributes>_enum: CellType_
+--
+WALL
+GOAL
+BLANK
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>20</y><w>210</w><h>70</h></coordinates><panel_attributes>_PaletteController_
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>20</y><w>210</w><h>70</h></coordinates><panel_attributes>_ProgramAreaController_
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1280</x><y>20</y><w>210</w><h>70</h></coordinates><panel_attributes>_GameWorldController_
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>390</y><w>190</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>170;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>390</y><w>200</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;180;70</additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>520</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>510</y><w>120</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;100;110</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>510</y><w>120</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>270</y><w>220</w><h>120</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>200;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>290</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;100;80;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>290</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>50;10;10;50;50;50</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>350</y><w>220</w><h>50</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>200;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1380</x><y>540</y><w>30</w><h>50</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1380</x><y>420</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>400</y><w>230</w><h>90</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;70;210;70;210;30</additional_attributes></element></diagram>
