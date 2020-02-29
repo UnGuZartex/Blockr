@@ -23,10 +23,10 @@ public class GUIBlock {
         polygon.addPoint(0, 0);
 
         // Socket (top, facing up)
-        polygon.addPoint((width - connectorWidth) / 2, 0);
-        polygon.addPoint((width - connectorWidth) / 2, connectorHeight);
-        polygon.addPoint((width + connectorWidth) / 2, connectorHeight);
-        polygon.addPoint((width + connectorWidth) / 2, 0);
+        polygon.addPoint((width - connectorWidth - 2) / 2, 0);
+        polygon.addPoint((width - connectorWidth - 2) / 2, connectorHeight);
+        polygon.addPoint((width + connectorWidth + 2) / 2, connectorHeight);
+        polygon.addPoint((width + connectorWidth + 2) / 2, 0);
 
         polygon.addPoint(width, 0);
         polygon.addPoint(width, height);
