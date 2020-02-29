@@ -8,6 +8,11 @@ import java.util.ArrayList;
 public class GUIBlock {
     private ArrayList<Rectangle> plugRects = new ArrayList<Rectangle>();
     private ArrayList<Rectangle> socketRects = new ArrayList<Rectangle>();
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
     private Polygon polygon;
     private Point positionCurrent;
     private Color color;

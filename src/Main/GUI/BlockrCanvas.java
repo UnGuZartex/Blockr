@@ -65,6 +65,7 @@ public class BlockrCanvas extends CanvasWindow {
         }
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
             draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
+            System.out.println(testBlocks.stream().filter(b-> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
             draggedBlock = null;
         }
 
