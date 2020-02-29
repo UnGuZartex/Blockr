@@ -3,6 +3,9 @@ package Main.GUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class BlockrCanvas extends CanvasWindow {
 
@@ -56,7 +59,10 @@ public class BlockrCanvas extends CanvasWindow {
         mousePos = new Point(x, y);
 
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            draggedBlock = testBlocks.stream().filter(b -> b.contains(mousePos)).reduce((first,second)-> second).orElse(null);
+            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second)-> second);
+            draggedBlock = testBlocks.get(blockIndex.getAsInt());
+            testBlocks.remove(blockIndex.getAsInt());
+            testBlocks.add(draggedBlock);
             dragDelta = new Point(draggedBlock.getPosition().x - x,
                     draggedBlock.getPosition().y - y);
         }
