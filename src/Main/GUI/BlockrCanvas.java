@@ -59,7 +59,6 @@ public class BlockrCanvas extends CanvasWindow {
         mousePos = new Point(x, y);
 
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            System.err.println("INSIDE: " + mousePos +" \n");
             draggedBlock = testBlocks.stream().filter(b -> b.contains(mousePos)).findFirst().orElse(null);
             dragDelta = new Point(draggedBlock.getPosition().x - x,
                     draggedBlock.getPosition().y - y);
