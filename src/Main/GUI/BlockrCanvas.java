@@ -2,16 +2,13 @@ package Main.GUI;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BlockrCanvas extends CanvasWindow {
 
     private Painter[] painters;
-    private ArrayList<Rectangle> testBlocks = new ArrayList<Rectangle>();
-    private Rectangle draggedRectangle;
+    private ArrayList<GUIBlock> testBlocks = new ArrayList<GUIBlock>();
+    private GUIBlock draggedBlock;
     private Point dragDelta;
     private Point mousePos;
 
@@ -43,15 +40,15 @@ public class BlockrCanvas extends CanvasWindow {
             painter.paint(g);
         }
 
-        for (Rectangle rect : testBlocks) {
-            if (draggedRectangle != null && draggedRectangle.equals(rect)) {
-                g.drawRect(mousePos.x + dragDelta.x,
-                        mousePos.y + dragDelta.y,
-                        rect.width, rect.height);
+        for (GUIBlock block : testBlocks) {
+            if (draggedBlock == null || !draggedBlock.equals(block)) {
+                block.draw(g);
             }
-            else {
-                g.drawRect(rect.x, rect.y, rect.width, rect.height);
-            }
+        }
+
+        if (draggedBlock != null) {
+            draggedBlock.changePosition(mousePos.x + dragDelta.x, mousePos.y + dragDelta.y);
+            draggedBlock.draw(g);
         }
     }
 
@@ -61,25 +58,23 @@ public class BlockrCanvas extends CanvasWindow {
 
         mousePos = new Point(x, y);
 
-        if (id == MouseEvent.MOUSE_PRESSED && draggedRectangle == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
+        if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
             System.err.println("INSIDE: " + mousePos +" \n");
-            draggedRectangle = testBlocks.stream().filter(b -> b.contains(mousePos)).findFirst().orElse(null);
-            dragDelta = new Point(draggedRectangle.x - x,
-                    draggedRectangle.y - y);
+            draggedBlock = testBlocks.stream().filter(b -> b.contains(mousePos)).findFirst().orElse(null);
+            dragDelta = new Point(draggedBlock.getPosition().x - x,
+                    draggedBlock.getPosition().y - y);
         }
-        if (id == MouseEvent.MOUSE_RELEASED && draggedRectangle != null) {
-            draggedRectangle.x = dragDelta.x + x;
-            draggedRectangle.y = dragDelta.y + y;
-            draggedRectangle = null;
+        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
+            draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
+            draggedBlock = null;
         }
 
         repaint();
     }
 
     private void initTestBlocks() {
-        testBlocks.add(new Rectangle(700, 700, 250, 250));
-        testBlocks.add(new Rectangle(200, 500, 100, 300));
-        testBlocks.add(new Rectangle(500, 300, 400, 400));
-        testBlocks.add(new Rectangle(500, 850, 100, 50));
+        testBlocks.add(new GUIBlock(500, 500, 500, 250, Color.GREEN));
+        testBlocks.add(new GUIBlock(200, 500, 400, 300, Color.BLUE));
+        testBlocks.add(new GUIBlock(500, 300, 300, 100, Color.MAGENTA));
     }
 }
