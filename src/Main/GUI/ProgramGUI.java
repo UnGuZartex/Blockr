@@ -11,7 +11,7 @@ public class ProgramGUI {
     public static void main(String args[]){
         BlockrCanvas canvas = new BlockrCanvas("Nice");
 
-        canvas.setDimensions(800, 500);
+        canvas.setDimensions(1920, 1080);
 
         java.awt.EventQueue.invokeLater(() -> {
           canvas.show();

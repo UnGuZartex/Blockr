@@ -20,18 +20,15 @@ public class BlockrCanvas extends CanvasWindow {
     protected BlockrCanvas(String title) {
         super(title);
         painters = new Painter[3];
-        painters[0] = new PalettePainter(0,0, width/3,height);
-        painters[1] = new ProgramAreaPainter(width/3,0, width/3,height);
-        painters[2] = new GameWorldPainter(2*width/3,0, width/3,height);
+
+        setPainters();
         initTestBlocks();
     }
 
     protected void setDimensions(int width, int height) {
-        this.height = 1070;
-        this.width = 1910;
-        painters[0] = new PalettePainter(0,0, width/3,height);
-        painters[1] = new ProgramAreaPainter(width/3,0, width/3,height);
-        painters[2] = new GameWorldPainter(2*width/3,0, width/3,height);
+        this.width = width;
+        this.height = height;
+        setPainters();
     }
 
     @Override
@@ -76,5 +73,11 @@ public class BlockrCanvas extends CanvasWindow {
         testBlocks.add(new GUIBlock(500, 500, 500, 250, Color.GREEN));
         testBlocks.add(new GUIBlock(200, 500, 400, 300, Color.BLUE));
         testBlocks.add(new GUIBlock(500, 300, 300, 100, Color.MAGENTA));
+    }
+
+    private void setPainters() {
+        painters[0] = new PalettePainter(0,0, width / 3, height);
+        painters[1] = new ProgramAreaPainter(width / 3,0, width / 3, height);
+        painters[2] = new GameWorldPainter(2 * width / 3,0, width / 3, height);
     }
 }
