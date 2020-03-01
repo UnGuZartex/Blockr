@@ -9,6 +9,10 @@ import java.util.stream.IntStream;
 
 public class BlockrCanvas extends CanvasWindow {
 
+    public static final double PALETTE_WIDTH_RATIO = 0.2;
+    public static final double PROGRAMAREA_WIDTH_RATIO = 0.4;
+    public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
+
     private Painter[] painters;
     private ArrayList<GUIBlock> testBlocks = new ArrayList<GUIBlock>();
     private GUIBlock draggedBlock;
@@ -16,7 +20,7 @@ public class BlockrCanvas extends CanvasWindow {
     private Point mousePos;
 
     /**
-     * Initializes a CanvasWindow object.
+     * Initializes a CanvasWindow object. 
      *
      * @param title Window title
      */
@@ -82,8 +86,8 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPainters() {
-        painters[0] = new PalettePainter(0,0, width / 3, height);
-        painters[1] = new ProgramAreaPainter(width / 3,0, width / 3, height);
-        painters[2] = new GameWorldPainter(2 * width / 3,0, width / 3, height);
+        painters[0] = new PalettePainter(0,0, (int)(width*PALETTE_WIDTH_RATIO), height);
+        painters[1] = new ProgramAreaPainter((int)(width*PALETTE_WIDTH_RATIO),0, (int)(width*PROGRAMAREA_WIDTH_RATIO), height);
+        painters[2] = new GameWorldPainter((int)(width*PALETTE_WIDTH_RATIO) + (int)(width*PROGRAMAREA_WIDTH_RATIO),0, (int)(width*GAMEWORLD_WIDTH_RATIO), height);
     }
 }
