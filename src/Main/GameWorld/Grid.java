@@ -29,7 +29,6 @@ public class Grid {
         this.cells = cells;
     }
 
-
     public int getHeight() {
         return height;
     }
@@ -41,5 +40,4 @@ public class Grid {
     public Cell getCellAt(int x, int y) {
         return cells[x][y];
     }
-
 }

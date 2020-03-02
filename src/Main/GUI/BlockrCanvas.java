@@ -1,57 +1,63 @@
 package Main.GUI;
 
+import Main.GUI.GameWorld.GameWorldPainter;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class BlockrCanvas extends CanvasWindow {
 
+    public static final double PALETTE_WIDTH_RATIO = 0.2;
+    public static final double PROGRAMAREA_WIDTH_RATIO = 0.4;
+    public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
+
     private Painter[] painters;
-    private ArrayList<Rectangle> testBlocks = new ArrayList<Rectangle>();
-    private Rectangle draggedRectangle;
+    private ArrayList<GUIBlock> testBlocks = new ArrayList<GUIBlock>();
+    private GUIBlock draggedBlock;
     private Point dragDelta;
     private Point mousePos;
 
     /**
-     * Initializes a CanvasWindow object.
+     * Initializes a CanvasWindow object. 
      *
      * @param title Window title
      */
     protected BlockrCanvas(String title) {
         super(title);
         painters = new Painter[3];
-        painters[0] = new PalettePainter(0,0, width/3,height);
-        painters[1] = new ProgramAreaPainter(width/3,0, width/3,height);
-        painters[2] = new GameWorldPainter(2*width/3,0, width/3,height);
+
+        setPainters();
         initTestBlocks();
     }
 
     protected void setDimensions(int width, int height) {
-        this.height = 1070;
-        this.width = 1910;
-        painters[0] = new PalettePainter(0,0, width/3,height);
-        painters[1] = new ProgramAreaPainter(width/3,0, width/3,height);
-        painters[2] = new GameWorldPainter(2*width/3,0, width/3,height);
+        this.width = width;
+        this.height = height;
+        setPainters();
     }
 
     @Override
     protected void paint(Graphics g) {
+
+        g.setColor(Color.lightGray);
+        g.fillRect(0, 0, width, height);
+
         for(Painter painter : painters) {
             painter.paint(g);
         }
 
-        for (Rectangle rect : testBlocks) {
-            if (draggedRectangle != null && draggedRectangle.equals(rect)) {
-                g.drawRect(mousePos.x + dragDelta.x,
-                        mousePos.y + dragDelta.y,
-                        rect.width, rect.height);
+        for (GUIBlock block : testBlocks) {
+            if (draggedBlock == null || !draggedBlock.equals(block)) {
+                block.draw(g);
             }
-            else {
-                g.drawRect(rect.x, rect.y, rect.width, rect.height);
-            }
+        }
+
+        if (draggedBlock != null) {
+            draggedBlock.changePosition(mousePos.x + dragDelta.x, mousePos.y + dragDelta.y);
+            draggedBlock.draw(g);
         }
     }
 
@@ -61,25 +67,32 @@ public class BlockrCanvas extends CanvasWindow {
 
         mousePos = new Point(x, y);
 
-        if (id == MouseEvent.MOUSE_PRESSED && draggedRectangle == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            System.err.println("INSIDE: " + mousePos +" \n");
-            draggedRectangle = testBlocks.stream().filter(b -> b.contains(mousePos)).findFirst().orElse(null);
-            dragDelta = new Point(draggedRectangle.x - x,
-                    draggedRectangle.y - y);
+        if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
+            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second)-> second);
+            draggedBlock = testBlocks.get(blockIndex.getAsInt());
+            testBlocks.remove(blockIndex.getAsInt());
+            testBlocks.add(draggedBlock);
+            dragDelta = new Point(draggedBlock.getPosition().x - x,
+                    draggedBlock.getPosition().y - y);
         }
-        if (id == MouseEvent.MOUSE_RELEASED && draggedRectangle != null) {
-            draggedRectangle.x = dragDelta.x + x;
-            draggedRectangle.y = dragDelta.y + y;
-            draggedRectangle = null;
+        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
+            draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
+            System.out.println(testBlocks.stream().filter(b-> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
+            draggedBlock = null;
         }
 
         repaint();
     }
 
     private void initTestBlocks() {
-        testBlocks.add(new Rectangle(700, 700, 250, 250));
-        testBlocks.add(new Rectangle(200, 500, 100, 300));
-        testBlocks.add(new Rectangle(500, 300, 400, 400));
-        testBlocks.add(new Rectangle(500, 850, 100, 50));
+        testBlocks.add(new GUIBlock(500, 500, 500, 250, Color.GREEN));
+        testBlocks.add(new GUIBlock(200, 500, 400, 300, Color.BLUE));
+        testBlocks.add(new GUIBlock(500, 300, 300, 100, Color.MAGENTA));
+    }
+
+    private void setPainters() {
+        painters[0] = new PalettePainter(0,0, (int)(width * PALETTE_WIDTH_RATIO), height);
+        painters[1] = new ProgramAreaPainter((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
+        painters[2] = new GameWorldPainter((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }
 }

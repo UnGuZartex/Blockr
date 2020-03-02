@@ -12,6 +12,10 @@ public class Robot {
         this.direction = direction;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
     public int getX() {
         return x;
     }

@@ -1,4 +1,7 @@
-package Main.GameWorld;
+package Main.GameWorld.Level;
+
+import Main.GameWorld.Grid;
+import Main.GameWorld.Robot;
 
 public class Level {
 
