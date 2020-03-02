@@ -4,7 +4,6 @@ package Main.BlockStructure.Connections;
 
 public class Plug extends Connector {
 
-
     private Socket socket;
 
     public Plug(Orientation orientation) {
@@ -16,6 +15,7 @@ public class Plug extends Connector {
     public Socket getSocket() {
         return socket;
     }
+
 
     /**
      * Check whether this plug is connected to any socket.
@@ -70,11 +70,7 @@ public class Plug extends Connector {
     }
 
 
-
-
     public void disconnect() {
         // TODO: disconnect in plug
     }
-
-
 }

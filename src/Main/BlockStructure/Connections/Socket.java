@@ -1,7 +1,5 @@
 package Main.BlockStructure.Connections;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 public class Socket extends Connector {
 
     private Plug plug;
@@ -14,10 +12,6 @@ public class Socket extends Connector {
     public Plug getPlug() {
         return plug;
     }
-
-
-
-
 
     public boolean isConnected() {
         return plug != null;
@@ -41,14 +35,7 @@ public class Socket extends Connector {
         this.plug = plug;
     }
 
-
-
     public void disconnect() {
         connect(null);
     }
-
-
-
-
-
 }
