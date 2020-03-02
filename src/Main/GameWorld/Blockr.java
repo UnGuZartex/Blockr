@@ -1,6 +1,7 @@
 package Main.GameWorld;
 
 import Main.GameWorld.Level.Level;
+import Main.GameWorld.Level.LevelLoader;
 
 public class Blockr {
 
@@ -9,6 +10,6 @@ public class Blockr {
     public Blockr() {};
 
     public void initializeGame() {
-
+        level = LevelLoader.getInstance().loadLevel();
     }
 }
