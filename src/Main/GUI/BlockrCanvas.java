@@ -1,9 +1,10 @@
 package Main.GUI;
 
+import Main.GUI.GameWorld.GameWorldPainter;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
@@ -40,6 +41,10 @@ public class BlockrCanvas extends CanvasWindow {
 
     @Override
     protected void paint(Graphics g) {
+
+        g.setColor(Color.lightGray);
+        g.fillRect(0, 0, width, height);
+
         for(Painter painter : painters) {
             painter.paint(g);
         }
@@ -86,8 +91,8 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPainters() {
-        painters[0] = new PalettePainter(0,0, (int)(width*PALETTE_WIDTH_RATIO), height);
-        painters[1] = new ProgramAreaPainter((int)(width*PALETTE_WIDTH_RATIO),0, (int)(width*PROGRAMAREA_WIDTH_RATIO), height);
-        painters[2] = new GameWorldPainter((int)(width*PALETTE_WIDTH_RATIO) + (int)(width*PROGRAMAREA_WIDTH_RATIO),0, (int)(width*GAMEWORLD_WIDTH_RATIO), height);
+        painters[0] = new PalettePainter(0,0, (int)(width * PALETTE_WIDTH_RATIO), height);
+        painters[1] = new ProgramAreaPainter((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
+        painters[2] = new GameWorldPainter((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }
 }

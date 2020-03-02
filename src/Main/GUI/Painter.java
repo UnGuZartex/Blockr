@@ -10,7 +10,6 @@ public abstract class Painter {
     protected int width;
     protected int height;
 
-
     public Painter(int cornerX, int cornerY, int width, int height) {
         this.cornerX = cornerX;
         this.cornerY = cornerY;

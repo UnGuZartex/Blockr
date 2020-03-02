@@ -42,6 +42,7 @@ public class GUIBlock {
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillPolygon(polygon);
+        g.setColor(Color.black);
         g.drawPolygon(polygon);
     }
 
