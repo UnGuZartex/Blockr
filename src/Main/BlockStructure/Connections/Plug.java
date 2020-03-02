@@ -2,7 +2,6 @@ package Main.BlockStructure.Connections;
 
 public class Plug extends Connector {
 
-
     private Socket socket;
 
     public Plug(Orientation orientation) {
@@ -12,10 +11,6 @@ public class Plug extends Connector {
     public Socket getSocket() {
         return socket;
     }
-
-
-
-
 
     public boolean isConnected() {
         return socket != null;
@@ -55,7 +50,6 @@ public class Plug extends Connector {
         socket.connect(this);
     }
 
-
     private void setSocket(Socket socket) throws Exception{
         if (!canHaveAsSocket(socket)) {
             throw new Exception();
@@ -63,11 +57,7 @@ public class Plug extends Connector {
         this.socket = socket;
     }
 
-
-
     public void disconnect() {
         // TODO: disconnect in plug
     }
-
-
 }
