@@ -4,14 +4,14 @@ import java.util.Arrays;
 
 public class Grid {
 
-    private final int height;
-    private final int width;
-    private Cell[][] cells;
 
-    public Grid(int height, int width, Cell[][] cells) {
-        this.height = height;
-        this.width = width;
-        this.cells = cells;
+    private final int height; /* The number of rows in this grid */
+    private final int width; /* The number of columns in this grid */
+    private Cell[][] cells; /* The cells in this grid */
+
+
+    public Grid(Cell[][] cells) {
+        this(cells.length, cells[0].length, cells);
     }
 
     public Grid(int height, int width) {
@@ -21,6 +21,12 @@ public class Grid {
                 cells[i][j] = new Cell(CellType.BLANK);
             }
         }
+    }
+
+    private Grid(int height, int width, Cell[][] cells) {
+        this.height = height;
+        this.width = width;
+        this.cells = cells;
     }
 
     public int getHeight() {
