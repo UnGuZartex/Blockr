@@ -11,7 +11,8 @@ public class ProgramGUI {
     public static void main(String args[]) {
         ImagePreLoader.loadImages();
         BlockrCanvas canvas = new BlockrCanvas("Blockr");
-        canvas.setDimensions(1920, 1080);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        canvas.setDimensions(screenSize.width, screenSize.height);
 
         java.awt.EventQueue.invokeLater(() -> {
           canvas.show();
