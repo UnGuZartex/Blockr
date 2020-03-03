@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DirectionTest {
 
-    Direction directionUp;
-    Direction directionDown;
-    Direction directionLeft;
-    Direction directionRight;
+    private Direction directionUp;
+    private Direction directionDown;
+    private Direction directionLeft;
+    private Direction directionRight;
 
     @BeforeEach
     void setUp() {
