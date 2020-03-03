@@ -3,6 +3,7 @@ package GameWorld;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import GameWorld.Direction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
