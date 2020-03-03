@@ -1,8 +1,13 @@
-package Main.BlockStructure.Connections;
+package Main.BlockStructure.ConnectionComponents;
+
+import Main.BlockStructure.*;
 
 public abstract class Connector {
 
+
     private final Orientation orientation;
+    private Block block; // TODO bidirect nog aanleggen (connector is controller)
+
 
     public Connector(Orientation orientation) {
         this.orientation = orientation;
@@ -17,9 +22,7 @@ public abstract class Connector {
     }
 
 
-
-
-
-
-
+    public Block getBlock() {
+        return block;
+    }
 }

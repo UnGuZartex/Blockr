@@ -10,6 +10,11 @@ public class Level {
         this.robot = robot;
     }
 
+
+    public Robot getRobot() {
+        return robot;
+    }
+
     public boolean hasWon() {
         return grid.getCellAt(robot.getX(), robot.getY()).getCellType().isWin();
     }
@@ -17,6 +22,7 @@ public class Level {
     public boolean canNotWalkHere() {
         return !grid.getCellAt(robot.getX(), robot.getY()).getCellType().canWalkOn();
     }
+
 
 
 }

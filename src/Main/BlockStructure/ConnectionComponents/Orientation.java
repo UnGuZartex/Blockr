@@ -1,4 +1,4 @@
-package Main.BlockStructure.Connections;
+package Main.BlockStructure.ConnectionComponents;
 
 public enum Orientation {
     FACING_UP,

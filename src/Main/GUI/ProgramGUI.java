@@ -13,6 +13,9 @@ public class ProgramGUI {
 
         canvas.setDimensions(800, 500);
 
+
+
+
         java.awt.EventQueue.invokeLater(() -> {
           canvas.show();
         });

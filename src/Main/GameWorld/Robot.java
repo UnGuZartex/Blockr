@@ -19,4 +19,25 @@ public class Robot {
     public int getY() {
         return y;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void moveForward() {
+        switch (direction) {
+            case UP:    y--; break;
+            case DOWN:  y++; break;
+            case LEFT:  x--; break;
+            case RIGHT: x++; break;
+        }
+    }
+
+    public void turnLeft() {
+        direction = direction.turnLeft();
+    }
+
+    public void turnRight() {
+        direction = direction.turnRight();
+    }
 }

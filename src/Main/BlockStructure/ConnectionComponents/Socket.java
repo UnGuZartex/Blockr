@@ -1,4 +1,4 @@
-package Main.BlockStructure.Connections;
+package Main.BlockStructure.ConnectionComponents;
 
 public class Socket extends Connector {
 
