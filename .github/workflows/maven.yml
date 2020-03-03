@@ -2,9 +2,11 @@ name: Java CI
 
 on: [push]
 
+
 jobs:
   build:
-
+    uses: "LucaFeger/action-maven-cli@master"
+    args: "clean install"
     runs-on: ubuntu-16.04
 
     steps:
