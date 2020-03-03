@@ -18,6 +18,11 @@ public class Level {
         this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
     }
 
+
+    public Robot getRobot() {
+        return robot;
+    }
+
     public boolean hasWon() {
         return grid.getCellAt(robot.getX(), robot.getY()).getCellType().isWin();
     }

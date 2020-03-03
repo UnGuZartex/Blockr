@@ -1,6 +1,4 @@
-package BlockStructure.Connections;
-
-
+package BlockStructure.ConnectionComponents;
 
 public class Plug extends Connector {
 

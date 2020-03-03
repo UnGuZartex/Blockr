@@ -1,5 +1,7 @@
 package BlockStructure.Functionality;
 
-public interface Functionality {
-    // TODO - finish functionality structure
+import GameWorld.Robot;
+
+public interface Functionality { // Move forward, turn left, turn right
+    void evaluate(Robot robot);
 }

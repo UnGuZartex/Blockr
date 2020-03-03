@@ -1,5 +1,4 @@
-
-package BlockStructure.Connections;
+package BlockStructure.ConnectionComponents;
 
 import BlockStructure.Block;
 
