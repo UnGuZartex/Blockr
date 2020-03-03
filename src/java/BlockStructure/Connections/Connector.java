@@ -2,6 +2,7 @@
 package BlockStructure.Connections;
 
 import BlockStructure.Block;
+import BlockStructure.ConnectionComponents.Orientation;
 
 public abstract class Connector {
 
