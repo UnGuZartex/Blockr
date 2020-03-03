@@ -8,7 +8,8 @@ import java.awt.*;
 
 
 public class ProgramGUI {
-    public static void main(String args[]){
+    public static void main(String args[]) {
+        ImagePreLoader.loadImages();
         BlockrCanvas canvas = new BlockrCanvas("Blockr");
         canvas.setDimensions(1920, 1080);
 
