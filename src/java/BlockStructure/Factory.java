@@ -1,4 +1,4 @@
-package Main.BlockStructure;
+package BlockStructure;
 
 import BlockStructure.ConnectionComponents.Plug;
 import BlockStructure.ConnectionComponents.Socket;
