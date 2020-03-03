@@ -1,6 +1,6 @@
 package GameWorld;
 
-import Main.GameWorld.Level.Level;
+import GameWorld.Level.Level;
 
 public class Blockr {
 

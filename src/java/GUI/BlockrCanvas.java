@@ -1,6 +1,6 @@
 package GUI;
 
-import Main.GUI.GameWorld.GameWorldPainter;
+import GUI.GameWorld.GameWorldPainter;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

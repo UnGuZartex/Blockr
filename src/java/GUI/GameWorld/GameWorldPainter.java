@@ -1,9 +1,8 @@
 package GUI.GameWorld;
 
-import Main.GUI.Painter;
+import GUI.Painter;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class GameWorldPainter extends Painter {
 

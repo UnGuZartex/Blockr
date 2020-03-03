@@ -1,7 +1,7 @@
 package BlockStructure;
 
-import Main.BlockStructure.Functionality.Functionality;
-import Main.BlockStructure.Connections.*;
+import BlockStructure.Functionality.Functionality;
+import BlockStructure.Connections.*;
 
 public class Block {
 
