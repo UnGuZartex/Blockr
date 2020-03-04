@@ -1,12 +1,15 @@
 package GUI;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+// TODO MAAK KLASSE NIET STATIC?
 public class ImagePreLoader {
     private static HashMap<String, Image> cellImages;
     private static Image robotImage;
@@ -15,6 +18,7 @@ public class ImagePreLoader {
     private static String imageDir = System.getProperty("user.dir") + "/util/resources/images/";
 
     public static void loadImages() {
+        // TODO ADD ERROR DINGEN WNR DIR NIE BESTAAT
         Path path = Paths.get(imageDir);
 
         cellImages = new HashMap<>();
@@ -23,22 +27,29 @@ public class ImagePreLoader {
             // TODO THROW EXCEPTION
         }
 
-        //String filePath = imageDir + ;
-        //File f = new File("/Path/To/File/or/Directory");
+        try {
+            notfoundImage = ImageIO.read(new File(imageDir + "noImage.jpg"));
+        } catch (IOException e) {
+            // Handle exception if there is one.
+        }
 
         path = Paths.get(imageDir + "robot.png");
         if (Files.exists(path)) {
-            System.err.println("FOUND");
-           robotImage = Toolkit.getDefaultToolkit().getImage(imageDir + "robot.png");
+            try {
+                robotImage = ImageIO.read(new File(imageDir + "robot.png"));
+            } catch (IOException e) {
+                // Handle exception if there is one.
+            }
         }
         else {
-            robotImage = Toolkit.getDefaultToolkit().getImage(imageDir + "noImage.jpg");
+            robotImage = notfoundImage;
         }
 
-        notfoundImage = Toolkit.getDefaultToolkit().getImage(imageDir + "noImage.jpg");
-
-        // TODO ADD ERROR DINGEN WNR DIR NIE BESTAAT
-        gameWorldBackground = Toolkit.getDefaultToolkit().getImage(imageDir + "gameWorldBackground.png");
+        try {
+            gameWorldBackground = ImageIO.read(new File(imageDir + "gameWorldBackground.png"));
+        } catch (IOException e) {
+            // Handle exception if there is one.
+        }
 
         File[] files = new File(imageDir + "cellImages").listFiles();
         showFiles(files);
@@ -47,7 +58,15 @@ public class ImagePreLoader {
     private static void showFiles(File[] files) {
         for (File file : files) {
             if (!file.isDirectory()) {
-                Image cellImage = Toolkit.getDefaultToolkit().getImage(imageDir + "cellImages/" + file.getName());
+
+                Image cellImage = null;
+
+                try {
+                    cellImage = ImageIO.read(new File(imageDir + "cellImages/" + file.getName()));
+                } catch (IOException e) {
+                    // Handle exception if there is one.
+                }
+
                 cellImages.put(file.getName().replaceFirst("[.][^.]+$", ""), cellImage);
                 System.err.println("TEST: " + imageDir + file.getName() + " " + file.getName().replaceFirst("[.][^.]+$", ""));
             }
