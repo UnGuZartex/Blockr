@@ -1,11 +1,13 @@
-package BlockStructure.ConnectionComponents;
+package BlockStructure.Connectors;
+
+import BlockStructure.Blocks.Block;
 
 public class Plug extends Connector {
 
     private Socket socket;
 
-    public Plug(Orientation orientation) {
-        super(orientation);
+    public Plug(Block block, Orientation orientation) {
+        super(block, orientation);
     }
 
 
