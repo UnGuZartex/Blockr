@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.Images.ImageLibrary;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
