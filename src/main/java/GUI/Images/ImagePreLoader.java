@@ -24,8 +24,9 @@ public class ImagePreLoader {
 
         loadAllFiles(new File(imagePath).listFiles(), images);
 
-        if (images.get(ImageLibrary.getNotFoundFileName()) == null) {
-            throw new FileNotFoundException("The image pack default image does not exist! File: " + imagePath + ImageLibrary.getNotFoundFileName() + ".(any image extension)");
+        if (!images.containsKey(ImageLibrary.getNotFoundFileName())) {
+            throw new FileNotFoundException("The image pack default image does not exist! File: "
+                    + imagePath + ImageLibrary.getNotFoundFileName() + ".(any image extension)");
         }
 
         return new ImageLibrary(images);

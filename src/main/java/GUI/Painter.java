@@ -20,9 +20,11 @@ public abstract class Painter {
         this.height = height;
     }
 
-    public abstract void paint(Graphics g);
+    protected abstract void drawBackground(Graphics g);
 
     public static void setImageLibrary(ImageLibrary library) {
         Painter.library = library;
     }
+
+    public abstract void paint(Graphics g);
 }

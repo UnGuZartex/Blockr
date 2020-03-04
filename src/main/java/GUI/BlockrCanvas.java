@@ -48,6 +48,7 @@ public class BlockrCanvas extends CanvasWindow {
 
         g.setColor(Color.lightGray);
         g.fillRect(0, 0, width, height);
+        g.setColor(Color.black);
 
         for(Painter painter : painters) {
             painter.paint(g);
