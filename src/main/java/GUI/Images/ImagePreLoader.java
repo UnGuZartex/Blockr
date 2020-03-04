@@ -5,14 +5,10 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class ImagePreLoader {
     private static String imageDir = System.getProperty("user.dir") + "/util/resources/imagePacks/";
-    private static String imageExtension = ".png";
 
     public static ImageLibrary createImageLibrary() throws IOException {
         return createImageLibrary("default");
@@ -21,18 +17,17 @@ public class ImagePreLoader {
     public static ImageLibrary createImageLibrary(String imagePackName) throws IOException {
         HashMap<String, Image> images = new HashMap<>();
         String imagePath = imageDir + imagePackName + "/";
-        File file = new File(imagePath);
 
-        if (!file.isDirectory()) {
+        if (!new File(imagePath).isDirectory()) {
             throw new FileNotFoundException("The image directory does not exist! Directory: " + imagePath);
         }
 
-        file = new File(imagePath + ImageLibrary.getNotFoundFileName() + imageExtension);
-        if (!file.isFile()) {
-            throw new FileNotFoundException("The image pack default image does not exist! File: " + file.getPath());
+        loadAllFiles(new File(imagePath).listFiles(), images);
+
+        if (images.get(ImageLibrary.getNotFoundFileName()) == null) {
+            throw new FileNotFoundException("The image pack default image does not exist! File: " + imagePath + ImageLibrary.getNotFoundFileName() + ".(any image extension)");
         }
 
-        loadAllFiles(new File(imagePath).listFiles(), images);
         return new ImageLibrary(images);
     }
 

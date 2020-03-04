@@ -11,7 +11,6 @@ public class ImageLibrary {
 
     public ImageLibrary(HashMap<String, Image> images) throws IllegalArgumentException {
 
-        // TODO NOG MEER EXCEPTIONS? BVB ALS SOMMIGE AFBEELDINGEN ER NIET INZITTEN?
         if (images == null) {
             throw new IllegalArgumentException("The given image map is null!");
         }
