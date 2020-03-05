@@ -2,7 +2,7 @@ package GUI;
 
 
 import BlockStructure.Blocks.*;
-import BlockStructure.Factory.TurnRightBlockFactory;
+import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
 import GameWorld.*;
 import GameWorld.Level.*;
 import ProgramArea.Program;

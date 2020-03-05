@@ -1,11 +1,11 @@
 package BlockStructure.Functionality;
 
-import GameWorld.Robot;
+import GameWorld.Level.*;
 
 public class TurnLeftFunctionality implements Functionality {
 
     @Override
-    public void evaluate(Robot robot) {
-        robot.turnLeft();
+    public void evaluate(Level level) {
+        level.getRobot().turnLeft();
     }
 }

@@ -1,4 +1,4 @@
-package BlockStructure.Factory;
+package BlockStructure.Blocks.Factory;
 
 import BlockStructure.Blocks.Block;
 import BlockStructure.Blocks.FunctionalBlock;
@@ -6,7 +6,7 @@ import BlockStructure.Functionality.TurnLeftFunctionality;
 
 public class TurnLeftBlockFactory extends BlockFactory {
 
-    private static TurnLeftFunctionality functionality
+    private TurnLeftFunctionality functionality
             = new TurnLeftFunctionality();
 
     @Override

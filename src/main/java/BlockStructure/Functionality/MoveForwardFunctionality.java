@@ -1,11 +1,13 @@
 package BlockStructure.Functionality;
 
-import GameWorld.Robot;
+import GameWorld.Level.Level;
 
 public class MoveForwardFunctionality implements Functionality {
 
     @Override
-    public void evaluate(Robot robot) {
-        robot.moveForward();
+    public void evaluate(Level level) {
+        if (level.canMoveForward()) {
+            level.getRobot().moveForward();
+        }
     }
 }

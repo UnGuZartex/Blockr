@@ -1,9 +1,6 @@
 package GameWorld.Level;
 
-import GameWorld.Cell;
-import GameWorld.Direction;
-
-import GameWorld.Grid;
+import GameWorld.*;
 import GameWorld.Robot;
 
 import java.awt.*;
@@ -23,6 +20,10 @@ public class Level {
         return robot;
     }
 
+    public Grid getGrid() {
+        return grid;
+    }
+
     public boolean hasWon() {
         return grid.getCellAt(robot.getX(), robot.getY()).getCellType().isWin();
     }
@@ -30,4 +31,17 @@ public class Level {
     public boolean canNotWalkHere() {
         return !grid.getCellAt(robot.getX(), robot.getY()).getCellType().canWalkOn();
     }
+
+    public boolean canMoveForward() {
+        int x = robot.getXForward();
+        int y = robot.getYForward();
+        return !grid.getCellAt(x, y).getCellType().canWalkOn() &&
+                x > 0 && x < grid.getWidth() &&
+                y > 0 && y < grid.getHeight();
+    }
+
+    public CellType getTypeForward() {
+        return grid.getCellAt(robot.getXForward(), robot.getYForward()).getCellType();
+    }
 }
+

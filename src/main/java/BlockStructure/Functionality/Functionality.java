@@ -1,7 +1,7 @@
 package BlockStructure.Functionality;
 
-import GameWorld.Robot;
+import GameWorld.Level.*;
 
-public interface Functionality { // Move forward, turn left, turn right
-    void evaluate(Robot robot);
+public interface Functionality {
+    void evaluate(Level level);
 }

@@ -16,12 +16,16 @@ public class Program {
     }
 
     public void executeStep() {
-        currentBlock.getFunctionality().evaluate(level.getRobot());
+        currentBlock.getFunctionality().evaluate(level);
         if (currentBlock.hasNext()){
             currentBlock = currentBlock.getNext();
         } else {
             currentBlock = null;
         }
+    }
+
+    public boolean hasWon() {
+        return level.hasWon();
     }
 
 

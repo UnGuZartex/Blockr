@@ -12,6 +12,7 @@ public class Robot {
         this.direction = direction;
     }
 
+
     public Direction getDirection() {
         return direction;
     }
@@ -20,18 +21,30 @@ public class Robot {
         return x;
     }
 
+    public int getXForward() {
+        switch (direction) {
+            case LEFT:  return x-1;
+            case RIGHT: return x+1;
+            default:    return getX();
+        }
+    }
+
     public int getY() {
         return y;
     }
 
+    public int getYForward() {
+        switch (direction) {
+            case UP:    return y-1;
+            case DOWN:  return y+1;
+            default:    return getY();
+        }
+    }
+
 
     public void moveForward() {
-        switch (direction) {
-            case UP:    y--; break;
-            case DOWN:  y++; break;
-            case LEFT:  x--; break;
-            case RIGHT: x++; break;
-        }
+        x = getXForward();
+        y = getYForward();
     }
 
     public void turnLeft() {
