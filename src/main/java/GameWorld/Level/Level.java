@@ -18,7 +18,6 @@ public class Level {
         this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
     }
 
-
     public Robot getRobot() {
         return robot;
     }

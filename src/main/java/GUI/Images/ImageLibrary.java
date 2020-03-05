@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public class ImageLibrary {
     private final HashMap<String, Image> images;
-    private static String gameWorldBackGroundFileName = "gameWorldBackground";
-    private static String programAreaBackgroundFileName = "programAreaBackground";
-    private static String paletteBackground = "paletteBackground";
-    private static String notFoundFileName = "notFound";
-    private static String robotFileName = "robot";
+    private static final String gameWorldBackGroundFileName = "gameWorldBackground";
+    private static final String programAreaBackgroundFileName = "programAreaBackground";
+    private static final String paletteBackground = "paletteBackground";
+    private static final String notFoundFileName = "notFound";
+    private static final String robotFileName = "robot";
 
     public ImageLibrary(HashMap<String, Image> images) throws IllegalArgumentException {
 

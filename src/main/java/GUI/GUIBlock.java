@@ -9,9 +9,11 @@ public class GUIBlock {
     private Polygon polygon;
     private Point positionCurrent;
     private Color color;
+    private BlockPolygonBuilder polygonBuilder;
     private static final int CONNECTOR_WIDTH = 15, CONNECTOR_WIDTH_DELTA = 4, CONNECTOR_HEIGHT = 10;
 
     public GUIBlock(int x, int y, int width, int height, Color color) {
+        polygonBuilder = new BlockPolygonBuilder(15, 4, 10);
         polygon = initPolygonNormalBlock(width, height);
         polygon.translate(x, y);
         this.color = color;
@@ -52,19 +54,17 @@ public class GUIBlock {
         polygon.addPoint(0, 0);
 
         // Socket (top, facing up)
-        polygon.addPoint((width - CONNECTOR_WIDTH - 2) / 2, 0);
+        /*polygon.addPoint((width - CONNECTOR_WIDTH - 2) / 2, 0);
         polygon.addPoint((width - CONNECTOR_WIDTH - 2 + CONNECTOR_WIDTH_DELTA) / 2, CONNECTOR_HEIGHT);
         polygon.addPoint((width + CONNECTOR_WIDTH + 2 - CONNECTOR_WIDTH_DELTA) / 2, CONNECTOR_HEIGHT);
-        polygon.addPoint((width + CONNECTOR_WIDTH + 2) / 2, 0);
+        polygon.addPoint((width + CONNECTOR_WIDTH + 2) / 2, 0);*/
 
+        polygon = polygonBuilder.addSocketFacingUp(polygon, 10, 0);
         polygon.addPoint(width, 0);
         polygon.addPoint(width, height);
 
         // Plug (bottom, facing down)
-        polygon.addPoint((width + CONNECTOR_WIDTH) / 2, height);
-        polygon.addPoint((width + CONNECTOR_WIDTH - CONNECTOR_WIDTH_DELTA) / 2, height + CONNECTOR_HEIGHT);
-        polygon.addPoint((width - CONNECTOR_WIDTH + CONNECTOR_WIDTH_DELTA) / 2, height + CONNECTOR_HEIGHT);
-        polygon.addPoint((width - CONNECTOR_WIDTH) / 2, height);
+        polygon = polygonBuilder.addPlugFacingDown(polygon, 10, height);
 
         polygon.addPoint(0, height);
         return polygon;
@@ -76,10 +76,12 @@ public class GUIBlock {
         polygon.addPoint(0, 0);
 
         // Socket (top, facing up)
-        polygon.addPoint((width - CONNECTOR_WIDTH - 2) / 2, 0);
+        /*polygon.addPoint((width - CONNECTOR_WIDTH - 2) / 2, 0);
         polygon.addPoint((width - CONNECTOR_WIDTH - 2) / 2, CONNECTOR_HEIGHT);
         polygon.addPoint((width + CONNECTOR_WIDTH + 2) / 2, CONNECTOR_HEIGHT);
-        polygon.addPoint((width + CONNECTOR_WIDTH + 2) / 2, 0);
+        polygon.addPoint((width + CONNECTOR_WIDTH + 2) / 2, 0);*/
+
+        polygon = polygonBuilder.addSocketFacingUp(polygon, 10, 0);
 
         polygon.addPoint(width, 0);
         polygon.addPoint(width, height);
