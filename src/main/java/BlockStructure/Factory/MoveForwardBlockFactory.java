@@ -11,7 +11,7 @@ public class MoveForwardBlockFactory extends BlockFactory {
             = new MoveForwardFunctionality();
 
     @Override
-    public Block getNewBlock() {
+    protected Block getNewBlock() {
         return new FunctionalBlock(getID(), functionality);
     }
 }

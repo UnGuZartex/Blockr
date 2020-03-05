@@ -11,7 +11,6 @@ public class Plug extends Connector {
     }
 
 
-    // Basic inspector
     public Socket getSocket() {
         return socket;
     }
@@ -49,28 +48,27 @@ public class Plug extends Connector {
         return socket != null;
     }
 
-
-
-
-
-
-
     public void connect (Socket socket) throws Exception {
+        // TODO deftige errors
+        if (this.isConnected()) {
+            throw new Exception();
+        }
+        if (socket.isConnected()) {
+            throw new Exception();
+        }
         if (!canHaveAsSocket(socket)) {
             throw new Exception();
-        }
-        if (this.socket.isConnected() && socket.getPlug() != this) {
-            throw new Exception();
-        }
-        if (isConnected()) {
-            disconnect();
         }
         this.socket = socket;
         socket.connect(this);
     }
 
-
-    public void disconnect() {
-        // TODO: disconnect in plug
+    public void disconnect() throws Exception {
+        if (!this.isConnected()) { // Is not connected, thus can't disconnect
+            throw new Exception();
+        }
+        Socket tempSocket = socket;
+        socket = null;
+        tempSocket.disconnect();
     }
 }

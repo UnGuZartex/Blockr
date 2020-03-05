@@ -2,12 +2,10 @@ package GUI;
 
 
 import BlockStructure.Blocks.*;
-import BlockStructure.Functionality.Functionality;
-import BlockStructure.Functionality.MoveForwardFunctionality;
+import BlockStructure.Factory.TurnRightBlockFactory;
 import GameWorld.*;
 import GameWorld.Level.*;
 import ProgramArea.Program;
-
 import java.awt.*;
 
 public class ProgramGUI {
@@ -29,11 +27,23 @@ public class ProgramGUI {
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 
-        Functionality functionality = new MoveForwardFunctionality();
-        FunctionalBlock block = new FunctionalBlock(0, functionality);
+        TurnRightBlockFactory f = new TurnRightBlockFactory();
+        FunctionalBlock block = (FunctionalBlock) f.CreateBlock();
+        FunctionalBlock block2 = (FunctionalBlock) f.CreateBlock();
+        try {
+            block.getPlug().connect(block2.getSocket());
+        } catch (Exception e) {
+            System.out.println("Fuck");
+        }
         Program program = new Program(block, level);
-        program.executeStep();
 
+
+        program.executeStep();
+        System.out.println("EXECUTE MOVE FORWARD");
+        System.out.println(level.getRobot().getDirection().name());
+        System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
+
+        program.executeStep();
         System.out.println("EXECUTE MOVE FORWARD");
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
@@ -42,7 +52,7 @@ public class ProgramGUI {
 
 
         java.awt.EventQueue.invokeLater(() -> {
-          canvas.show();
+          //canvas.show();
         });
     }
 }

@@ -17,7 +17,15 @@ public class FunctionalBlock extends Block {
         this.plug = new Plug(this, Orientation.FACING_DOWN);
         this.socket = new Socket(this, Orientation.FACING_UP);
     }
-    
+
+    public Plug getPlug() {
+        return plug;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
     @Override
     public boolean hasNext() {
         return plug.isConnected();

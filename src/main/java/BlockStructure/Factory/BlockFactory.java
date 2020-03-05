@@ -17,5 +17,5 @@ public abstract class BlockFactory {
         return getNewBlock();
     }
 
-    public abstract Block getNewBlock();
+    protected abstract Block getNewBlock();
 }

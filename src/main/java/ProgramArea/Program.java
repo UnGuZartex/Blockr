@@ -10,13 +10,13 @@ public class Program {
     private Level level;
 
 
-    public Program(FunctionalBlock start, Level level) {
+    public Program(Block start, Level level) {
         currentBlock = start;
         this.level = level;
     }
 
     public void executeStep() {
-        //currentBlock.getFunctionality().evaluate(level.getRobot());
+        currentBlock.getFunctionality().evaluate(level.getRobot());
         if (currentBlock.hasNext()){
             currentBlock = currentBlock.getNext();
         } else {

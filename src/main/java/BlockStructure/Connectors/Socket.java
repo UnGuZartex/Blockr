@@ -23,21 +23,21 @@ public class Socket extends Connector {
         return plug == null || plug.getSocket() == null;
     }
 
-    /**
-     * Set the plug connected to this socket to the given plug.
-     *
-     * @param  plug
-     *         The plug to connect to this socket.
-     *
-     * @pre    If the given card is effective,
-     */
-    public void connect (Plug plug) {
-        assert plug == null || plug.getSocket() == this;
-        assert plug != null || !isConnected() || this.plug.getSocket() == null;
+
+    protected void connect (Plug plug) throws Exception {
+        if (this.isConnected()) {
+            throw new Exception();
+        }
+        if (!plug.isConnected() && plug.getSocket() != this) {
+            throw new Exception();
+        }
         this.plug = plug;
     }
 
-    public void disconnect() {
-        connect(null);
+    protected void disconnect() throws Exception {
+        if (plug.isConnected()) {
+            throw new Exception();
+        }
+        plug = null;
     }
 }
