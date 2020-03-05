@@ -1,25 +1,18 @@
 package BlockStructure.Blocks;
 
 import BlockStructure.Connectors.Orientation;
-import BlockStructure.Connectors.Plug;
 import BlockStructure.Connectors.Socket;
 import BlockStructure.Functionality.Functionality;
 
+import java.util.function.Function;
+
 public class FunctionalBlock extends Block {
 
-    private final int id;
-    private final Plug plug;
     private final Socket socket;
 
     public FunctionalBlock(int id, Functionality functionality) {
-        super(functionality);
-        this.id = id;
-        this.plug = new Plug(this, Orientation.FACING_DOWN);
+        super(id, Orientation.FACING_DOWN, functionality);
         this.socket = new Socket(this, Orientation.FACING_UP);
-    }
-
-    public Plug getPlug() {
-        return plug;
     }
 
     public Socket getSocket() {
@@ -27,12 +20,7 @@ public class FunctionalBlock extends Block {
     }
 
     @Override
-    public boolean hasNext() {
-        return plug.isConnected();
-    }
-
-    @Override
-    public Block getNext() {
-        return plug.getSocket().getBlock();
+    public FunctionalBlock getNext() {
+        return (FunctionalBlock)getPlug().getSocket().getBlock();
     }
 }

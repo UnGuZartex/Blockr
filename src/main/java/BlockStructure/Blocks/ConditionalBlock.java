@@ -1,15 +1,21 @@
 package BlockStructure.Blocks;
 
 import BlockStructure.Connectors.*;
-import BlockStructure.Functionality.Functionality;
+import BlockStructure.Functionality.ConditionalFunctionality;
 
+public class ConditionalBlock extends Block {
 
-public abstract class ConditionalBlock extends Block {
+    public ConditionalBlock(int id, ConditionalFunctionality functionality) {
+        super(id, Orientation.FACING_LEFT, functionality);
+    }
 
-    private final Plug plug;
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
 
-    public ConditionalBlock(Functionality functionality) {
-        super(functionality); // TODO
-        this.plug = new Plug(this, Orientation.FACING_LEFT);
+    @Override
+    public ConditionalBlock getNext() {
+        return null;
     }
 }

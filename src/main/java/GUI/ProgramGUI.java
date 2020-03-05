@@ -3,13 +3,16 @@ package GUI;
 
 import BlockStructure.Blocks.*;
 import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
+import BlockStructure.Functionality.ConditionalFunctionality;
+import BlockStructure.Functionality.NotFunctionality;
+import BlockStructure.Functionality.WallInFrontFunctionality;
 import GameWorld.*;
 import GameWorld.Level.*;
 import ProgramArea.Program;
 import java.awt.*;
 
 public class ProgramGUI {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
         ImagePreLoader.loadImages();
         BlockrCanvas canvas = new BlockrCanvas("Blockr");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -22,6 +25,7 @@ public class ProgramGUI {
             }
         }
         Level level = new Level(new Point(0,0), Direction.RIGHT, cells);
+        level.getGrid().changeCell(0,1, CellType.WALL);
 
         System.out.println("INITIAL");
         System.out.println(level.getRobot().getDirection().name());
@@ -43,10 +47,23 @@ public class ProgramGUI {
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 
-        program.executeStep();
+        //program.executeStep();
         System.out.println("EXECUTE MOVE FORWARD");
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
+
+        WallInFrontFunctionality f2 = new WallInFrontFunctionality();
+        NotFunctionality f3 = new NotFunctionality();
+        ConditionalBlock b = new ConditionalBlock(45, f2);
+        OperationalBlock not = new OperationalBlock(42, f3, 1);
+
+
+        b.getPlug().connect(not.getSocketAt(0));
+
+
+
+        f3.evaluate(not, level);
+        System.out.println(f3.getEvaluation());
 
 
 

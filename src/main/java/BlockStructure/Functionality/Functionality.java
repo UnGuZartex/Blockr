@@ -1,7 +1,8 @@
 package BlockStructure.Functionality;
 
-import GameWorld.Level.*;
+import BlockStructure.Blocks.Block;
+import GameWorld.Level.Level;
 
 public interface Functionality {
-    void evaluate(Level level);
+    void evaluate(Block block, Level level);
 }

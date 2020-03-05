@@ -2,30 +2,31 @@ package BlockStructure.Blocks;
 
 import BlockStructure.Connectors.Orientation;
 import BlockStructure.Connectors.Socket;
-import BlockStructure.Functionality.Functionality;
+import BlockStructure.Functionality.ConditionalFunctionality;
 
 public class OperationalBlock extends ConditionalBlock {
 
     private final Socket[] sockets;
     private int counter;
 
-    public OperationalBlock(Functionality functionality, int nbSockets) {
-        super(functionality);
+    public OperationalBlock(int id, ConditionalFunctionality functionality, int nbSockets) {
+        super(id, functionality);
         this.sockets = new Socket[nbSockets];
         for (int i = 0; i < nbSockets; i++) {
             sockets[i] = new Socket(this, Orientation.FACING_RIGHT);
         }
-        this.counter = 0;
+        counter = 0;
     }
 
-
-    @Override
-    public boolean hasNext() {
-        return false;
+    public Socket getSocketAt(int index) {
+        return sockets[index];
     }
 
     @Override
-    public Block getNext() {
-        return null;
+    public ConditionalBlock getNext() {
+        if (counter >= sockets.length) {
+            counter = 0;
+        }
+        return (ConditionalBlock)sockets[counter++].getPlug().getBlock();
     }
 }
