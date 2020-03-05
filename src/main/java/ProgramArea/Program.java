@@ -15,8 +15,8 @@ public class Program {
     }
 
     public void executeStep() {
-        currentBlock.getFunctionality().evaluate(currentBlock, level);
-        if (currentBlock.hasNext()) {
+        if (currentBlock != null && currentBlock.hasNext()) {
+            currentBlock.getFunctionality().evaluate(currentBlock, level);
             currentBlock = currentBlock.getNext();
         } else {
             currentBlock = null;

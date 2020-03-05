@@ -3,7 +3,7 @@ package GUI;
 
 import BlockStructure.Blocks.*;
 import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
-import BlockStructure.Functionality.ConditionalFunctionality;
+import BlockStructure.Functionality.IfFunctionality;
 import BlockStructure.Functionality.NotFunctionality;
 import BlockStructure.Functionality.WallInFrontFunctionality;
 import GameWorld.*;
@@ -25,7 +25,7 @@ public class ProgramGUI {
             }
         }
         Level level = new Level(new Point(0,0), Direction.RIGHT, cells);
-        level.getGrid().changeCell(0,1, CellType.WALL);
+        level.getGrid().changeCell(1,0, CellType.WALL);
 
         System.out.println("INITIAL");
         System.out.println(level.getRobot().getDirection().name());
@@ -34,11 +34,37 @@ public class ProgramGUI {
         TurnRightBlockFactory f = new TurnRightBlockFactory();
         FunctionalBlock block = (FunctionalBlock) f.CreateBlock();
         FunctionalBlock block2 = (FunctionalBlock) f.CreateBlock();
-        try {
-            block.getPlug().connect(block2.getSocket());
-        } catch (Exception e) {
-            System.out.println("Fuck");
-        }
+        FunctionalBlock block3 = (FunctionalBlock) f.CreateBlock();
+
+
+        block.getPlug().connect(block2.getSocket());
+
+
+        WallInFrontFunctionality f2 = new WallInFrontFunctionality();
+        //NotFunctionality f3 = new NotFunctionality();
+        ConditionalBlock b = new ConditionalBlock(45, f2);
+        // OperationalBlock not = new OperationalBlock(42, f3, 1);
+
+        IfFunctionality f3 = new IfFunctionality();
+
+        Cavoc cavoc = new Cavoc(690, f3);
+
+        b.getPlug().connect(cavoc.getConditionalSocket());
+        block3.getPlug().connect(cavoc.getCavitySocket());
+
+        Program program2 = new Program(cavoc, level);
+
+        program2.executeStep();
+        program2.executeStep();
+        System.out.println(level.getRobot().getDirection().name());
+        System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
+
+        //b.getPlug().connect(not.getSocketAt(0));
+
+
+
+        //f3.evaluate(not, level);
+        //System.out.println(f3.getEvaluation());
         Program program = new Program(block, level);
 
 
@@ -52,18 +78,7 @@ public class ProgramGUI {
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 
-        WallInFrontFunctionality f2 = new WallInFrontFunctionality();
-        NotFunctionality f3 = new NotFunctionality();
-        ConditionalBlock b = new ConditionalBlock(45, f2);
-        OperationalBlock not = new OperationalBlock(42, f3, 1);
 
-
-        b.getPlug().connect(not.getSocketAt(0));
-
-
-
-        f3.evaluate(not, level);
-        System.out.println(f3.getEvaluation());
 
 
 
