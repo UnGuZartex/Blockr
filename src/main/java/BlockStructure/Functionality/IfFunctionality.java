@@ -16,9 +16,15 @@ public class IfFunctionality extends ConditionalFunctionality {
             ConditionalFunctionality functionality = (ConditionalFunctionality) condition.getFunctionality();
             functionality.evaluate(condition, level);
             setEvaluation(functionality.getEvaluation());
+            alreadyRan = true;
         }
         else {
+
+            // TODO execute juiste blok hierna naargelang de evaluatie.
+
+            // Reset block
             setEvaluation(false);
+            alreadyRan = false;
         }
     }
 }
