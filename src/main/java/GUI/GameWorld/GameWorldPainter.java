@@ -2,8 +2,8 @@ package GUI.GameWorld;
 
 import GUI.ImagePreLoader;
 import GUI.Painter;
-import GameWorld.CellType;
-import GameWorld.Grid;
+import System.GameWorld.CellType;
+import System.GameWorld.Grid;
 import java.awt.*;
 
 public class GameWorldPainter extends Painter {

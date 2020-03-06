@@ -1,7 +1,7 @@
 package System.ProgramArea;
 
-import BlockStructure.Blocks.*;
-import GameWorld.Level.Level;
+import System.BlockStructure.Blocks.*;
+import System.GameWorld.Level.Level;
 
 public class Program {
 

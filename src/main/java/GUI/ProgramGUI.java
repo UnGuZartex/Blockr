@@ -1,12 +1,12 @@
 package GUI;
 
 
-import BlockStructure.Blocks.*;
-import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
-import BlockStructure.Functionality.IfFunctionality;
-import BlockStructure.Functionality.WallInFrontFunctionality;
-import GameWorld.*;
-import GameWorld.Level.*;
+import System.BlockStructure.Blocks.*;
+import System.BlockStructure.Blocks.Factory.TurnRightBlockFactory;
+import System.BlockStructure.Functionality.IfFunctionality;
+import System.BlockStructure.Functionality.WallInFrontFunctionality;
+import System.GameWorld.*;
+import System.GameWorld.Level.*;
 import System.ProgramArea.Program;
 import java.awt.*;
 

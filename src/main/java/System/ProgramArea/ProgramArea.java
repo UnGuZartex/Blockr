@@ -1,6 +1,7 @@
 package System.ProgramArea;
 
-import BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.Block;
+import Program;
 
 import java.util.ArrayList;
 
