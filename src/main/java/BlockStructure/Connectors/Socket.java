@@ -2,7 +2,7 @@ package BlockStructure.Connectors;
 
 import BlockStructure.Blocks.Block;
 
-public class Socket<B1 extends Block, B2 extends Block> extends Connector<B1, B2> {
+public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1, B2> {
 
     private Plug<B2, B1> plug;
 

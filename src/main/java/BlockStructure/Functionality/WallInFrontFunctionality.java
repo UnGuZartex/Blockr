@@ -7,7 +7,7 @@ import GameWorld.Level.Level;
 public class WallInFrontFunctionality extends ConditionalFunctionality {
 
     @Override
-    public void evaluate(Block block, Level level) {
+    public void evaluate(Block<?> block, Level level) {
         setEvaluation(level.getTypeForward() == CellType.WALL);
     }
 }

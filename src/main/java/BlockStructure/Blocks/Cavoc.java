@@ -4,7 +4,6 @@ import BlockStructure.Connectors.Orientation;
 import BlockStructure.Connectors.Plug;
 import BlockStructure.Connectors.Socket;
 import BlockStructure.Functionality.ConditionalFunctionality;
-import BlockStructure.Functionality.Functionality;
 
 public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F> {
 

@@ -9,7 +9,7 @@ public class IfFunctionality extends ConditionalFunctionality {
     private boolean alreadyRan = false;
 
     @Override
-    public void evaluate(Block block, Level level) {
+    public void evaluate(Block<?> block, Level level) {
         Cavoc cavoc = (Cavoc) block;
 
         if (!alreadyRan) {
@@ -21,7 +21,7 @@ public class IfFunctionality extends ConditionalFunctionality {
         }
         else {
 
-            Block nextBlock;
+            Block<?> nextBlock;
 
             if (getEvaluation()) {
                 nextBlock = cavoc.getCavityPlug().getSocket().getBlock();

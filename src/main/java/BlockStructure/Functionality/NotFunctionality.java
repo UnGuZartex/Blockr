@@ -8,7 +8,7 @@ import GameWorld.Level.Level;
 public class NotFunctionality extends ConditionalFunctionality {
 
     @Override
-    public void evaluate(Block block, Level level) {
+    public void evaluate(Block<?> block, Level level) {
         OperationalBlock operation = (OperationalBlock) block;
         ConditionalBlock<ConditionalFunctionality> nextBlock = operation.getNext();
         ConditionalFunctionality functionality = nextBlock.getFunctionality();

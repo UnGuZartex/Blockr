@@ -13,20 +13,20 @@ public class OperationalBlock<F extends ConditionalFunctionality> extends Condit
         super(id, functionality);
         this.sockets = new Socket[nbSockets];
         for (int i = 0; i < nbSockets; i++) {
-            sockets[i] = new Socket(this, Orientation.FACING_RIGHT);
+            sockets[i] = new Socket<ConditionalBlock<?>, ConditionalBlock<?>>(this, Orientation.FACING_RIGHT);
         }
         counter = 0;
     }
 
-    public Socket getSocketAt(int index) {
+    public Socket<?,?> getSocketAt(int index) {
         return sockets[index];
     }
 
     @Override
-    public ConditionalBlock getNext() {
+    public ConditionalBlock<?> getNext() {
         if (counter >= sockets.length) {
             counter = 0;
         }
-        return (ConditionalBlock)sockets[counter++].getPlug().getBlock();
+        return (ConditionalBlock<?>)sockets[counter++].getPlug().getBlock();
     }
 }

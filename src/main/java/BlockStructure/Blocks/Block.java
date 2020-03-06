@@ -1,7 +1,6 @@
 package BlockStructure.Blocks;
 
-import BlockStructure.Connectors.Orientation;
-import BlockStructure.Connectors.Plug;
+
 import BlockStructure.Functionality.Functionality;
 
 public abstract class Block<F extends Functionality> {
@@ -20,5 +19,5 @@ public abstract class Block<F extends Functionality> {
 
     public abstract boolean hasNext();
 
-    public abstract Block getNext();
+    public abstract Block<?> getNext();
 }
