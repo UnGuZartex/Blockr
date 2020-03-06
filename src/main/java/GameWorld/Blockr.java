@@ -1,8 +1,7 @@
 package GameWorld;
 
 import GameWorld.Level.Level;
-import GameWorld.Level.LevelLoader;
-import ProgramArea.ProgramArea;
+import System.ProgramArea.ProgramArea;
 
 public class Blockr {
 

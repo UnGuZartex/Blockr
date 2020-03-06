@@ -13,6 +13,8 @@ public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<
     }
 
     protected void connect (Plug<B2, B1> plug) throws Exception {
+
+        // TODO specifieke errors
         if (this.isConnected()) {
             throw new Exception();
         }

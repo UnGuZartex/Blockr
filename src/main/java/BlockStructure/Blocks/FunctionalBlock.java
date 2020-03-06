@@ -5,8 +5,6 @@ import BlockStructure.Connectors.Plug;
 import BlockStructure.Connectors.Socket;
 import BlockStructure.Functionality.Functionality;
 
-import java.util.function.Function;
-
 public class FunctionalBlock<F extends Functionality> extends Block<F> {
 
     private final Plug<FunctionalBlock<?>, FunctionalBlock<?>> bottomPlug;

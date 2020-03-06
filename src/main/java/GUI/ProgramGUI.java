@@ -4,11 +4,10 @@ package GUI;
 import BlockStructure.Blocks.*;
 import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
 import BlockStructure.Functionality.IfFunctionality;
-import BlockStructure.Functionality.NotFunctionality;
 import BlockStructure.Functionality.WallInFrontFunctionality;
 import GameWorld.*;
 import GameWorld.Level.*;
-import ProgramArea.Program;
+import System.ProgramArea.Program;
 import java.awt.*;
 
 public class ProgramGUI {

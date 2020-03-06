@@ -1,4 +1,4 @@
-package ProgramArea;
+package System.ProgramArea;
 
 public class ConnectionHandler {
 }

@@ -1,4 +1,4 @@
-package ProgramArea;
+package System.ProgramArea;
 
 import BlockStructure.Blocks.*;
 import GameWorld.Level.Level;

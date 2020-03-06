@@ -17,7 +17,8 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
     }
 
     public void connect (Socket<B2, B1> socket) throws Exception {
-        // TODO deftige errors
+
+        // TODO specifieke errors
         if (this.isConnected()) {
             throw new Exception();
         }
