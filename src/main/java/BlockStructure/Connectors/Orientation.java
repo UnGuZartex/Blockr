@@ -1,25 +1,30 @@
 package BlockStructure.Connectors;
 
-import GameWorld.Direction;
-
 public enum Orientation {
-    FACING_UP(0),
-    FACING_LEFT(1),
-    FACING_DOWN(2),
-    FACING_RIGHT(3);
+    FACING_UP() {
+        @Override
+        public boolean isOpposite(Orientation other) {
+            return other.equals(FACING_DOWN);
+        }
+    },
+    FACING_LEFT() {
+        @Override
+        public boolean isOpposite(Orientation other) {
+            return other.equals(FACING_RIGHT);
+        }
+    },
+    FACING_DOWN() {
+        @Override
+        public boolean isOpposite(Orientation other) {
+            return other.equals(FACING_UP);
+        }
+    },
+    FACING_RIGHT() {
+        @Override
+        public boolean isOpposite(Orientation other) {
+            return other.equals(FACING_LEFT);
+        }
+    };
 
-    private int id;
-
-    Orientation(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public boolean isOpposite(Orientation other) {
-        return id == other.id + 2 || id == other.id - 2;
-    }
-
+    public abstract boolean isOpposite(Orientation other);
 }
