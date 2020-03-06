@@ -37,7 +37,7 @@ public class ProgramGUI {
         FunctionalBlock block3 = (FunctionalBlock) f.CreateBlock();
 
 
-        block.getPlug().connect(block2.getSocket());
+        block.getBottomPlug().connect(block2.getTopSocket());
 
 
         WallInFrontFunctionality f2 = new WallInFrontFunctionality();
@@ -49,8 +49,8 @@ public class ProgramGUI {
 
         Cavoc cavoc = new Cavoc(690, f3);
 
-        b.getPlug().connect(cavoc.getConditionalSocket());
-        block3.getPlug().connect(cavoc.getCavitySocket());
+        b.getLeftPlug().connect(cavoc.getConditionalSocket());
+        block3.getBottomPlug().connect(cavoc.getCavitySocket());
 
         Program program2 = new Program(cavoc, level);
 

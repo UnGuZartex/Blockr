@@ -5,11 +5,12 @@ import GameWorld.Level.Level;
 
 public class Program {
 
+    private FunctionalBlock startBlock;
     private FunctionalBlock currentBlock;
     private Level level;
 
-
     public Program(FunctionalBlock start, Level level) {
+        startBlock = start;
         currentBlock = start;
         this.level = level;
     }
@@ -21,6 +22,10 @@ public class Program {
         } else {
             currentBlock = null;
         }
+    }
+
+    public void resetProgram() {
+        currentBlock = startBlock;
     }
 
     public boolean hasWon() {

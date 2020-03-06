@@ -2,16 +2,16 @@ package BlockStructure.Connectors;
 
 import BlockStructure.Blocks.Block;
 
-public class Plug extends Connector {
+public class Plug<B1 extends Block, B2 extends Block> extends Connector<B1, B2> {
 
-    private Socket socket;
+    private Socket<B2, B1> socket;
 
-    public Plug(Block block, Orientation orientation) {
+    public Plug(B1 block, Orientation orientation) {
         super(block, orientation);
     }
 
 
-    public Socket getSocket() {
+    public Socket<B2, B1> getSocket() {
         return socket;
     }
 
@@ -26,11 +26,11 @@ public class Plug extends Connector {
     }
 
 
-    public boolean canHaveAsSocket(Socket socket) {
+    public boolean canHaveAsSocket(Socket<B2, B1> socket) {
         return socket != null && getOrientation().isOpposite(socket.getOrientation());
     }
 
-    public void connect (Socket socket) throws Exception {
+    public void connect (Socket<B2, B1> socket) throws Exception {
         // TODO deftige errors
         if (this.isConnected()) {
             throw new Exception();

@@ -4,56 +4,56 @@ import BlockStructure.Connectors.Orientation;
 import BlockStructure.Connectors.Plug;
 import BlockStructure.Connectors.Socket;
 import BlockStructure.Functionality.ConditionalFunctionality;
+import BlockStructure.Functionality.Functionality;
 
-public class Cavoc extends FunctionalBlock {
+public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F> {
 
-    private final Plug cavityPlug;
-    private final Socket cavitySocket;
-    private final Socket conditionalSocket;
+    private final Plug<FunctionalBlock<?>, FunctionalBlock<?>> cavityPlug;
+    private final Socket<FunctionalBlock<?>, FunctionalBlock<?>> cavitySocket;
+    private final Socket<FunctionalBlock<?>, ConditionalBlock<?>> conditionalSocket;
 
-    public Cavoc(int id, ConditionalFunctionality functionality) {
+    public Cavoc(int id, F functionality) {
         super(id, functionality);
-        cavityPlug = new Plug(this, Orientation.FACING_DOWN);
-        cavitySocket = new Socket(this, Orientation.FACING_UP);
-        conditionalSocket = new Socket(this, Orientation.FACING_RIGHT);
+        cavityPlug = new Plug<>(this, Orientation.FACING_DOWN);
+        cavitySocket = new Socket<>(this, Orientation.FACING_UP);
+        conditionalSocket = new Socket<>(this, Orientation.FACING_RIGHT);
     }
 
-
-    public Plug getCavityPlug() {
+    public Plug<FunctionalBlock<?>, FunctionalBlock<?>> getCavityPlug() {
         return cavityPlug;
     }
 
-    public Socket getCavitySocket() {
+    public Socket<FunctionalBlock<?>, FunctionalBlock<?>> getCavitySocket() {
         return cavitySocket;
     }
 
-    public Socket getConditionalSocket() {
+    public Socket<FunctionalBlock<?>, ConditionalBlock<?>> getConditionalSocket() {
         return conditionalSocket;
     }
 
-    public ConditionalBlock getCondition() {
-        return (ConditionalBlock) conditionalSocket.getPlug().getBlock();
+    public ConditionalBlock<?> getCondition() {
+        return conditionalSocket.getPlug().getBlock();
     }
 
     @Override
     public boolean hasNext() {
-        ConditionalFunctionality func = (ConditionalFunctionality) getFunctionality();
-        if(func.getEvaluation()){
+        ConditionalFunctionality func = getFunctionality();
+        if (func.getEvaluation()) {
             return cavitySocket.getPlug().getBlock() != null;
         }
-        else{
-            return getPlug().getSocket().getBlock() != null;
+        else {
+            return getBottomPlug().getSocket().getBlock() != null;
         }
     }
 
     @Override
-    public FunctionalBlock getNext() {
-        ConditionalFunctionality func = (ConditionalFunctionality) getFunctionality();
-        if(func.getEvaluation()){
-            return (FunctionalBlock) cavitySocket.getPlug().getBlock();
+    public FunctionalBlock<?> getNext() {
+        ConditionalFunctionality func = getFunctionality();
+        if (func.getEvaluation()) {
+            return cavitySocket.getPlug().getBlock();
         }
-        else{
-            return (FunctionalBlock) getPlug().getSocket().getBlock();
+        else {
+            return getBottomPlug().getSocket().getBlock();
         }
     }
 

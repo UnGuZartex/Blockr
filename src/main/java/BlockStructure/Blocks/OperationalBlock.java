@@ -4,12 +4,12 @@ import BlockStructure.Connectors.Orientation;
 import BlockStructure.Connectors.Socket;
 import BlockStructure.Functionality.ConditionalFunctionality;
 
-public class OperationalBlock extends ConditionalBlock {
+public class OperationalBlock<F extends ConditionalFunctionality> extends ConditionalBlock<F> {
 
     private final Socket[] sockets;
     private int counter;
 
-    public OperationalBlock(int id, ConditionalFunctionality functionality, int nbSockets) {
+    public OperationalBlock(int id, F functionality, int nbSockets) {
         super(id, functionality);
         this.sockets = new Socket[nbSockets];
         for (int i = 0; i < nbSockets; i++) {

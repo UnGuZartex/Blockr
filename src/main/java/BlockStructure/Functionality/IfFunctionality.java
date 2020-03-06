@@ -13,8 +13,8 @@ public class IfFunctionality extends ConditionalFunctionality {
         Cavoc cavoc = (Cavoc) block;
 
         if (!alreadyRan) {
-            ConditionalBlock condition = cavoc.getCondition();
-            ConditionalFunctionality functionality = (ConditionalFunctionality) condition.getFunctionality();
+            ConditionalBlock<ConditionalFunctionality> condition = cavoc.getCondition();
+            ConditionalFunctionality functionality = condition.getFunctionality();
             functionality.evaluate(condition, level);
             setEvaluation(functionality.getEvaluation());
             alreadyRan = true;
@@ -27,7 +27,7 @@ public class IfFunctionality extends ConditionalFunctionality {
                 nextBlock = cavoc.getCavityPlug().getSocket().getBlock();
             }
             else {
-                nextBlock = cavoc.getPlug().getSocket().getBlock();
+                nextBlock = cavoc.getBottomPlug().getSocket().getBlock();
             }
 
             nextBlock.getFunctionality().evaluate(nextBlock, level);

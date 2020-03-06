@@ -4,31 +4,21 @@ import BlockStructure.Connectors.Orientation;
 import BlockStructure.Connectors.Plug;
 import BlockStructure.Functionality.Functionality;
 
-public abstract class Block {
+public abstract class Block<F extends Functionality> {
 
     private final int id;
-    private final Plug plug;
-    private final Functionality functionality;
+    private final F functionality;
 
-    protected Block(int id, Orientation plugOrientation, Functionality functionality) {
+    protected Block(int id, F functionality) {
         this.id = id;
-        this.plug = new Plug(this, plugOrientation);
         this.functionality = functionality;
     }
 
-    public Functionality getFunctionality() {
+    public F getFunctionality() {
         return functionality;
     }
 
-    public Plug getPlug() {
-        return plug;
-    }
+    public abstract boolean hasNext();
 
-    public boolean hasNext() {
-        return getPlug().isConnected();
-    }
-
-    public Block getNext() {
-        return plug.getSocket().getBlock();
-    }
+    public abstract Block getNext();
 }

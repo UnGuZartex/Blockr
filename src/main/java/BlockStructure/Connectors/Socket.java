@@ -2,16 +2,15 @@ package BlockStructure.Connectors;
 
 import BlockStructure.Blocks.Block;
 
-public class Socket extends Connector {
+public class Socket<B1 extends Block, B2 extends Block> extends Connector<B1, B2> {
 
-    private Plug plug;
+    private Plug<B2, B1> plug;
 
-
-    public Socket(Block block, Orientation orientation) {
+    public Socket(B1 block, Orientation orientation) {
         super(block, orientation);
     }
 
-    public Plug getPlug() {
+    public Plug<B2, B1> getPlug() {
         return plug;
     }
 
@@ -24,7 +23,7 @@ public class Socket extends Connector {
     }
 
 
-    protected void connect (Plug plug) throws Exception {
+    protected void connect (Plug<B2, B1> plug) throws Exception {
         if (this.isConnected()) {
             throw new Exception();
         }
