@@ -32,17 +32,17 @@ public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F
     }
 
     public ConditionalBlock<?> getCondition() {
-        return conditionalSocket.getPlug().getBlock();
+        return conditionalSocket.getConnectedConnector().getBlock();
     }
 
     @Override
     public boolean hasNext() {
         ConditionalFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
-            return cavitySocket.getPlug().getBlock() != null;
+            return cavitySocket.getConnectedConnector() != null;
         }
         else {
-            return getBottomPlug().getSocket().getBlock() != null;
+            return getBottomPlug().getConnectedConnector() != null;
         }
     }
 
@@ -50,12 +50,10 @@ public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F
     public FunctionalBlock<?> getNext() {
         ConditionalFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
-            return cavitySocket.getPlug().getBlock();
+            return cavitySocket.getConnectedConnector().getBlock();
         }
         else {
-            return getBottomPlug().getSocket().getBlock();
+            return getBottomPlug().getConnectedConnector().getBlock();
         }
     }
-
-
 }

@@ -50,6 +50,7 @@ public class ProgramGUI {
         Cavoc cavoc = new Cavoc(690, f3);
 
         b.getLeftPlug().connect(cavoc.getConditionalSocket());
+        cavoc.getCavityPlug().connect(block3.getTopSocket());
         block3.getBottomPlug().connect(cavoc.getCavitySocket());
 
         Program program2 = new Program(cavoc, level);

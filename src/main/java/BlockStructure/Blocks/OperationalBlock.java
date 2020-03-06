@@ -6,7 +6,7 @@ import BlockStructure.Functionality.ConditionalFunctionality;
 
 public class OperationalBlock<F extends ConditionalFunctionality> extends ConditionalBlock<F> {
 
-    private final Socket[] sockets;
+    private final Socket<OperationalBlock<?>, ConditionalBlock<?>>[] sockets;
     private int counter;
 
     public OperationalBlock(int id, F functionality, int nbSockets) {
@@ -27,6 +27,6 @@ public class OperationalBlock<F extends ConditionalFunctionality> extends Condit
         if (counter >= sockets.length) {
             counter = 0;
         }
-        return (ConditionalBlock)sockets[counter++].getPlug().getBlock();
+        return sockets[counter++].getConnectedConnector().getBlock();
     }
 }

@@ -24,10 +24,10 @@ public class IfFunctionality extends ConditionalFunctionality {
             Block nextBlock;
 
             if (getEvaluation()) {
-                nextBlock = cavoc.getCavityPlug().getSocket().getBlock();
+                nextBlock = cavoc.getCavityPlug().getConnectedConnector().getBlock();
             }
             else {
-                nextBlock = cavoc.getBottomPlug().getSocket().getBlock();
+                nextBlock = cavoc.getBottomPlug().getConnectedConnector().getBlock();
             }
 
             nextBlock.getFunctionality().evaluate(nextBlock, level);

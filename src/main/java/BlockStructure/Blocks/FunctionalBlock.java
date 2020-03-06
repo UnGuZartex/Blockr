@@ -33,6 +33,6 @@ public class FunctionalBlock<F extends Functionality> extends Block<F> {
 
     @Override
     public FunctionalBlock<?> getNext() {
-        return getBottomPlug().getSocket().getBlock();
+        return getBottomPlug().getConnectedConnector().getBlock();
     }
 }
