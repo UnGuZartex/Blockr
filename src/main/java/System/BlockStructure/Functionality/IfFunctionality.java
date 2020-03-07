@@ -1,16 +1,19 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.CavityBlock;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.GameWorld.Level.Level;
 
-public class IfFunctionality extends ConditionalFunctionality {
+public class IfFunctionality extends CavityFunctionality {
     private boolean alreadyRan = false;
+
+    public IfFunctionality(int blockId) {
+        super(blockId);
+    }
 
     @Override
     public void evaluate(Level level) {
-        CavityBlock cavoc = (CavityBlock) block;
+        CavityBlock cavoc = block;
 
         if (!alreadyRan) {
             ConditionalBlock condition = cavoc.getCondition();

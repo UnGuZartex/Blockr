@@ -3,15 +3,16 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
+import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.ConditionalFunctionality;
 
-public class CavityBlock extends BasicBlock<ConditionalFunctionality> {
+public class CavityBlock extends BasicBlock<CavityFunctionality> {
 
     private final Plug<CavityBlock, BasicBlock<?>> cavityPlug;
     private final Socket<CavityBlock, BasicBlock<?>> cavitySocket;
     private final Socket<CavityBlock, ConditionalBlock> conditionalSocket;
 
-    public CavityBlock(int id, ConditionalFunctionality functionality) {
+    public CavityBlock(int id, CavityFunctionality functionality) {
         super(id, functionality);
         cavityPlug = new Plug<>(this, Orientation.FACING_DOWN);
         cavitySocket = new Socket<>(this, Orientation.FACING_UP);
@@ -36,7 +37,7 @@ public class CavityBlock extends BasicBlock<ConditionalFunctionality> {
 
     @Override
     public boolean hasNext() {
-        ConditionalFunctionality func = getFunctionality();
+        CavityFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
             return cavitySocket.getConnectedConnector() != null;
         }
@@ -47,7 +48,7 @@ public class CavityBlock extends BasicBlock<ConditionalFunctionality> {
 
     @Override
     public BasicBlock getNext() {
-        ConditionalFunctionality func = getFunctionality();
+        CavityFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
             return cavitySocket.getConnectedConnector().getBlock();
         }

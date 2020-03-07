@@ -39,23 +39,11 @@ public class ProgramGUI {
         block.getBottomPlug().connect(block2.getTopSocket());
 
 
-        WallInFrontFunctionality f2 = new WallInFrontFunctionality();
+        WallInFrontFunctionality f2 = new WallInFrontFunctionality(45);
         //NotFunctionality f3 = new NotFunctionality();
         ConditionalBlock b = new ConditionalBlock(45, f2);
         // OperationalBlock not = new OperationalBlock(42, f3, 1);
 
-        IfFunctionality f3 = new IfFunctionality();
-
-        CavityBlock cavoc = new CavityBlock(690, f3);
-
-        b.getLeftPlug().connect(cavoc.getConditionalSocket());
-        cavoc.getCavityPlug().connect(block3.getTopSocket());
-        block3.getBottomPlug().connect(cavoc.getCavitySocket());
-
-        Program program2 = new Program(cavoc, level);
-
-        program2.executeStep();
-        program2.executeStep();
         System.out.println(level.getRobot().getDirection().name());
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 

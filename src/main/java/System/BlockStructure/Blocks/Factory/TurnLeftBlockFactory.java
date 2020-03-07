@@ -1,7 +1,7 @@
 package System.BlockStructure.Blocks.Factory;
 
-import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.BasicBlock;
+
+import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.TurnLeftFunctionality;
 
 public class TurnLeftBlockFactory extends BlockFactory {
@@ -10,7 +10,7 @@ public class TurnLeftBlockFactory extends BlockFactory {
             = new TurnLeftFunctionality();
 
     @Override
-    protected Block getNewBlock() {
-        return new BasicBlock(getID(), functionality);
+    protected FunctionalBlock getNewBlock() {
+        return new FunctionalBlock(getID(), functionality);
     }
 }
