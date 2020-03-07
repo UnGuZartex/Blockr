@@ -3,34 +3,34 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
-import System.BlockStructure.Functionality.CavityFunctionality;
+import System.BlockStructure.Functionality.BlockFunctionality;
 
-public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
+public abstract class CavityBlock extends FunctionalBlock {
 
-    private final Plug<CavityBlock, FunctionalBlock<?>> cavityPlug;
-    private final Socket<CavityBlock, FunctionalBlock<?>> cavitySocket;
-    private final Socket<CavityBlock, ConditionalBlock> conditionalSocket;
+    private final Plug cavityPlug;
+    private final Socket cavitySocket;
+    private final Socket conditionalSocket;
 
-    public CavityBlock(int id, CavityFunctionality functionality) {
+    public CavityBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
-        cavityPlug = new Plug<>(this, Orientation.FACING_DOWN);
-        cavitySocket = new Socket<>(this, Orientation.FACING_UP);
-        conditionalSocket = new Socket<>(this, Orientation.FACING_RIGHT);
+        cavityPlug = new Plug(this, Orientation.FACING_DOWN);
+        cavitySocket = new Socket(this, Orientation.FACING_UP);
+        conditionalSocket = new Socket(this, Orientation.FACING_RIGHT);
     }
 
-    public Plug<CavityBlock, FunctionalBlock<?>> getCavityPlug() {
+    public Plug getCavityPlug() {
         return cavityPlug;
     }
 
-    public Socket<CavityBlock, FunctionalBlock<?>> getCavitySocket() {
+    public Socket getCavitySocket() {
         return cavitySocket;
     }
 
-    public Socket<CavityBlock, ConditionalBlock> getConditionalSocket() {
+    public Socket getConditionalSocket() {
         return conditionalSocket;
     }
 
-    public ConditionalBlock getCondition() {
+    public Block getCondition() {
         return conditionalSocket.getConnectedConnector().getBlock();
     }
 
@@ -45,7 +45,7 @@ public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
     }
 
     @Override
-    public FunctionalBlock<?> getNext() {
+    public Block getNext() {
         if (getFunctionality().getEvaluation()) {
             return cavitySocket.getConnectedBlock();
         }

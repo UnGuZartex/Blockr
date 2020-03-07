@@ -1,6 +1,7 @@
 package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.ConditionalBlock;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
@@ -22,6 +23,13 @@ public class ConnectionHandler {
             upperBlockPlug.connect(lowerBlockSocket);
         }
     }
+    
+    /*public void test() {
+        Plug<FunctionalBlock<?>, Block<?>> plug = null;
+        Socket<ConditionalBlock, Block<?>> socket = null;
+        
+        connect(plug, socket);
+    }*/
 
     public <A extends  Block<?>, B extends Block<?>> void connect(Socket<A, B> socket, Plug<B, A> plug) {
         plug.connect(socket);

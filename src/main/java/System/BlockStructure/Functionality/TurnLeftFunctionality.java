@@ -1,8 +1,9 @@
 package System.BlockStructure.Functionality;
 
+import System.BlockStructure.Blocks.TurnLeftBlock;
 import System.GameWorld.Level.Level;
 
-public class TurnLeftFunctionality implements IFunctionality {
+public class TurnLeftFunctionality extends BlockFunctionality<TurnLeftBlock> {
 
     @Override
     public void evaluate(Level level) {

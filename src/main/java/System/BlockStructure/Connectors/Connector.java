@@ -2,13 +2,13 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
+public abstract class Connector {
 
-    protected Connector<B2, B1> connectedConnector;
+    protected Connector connectedConnector;
     private final Orientation orientation;
-    private final B1 block;
+    private final Block block;
 
-    public Connector(B1 block, Orientation orientation) {
+    public Connector(Block block, Orientation orientation) {
         this.block = block;
         this.orientation = orientation;
     }
@@ -17,7 +17,7 @@ public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
         return orientation;
     }
 
-    public Connector<B2, B1> getConnectedConnector() {
+    public Connector getConnectedConnector() {
         return connectedConnector;
     }
 
@@ -25,11 +25,11 @@ public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
         return connectedConnector != null;
     }
 
-    public B1 getBlock() {
+    public Block getBlock() {
         return block;
     }
 
-    public B2 getConnectedBlock() {
+    public Block getConnectedBlock() {
         return connectedConnector.getBlock();
     }
 

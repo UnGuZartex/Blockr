@@ -2,18 +2,18 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Socket;
-import System.BlockStructure.Functionality.ConditionalFunctionality;
+import System.BlockStructure.Functionality.BlockFunctionality;
 
 public class OperationalBlock extends ConditionalBlock {
 
-    private final Socket<OperationalBlock, ConditionalBlock>[] sockets;
+    private final Socket[] sockets;
     private int counter;
 
-    public OperationalBlock(int id, ConditionalFunctionality functionality, int nbSockets) {
+    public OperationalBlock(int id, BlockFunctionality functionality, int nbSockets) {
         super(id, functionality);
         this.sockets = new Socket[nbSockets];
         for (int i = 0; i < nbSockets; i++) {
-            sockets[i] = new Socket<>(this, Orientation.FACING_RIGHT);
+            sockets[i] = new Socket(this, Orientation.FACING_RIGHT);
         }
         counter = 0;
     }
@@ -23,7 +23,7 @@ public class OperationalBlock extends ConditionalBlock {
     }
 
     @Override
-    public ConditionalBlock getNext() {
+    public Block getNext() {
         if (counter >= sockets.length) {
             counter = 0;
         }
