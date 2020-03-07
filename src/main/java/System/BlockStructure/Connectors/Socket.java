@@ -23,10 +23,10 @@ public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<
     }
 
     @Override
-    protected void disconnect() throws Exception {
+    protected void disconnect() throws IllegalStateException {
 
         if (connectedConnector.isConnected()) {
-            throw new Exception();
+            throw new IllegalStateException("This socket is not connected to a plug!");
         }
 
         connectedConnector = null;

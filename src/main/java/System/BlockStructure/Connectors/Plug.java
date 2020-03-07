@@ -10,15 +10,14 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
 
     public void connect (Socket<B2, B1> socket) throws Exception {
 
-        // TODO specifieke errors
         if (this.isConnected()) {
-            throw new Exception();
+            throw new IllegalStateException("This plug is already connected to a socket!");
         }
         if (socket.isConnected()) {
-            throw new Exception();
+            throw new IllegalArgumentException("The given socket is already connected to a plug!");
         }
         if (!canHaveAsSocket(socket)) {
-            throw new Exception();
+            throw new IllegalArgumentException("The given socket is not compatible with this plug!");
         }
 
         connectedConnector = socket;
@@ -26,9 +25,10 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
     }
 
     @Override
-    public void disconnect() throws Exception {
-        if (!this.isConnected()) { // Is not connected, thus can't disconnect
-            throw new Exception();
+    public void disconnect() throws IllegalStateException {
+
+        if (!this.isConnected()) {
+            throw new IllegalStateException("This plug is not connected to a socket!");
         }
 
         Connector<B2, B1> tempSocket = connectedConnector;

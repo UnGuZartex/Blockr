@@ -33,5 +33,5 @@ public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
         return connectedConnector.getBlock();
     }
 
-    protected abstract void disconnect() throws Exception;
+    protected abstract void disconnect() throws IllegalStateException;
 }
