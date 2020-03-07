@@ -27,6 +27,6 @@ public class OperationalBlock extends ConditionalBlock {
         if (counter >= sockets.length) {
             counter = 0;
         }
-        return sockets[counter++].getConnectedConnector().getBlock();
+        return sockets[counter++].getConnectedBlock();
     }
 }

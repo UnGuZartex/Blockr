@@ -31,7 +31,7 @@ public class FunctionalBlock<F extends IFunctionality> extends Block<F> {
 
     @Override
     public FunctionalBlock<?> getNext() {
-        return getBottomPlug().getConnectedConnector().getBlock();
+        return getBottomPlug().getConnectedBlock();
     }
 
     @Override

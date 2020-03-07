@@ -29,5 +29,9 @@ public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
         return block;
     }
 
+    public B2 getConnectedBlock() {
+        return connectedConnector.getBlock();
+    }
+
     protected abstract void disconnect() throws Exception;
 }

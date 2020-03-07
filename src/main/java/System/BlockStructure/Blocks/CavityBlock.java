@@ -49,10 +49,10 @@ public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
     public FunctionalBlock<?> getNext() {
         CavityFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
-            return cavitySocket.getConnectedConnector().getBlock();
+            return cavitySocket.getConnectedBlock();
         }
         else {
-            return getBottomPlug().getConnectedConnector().getBlock();
+            return getBottomPlug().getConnectedBlock();
         }
     }
 }

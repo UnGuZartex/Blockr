@@ -20,7 +20,7 @@ public abstract class ConditionalFunctionality implements IFunctionality {
         return evaluation;
     }
 
-    public ConditionalBlock getBlock(){
+    public ConditionalBlock getBlock() {
         return block;
     }
 }

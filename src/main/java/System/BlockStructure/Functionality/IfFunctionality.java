@@ -1,6 +1,5 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.CavityBlock;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.GameWorld.Level.Level;
 
@@ -19,7 +18,8 @@ public class IfFunctionality extends CavityFunctionality {
             functionality.evaluate(level);
             setEvaluation(functionality.getEvaluation());
             alreadyRan = true;
-        }        else {
+        }
+        else {
             block.getNext().getFunctionality().evaluate(level);
 
             // Reset block
