@@ -1,6 +1,5 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.CavityBlock;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.GameWorld.Level.Level;
 

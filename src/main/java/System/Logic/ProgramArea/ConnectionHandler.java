@@ -1,5 +1,6 @@
 package System.Logic.ProgramArea;
 
+import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
@@ -9,7 +10,7 @@ public class ConnectionHandler {
         Plug<FunctionalBlock<?>, FunctionalBlock<?>> upperBlockPlug = upperBlock.getBottomPlug();
         Socket<FunctionalBlock<?>, FunctionalBlock<?>> lowerBlockSocket = lowerBlock.getTopSocket();
         Plug<FunctionalBlock<?>, FunctionalBlock<?>> lowerBlockPlug = lowerBlock.getBottomPlug();
-        if(upperBlock.hasNext()) {
+        if (upperBlock.hasNext()) {
             FunctionalBlock<?> connectedBlock = upperBlock.getNext();
             Socket<FunctionalBlock<?>, FunctionalBlock<?>> connectedBlockSocket = connectedBlock.getTopSocket();
             upperBlockPlug.disconnect();
@@ -17,9 +18,13 @@ public class ConnectionHandler {
             lowerBlockPlug.connect(connectedBlockSocket);
 
         }
-        else{
+        else {
             upperBlockPlug.connect(lowerBlockSocket);
         }
+    }
+
+    public <A extends  Block<?>, B extends Block<?>> void connect(Socket<A, B> socket, Plug<B, A> plug) {
+        plug.connect(socket);
     }
 
 //    public void connect(ConditionalBlock leftBlock, ConditionalBlock rightBlock) throws Exception {

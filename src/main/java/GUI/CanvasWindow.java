@@ -361,7 +361,7 @@ public class CanvasWindow {
 				
 			});
 		}
-		
+
 		@Override
 		protected void paintComponent(Graphics g) {
 			System.out.println("Painting...");

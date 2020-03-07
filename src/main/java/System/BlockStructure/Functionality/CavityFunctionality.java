@@ -1,6 +1,5 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.CavityBlock;
 
 public abstract class CavityFunctionality implements IFunctionality {

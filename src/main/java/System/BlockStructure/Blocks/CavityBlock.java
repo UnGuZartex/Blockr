@@ -36,8 +36,7 @@ public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
 
     @Override
     public boolean hasNext() {
-        CavityFunctionality func = getFunctionality();
-        if (func.getEvaluation()) {
+        if (getFunctionality().getEvaluation()) {
             return cavitySocket.getConnectedConnector() != null;
         }
         else {
@@ -47,8 +46,7 @@ public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
 
     @Override
     public FunctionalBlock<?> getNext() {
-        CavityFunctionality func = getFunctionality();
-        if (func.getEvaluation()) {
+        if (getFunctionality().getEvaluation()) {
             return cavitySocket.getConnectedBlock();
         }
         else {
