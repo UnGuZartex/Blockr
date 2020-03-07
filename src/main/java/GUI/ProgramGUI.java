@@ -1,14 +1,13 @@
 package GUI;
 
 
-import BlockStructure.Blocks.*;
-import BlockStructure.Blocks.Factory.TurnRightBlockFactory;
-import BlockStructure.Functionality.IfFunctionality;
-import BlockStructure.Functionality.NotFunctionality;
-import BlockStructure.Functionality.WallInFrontFunctionality;
-import GameWorld.*;
-import GameWorld.Level.*;
-import ProgramArea.Program;
+import System.BlockStructure.Blocks.*;
+import System.BlockStructure.Blocks.Factory.TurnRightBlockFactory;
+import System.BlockStructure.Functionality.IfFunctionality;
+import System.BlockStructure.Functionality.WallInFrontFunctionality;
+import System.GameWorld.*;
+import System.GameWorld.Level.*;
+import System.ProgramArea.Program;
 import java.awt.*;
 
 public class ProgramGUI {
@@ -32,9 +31,9 @@ public class ProgramGUI {
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 
         TurnRightBlockFactory f = new TurnRightBlockFactory();
-        FunctionalBlock block = (FunctionalBlock) f.CreateBlock();
-        FunctionalBlock block2 = (FunctionalBlock) f.CreateBlock();
-        FunctionalBlock block3 = (FunctionalBlock) f.CreateBlock();
+        BasicBlock block = (BasicBlock) f.CreateBlock();
+        BasicBlock block2 = (BasicBlock) f.CreateBlock();
+        BasicBlock block3 = (BasicBlock) f.CreateBlock();
 
 
         block.getBottomPlug().connect(block2.getTopSocket());
@@ -47,9 +46,10 @@ public class ProgramGUI {
 
         IfFunctionality f3 = new IfFunctionality();
 
-        Cavoc cavoc = new Cavoc(690, f3);
+        CavityBlock cavoc = new CavityBlock(690, f3);
 
         b.getLeftPlug().connect(cavoc.getConditionalSocket());
+        cavoc.getCavityPlug().connect(block3.getTopSocket());
         block3.getBottomPlug().connect(cavoc.getCavitySocket());
 
         Program program2 = new Program(cavoc, level);
