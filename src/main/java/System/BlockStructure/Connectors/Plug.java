@@ -8,14 +8,16 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
         super(block, orientation);
     }
 
-    public void connect (Socket<B2, B1> socket) throws Exception {
+    public void connect (Socket<B2, B1> socket) throws IllegalStateException, IllegalArgumentException  {
 
         if (this.isConnected()) {
-            throw new IllegalStateException("This plug is already connected to a socket!");
+            throw new IllegalStateException("This plug is already connected to another socket!");
         }
+
         if (socket.isConnected()) {
-            throw new IllegalArgumentException("The given socket is already connected to a plug!");
+            throw new IllegalArgumentException("The given socket is already connected to another plug!");
         }
+
         if (!canHaveAsSocket(socket)) {
             throw new IllegalArgumentException("The given socket is not compatible with this plug!");
         }
