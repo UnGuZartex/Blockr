@@ -36,7 +36,7 @@ public class PaletteState {
     }
 
     public void refillList(){
-        for(int i = 0; i < currentBlocks.length; i++){
+        for(int i = 0; i < currentBlocks.length; i++) {
             if(currentBlocks[i] == null) {
                 currentBlocks[i] = allBlocksFactory[i].CreateBlock();
             }
