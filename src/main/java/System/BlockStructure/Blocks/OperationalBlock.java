@@ -4,12 +4,12 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Socket;
 import System.BlockStructure.Functionality.ConditionalFunctionality;
 
-public class OperationalBlock<F extends ConditionalFunctionality> extends ConditionalBlock<F> {
+public class OperationalBlock extends ConditionalBlock {
 
-    private final Socket<OperationalBlock<?>, ConditionalBlock<?>>[] sockets;
+    private final Socket<OperationalBlock, ConditionalBlock>[] sockets;
     private int counter;
 
-    public OperationalBlock(int id, F functionality, int nbSockets) {
+    public OperationalBlock(int id, ConditionalFunctionality functionality, int nbSockets) {
         super(id, functionality);
         this.sockets = new Socket[nbSockets];
         for (int i = 0; i < nbSockets; i++) {
@@ -23,7 +23,7 @@ public class OperationalBlock<F extends ConditionalFunctionality> extends Condit
     }
 
     @Override
-    public ConditionalBlock<?> getNext() {
+    public ConditionalBlock getNext() {
         if (counter >= sockets.length) {
             counter = 0;
         }

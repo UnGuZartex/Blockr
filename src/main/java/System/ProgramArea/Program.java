@@ -5,11 +5,11 @@ import System.GameWorld.Level.Level;
 
 public class Program {
 
-    private FunctionalBlock startBlock;
-    private FunctionalBlock currentBlock;
+    private BasicBlock startBlock;
+    private BasicBlock currentBlock;
     private Level level;
 
-    public Program(FunctionalBlock start, Level level) {
+    public Program(BasicBlock start, Level level) {
         startBlock = start;
         currentBlock = start;
         this.level = level;

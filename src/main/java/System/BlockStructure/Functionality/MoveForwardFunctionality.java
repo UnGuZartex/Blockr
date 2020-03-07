@@ -1,12 +1,11 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
 import System.GameWorld.Level.Level;
 
-public class MoveForwardFunctionality implements Functionality {
+public class MoveForwardFunctionality implements IFunctionality {
 
     @Override
-    public void evaluate(Block block, Level level) {
+    public void evaluate(Level level) {
         if (level.canMoveForward()) {
             level.getRobot().moveForward();
         }

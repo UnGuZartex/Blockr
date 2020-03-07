@@ -5,32 +5,32 @@ import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
 import System.BlockStructure.Functionality.ConditionalFunctionality;
 
-public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F> {
+public class CavityBlock extends BasicBlock<ConditionalFunctionality> {
 
-    private final Plug<FunctionalBlock<?>, FunctionalBlock<?>> cavityPlug;
-    private final Socket<FunctionalBlock<?>, FunctionalBlock<?>> cavitySocket;
-    private final Socket<FunctionalBlock<?>, ConditionalBlock<?>> conditionalSocket;
+    private final Plug<CavityBlock, BasicBlock<?>> cavityPlug;
+    private final Socket<CavityBlock, BasicBlock<?>> cavitySocket;
+    private final Socket<CavityBlock, ConditionalBlock> conditionalSocket;
 
-    public Cavoc(int id, F functionality) {
+    public CavityBlock(int id, ConditionalFunctionality functionality) {
         super(id, functionality);
         cavityPlug = new Plug<>(this, Orientation.FACING_DOWN);
         cavitySocket = new Socket<>(this, Orientation.FACING_UP);
         conditionalSocket = new Socket<>(this, Orientation.FACING_RIGHT);
     }
 
-    public Plug<FunctionalBlock<?>, FunctionalBlock<?>> getCavityPlug() {
+    public Plug<CavityBlock, BasicBlock<?>> getCavityPlug() {
         return cavityPlug;
     }
 
-    public Socket<FunctionalBlock<?>, FunctionalBlock<?>> getCavitySocket() {
+    public Socket<CavityBlock, BasicBlock<?>> getCavitySocket() {
         return cavitySocket;
     }
 
-    public Socket<FunctionalBlock<?>, ConditionalBlock<?>> getConditionalSocket() {
+    public Socket<CavityBlock, ConditionalBlock> getConditionalSocket() {
         return conditionalSocket;
     }
 
-    public ConditionalBlock<?> getCondition() {
+    public ConditionalBlock getCondition() {
         return conditionalSocket.getConnectedConnector().getBlock();
     }
 
@@ -46,7 +46,7 @@ public class Cavoc<F extends ConditionalFunctionality> extends FunctionalBlock<F
     }
 
     @Override
-    public FunctionalBlock<?> getNext() {
+    public BasicBlock getNext() {
         ConditionalFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
             return cavitySocket.getConnectedConnector().getBlock();

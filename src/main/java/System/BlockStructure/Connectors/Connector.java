@@ -2,7 +2,7 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
+public abstract class Connector<B1 extends Block, B2 extends Block> {
 
     protected Connector<B2, B1> connectedConnector;
     private final Orientation orientation;

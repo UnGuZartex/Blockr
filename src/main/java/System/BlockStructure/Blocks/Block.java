@@ -1,8 +1,8 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Functionality.Functionality;
+import System.BlockStructure.Functionality.IFunctionality;
 
-public abstract class Block<F extends Functionality> {
+public abstract class Block<F extends IFunctionality> {
 
     private final int id;
     private final F functionality;

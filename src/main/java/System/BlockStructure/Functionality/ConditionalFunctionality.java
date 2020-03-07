@@ -1,6 +1,6 @@
 package System.BlockStructure.Functionality;
 
-public abstract class ConditionalFunctionality implements Functionality {
+public abstract class ConditionalFunctionality implements IFunctionality {
 
     private boolean evaluation;
 

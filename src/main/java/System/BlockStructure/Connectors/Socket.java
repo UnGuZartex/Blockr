@@ -2,7 +2,7 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1, B2> {
+public class Socket<B1 extends Block, B2 extends Block> extends Connector<B1, B2> {
 
     public Socket(B1 block, Orientation orientation) {
         super(block, orientation);
