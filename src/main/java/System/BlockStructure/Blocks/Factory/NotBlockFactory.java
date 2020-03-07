@@ -5,7 +5,7 @@ import System.BlockStructure.Functionality.NotFunctionality;
 
 public class NotBlockFactory extends BlockFactory{
     @Override
-    protected ConditionalBlock getNewBlock() {
+    public ConditionalBlock getNewBlock() {
         return new NotFunctionality(getID()).getBlock();
     }
 }

@@ -10,7 +10,7 @@ public class TurnLeftBlockFactory extends BlockFactory {
             = new TurnLeftFunctionality();
 
     @Override
-    protected FunctionalBlock getNewBlock() {
+    public FunctionalBlock getNewBlock() {
         return new FunctionalBlock(getID(), functionality);
     }
 }

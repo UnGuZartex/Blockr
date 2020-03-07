@@ -5,7 +5,7 @@ import System.BlockStructure.Functionality.WhileFunctionality;
 
 public class WhileBlockFactory extends BlockFactory {
     @Override
-    protected CavityBlock getNewBlock() {
+    public CavityBlock getNewBlock() {
         return new WhileFunctionality(getID()).getBlock();
     }
 }

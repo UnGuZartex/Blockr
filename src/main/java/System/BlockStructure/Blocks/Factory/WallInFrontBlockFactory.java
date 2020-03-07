@@ -5,7 +5,7 @@ import System.BlockStructure.Functionality.WallInFrontFunctionality;
 
 public class WallInFrontBlockFactory extends BlockFactory {
     @Override
-    protected ConditionalBlock getNewBlock() {
+    public ConditionalBlock getNewBlock() {
         return new WallInFrontFunctionality(getID()).getBlock();
     }
 }

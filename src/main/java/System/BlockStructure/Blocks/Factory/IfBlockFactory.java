@@ -6,7 +6,7 @@ import System.BlockStructure.Functionality.IfFunctionality;
 
 public class IfBlockFactory extends BlockFactory {
     @Override
-    protected CavityBlock getNewBlock() {
+    public CavityBlock getNewBlock() {
         return new IfFunctionality(getID()).getBlock();
     }
 }
