@@ -1,17 +1,18 @@
 package System.ProgramArea;
 
-import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.GameWorld.Level.Level;
 
 import java.util.ArrayList;
 
 public class ProgramArea {
     ArrayList<Program> programs = new ArrayList<>();
-
-    public ProgramArea() {
-
+    private Level level;
+    public ProgramArea(Level level) {
+        this.level = level;
     }
 
-    public void addProgram(Block startBlock) {
-
+    public void addProgram(FunctionalBlock<?> startBlock) {
+        programs.add(new Program(startBlock, level));
     }
 }

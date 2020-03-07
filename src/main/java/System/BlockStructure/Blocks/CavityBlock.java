@@ -4,12 +4,11 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
 import System.BlockStructure.Functionality.CavityFunctionality;
-import System.BlockStructure.Functionality.ConditionalFunctionality;
 
-public class CavityBlock extends BasicBlock<CavityFunctionality> {
+public class CavityBlock extends FunctionalBlock<CavityFunctionality> {
 
-    private final Plug<CavityBlock, BasicBlock<?>> cavityPlug;
-    private final Socket<CavityBlock, BasicBlock<?>> cavitySocket;
+    private final Plug<CavityBlock, FunctionalBlock<?>> cavityPlug;
+    private final Socket<CavityBlock, FunctionalBlock<?>> cavitySocket;
     private final Socket<CavityBlock, ConditionalBlock> conditionalSocket;
 
     public CavityBlock(int id, CavityFunctionality functionality) {
@@ -19,11 +18,11 @@ public class CavityBlock extends BasicBlock<CavityFunctionality> {
         conditionalSocket = new Socket<>(this, Orientation.FACING_RIGHT);
     }
 
-    public Plug<CavityBlock, BasicBlock<?>> getCavityPlug() {
+    public Plug<CavityBlock, FunctionalBlock<?>> getCavityPlug() {
         return cavityPlug;
     }
 
-    public Socket<CavityBlock, BasicBlock<?>> getCavitySocket() {
+    public Socket<CavityBlock, FunctionalBlock<?>> getCavitySocket() {
         return cavitySocket;
     }
 
@@ -47,7 +46,7 @@ public class CavityBlock extends BasicBlock<CavityFunctionality> {
     }
 
     @Override
-    public BasicBlock getNext() {
+    public FunctionalBlock<?> getNext() {
         CavityFunctionality func = getFunctionality();
         if (func.getEvaluation()) {
             return cavitySocket.getConnectedConnector().getBlock();

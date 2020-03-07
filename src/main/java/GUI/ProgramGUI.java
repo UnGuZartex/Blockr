@@ -3,7 +3,6 @@ package GUI;
 
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Blocks.Factory.TurnRightBlockFactory;
-import System.BlockStructure.Functionality.IfFunctionality;
 import System.BlockStructure.Functionality.WallInFrontFunctionality;
 import System.GameWorld.*;
 import System.GameWorld.Level.*;
@@ -31,9 +30,9 @@ public class ProgramGUI {
         System.out.println(level.getRobot().getX() + " - " + level.getRobot().getY());
 
         TurnRightBlockFactory f = new TurnRightBlockFactory();
-        BasicBlock block = (BasicBlock) f.CreateBlock();
-        BasicBlock block2 = (BasicBlock) f.CreateBlock();
-        BasicBlock block3 = (BasicBlock) f.CreateBlock();
+        FunctionalBlock block = (FunctionalBlock) f.CreateBlock();
+        FunctionalBlock block2 = (FunctionalBlock) f.CreateBlock();
+        FunctionalBlock block3 = (FunctionalBlock) f.CreateBlock();
 
 
         block.getBottomPlug().connect(block2.getTopSocket());
