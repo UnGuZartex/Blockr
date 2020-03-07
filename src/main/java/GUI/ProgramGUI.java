@@ -52,7 +52,7 @@ public class ProgramGUI {
 
         //f3.evaluate(not, level);
         //System.out.println(f3.getEvaluation());
-        Program program = new Program(block, level);
+        Program program = new Program(block);
 
 
         program.executeStep();
