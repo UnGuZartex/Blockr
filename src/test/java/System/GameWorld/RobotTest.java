@@ -49,11 +49,27 @@ class RobotTest {
     }
 
     @Test
+    void getXForward() {
+        assertEquals(xUp, robotUp.getXForward());
+        assertEquals(xDown, robotDown.getXForward());
+        assertEquals(xLeft - 1, robotLeft.getXForward());
+        assertEquals(xRight + 1, robotRight.getXForward());
+    }
+
+    @Test
     void getY() {
         assertEquals(yUp, robotUp.getY());
         assertEquals(yDown, robotDown.getY());
         assertEquals(yLeft, robotLeft.getY());
-        assertEquals(yRight, robotDown.getY());
+        assertEquals(yRight, robotRight.getY());
+    }
+
+    @Test
+    void getYForward(){
+        assertEquals(xUp - 1, robotUp.getYForward());
+        assertEquals(xDown + 1, robotDown.getYForward());
+        assertEquals(xLeft, robotLeft.getYForward());
+        assertEquals(xRight, robotRight.getYForward());
     }
 
     @Test
