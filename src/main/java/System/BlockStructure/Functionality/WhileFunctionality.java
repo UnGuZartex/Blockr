@@ -9,7 +9,6 @@ public class WhileFunctionality extends BlockFunctionality<WhileBlock> {
 
     @Override
     public void evaluate(Level level) {
-        ConditionalBlock condition = block.getCondition();
         BlockFunctionality functionality = block.getCondition().getFunctionality();
         functionality.evaluate(level);
         evaluation = functionality.getEvaluation();
