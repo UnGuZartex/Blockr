@@ -33,4 +33,9 @@ public class FunctionalBlock<F extends IFunctionality> extends Block<F> {
     public FunctionalBlock<?> getNext() {
         return getBottomPlug().getConnectedConnector().getBlock();
     }
+
+    @Override
+    public boolean canBeStarter() {
+        return true;
+    }
 }

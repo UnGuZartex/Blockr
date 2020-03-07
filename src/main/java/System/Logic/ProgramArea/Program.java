@@ -1,14 +1,14 @@
-package System.ProgramArea;
+package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.*;
 import System.GameState.GameState;
 
 public class Program {
 
-    private FunctionalBlock<?> startBlock;
-    private FunctionalBlock<?> currentBlock;
+    private Block<?> startBlock;
+    private Block<?> currentBlock;
 
-    public Program(FunctionalBlock<?> start) {
+    public Program(Block<?> start) {
         startBlock = start;
         currentBlock = start;
     }

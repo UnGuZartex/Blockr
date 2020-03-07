@@ -1,6 +1,6 @@
-package System.ProgramArea;
+package System.Logic.ProgramArea;
 
-import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Blocks.Block;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public class ProgramArea {
     public ProgramArea() {
     }
 
-    public void addProgram(FunctionalBlock<?> startBlock) {
+    public void addProgram(Block<?> startBlock) {
         programs.add(new Program(startBlock));
     }
 }

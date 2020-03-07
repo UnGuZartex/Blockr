@@ -1,8 +1,5 @@
-package System.ProgramArea;
+package System.Logic.ProgramArea;
 
-import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.CavityBlock;
-import System.BlockStructure.Blocks.ConditionalBlock;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;

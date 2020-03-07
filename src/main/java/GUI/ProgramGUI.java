@@ -6,7 +6,7 @@ import System.BlockStructure.Blocks.Factory.TurnRightBlockFactory;
 import System.BlockStructure.Functionality.WallInFrontFunctionality;
 import System.GameWorld.*;
 import System.GameWorld.Level.*;
-import System.ProgramArea.Program;
+import System.Logic.ProgramArea.Program;
 import java.awt.*;
 
 public class ProgramGUI {

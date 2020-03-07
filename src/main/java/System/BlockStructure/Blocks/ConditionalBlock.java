@@ -26,4 +26,9 @@ public class ConditionalBlock extends Block<ConditionalFunctionality> {
     public ConditionalBlock getNext() {
         return null;
     }
+
+    @Override
+    public boolean canBeStarter() {
+        return false;
+    }
 }

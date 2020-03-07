@@ -19,4 +19,6 @@ public abstract class Block<F extends IFunctionality> {
     public abstract boolean hasNext();
 
     public abstract Block<?> getNext();
+
+    public abstract boolean canBeStarter();
 }

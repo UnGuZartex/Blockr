@@ -1,4 +1,4 @@
-package System.Palette;
+package System.Logic.Palette;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.Factory.*;
