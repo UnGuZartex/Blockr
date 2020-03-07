@@ -1,10 +1,17 @@
 package System.GameState;
 
-import System.BlockStructure.Blocks.Block;
 import System.GameWorld.Level.Level;
 
 public class GameState {
     public static int maxNbBlocks;
-    public static int currentNbBlocks;
+    public static int currentNbBlocks = 9;
     public static Level currentLevel;
+
+    public static void increaseCurrentNbBlocks() {
+        currentNbBlocks++;
+    }
+
+    public static void decreaseCurrentNbBlocks() {
+        currentNbBlocks--;
+    }
 }
