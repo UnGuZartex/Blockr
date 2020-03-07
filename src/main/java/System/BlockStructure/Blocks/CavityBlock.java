@@ -11,7 +11,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     private final Socket cavitySocket;
     private final Socket conditionalSocket;
 
-    public CavityBlock(int id, BlockFunctionality functionality) {
+    protected CavityBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
         cavityPlug = new Plug(this, Orientation.FACING_DOWN);
         cavitySocket = new Socket(this, Orientation.FACING_UP);

@@ -11,7 +11,7 @@ public abstract class FunctionalBlock extends Block {
     private final Plug bottomPlug;
     private final Socket topSocket;
 
-    public FunctionalBlock(int id, BlockFunctionality functionality) {
+    protected FunctionalBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
         bottomPlug = new Plug(this, Orientation.FACING_DOWN);
         topSocket = new Socket(this, Orientation.FACING_UP);
