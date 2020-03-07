@@ -13,17 +13,14 @@ public class IfFunctionality extends CavityFunctionality {
 
     @Override
     public void evaluate(Level level) {
-        CavityBlock cavoc = block;
-
         if (!alreadyRan) {
-            ConditionalBlock condition = cavoc.getCondition();
+            ConditionalBlock condition = block.getCondition();
             ConditionalFunctionality functionality = condition.getFunctionality();
             functionality.evaluate(level);
             setEvaluation(functionality.getEvaluation());
             alreadyRan = true;
-        }
-        else {
-            cavoc.getNext().getFunctionality().evaluate(level);
+        }        else {
+            block.getNext().getFunctionality().evaluate(level);
 
             // Reset block
             setEvaluation(false);

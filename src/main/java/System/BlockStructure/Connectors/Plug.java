@@ -8,14 +8,6 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
         super(block, orientation);
     }
 
-    public boolean hasProperSocket() {
-        return connectedConnector == null || connectedConnector.getConnectedConnector() == this;
-    }
-
-    public boolean canHaveAsSocket(Socket<B2, B1> socket) {
-        return socket != null && getOrientation().isOpposite(socket.getOrientation());
-    }
-
     public void connect (Socket<B2, B1> socket) throws Exception {
 
         // TODO specifieke errors
@@ -42,5 +34,9 @@ public class Plug<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1
         Connector<B2, B1> tempSocket = connectedConnector;
         connectedConnector = null;
         tempSocket.disconnect();
+    }
+
+    private boolean canHaveAsSocket(Socket<B2, B1> socket) {
+        return socket != null && getOrientation().isOpposite(socket.getOrientation());
     }
 }

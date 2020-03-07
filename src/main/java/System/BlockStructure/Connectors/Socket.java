@@ -8,10 +8,6 @@ public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<
         super(block, orientation);
     }
 
-    public boolean hasProperPlug() {
-        return connectedConnector == null || connectedConnector.getConnectedConnector() == null;
-    }
-
     protected void connect (Plug<B2, B1> plug) throws Exception {
 
         // TODO specifieke errors

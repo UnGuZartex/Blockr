@@ -12,12 +12,9 @@ public class WhileFunctionality extends CavityFunctionality {
 
     @Override
     public void evaluate(Level level) {
-        CavityBlock cavoc = block;
-
-        ConditionalBlock condition = cavoc.getCondition();
+        ConditionalBlock condition = block.getCondition();
         ConditionalFunctionality functionality = condition.getFunctionality();
         functionality.evaluate(level);
         setEvaluation(functionality.getEvaluation());
-
     }
 }
