@@ -1,6 +1,6 @@
 package System.GameWorld;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,20 +49,20 @@ class GridTest {
 
     @Test
     void getHeight() {
-        Assert.assertEquals(height1, grid1.getHeight());
-        Assert.assertEquals(height2, grid2.getHeight());
-        Assert.assertEquals(height3, grid3.getHeight());
-        Assert.assertEquals(height4, grid4.getHeight());
-        Assert.assertEquals(height5, grid5.getHeight());
+        assertEquals(height1, grid1.getHeight());
+        assertEquals(height2, grid2.getHeight());
+        assertEquals(height3, grid3.getHeight());
+        assertEquals(height4, grid4.getHeight());
+        assertEquals(height5, grid5.getHeight());
     }
 
     @Test
     void getWidth() {
-        Assert.assertEquals(width1, grid1.getWidth());
-        Assert.assertEquals(width2, grid2.getWidth());
-        Assert.assertEquals(width3, grid3.getWidth());
-        Assert.assertEquals(width4, grid4.getWidth());
-        Assert.assertEquals(width5, grid5.getWidth());
+        assertEquals(width1, grid1.getWidth());
+        assertEquals(width2, grid2.getWidth());
+        assertEquals(width3, grid3.getWidth());
+        assertEquals(width4, grid4.getWidth());
+        assertEquals(width5, grid5.getWidth());
     }
 
     @Test

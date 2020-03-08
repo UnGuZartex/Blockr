@@ -1,6 +1,6 @@
 package System.GameWorld;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,15 +25,15 @@ class CellTypeTest {
 
     @Test
     void canWalkOn() {
-        Assert.assertTrue(blank.canWalkOn());
-        Assert.assertFalse(wall.canWalkOn());
-        Assert.assertTrue(goal.canWalkOn());
+        assertTrue(blank.canWalkOn());
+        assertFalse(wall.canWalkOn());
+        assertTrue(goal.canWalkOn());
     }
 
     @Test
     void isWin() {
-        Assert.assertFalse(blank.isWin());
-        Assert.assertFalse(wall.isWin());
-        Assert.assertTrue(goal.isWin());
+        assertFalse(blank.isWin());
+        assertFalse(wall.isWin());
+        assertTrue(goal.isWin());
     }
 }

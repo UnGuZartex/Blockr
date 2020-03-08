@@ -1,6 +1,6 @@
 package System.GameWorld;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,8 @@ class CellTest {
 
     @Test
     void getCellType() {
-        Assert.assertEquals(CellType.WALL, cellWall.getCellType());
-        Assert.assertEquals(CellType.BLANK, cellBlank.getCellType());
-        Assert.assertEquals(CellType.GOAL, cellGoal.getCellType());
+        assertEquals(CellType.WALL, cellWall.getCellType());
+        assertEquals(CellType.BLANK, cellBlank.getCellType());
+        assertEquals(CellType.GOAL, cellGoal.getCellType());
     }
 }
