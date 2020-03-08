@@ -42,8 +42,8 @@ Block[]</panel_attributes><additional_attributes></additional_attributes></eleme
 rightSocket:Socket
 Cavity:Cavity</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>710</y><w>210</w><h>70</h></coordinates><panel_attributes>_Cavity_
 --
-plug:Plug
-socket:Socket
+mainConnector:Plug
+subConnector:Socket
 height:Int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>110</y><w>210</w><h>70</h></coordinates><panel_attributes>_ProgramArea_
 --
 Program[]

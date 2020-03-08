@@ -185,8 +185,8 @@ Cavity:Cavity</panel_attributes>
     </coordinates>
     <panel_attributes>_Cavity_
 --
-plug:Plug
-socket:Socket
+mainConnector:Plug
+subConnector:Socket
 height:Int</panel_attributes>
     <additional_attributes/>
   </element>
@@ -612,8 +612,8 @@ isconnected</panel_attributes>
     </coordinates>
     <panel_attributes>_Cavity_
 --
-plug: Plug
-socket: Socket</panel_attributes>
+mainConnector: Plug
+subConnector: Socket</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -709,8 +709,8 @@ Cavity:Cavity</panel_attributes>
     </coordinates>
     <panel_attributes>_Cavity_
 --
-plug:Plug
-socket:Socket
+mainConnector:Plug
+subConnector:Socket
 height:Int</panel_attributes>
     <additional_attributes/>
   </element>

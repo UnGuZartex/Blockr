@@ -1,36 +1,50 @@
 package System.BlockStructure.Blocks;
 
+import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
-import System.BlockStructure.Connectors.Plug;
-import System.BlockStructure.Connectors.Socket;
-import System.BlockStructure.Functionality.Functionality;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
+import System.BlockStructure.Functionality.BlockFunctionality;
 
-public class FunctionalBlock<F extends Functionality> extends Block<F> {
+public abstract class FunctionalBlock extends Block {
 
-    private final Plug<FunctionalBlock<?>, FunctionalBlock<?>> bottomPlug;
-    private final Socket<FunctionalBlock<?>, FunctionalBlock<?>> topSocket;
+    private final MainConnector mainConnector;
 
-    public FunctionalBlock(int id, F functionality) {
+    private final SubConnector[] subConnector;
+
+    protected FunctionalBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
-        bottomPlug = new Plug<>(this, Orientation.FACING_DOWN);
-        topSocket = new Socket<>(this, Orientation.FACING_UP);
-    }
+         mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
+         subConnector = new SubConnector[]{new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG)};
 
-    public Socket<FunctionalBlock<?>, FunctionalBlock<?>> getTopSocket() {
-        return topSocket;
     }
-
-    public Plug<FunctionalBlock<?>, FunctionalBlock<?>> getBottomPlug() {
-        return bottomPlug;
-    }
-
     @Override
     public boolean hasNext() {
-        return bottomPlug.getBlock() != null;
+        return subConnector[0].isConnected();
     }
 
     @Override
-    public FunctionalBlock<?> getNext() {
-        return getBottomPlug().getConnectedConnector().getBlock();
+    public Block getNext() {
+        return subConnector[0].getConnectedBlock();
+    }
+
+    @Override
+    public boolean canBeStarter() {
+        return true;
+    }
+
+    @Override
+    public MainConnector getMainConnector() {
+        return mainConnector;
+    }
+
+    @Override
+    public SubConnector[] getSubConnectors() {
+        return subConnector;
+    }
+
+    @Override
+    public Block returnToClosestCavity() {
+        return mainConnector.getConnectedBlock().returnToClosestCavity();
     }
 }

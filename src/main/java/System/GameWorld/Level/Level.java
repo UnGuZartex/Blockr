@@ -16,6 +16,7 @@ public class Level {
         this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
     }
 
+
     /**
      * Get the robot of this Level.
      *

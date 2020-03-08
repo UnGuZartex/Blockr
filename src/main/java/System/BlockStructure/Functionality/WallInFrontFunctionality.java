@@ -1,13 +1,13 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.CellType;
 import System.GameWorld.Level.Level;
 
-public class WallInFrontFunctionality extends ConditionalFunctionality {
+public class WallInFrontFunctionality extends ConditionalBlockFunctionality<WallInFrontBlock> {
 
     @Override
-    public void evaluate(Block block, Level level) {
-        setEvaluation(level.getTypeForward() == CellType.WALL);
+    public void evaluate(Level level) {
+        evaluation = (level.getTypeForward() == CellType.WALL);
     }
 }

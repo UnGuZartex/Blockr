@@ -2,32 +2,45 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public abstract class Connector<B1 extends Block<?>, B2 extends Block<?>> {
+public abstract class Connector {
 
-    protected Connector<B2, B1> connectedConnector;
+    protected Connector connectedConnector;
     private final Orientation orientation;
-    private final B1 block;
+    private final Block block;
 
-    public Connector(B1 block, Orientation orientation) {
+
+    private final Type type;
+
+    public Connector(Block block, Orientation orientation, Type type) {
         this.block = block;
         this.orientation = orientation;
+        this.type = type;
     }
 
     public Orientation getOrientation() {
         return orientation;
     }
 
-    public Connector<B2, B1> getConnectedConnector() {
+    public Connector getConnectedConnector() {
         return connectedConnector;
+    }
+
+
+    public Type getType() {
+        return type;
     }
 
     public boolean isConnected() {
         return connectedConnector != null;
     }
 
-    public B1 getBlock() {
+    public Block getBlock() {
         return block;
     }
 
-    protected abstract void disconnect() throws Exception;
+    public Block getConnectedBlock() {
+        return connectedConnector.getBlock();
+    }
+
+    protected abstract void disconnect() throws IllegalStateException;
 }

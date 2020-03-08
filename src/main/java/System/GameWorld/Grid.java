@@ -40,4 +40,8 @@ public class Grid {
     public Cell getCellAt(int x, int y) {
         return cells[x][y];
     }
+
+    public Cell[][] getCells() {
+        return cells.clone();
+    }
 }

@@ -1,12 +1,11 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
-import System.GameWorld.Level.*;
+import System.GameWorld.Level.Level;
 
-public class TurnRightFunctionality implements Functionality {
+public class TurnRightFunctionality extends BlockFunctionality {
 
     @Override
-    public void evaluate(Block block, Level level) {
+    public void evaluate(Level level) {
         level.getRobot().turnRight();
     }
 }

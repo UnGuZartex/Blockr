@@ -40,24 +40,24 @@ The user is aware of the new position of the block. The position of the block ge
 1a. When the user releases the mouse key, one of the block's connectors is near a compatible opposite connector of another block
  1. The system inserts the block into an existing group of connected blocks at the matching connection point.
 
-1b. When the user moves the cursor over a block that is not in a cavity which is connected to another block through the socket and then presses the left mouse key
- 1. The system disconnects the socket of the clicked block from the plug of the block above.
+1b. When the user moves the cursor over a block that is not in a cavity which is connected to another block through the subConnector and then presses the left mouse key
+ 1. The system disconnects the subConnector of the clicked block from the mainConnector of the block above.
  2. The system identifies the potential group of connected blocks of the clicked block.
  3. The system moves the group of blocks as one entity. 
  
-1c. When the user moves the cursor over a block that is not in a cavity which is connected to other blocks but not with the top socket and then presses the left mouse key
+1c. When the user moves the cursor over a block that is not in a cavity which is connected to other blocks but not with the top subConnector and then presses the left mouse key
  1. The system identifies the potential group of connected blocks of the clicked block.
  2. The system moves the group of blocks as one entity.
 
 1d. When the user moves the cursor over a block that is in the cavity of a/an while/if block and then presses the left mouse key
- 1. The system disconnects the socket of the clicked block from the plug of the block above (the loop block or a different block in the cavity).
- 2. The system disconnects the socket of the cavity from the plug of the connected block.
+ 1. The system disconnects the subConnector of the clicked block from the mainConnector of the block above (the loop block or a different block in the cavity).
+ 2. The system disconnects the subConnector of the cavity from the mainConnector of the connected block.
  3. The system identifies the potential group of connected blocks of the clicked block.
- 4. The system connects the socket from the cavity to the plug that was connected to the clicked block.
+ 4. The system connects the subConnector from the cavity to the mainConnector that was connected to the clicked block.
  5. The system moves the group of blocks as one entity. 
 
 1e. When the user moves the cursor over a conditional block of a/an while/if block and then presses the left mouse key
- 1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
+ 1. The system disconnects the subConnector of the conditional block from the corresponding mainConnector of the while/if block. 
  2. The system moves the conditional block and its still connected blocks (if any) as one entity.
  
 
@@ -75,24 +75,24 @@ The user is aware that the block is deleted. The block gets removed from the Pro
 3. The system increments the amount of blocks which can still be placed.
  
 ### Extensions
-1a. When the user moves the cursor over a block that is not in a cavity which is connected to another block through the socket and then presses the left mouse key
- 1. The system disconnects the socket of the clicked block from the plug of the block above.
+1a. When the user moves the cursor over a block that is not in a cavity which is connected to another block through the subConnector and then presses the left mouse key
+ 1. The system disconnects the subConnector of the clicked block from the mainConnector of the block above.
  2. The system identifies the potential group of connected blocks of the clicked block.
  3. The system moves the group of blocks as one entity. 
  
-1b. When the user moves the cursor over a block that is not in a cavity which is connected to other blocks but not with the top socket and then presses the left mouse key
+1b. When the user moves the cursor over a block that is not in a cavity which is connected to other blocks but not with the top subConnector and then presses the left mouse key
  1. The system identifies the potential group of connected blocks of the clicked block.
  2. The system moves the group of blocks as one entity.
 
 1c. When the user moves the cursor over a block that is in the cavity of a/an while/if block and then presses the left mouse key
- 1. The system disconnects the socket of the clicked block from the plug of the block above (the loop block or a different block in the cavity).
- 2. The system disconnects the socket of the cavity from the plug of the connected block.
+ 1. The system disconnects the subConnector of the clicked block from the mainConnector of the block above (the loop block or a different block in the cavity).
+ 2. The system disconnects the subConnector of the cavity from the mainConnector of the connected block.
  3. The system identifies the potential group of connected blocks of the clicked block.
- 4. The system connects the socket from the cavity to the plug that was connected to the clicked block.
+ 4. The system connects the subConnector from the cavity to the mainConnector that was connected to the clicked block.
  5. The system moves the group of blocks as one entity. 
 
 1d. When the user moves the cursor over a conditional block of a/an while/if block and then presses the left mouse key
- 1. The system disconnects the socket of the conditional block from the corresponding plug of the while/if block. 
+ 1. The system disconnects the subConnector of the conditional block from the corresponding mainConnector of the while/if block. 
  2. The system moves the conditional block and its still connected blocks (if any) as one entity.
   
 3a. When the maximum amount of blocks is inside the Program Area
@@ -140,7 +140,7 @@ The user is aware that the program is running. The Game World gets updated based
  1. The system chooses the while block itself again as next block to execute.
 
 3d. When the block to execute is the last block contained in the cavity of an if block
- 1. The system chooses the block connected to the plug of the if statement as next block to execute.
+ 1. The system chooses the block connected to the mainConnector of the if statement as next block to execute.
 
 4a. When the block doesn't affect the robot's state
  1. The system doesn't change the robot's state in the Game World.

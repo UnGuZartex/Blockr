@@ -1,32 +1,38 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Connectors.Orientation;
-import System.BlockStructure.Connectors.Socket;
-import System.BlockStructure.Functionality.ConditionalFunctionality;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
+import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
-public class OperationalBlock<F extends ConditionalFunctionality> extends ConditionalBlock<F> {
+public class OperationalBlock extends ConditionalBlock {
 
-    private final Socket<OperationalBlock<?>, ConditionalBlock<?>>[] sockets;
     private int counter;
 
-    public OperationalBlock(int id, F functionality, int nbSockets) {
+    private final SubConnector[] subConnectors;
+
+    public <B extends OperationalBlock> OperationalBlock(int id, ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
         super(id, functionality);
-        this.sockets = new Socket[nbSockets];
-        for (int i = 0; i < nbSockets; i++) {
-            sockets[i] = new Socket<>(this, Orientation.FACING_RIGHT);
+        subConnectors = new SubConnector[nbSubConnectors];
+        for(int i = 0; i < nbSubConnectors; i++) {
+            subConnectors[i] = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
         }
-        counter = 0;
     }
 
-    public Socket getSocketAt(int index) {
-        return sockets[index];
+    public SubConnector getSocketAt(int index) {
+        return getSubConnectors()[index];
     }
 
     @Override
-    public ConditionalBlock<?> getNext() {
-        if (counter >= sockets.length) {
+    public Block getNext() {
+        if (counter >= subConnectors.length) {
             counter = 0;
         }
-        return sockets[counter++].getConnectedConnector().getBlock();
+        return subConnectors[counter++].getConnectedBlock();
+    }
+
+    @Override
+    public SubConnector[] getSubConnectors() {
+        return subConnectors;
     }
 }
