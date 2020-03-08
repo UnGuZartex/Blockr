@@ -2,7 +2,7 @@ package System.BlockStructure.Functionality;
 
 import System.GameWorld.Level.Level;
 
-public class TurnRightFunctionality implements IFunctionality {
+public class TurnRightFunctionality extends BlockFunctionality {
 
     @Override
     public void evaluate(Level level) {

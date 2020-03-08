@@ -2,13 +2,13 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public class Socket<B1 extends Block<?>, B2 extends Block<?>> extends Connector<B1, B2> {
+public class Socket extends Connector {
 
-    public Socket(B1 block, Orientation orientation) {
+    public Socket(Block block, Orientation orientation) {
         super(block, orientation);
     }
 
-    protected void connect (Plug<B2, B1> plug) throws IllegalStateException, IllegalArgumentException {
+    protected void connect (Plug plug) throws IllegalStateException, IllegalArgumentException {
 
         if (this.isConnected()) {
             throw new IllegalStateException("This socket is already connected to another plug!");

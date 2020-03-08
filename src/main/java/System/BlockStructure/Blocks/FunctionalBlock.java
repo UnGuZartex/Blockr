@@ -3,24 +3,25 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
+import System.BlockStructure.Functionality.BlockFunctionality;
 import System.BlockStructure.Functionality.IFunctionality;
 
-public class FunctionalBlock<F extends IFunctionality> extends Block<F> {
+public abstract class FunctionalBlock extends Block {
 
-    private final Plug<FunctionalBlock<?>, FunctionalBlock<?>> bottomPlug;
-    private final Socket<FunctionalBlock<?>, FunctionalBlock<?>> topSocket;
+    private final Plug bottomPlug;
+    private final Socket topSocket;
 
-    public FunctionalBlock(int id, F functionality) {
+    protected FunctionalBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
-        bottomPlug = new Plug<>(this, Orientation.FACING_DOWN);
-        topSocket = new Socket<>(this, Orientation.FACING_UP);
+        bottomPlug = new Plug(this, Orientation.FACING_DOWN);
+        topSocket = new Socket(this, Orientation.FACING_UP);
     }
 
-    public Socket<FunctionalBlock<?>, FunctionalBlock<?>> getTopSocket() {
+    public Socket getTopSocket() {
         return topSocket;
     }
 
-    public Plug<FunctionalBlock<?>, FunctionalBlock<?>> getBottomPlug() {
+    public Plug getBottomPlug() {
         return bottomPlug;
     }
 
@@ -30,7 +31,7 @@ public class FunctionalBlock<F extends IFunctionality> extends Block<F> {
     }
 
     @Override
-    public FunctionalBlock<?> getNext() {
+    public Block getNext() {
         return getBottomPlug().getConnectedBlock();
     }
 

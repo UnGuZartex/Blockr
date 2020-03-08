@@ -1,24 +1,25 @@
 package System.BlockStructure.Blocks;
+import System.BlockStructure.Functionality.BlockFunctionality;
 import System.BlockStructure.Functionality.IFunctionality;
 
 
-public abstract class Block<F extends IFunctionality> {
+public abstract class Block {
 
     private final int id;
-    private final F functionality;
+    private final BlockFunctionality functionality;
 
-    protected Block(int id, F functionality) {
+    protected Block(int id, BlockFunctionality functionality) {
         this.id = id;
         this.functionality = functionality;
     }
 
-    public F getFunctionality() {
+    public BlockFunctionality getFunctionality() {
         return functionality;
     }
 
     public abstract boolean hasNext();
 
-    public abstract Block<?> getNext();
+    public abstract Block getNext();
 
     public abstract boolean canBeStarter();
 }

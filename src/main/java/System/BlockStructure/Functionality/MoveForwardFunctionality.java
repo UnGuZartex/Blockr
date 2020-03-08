@@ -2,7 +2,7 @@ package System.BlockStructure.Functionality;
 
 import System.GameWorld.Level.Level;
 
-public class MoveForwardFunctionality implements IFunctionality {
+public class MoveForwardFunctionality extends BlockFunctionality {
 
     @Override
     public void evaluate(Level level) {

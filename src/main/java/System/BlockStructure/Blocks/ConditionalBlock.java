@@ -1,19 +1,20 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Connectors.*;
-import System.BlockStructure.Functionality.ConditionalFunctionality;
-import System.BlockStructure.Functionality.IFunctionality;
+import System.BlockStructure.Connectors.Orientation;
+import System.BlockStructure.Connectors.Plug;
+import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
-public class ConditionalBlock extends Block<ConditionalFunctionality> {
+public abstract class ConditionalBlock extends Block {
 
-    private final Plug<ConditionalBlock, Block<?>> leftPlug;
+    private final Plug leftPlug;
 
-    public ConditionalBlock(int id, ConditionalFunctionality functionality) {
+    protected ConditionalBlock(int id, ConditionalBlockFunctionality<ConditionalBlock> functionality) {
         super(id, functionality);
-        leftPlug = new Plug<>(this, Orientation.FACING_LEFT);
+        functionality.setBlock(this);
+        leftPlug = new Plug(this, Orientation.FACING_LEFT);
     }
 
-    public Plug<ConditionalBlock, Block<?>> getLeftPlug() {
+    public Plug getLeftPlug() {
         return leftPlug;
     }
 
@@ -23,7 +24,7 @@ public class ConditionalBlock extends Block<ConditionalFunctionality> {
     }
 
     @Override
-    public ConditionalBlock getNext() {
+    public Block getNext() {
         return null;
     }
 

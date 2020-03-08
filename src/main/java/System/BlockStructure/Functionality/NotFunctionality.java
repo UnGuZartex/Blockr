@@ -1,17 +1,14 @@
 package System.BlockStructure.Functionality;
 
+import System.BlockStructure.Blocks.OperationalBlock;
 import System.GameWorld.Level.Level;
 
-public class NotFunctionality extends ConditionalFunctionality {
-
-    public NotFunctionality(int blockId) {
-        super(blockId);
-    }
+public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
     @Override
     public void evaluate(Level level) {
-        ConditionalFunctionality functionality = block.getNext().getFunctionality();
+        BlockFunctionality functionality = block.getNext().getFunctionality();
         functionality.evaluate(level);
-        setEvaluation(!functionality.getEvaluation());
+        evaluation = !functionality.getEvaluation();
     }
 }
