@@ -1,12 +1,16 @@
 package GUI;
 
-import GUI.GameWorld.GameWorldPainter;
+
 import GUI.Images.ImageLibrary;
-import GUI.Images.ImagePreLoader;
+import Controllers.ProgramController;
+import GUI.Panel.GamePanel;
+import GUI.Panel.GameWorldPanel;
+import GUI.Panel.PalettePanel;
+import GUI.Panel.ProgramAreaPanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -17,7 +21,7 @@ public class BlockrCanvas extends CanvasWindow {
     public static final double PROGRAMAREA_WIDTH_RATIO = 0.4;
     public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
 
-    private Painter[] painters;
+    private GamePanel[] panels;
     private ArrayList<GUIBlock> testBlocks = new ArrayList<GUIBlock>();
     private GUIBlock draggedBlock;
     private Point dragDelta;
@@ -30,9 +34,9 @@ public class BlockrCanvas extends CanvasWindow {
      */
     protected BlockrCanvas(String title, ImageLibrary library) {
         super(title);
-        painters = new Painter[3];
+        panels = new GamePanel[3];
 
-        Painter.setImageLibrary(library);
+        GamePanel.setImageLibrary(library);
         setPainters();
         initTestBlocks();
     }
@@ -50,8 +54,8 @@ public class BlockrCanvas extends CanvasWindow {
         g.fillRect(0, 0, width, height);
         g.setColor(Color.black);
 
-        for(Painter painter : painters) {
-            painter.paint(g);
+        for (GamePanel panel : panels) {
+            panel.paint(g);
         }
 
         for (GUIBlock block : testBlocks) {
@@ -73,7 +77,7 @@ public class BlockrCanvas extends CanvasWindow {
         mousePos = new Point(x, y);
 
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second)-> second);
+            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second) -> second);
             draggedBlock = testBlocks.get(blockIndex.getAsInt());
             testBlocks.remove(blockIndex.getAsInt());
             testBlocks.add(draggedBlock);
@@ -82,7 +86,7 @@ public class BlockrCanvas extends CanvasWindow {
         }
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
             draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
-            System.out.println(testBlocks.stream().filter(b-> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
+            System.out.println(testBlocks.stream().filter(b -> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
             draggedBlock = null;
         }
 
@@ -96,8 +100,16 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPainters() {
-        painters[0] = new PalettePainter(0,0, (int)(width * PALETTE_WIDTH_RATIO), height);
-        painters[1] = new ProgramAreaPainter((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
-        painters[2] = new GameWorldPainter((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
+        panels[0] = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height);
+        panels[1] = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
+        panels[2] = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
+    }
+
+    @Override
+    protected void handleKeyEvent(int id, int keyCode, char keyChar) {
+        if(keyCode == KeyEvent.VK_F5) {
+            ProgramController.runProgramStep();
+            repaint();
+        }
     }
 }
