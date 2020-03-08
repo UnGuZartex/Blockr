@@ -1,14 +1,16 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Connectors.*;
-import System.BlockStructure.Functionality.BlockFunctionality;
+import System.BlockStructure.Connectors.Orientation;
+import System.BlockStructure.Connectors.Plug;
+import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
 public abstract class ConditionalBlock extends Block {
 
     private final Plug leftPlug;
 
-    protected ConditionalBlock(int id, BlockFunctionality functionality) {
+    protected ConditionalBlock(int id, ConditionalBlockFunctionality<ConditionalBlock> functionality) {
         super(id, functionality);
+        functionality.setBlock(this);
         leftPlug = new Plug(this, Orientation.FACING_LEFT);
     }
 

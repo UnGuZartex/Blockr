@@ -6,15 +6,14 @@ import System.BlockStructure.Functionality.IFunctionality;
 public abstract class Block {
 
     private final int id;
-    private final BlockFunctionality<Block> functionality;
+    private final BlockFunctionality functionality;
 
-    protected Block(int id, BlockFunctionality<Block> functionality) {
+    protected Block(int id, BlockFunctionality functionality) {
         this.id = id;
         this.functionality = functionality;
-        functionality.setBlock(this);
     }
 
-    public BlockFunctionality<?> getFunctionality() {
+    public BlockFunctionality getFunctionality() {
         return functionality;
     }
 
