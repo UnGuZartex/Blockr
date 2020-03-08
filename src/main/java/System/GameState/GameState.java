@@ -5,6 +5,9 @@ import System.GameWorld.Level.Level;
 public class GameState {
     public static int maxNbBlocks;
     public static int currentNbBlocks = 9;
+
+
+
     public static Level currentLevel;
 
     public static void increaseCurrentNbBlocks() {
@@ -13,5 +16,9 @@ public class GameState {
 
     public static void decreaseCurrentNbBlocks() {
         currentNbBlocks--;
+    }
+
+    public static void setCurrentLevel(Level currentLevel) {
+        GameState.currentLevel = currentLevel;
     }
 }

@@ -22,4 +22,8 @@ public abstract class Block {
     public abstract Block getNext();
 
     public abstract boolean canBeStarter();
+
+    public boolean getSkip() {
+        return false;
+    }
 }

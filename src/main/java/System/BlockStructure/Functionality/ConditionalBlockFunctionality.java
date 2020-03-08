@@ -11,4 +11,6 @@ public abstract class ConditionalBlockFunctionality<B extends Block> extends Blo
             this.block = block;
         }
     }
+
+
 }

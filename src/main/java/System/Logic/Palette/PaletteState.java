@@ -18,14 +18,14 @@ public class PaletteState {
                     new TurnRightBlockFactory()
             };
 
-    public Block<?>[] currentBlocks = new Block<?>[allBlocksFactory.length];
+    public Block[] currentBlocks = new Block[allBlocksFactory.length];
 
     public PaletteState() {
         refillList();
     }
 
-    public Block<?> getBlockAt(int index){
-        Block<?> toReturn = currentBlocks[index];
+    public Block getBlockAt(int index){
+        Block toReturn = currentBlocks[index];
         if(GameState.currentNbBlocks < GameState.maxNbBlocks) {
             currentBlocks[index] = allBlocksFactory[index].CreateBlock();
         }
@@ -44,4 +44,7 @@ public class PaletteState {
     }
 
 
+    public Block[] getCurrentBlocks() {
+        return currentBlocks.clone();
+    }
 }

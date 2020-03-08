@@ -39,7 +39,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation()) {
-            return cavitySocket.getConnectedConnector() != null;
+            return cavityPlug.getConnectedConnector() != null;
         }
         else {
             return getBottomPlug().getConnectedConnector() != null;
@@ -49,7 +49,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     @Override
     public Block getNext() {
         if (getFunctionality().getEvaluation()) {
-            return cavitySocket.getConnectedBlock();
+            return cavityPlug.getConnectedBlock();
         }
         else {
             return getBottomPlug().getConnectedBlock();

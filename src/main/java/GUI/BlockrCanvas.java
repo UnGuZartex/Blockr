@@ -72,7 +72,7 @@ public class BlockrCanvas extends CanvasWindow {
         mousePos = new Point(x, y);
 
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second)-> second);
+            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second) -> second);
             draggedBlock = testBlocks.get(blockIndex.getAsInt());
             testBlocks.remove(blockIndex.getAsInt());
             testBlocks.add(draggedBlock);
@@ -81,7 +81,7 @@ public class BlockrCanvas extends CanvasWindow {
         }
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
             draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
-            System.out.println(testBlocks.stream().filter(b-> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
+            System.out.println(testBlocks.stream().filter(b -> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
             draggedBlock = null;
         }
 

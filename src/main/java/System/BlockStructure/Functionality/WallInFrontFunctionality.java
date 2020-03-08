@@ -1,9 +1,10 @@
 package System.BlockStructure.Functionality;
 
+import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.CellType;
 import System.GameWorld.Level.Level;
 
-public class WallInFrontFunctionality extends BlockFunctionality {
+public class WallInFrontFunctionality extends ConditionalBlockFunctionality<WallInFrontBlock> {
 
     @Override
     public void evaluate(Level level) {

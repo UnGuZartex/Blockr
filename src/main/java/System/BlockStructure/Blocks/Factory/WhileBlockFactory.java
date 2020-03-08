@@ -1,11 +1,10 @@
 package System.BlockStructure.Blocks.Factory;
 
-import System.BlockStructure.Blocks.CavityBlock;
-import System.BlockStructure.Functionality.WhileFunctionality;
+import System.BlockStructure.Blocks.WhileBlock;
 
 public class WhileBlockFactory extends BlockFactory {
     @Override
-    public CavityBlock getNewBlock() {
-        return new WhileFunctionality(getID()).getBlock();
+    public WhileBlock getNewBlock() {
+        return new WhileBlock(getID());
     }
 }

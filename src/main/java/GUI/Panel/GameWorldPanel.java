@@ -30,6 +30,7 @@ public class GameWorldPanel extends GamePanel {
 
     @Override
     public void paint(Graphics g) {
+        initializeData();
         g.setColor(Color.black);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));

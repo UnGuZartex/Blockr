@@ -27,7 +27,7 @@ public abstract class FunctionalBlock extends Block {
 
     @Override
     public boolean hasNext() {
-        return bottomPlug.getBlock() != null;
+        return bottomPlug.isConnected();
     }
 
     @Override

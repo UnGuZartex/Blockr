@@ -12,4 +12,8 @@ public abstract class BlockFunctionality implements IFunctionality {
 
     @Override
     public abstract void evaluate(Level level);
+
+    public void reset(){
+        evaluation = false;
+    }
 }

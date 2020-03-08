@@ -11,12 +11,12 @@ public class BlockHandler {
     private ConnectionHandler connectionHandler = new ConnectionHandler();
 
     public void addToPA(int index) {
-        Block<?> toAdd = palette.getBlockAt(index);
+        Block toAdd = palette.getBlockAt(index);
         PA.addProgram(toAdd);
     }
 
-    public void connectToExistingBlock(int index, Block<?> blockToConnect) {
-        Block<?> toAdd = palette.getBlockAt(index);
+    public void connectToExistingBlock(int index, Block blockToConnect) {
+        Block toAdd = palette.getBlockAt(index);
         //TODO DIT FIXEN HIERZO: connectionHandler.connect(toAdd, blockToConnect);
     }
 //

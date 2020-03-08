@@ -9,7 +9,16 @@ public class ProgramArea {
     public ProgramArea() {
     }
 
-    public void addProgram(Block<?> startBlock) {
+    public Program getProgram() {
+        if(programs.size() == 1){
+            return programs.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void addProgram(Block startBlock) {
         programs.add(new Program(startBlock));
     }
 }
