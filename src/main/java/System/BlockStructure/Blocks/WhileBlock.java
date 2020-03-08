@@ -1,6 +1,5 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Functionality.BlockFunctionality;
 import System.BlockStructure.Functionality.WhileFunctionality;
 
 public class WhileBlock extends CavityBlock {

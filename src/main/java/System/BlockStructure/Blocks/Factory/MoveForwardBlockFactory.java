@@ -1,15 +1,11 @@
 package System.BlockStructure.Blocks.Factory;
 
-import System.BlockStructure.Blocks.FunctionalBlock;
-import System.BlockStructure.Functionality.MoveForwardFunctionality;
+import System.BlockStructure.Blocks.MoveForwardBlock;
 
 public class MoveForwardBlockFactory extends BlockFactory {
 
-    private MoveForwardFunctionality functionality
-            = new MoveForwardFunctionality();
-
     @Override
-    public FunctionalBlock<MoveForwardFunctionality> getNewBlock() {
-        return new FunctionalBlock(getID(), functionality);
+    public MoveForwardBlock getNewBlock() {
+        return new MoveForwardBlock(getID());
     }
 }
