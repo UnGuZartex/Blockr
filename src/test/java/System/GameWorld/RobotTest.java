@@ -4,19 +4,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RobotTest {
 
     private int xUp, yUp, xDown, yDown, xLeft, yLeft, xRight, yRight;
     private Robot robotUp, robotDown, robotLeft, robotRight;
+    private Random random;
+    private static final int MIN_X = 0;
+    private static final int MAX_X = 20;
+    private static final int MIN_Y = 0;
+    private static final int MAX_Y = 20;
 
     @BeforeEach
     void setUp() {
-        xUp = 0; yUp = 0;
-        xDown = 0; yDown = 0;
-        xLeft = 0; yLeft = 0;
-        xRight = 0; yRight = 0;
+        random = new Random();
+        xUp = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        yUp = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
+        xDown = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        yDown = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
+        xLeft = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        yLeft = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
+        xRight = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        yRight = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
 
         robotUp = new Robot(xUp, yUp, Direction.UP);
         robotDown = new Robot(xDown, yDown, Direction.DOWN);
@@ -45,7 +57,7 @@ class RobotTest {
         assertEquals(xUp, robotUp.getX());
         assertEquals(xDown, robotDown.getX());
         assertEquals(xLeft, robotLeft.getX());
-        assertEquals(xRight, robotDown.getX());
+        assertEquals(xRight, robotRight.getX());
     }
 
     @Test
@@ -66,10 +78,10 @@ class RobotTest {
 
     @Test
     void getYForward(){
-        assertEquals(xUp - 1, robotUp.getYForward());
-        assertEquals(xDown + 1, robotDown.getYForward());
-        assertEquals(xLeft, robotLeft.getYForward());
-        assertEquals(xRight, robotRight.getYForward());
+        assertEquals(yUp - 1, robotUp.getYForward());
+        assertEquals(yDown + 1, robotDown.getYForward());
+        assertEquals(yLeft, robotLeft.getYForward());
+        assertEquals(yRight, robotRight.getYForward());
     }
 
     @Test

@@ -2,10 +2,9 @@ package System.GameWorld;
 
 public class Grid {
 
-
     private final int height; /* The number of rows in this grid */
     private final int width; /* The number of columns in this grid */
-    private Cell[][] cells; /* The cells in this grid */
+    private final Cell[][] cells; /* The cells in this grid */
 
     public Grid(Cell[][] cells) {
         this(cells.length, cells[0].length, cells);
