@@ -1,5 +1,12 @@
 package Controllers;
 
+import System.GameWorld.Level.LevelLoader;
+
 public class LevelController {
-    // TODO wss geen controller maar logic -> ui flow
+
+    static LevelLoader loader = new LevelLoader();
+
+    public static void resetLevel() {
+        loader.loadLevel();
+    }
 }

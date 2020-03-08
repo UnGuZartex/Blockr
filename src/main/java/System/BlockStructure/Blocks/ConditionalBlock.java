@@ -1,21 +1,20 @@
 package System.BlockStructure.Blocks;
 
+import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
-import System.BlockStructure.Connectors.Plug;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
+import com.sun.tools.javac.Main;
 
 public abstract class ConditionalBlock extends Block {
 
-    private final Plug leftPlug;
+    protected final MainConnector mainConnector;
 
     protected <B extends ConditionalBlock> ConditionalBlock(int id, ConditionalBlockFunctionality<B> functionality) {
         super(id, functionality);
+        mainConnector = new MainConnector(this, Orientation.FACING_LEFT, Type.PLUG);
         functionality.setBlock((B) this);
-        leftPlug = new Plug(this, Orientation.FACING_LEFT);
-    }
-
-    public Plug getLeftPlug() {
-        return leftPlug;
     }
 
     @Override
@@ -31,5 +30,15 @@ public abstract class ConditionalBlock extends Block {
     @Override
     public boolean canBeStarter() {
         return false;
+    }
+
+    @Override
+    public MainConnector getMainConnector() {
+        return mainConnector;
+    }
+
+    @Override
+    public Block returnToClosestCavity() {
+        return null;
     }
 }

@@ -3,37 +3,23 @@ import System.BlockStructure.Functionality.IfFunctionality;
 
 public class IfBlock extends CavityBlock {
 
-    private boolean skip = false;
 
     public IfBlock(int id) {
         super(id, new IfFunctionality());
     }
+
     @Override
-    public boolean getSkip() {
-        return skip;
+    public Block returnToClosestCavity() {
+        return getNext();
     }
 
     @Override
     public boolean hasNext() {
-        if (getFunctionality().getEvaluation() && !skip) {
-            return getCavityPlug().isConnected();
+        if (getFunctionality().getEvaluation()) {
+            return getCavitySubConnector().isConnected();
         }
         else {
-            return getBottomPlug().isConnected();
-        }
-    }
-
-    @Override
-    public Block getNext() {
-        if (getFunctionality().getEvaluation() && !skip) {
-            System.out.println("Got here");
-            skip = true;
-            return getCavityPlug().getConnectedBlock();
-        }
-        else {
-            System.out.println("Got here 2.0");
-            skip = false;
-            return getBottomPlug().getConnectedBlock();
+            return getSubConnectors()[0].isConnected();
         }
     }
 }

@@ -2,28 +2,28 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
-public class Plug extends Connector {
+public class MainConnector extends Connector {
 
-    public Plug(Block block, Orientation orientation) {
-        super(block, orientation);
+    public MainConnector(Block block, Orientation orientation, Type type) {
+        super(block, orientation, type);
     }
 
-    public void connect (Socket socket) throws IllegalStateException, IllegalArgumentException  {
+    public void connect (SubConnector subConnector) throws IllegalStateException, IllegalArgumentException  {
 
         if (this.isConnected()) {
             throw new IllegalStateException("This plug is already connected to another socket!");
         }
 
-        if (socket.isConnected()) {
+        if (subConnector.isConnected()) {
             throw new IllegalArgumentException("The given socket is already connected to another plug!");
         }
 
-        if (!canHaveAsSocket(socket)) {
+        if (!canHaveAsSocket(subConnector)) {
             throw new IllegalArgumentException("The given socket is not compatible with this plug!");
         }
 
-        connectedConnector = socket;
-        socket.connect(this);
+        connectedConnector = subConnector;
+        subConnector.connect(this);
     }
 
     @Override
@@ -38,7 +38,8 @@ public class Plug extends Connector {
         tempSocket.disconnect();
     }
 
-    private boolean canHaveAsSocket(Socket socket) {
-        return socket != null && getOrientation().isOpposite(socket.getOrientation());
+    private boolean canHaveAsSocket(SubConnector subConnector) {
+        return subConnector != null && getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
     }
+
 }

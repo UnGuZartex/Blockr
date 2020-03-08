@@ -8,9 +8,13 @@ public abstract class Connector {
     private final Orientation orientation;
     private final Block block;
 
-    public Connector(Block block, Orientation orientation) {
+
+    private final Type type;
+
+    public Connector(Block block, Orientation orientation, Type type) {
         this.block = block;
         this.orientation = orientation;
+        this.type = type;
     }
 
     public Orientation getOrientation() {
@@ -19,6 +23,11 @@ public abstract class Connector {
 
     public Connector getConnectedConnector() {
         return connectedConnector;
+    }
+
+
+    public Type getType() {
+        return type;
     }
 
     public boolean isConnected() {

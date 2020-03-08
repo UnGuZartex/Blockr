@@ -1,58 +1,57 @@
 package System.BlockStructure.Blocks;
 
+import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
-import System.BlockStructure.Connectors.Plug;
-import System.BlockStructure.Connectors.Socket;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
-import System.BlockStructure.Functionality.IfFunctionality;
 
 public abstract class CavityBlock extends FunctionalBlock {
 
-    private final Plug cavityPlug;
-    private final Socket cavitySocket;
-    private final Socket conditionalSocket;
+    private final SubConnector cavitySubConnector;
+    private final SubConnector conditionalSubConnector;
 
     protected <B extends CavityBlock> CavityBlock(int id, ConditionalBlockFunctionality<B> functionality) {
         super(id, functionality);
         functionality.setBlock((B) this);
-        cavityPlug = new Plug(this, Orientation.FACING_DOWN);
-        cavitySocket = new Socket(this, Orientation.FACING_UP);
-        conditionalSocket = new Socket(this, Orientation.FACING_RIGHT);
+        cavitySubConnector = new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG);
+        conditionalSubConnector = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
     }
 
-    public Plug getCavityPlug() {
-        return cavityPlug;
+
+    public SubConnector getCavitySubConnector() {
+        return cavitySubConnector;
     }
 
-    public Socket getCavitySocket() {
-        return cavitySocket;
-    }
-
-    public Socket getConditionalSocket() {
-        return conditionalSocket;
+    public SubConnector getConditionalSubConnector() {
+        return conditionalSubConnector;
     }
 
     public Block getCondition() {
-        return conditionalSocket.getConnectedConnector().getBlock();
+        return conditionalSubConnector.getConnectedConnector().getBlock();
     }
 
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation()) {
-            return cavityPlug.getConnectedConnector() != null;
+            return cavitySubConnector.getConnectedConnector() != null;
         }
         else {
-            return getBottomPlug().getConnectedConnector() != null;
+            return getSubConnectors()[0].getConnectedConnector() != null;
         }
     }
 
     @Override
     public Block getNext() {
         if (getFunctionality().getEvaluation()) {
-            return cavityPlug.getConnectedBlock();
+            setAlreadyRan(false);
+            return cavitySubConnector.getConnectedBlock();
         }
         else {
-            return getBottomPlug().getConnectedBlock();
+            setAlreadyRan(true);
+            cavitySubConnector.getConnectedBlock().reset();
+            return getSubConnectors()[0].getConnectedBlock();
         }
     }
+
 }

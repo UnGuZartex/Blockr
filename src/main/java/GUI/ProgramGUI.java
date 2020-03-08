@@ -4,11 +4,9 @@ package GUI;
 import Controllers.ProgramController;
 import GUI.Images.ImageLibrary;
 import GUI.Images.ImagePreLoader;
-import System.BlockStructure.Blocks.MoveForwardBlock;
-import System.BlockStructure.Blocks.TurnRightBlock;
-import System.BlockStructure.Blocks.WallInFrontBlock;
-import System.BlockStructure.Blocks.WhileBlock;
+import System.BlockStructure.Blocks.*;
 import System.GameWorld.Level.LevelLoader;
+import System.Logic.ProgramArea.ConnectionHandler;
 
 import java.awt.*;
 
@@ -24,12 +22,31 @@ public class ProgramGUI {
 
         WallInFrontBlock wallInFrontBlock = new WallInFrontBlock(5);
         TurnRightBlock turnRightBlock = new TurnRightBlock(85);
+        TurnLeftBlock turnLeftBlock = new TurnLeftBlock(88);
+        TurnLeftBlock turnLeftBlock2 = new TurnLeftBlock(900);
+        NotBlock notBlock = new NotBlock(900);
+
+
+
         MoveForwardBlock moveForwardBlock = new MoveForwardBlock(856);
 
-        wallInFrontBlock.getLeftPlug().connect( whileBlock.getConditionalSocket());
-        whileBlock.getCavityPlug().connect(turnRightBlock.getTopSocket());
-        whileBlock.getBottomPlug().connect(moveForwardBlock.getTopSocket());
-        turnRightBlock.getBottomPlug().connect(whileBlock.getCavitySocket());
+        ConnectionHandler connectionHandler = new ConnectionHandler();
+
+
+
+        connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
+        connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
+
+        //wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());
+
+
+        connectionHandler.connect(turnRightBlock, whileBlock.getCavitySubConnector());
+        connectionHandler.connect(turnLeftBlock2, turnLeftBlock.getSubConnectors()[0]);
+        //turnRightBlock.getMainConnector().connect(whileBlock.getCavitySubConnector());
+        connectionHandler.connect(turnLeftBlock, whileBlock.getCavitySubConnector());
+
+        connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectors()[0]);
+        //moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
 
         ProgramController.addBlock(whileBlock);
 
