@@ -13,10 +13,6 @@ public class IfBlock extends CavityBlock {
         return skip;
     }
 
-    public void setSkip(boolean b) {
-        skip = b;
-    }
-
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation() && !skip) {
@@ -36,7 +32,6 @@ public class IfBlock extends CavityBlock {
         }
         else {
             System.out.println("Got here 2.0");
-
             skip = false;
             return getBottomPlug().getConnectedBlock();
         }

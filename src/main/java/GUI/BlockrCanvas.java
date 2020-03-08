@@ -1,5 +1,6 @@
 package GUI;
 
+import Controllers.ProgramController;
 import GUI.Painters.Painter;
 import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
@@ -7,6 +8,7 @@ import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.OptionalInt;
@@ -98,5 +100,13 @@ public class BlockrCanvas extends CanvasWindow {
         panels[0] = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height);
         panels[1] = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
         panels[2] = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
+    }
+
+    @Override
+    protected void handleKeyEvent(int id, int keyCode, char keyChar) {
+        if(keyCode == KeyEvent.VK_F5) {
+            ProgramController.runProgramStep();
+            repaint();
+        }
     }
 }

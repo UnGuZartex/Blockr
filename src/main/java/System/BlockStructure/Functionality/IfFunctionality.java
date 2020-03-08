@@ -11,7 +11,6 @@ public class IfFunctionality extends ConditionalBlockFunctionality<IfBlock> {
         BlockFunctionality functionality = block.getCondition().getFunctionality();
         functionality.evaluate(level);
         evaluation = functionality.getEvaluation();
-        block.getNext().getFunctionality().evaluate(level);
     }
 
     @Override

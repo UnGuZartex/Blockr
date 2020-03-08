@@ -35,9 +35,9 @@ public class Level {
     public boolean canMoveForward() {
         int x = robot.getXForward();
         int y = robot.getYForward();
-        return !grid.getCellAt(x, y).getCellType().canWalkOn() &&
-                x > 0 && x < grid.getWidth() &&
-                y > 0 && y < grid.getHeight();
+        return grid.getCellAt(x, y).getCellType().canWalkOn() &&
+                x >= 0 && x <= grid.getWidth() &&
+                y >= 0 && y <= grid.getHeight();
     }
 
     public CellType getTypeForward() {
