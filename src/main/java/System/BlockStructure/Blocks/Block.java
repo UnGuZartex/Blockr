@@ -9,6 +9,12 @@ public abstract class Block {
     private final int id;
     private final BlockFunctionality functionality;
 
+    public boolean isAlreadyRan() {
+        return alreadyRan;
+    }
+
+    private boolean alreadyRan = false;
+
 
     protected Block(int id, BlockFunctionality functionality) {
         this.id = id;
@@ -30,9 +36,19 @@ public abstract class Block {
 
     public abstract boolean canBeStarter();
 
-    public boolean getSkip() {
-        return false;
+    public abstract Block returnToClosestCavity();
+
+    public void setAlreadyRan(boolean b) {
+        alreadyRan = b;
     }
 
-    public abstract Block returnToClosestCavity();
+    public void reset() {
+        alreadyRan = false;
+        for(int i = 0; i < getSubConnectors().length; i++) {
+            if (getSubConnectors()[i].isConnected()) {
+                Block connectBlock = getSubConnectors()[i].getConnectedBlock();
+                connectBlock.reset();
+            }
+        }
+    }
 }

@@ -36,4 +36,9 @@ public abstract class ConditionalBlock extends Block {
     public MainConnector getMainConnector() {
         return mainConnector;
     }
+
+    @Override
+    public Block returnToClosestCavity() {
+        return null;
+    }
 }

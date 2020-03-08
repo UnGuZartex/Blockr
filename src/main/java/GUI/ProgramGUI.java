@@ -30,7 +30,6 @@ public class ProgramGUI {
 
         turnRightBlock.getMainConnector().connect(whileBlock.getCavitySubConnector());
         moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
-        whileBlock.getCavityMainConnector().connect(turnRightBlock.getSubConnectors()[0]);
 
         ProgramController.addBlock(whileBlock);
 

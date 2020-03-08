@@ -14,28 +14,27 @@ public class Program {
     }
 
     public void executeStep() {
-        if (currentBlock != null) {
+        if (currentBlock != startBlock || !currentBlock.isAlreadyRan()) {
             System.out.println("Evaluating: " + currentBlock.getFunctionality());
             currentBlock.getFunctionality().evaluate(GameState.currentLevel);
-            Block nextBlock = null;
-            if (currentBlock.hasNext()) {
+            currentBlock.setAlreadyRan(true);
+
+            Block nextBlock;
+            if (!currentBlock.hasNext()) {
+                nextBlock = currentBlock.returnToClosestCavity();
+            } else {
                 nextBlock = currentBlock.getNext();
-                while (nextBlock.getSkip() && currentBlock.hasNext()) {
-                    nextBlock = nextBlock.getNext();
-                }
             }
-            currentBlock.getFunctionality().reset();
             currentBlock = nextBlock;
-        } else {
-            if (hasWon()){
-                System.out.println("YOU WIN!");
-            }
-            currentBlock = null;
         }
+
+
     }
 
     public void resetProgram() {
         currentBlock = startBlock;
+        startBlock.reset();
+
     }
 
     public boolean hasWon() {

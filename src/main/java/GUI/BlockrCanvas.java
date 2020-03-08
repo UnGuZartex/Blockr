@@ -1,6 +1,7 @@
 package GUI;
 
 
+import Controllers.LevelController;
 import GUI.Images.ImageLibrary;
 import Controllers.ProgramController;
 import GUI.Panel.GamePanel;
@@ -109,7 +110,12 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
         if (keyCode == KeyEvent.VK_F5) {
             ProgramController.runProgramStep();
-            repaint();
         }
+        if (keyCode == KeyEvent.VK_ESCAPE) {
+            ProgramController.resetProgram();
+            LevelController.resetLevel();
+        }
+        repaint();
+
     }
 }

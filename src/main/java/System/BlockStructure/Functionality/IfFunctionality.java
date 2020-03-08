@@ -13,8 +13,4 @@ public class IfFunctionality extends ConditionalBlockFunctionality<IfBlock> {
         evaluation = functionality.getEvaluation();
     }
 
-    @Override
-    public void reset() {
-        super.reset();
-    }
 }

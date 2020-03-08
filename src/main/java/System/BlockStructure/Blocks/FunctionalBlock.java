@@ -43,4 +43,8 @@ public abstract class FunctionalBlock extends Block {
         return subConnector;
     }
 
+    @Override
+    public Block returnToClosestCavity() {
+        return mainConnector.getConnectedBlock().returnToClosestCavity();
+    }
 }

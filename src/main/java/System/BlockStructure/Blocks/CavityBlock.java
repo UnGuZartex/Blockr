@@ -44,9 +44,12 @@ public abstract class CavityBlock extends FunctionalBlock {
     @Override
     public Block getNext() {
         if (getFunctionality().getEvaluation()) {
+            setAlreadyRan(false);
             return cavitySubConnector.getConnectedBlock();
         }
         else {
+            setAlreadyRan(true);
+            cavitySubConnector.getConnectedBlock().reset();
             return getSubConnectors()[0].getConnectedBlock();
         }
     }

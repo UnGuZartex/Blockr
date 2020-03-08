@@ -11,7 +11,9 @@ public class ProgramController {
         PA.addProgram(block);
     }
 
-    public void resetProgram() {
+    public static void resetProgram() {
+        Program program = PA.getProgram();
+        program.resetProgram();
 
     }
 
