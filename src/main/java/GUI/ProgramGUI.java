@@ -19,18 +19,18 @@ public class ProgramGUI {
         BlockrCanvas canvas = new BlockrCanvas("Blockr");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         canvas.setDimensions(screenSize.width, screenSize.height);
-        IfBlock ifBlock = new IfBlock(58);
+        WhileBlock whileBlock = new WhileBlock(58);
 
         WallInFrontBlock wallInFrontBlock = new WallInFrontBlock(5);
-        TurnLeftBlock turnRightBlock = new TurnLeftBlock(85);
+        TurnRightBlock turnRightBlock = new TurnRightBlock(85);
         MoveForwardBlock moveForwardBlock = new MoveForwardBlock(856);
 
-        wallInFrontBlock.getLeftPlug().connect( ifBlock.getConditionalSocket());
-        ifBlock.getCavityPlug().connect(turnRightBlock.getTopSocket());
-        ifBlock.getBottomPlug().connect(moveForwardBlock.getTopSocket());
-        turnRightBlock.getBottomPlug().connect(ifBlock.getCavitySocket());
+        wallInFrontBlock.getLeftPlug().connect( whileBlock.getConditionalSocket());
+        whileBlock.getCavityPlug().connect(turnRightBlock.getTopSocket());
+        whileBlock.getBottomPlug().connect(moveForwardBlock.getTopSocket());
+        turnRightBlock.getBottomPlug().connect(whileBlock.getCavitySocket());
 
-        ProgramController.addBlock(ifBlock);
+        ProgramController.addBlock(whileBlock);
 
 
 
