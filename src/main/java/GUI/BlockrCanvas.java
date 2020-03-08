@@ -1,9 +1,12 @@
 package GUI;
 
 import GUI.GameWorld.GameWorldPainter;
+import GUI.Images.ImageLibrary;
+import GUI.Images.ImagePreLoader;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -25,10 +28,11 @@ public class BlockrCanvas extends CanvasWindow {
      *
      * @param title Window title
      */
-    protected BlockrCanvas(String title) {
+    protected BlockrCanvas(String title, ImageLibrary library) {
         super(title);
         painters = new Painter[3];
 
+        Painter.setImageLibrary(library);
         setPainters();
         initTestBlocks();
     }
@@ -44,6 +48,7 @@ public class BlockrCanvas extends CanvasWindow {
 
         g.setColor(Color.lightGray);
         g.fillRect(0, 0, width, height);
+        g.setColor(Color.black);
 
         for(Painter painter : painters) {
             painter.paint(g);

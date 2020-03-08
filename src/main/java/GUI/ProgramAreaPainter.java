@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class ProgramAreaPainter extends Painter {
 
@@ -11,7 +10,12 @@ public class ProgramAreaPainter extends Painter {
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.BLUE);
+        drawBackground(g);
+    }
+
+    @Override
+    protected void drawBackground(Graphics g) {
+        g.drawImage(library.getProgramAreaBackgroundImage(), cornerX, cornerY, width, height, null);
         g.drawRect(cornerX, cornerY, width, height);
     }
 }

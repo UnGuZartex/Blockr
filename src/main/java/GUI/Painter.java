@@ -1,10 +1,12 @@
 package GUI;
 
+import GUI.Images.ImageLibrary;
+
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public abstract class Painter {
 
+    protected static ImageLibrary library;
     protected int cornerX;
     protected int cornerY;
     protected int width;
@@ -15,6 +17,12 @@ public abstract class Painter {
         this.cornerY = cornerY;
         this.width = width;
         this.height = height;
+    }
+
+    protected abstract void drawBackground(Graphics g);
+
+    public static void setImageLibrary(ImageLibrary library) {
+        Painter.library = library;
     }
 
     public abstract void paint(Graphics g);
