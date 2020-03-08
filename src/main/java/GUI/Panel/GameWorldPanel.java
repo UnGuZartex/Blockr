@@ -2,6 +2,7 @@ package GUI.Panel;
 
 import Controllers.LevelDataLoader;
 import System.GameWorld.Cell;
+import System.GameWorld.Direction;
 
 import java.awt.*;
 
@@ -10,6 +11,7 @@ public class GameWorldPanel extends GamePanel {
     private LevelDataLoader loader = new LevelDataLoader();
     private Point gridCellSize;
     private Point robotPos;
+    private Direction robotDirection;
     private int cellSize;
     private int gridStartingPointX;
     private int gridStartingPointY;
@@ -24,12 +26,15 @@ public class GameWorldPanel extends GamePanel {
 
     private void initializeData() {
         robotPos = loader.getRobotPosition();
+        robotDirection = loader.getRobotDirection();
         gridCellSize = loader.getGridSize();
         cells = loader.getGridCells();
     }
 
     @Override
     public void paint(Graphics g) {
+        // TODO alleen robot pos
+        initializeData();
         g.setColor(Color.BLACK);
         drawBackground(g);
         drawGrid(g);
@@ -63,6 +68,6 @@ public class GameWorldPanel extends GamePanel {
     }
 
     private void drawRobot(Graphics g) {
-        g.drawImage(library.getRobotImage(), gridStartingPointX + robotPos.x * cellSize, gridStartingPointY + robotPos.y * cellSize, cellSize, cellSize, null);
+        g.drawImage(library.getRobotImage(robotDirection.name()), gridStartingPointX + robotPos.x * cellSize, gridStartingPointY + robotPos.y * cellSize, cellSize, cellSize, null);
     }
 }
