@@ -107,7 +107,7 @@ public class BlockrCanvas extends CanvasWindow {
 
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
-        if(keyCode == KeyEvent.VK_F5) {
+        if (keyCode == KeyEvent.VK_F5) {
             ProgramController.runProgramStep();
             repaint();
         }

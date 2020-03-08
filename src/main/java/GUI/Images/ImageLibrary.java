@@ -20,10 +20,6 @@ public class ImageLibrary {
         this.images = images;
     }
 
-    public Image getRobotImage() {
-        return getImage(robotFileName);
-    }
-
     public Image getGameWorldBackgroundImage() {
         return getImage(gameWorldBackGroundFileName);
     }
@@ -34,6 +30,10 @@ public class ImageLibrary {
 
     public Image getPaletteBackgroundImage() {
         return getImage(paletteBackground);
+    }
+
+    public Image getRobotImage(String directionName) {
+        return getImage(robotFileName + directionName);
     }
 
     public Image getImage(String imageName) {
