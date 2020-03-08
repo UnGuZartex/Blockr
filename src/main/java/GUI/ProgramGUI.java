@@ -26,10 +26,11 @@ public class ProgramGUI {
         TurnRightBlock turnRightBlock = new TurnRightBlock(85);
         MoveForwardBlock moveForwardBlock = new MoveForwardBlock(856);
 
-        wallInFrontBlock.getLeftPlug().connect( whileBlock.getConditionalSocket());
-        whileBlock.getCavityPlug().connect(turnRightBlock.getTopSocket());
-        whileBlock.getBottomPlug().connect(moveForwardBlock.getTopSocket());
-        turnRightBlock.getBottomPlug().connect(whileBlock.getCavitySocket());
+        wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());
+
+        turnRightBlock.getMainConnector().connect(whileBlock.getCavitySubConnector());
+        moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
+        whileBlock.getCavityMainConnector().connect(turnRightBlock.getSubConnectors()[0]);
 
         ProgramController.addBlock(whileBlock);
 

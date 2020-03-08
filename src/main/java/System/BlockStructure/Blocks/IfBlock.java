@@ -16,10 +16,10 @@ public class IfBlock extends CavityBlock {
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation() && !skip) {
-            return getCavityPlug().isConnected();
+            return getCavitySubConnector().isConnected();
         }
         else {
-            return getBottomPlug().isConnected();
+            return getSubConnectors()[0].isConnected();
         }
     }
 
@@ -28,12 +28,12 @@ public class IfBlock extends CavityBlock {
         if (getFunctionality().getEvaluation() && !skip) {
             System.out.println("Got here");
             skip = true;
-            return getCavityPlug().getConnectedBlock();
+            return getCavitySubConnector().getConnectedBlock();
         }
         else {
             System.out.println("Got here 2.0");
             skip = false;
-            return getBottomPlug().getConnectedBlock();
+            return getSubConnectors()[0].getConnectedBlock();
         }
     }
 }

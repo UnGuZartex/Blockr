@@ -1,42 +1,46 @@
 package System.BlockStructure.Blocks;
 
+import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
-import System.BlockStructure.Connectors.Plug;
-import System.BlockStructure.Connectors.Socket;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
-import System.BlockStructure.Functionality.IFunctionality;
 
 public abstract class FunctionalBlock extends Block {
 
-    private final Plug bottomPlug;
-    private final Socket topSocket;
+    private final MainConnector mainConnector;
+
+    private final SubConnector[] subConnector;
 
     protected FunctionalBlock(int id, BlockFunctionality functionality) {
         super(id, functionality);
-        bottomPlug = new Plug(this, Orientation.FACING_DOWN);
-        topSocket = new Socket(this, Orientation.FACING_UP);
-    }
+         mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
+         subConnector = new SubConnector[]{new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG)};
 
-    public Socket getTopSocket() {
-        return topSocket;
     }
-
-    public Plug getBottomPlug() {
-        return bottomPlug;
-    }
-
     @Override
     public boolean hasNext() {
-        return bottomPlug.isConnected();
+        return subConnector[0].isConnected();
     }
 
     @Override
     public Block getNext() {
-        return getBottomPlug().getConnectedBlock();
+        return subConnector[0].getConnectedBlock();
     }
 
     @Override
     public boolean canBeStarter() {
         return true;
     }
+
+    @Override
+    public MainConnector getMainConnector() {
+        return mainConnector;
+    }
+
+    @Override
+    public SubConnector[] getSubConnectors() {
+        return subConnector;
+    }
+
 }
