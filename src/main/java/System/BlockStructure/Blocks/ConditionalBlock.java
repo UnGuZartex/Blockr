@@ -8,9 +8,9 @@ public abstract class ConditionalBlock extends Block {
 
     private final Plug leftPlug;
 
-    protected ConditionalBlock(int id, ConditionalBlockFunctionality<ConditionalBlock> functionality) {
+    protected <B extends ConditionalBlock> ConditionalBlock(int id, ConditionalBlockFunctionality<B> functionality) {
         super(id, functionality);
-        functionality.setBlock(this);
+        functionality.setBlock((B) this);
         leftPlug = new Plug(this, Orientation.FACING_LEFT);
     }
 

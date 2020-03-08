@@ -4,6 +4,7 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Plug;
 import System.BlockStructure.Connectors.Socket;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
+import System.BlockStructure.Functionality.IfFunctionality;
 
 public abstract class CavityBlock extends FunctionalBlock {
 
@@ -11,9 +12,9 @@ public abstract class CavityBlock extends FunctionalBlock {
     private final Socket cavitySocket;
     private final Socket conditionalSocket;
 
-    protected CavityBlock(int id, ConditionalBlockFunctionality<CavityBlock> functionality) {
+    protected <B extends CavityBlock> CavityBlock(int id, ConditionalBlockFunctionality<B> functionality) {
         super(id, functionality);
-        functionality.setBlock(this);
+        functionality.setBlock((B) this);
         cavityPlug = new Plug(this, Orientation.FACING_DOWN);
         cavitySocket = new Socket(this, Orientation.FACING_UP);
         conditionalSocket = new Socket(this, Orientation.FACING_RIGHT);
