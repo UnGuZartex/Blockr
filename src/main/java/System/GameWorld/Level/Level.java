@@ -11,6 +11,7 @@ public class Level {
     private Robot robot;
 
     public Level(Point robotPosition, Direction robotDirection, Cell[][] gridCells) {
+        // TODO check if robot is in field ? => invariant, must be checked after every robot movement
         this.grid = new Grid(gridCells);
         this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
     }
@@ -66,7 +67,7 @@ public class Level {
         int y = robot.getYForward();
         return x >= 0 && x < grid.getWidth() &&
                y >= 0 && y < grid.getHeight() &&
-               !grid.getCellAt(x, y).getCellType().canWalkOn();
+               getTypeForward().canWalkOn();
     }
 
     /**
@@ -87,4 +88,3 @@ public class Level {
         }
     }
 }
-
