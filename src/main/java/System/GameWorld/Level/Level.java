@@ -5,17 +5,61 @@ import System.GameWorld.Robot;
 
 import java.awt.*;
 
+/**
+ * A class for the level, containing a Robot and a grid.
+ *
+ * @invar The coordinates for the robot must be a valid position in the grid.
+ *        | isValidRobotPositionInCells(getRobot().getX(), getRobot().getY(), getGrid().getCells())
+ *
+ * @author Alpha-team
+ */
 public class Level {
 
-    private Grid grid;
-    private Robot robot;
+    /**
+     * Variable referring to the robot in this level.
+     */
+    private final Robot robot;
+    /**
+     * Variable referring to the grid in this level.
+     */
+    private final Grid grid;
 
-    public Level(Point robotPosition, Direction robotDirection, Cell[][] gridCells) {
-        // TODO check if robot is in field ? => invariant, must be checked after every robot movement
-        this.grid = new Grid(gridCells);
+    /**
+     * Initialise a new level with given robot positiona and direction,
+     * as well as the cells for the grid of the level.
+     *
+     * @param robotPosition The position for the robot of this level.
+     * @param robotDirection The direction for the robot of this level.
+     * @param gridCells The cells for the grid of this level.
+     *
+     * @throws IllegalArgumentException
+     *         When the given robot position is an invalid position in the cells.
+     */
+    public Level(Point robotPosition, Direction robotDirection, Cell[][] gridCells) throws IllegalArgumentException {
+        if (!isValidRobotPositionInCells(robotPosition.x, robotPosition.y, gridCells)) {
+            throw new IllegalArgumentException("The given robot position is invalid in the cells");
+        }
         this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
+        this.grid = new Grid(gridCells);
     }
 
+    /**
+     * Check whether or not given robot coordinates and grid are valid.
+     *
+     * @param x The x coordinate for the robot to check.
+     * @param y The y coordinate for the robot to check.
+     * @param cells The cells to check.
+     *
+     * @return True if and only if the given coordinates are smaller than
+     *         the dimensions of the cells and greater than 0 and the given
+     *         coordinates correspond to a cell in the given cells which has
+     *         a walkable CellType.
+     */
+    public static boolean isValidRobotPositionInCells(int x, int y, Cell[][] cells) {
+        return x < cells.length && x >= 0 &&
+               y < cells[0].length && y >= 0 &&
+               cells[x][y].getCellType().canWalkOn();
+   }
 
     /**
      * Get the robot of this Level.

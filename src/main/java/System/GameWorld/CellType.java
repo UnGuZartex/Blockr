@@ -1,5 +1,10 @@
 package System.GameWorld;
 
+/**
+ * An enum for the different types of cells.
+ *
+ * @author Alpha-team
+ */
 public enum CellType {
 
     BLANK(true, false),

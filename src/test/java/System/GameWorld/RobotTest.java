@@ -45,6 +45,18 @@ class RobotTest {
     }
 
     @Test
+    void isValidCoordinates() {
+        assertTrue(Robot.isValidCoordinates(1,1));
+        assertTrue(Robot.isValidCoordinates(0,1));
+        assertTrue(Robot.isValidCoordinates(1,0));
+        assertTrue(Robot.isValidCoordinates(0,0));
+
+        assertFalse(Robot.isValidCoordinates(-1,1));
+        assertFalse(Robot.isValidCoordinates(1,-1));
+        assertFalse(Robot.isValidCoordinates(-1,-1));
+    }
+
+    @Test
     void getDirection() {
         assertEquals(Direction.UP, robotUp.getDirection());
         assertEquals(Direction.DOWN, robotDown.getDirection());

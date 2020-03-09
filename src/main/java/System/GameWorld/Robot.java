@@ -1,5 +1,12 @@
 package System.GameWorld;
 
+/**
+ * A class representing a robot. This has coordinates and a direction.
+ *
+ * TODO invariant isValidCoordinates() and apply on functions
+ *
+ * @author Alpha-team
+ */
 public class Robot {
 
     /**
@@ -19,17 +26,21 @@ public class Robot {
      * Initialise a new robot with given x and y coordinates, as
      * well as a direction.
      *
-     * @param x
-     *        The initial x coordinate for this robot.
-     * @param y
-     *        The initial x coordinate for this robot.
-     * @param direction
-     *        The initial direction for this robot.
+     * @param x The initial x coordinate for this robot.
+     * @param y The initial x coordinate for this robot.
+     * @param direction The initial direction for this robot.
+     *
+     * @pre The x and y coordinates must be greater than or
+     *       equal to 0.
      */
     public Robot(int x, int y, Direction direction) {
         this.x = x;
         this.y = y;
         this.direction = direction;
+    }
+
+    public static boolean isValidCoordinates(int x, int y) {
+        return x >= 0 && y >= 0;
     }
 
     /**
