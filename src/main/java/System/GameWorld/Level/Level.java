@@ -2,7 +2,6 @@ package System.GameWorld.Level;
 
 import System.GameWorld.*;
 import System.GameWorld.Robot;
-import System2.GameWorld.*;
 
 import java.awt.*;
 
