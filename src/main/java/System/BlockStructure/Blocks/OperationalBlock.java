@@ -23,6 +23,13 @@ public class OperationalBlock extends ConditionalBlock {
         return getSubConnectors()[index];
     }
 
+
+    @Override
+    public boolean hasNext() {
+
+        return subConnectors[counter].isConnected();
+    }
+
     @Override
     public Block getNext() {
         if (counter >= subConnectors.length) {
@@ -34,5 +41,22 @@ public class OperationalBlock extends ConditionalBlock {
     @Override
     public SubConnector[] getSubConnectors() {
         return subConnectors;
+    }
+
+    @Override
+    public boolean isValid() {
+        if (!getMainConnector().isConnected()) {
+            return false;
+        }
+        boolean toReturn = true;
+        for (int i = 0; i < subConnectors.length; i++) {
+            if (subConnectors[i].isConnected()) {
+                toReturn = toReturn && subConnectors[i].getConnectedBlock().isValid();
+            }
+            else {
+                return false;
+            }
+        }
+        return toReturn;
     }
 }

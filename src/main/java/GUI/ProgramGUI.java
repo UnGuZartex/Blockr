@@ -38,12 +38,12 @@ public class ProgramGUI {
 
         ConnectionHandler connectionHandler = new ConnectionHandler();
 
-        connectionHandler.connect(whileBlock, whileBlock2.getCavitySubConnector());
+        //connectionHandler.connect(whileBlock, whileBlock2.getCavitySubConnector());
 
-        connectionHandler.connect(wallInFrontBlock2, whileBlock2.getConditionalSubConnector());
+        //connectionHandler.connect(wallInFrontBlock2, whileBlock2.getConditionalSubConnector());
 
-        connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
-        connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
+        //connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
+        //connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
 
         //wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());
 
@@ -56,7 +56,7 @@ public class ProgramGUI {
         connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectors()[0]);
         //moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
 
-        ProgramController.addBlock(whileBlock2);
+        ProgramController.addBlock(whileBlock);
 
 
 
