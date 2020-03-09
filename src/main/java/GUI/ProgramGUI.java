@@ -20,7 +20,13 @@ public class ProgramGUI {
         canvas.setDimensions(screenSize.width, screenSize.height);
         WhileBlock whileBlock = new WhileBlock(58);
 
+        WhileBlock whileBlock2 = new WhileBlock(8555);
+
+
         WallInFrontBlock wallInFrontBlock = new WallInFrontBlock(5);
+
+        WallInFrontBlock wallInFrontBlock2 = new WallInFrontBlock(5);
+
         TurnRightBlock turnRightBlock = new TurnRightBlock(85);
         TurnLeftBlock turnLeftBlock = new TurnLeftBlock(88);
         TurnLeftBlock turnLeftBlock2 = new TurnLeftBlock(900);
@@ -32,7 +38,9 @@ public class ProgramGUI {
 
         ConnectionHandler connectionHandler = new ConnectionHandler();
 
+        connectionHandler.connect(whileBlock, whileBlock2.getCavitySubConnector());
 
+        connectionHandler.connect(wallInFrontBlock2, whileBlock2.getConditionalSubConnector());
 
         connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
         connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
@@ -48,7 +56,7 @@ public class ProgramGUI {
         connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectors()[0]);
         //moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
 
-        ProgramController.addBlock(whileBlock);
+        ProgramController.addBlock(whileBlock2);
 
 
 
