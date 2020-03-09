@@ -35,7 +35,7 @@ public class ProgramGUI {
 
 
         connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
-        connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
+        //connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
 
         //wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());
 

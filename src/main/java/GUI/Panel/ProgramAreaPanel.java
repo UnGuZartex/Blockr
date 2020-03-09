@@ -11,12 +11,12 @@ public class ProgramAreaPanel extends GamePanel {
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLUE);
+        drawBackground(g);
         g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
     }
 
     @Override
     protected void drawBackground(Graphics g) {
         g.drawImage(library.getProgramAreaBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-
     }
 }
