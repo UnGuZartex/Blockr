@@ -13,9 +13,9 @@ class RobotTest {
     private int xUp, yUp, xDown, yDown, xLeft, yLeft, xRight, yRight;
     private Robot robotUp, robotDown, robotLeft, robotRight;
     private Random random;
-    private static final int MIN_X = 0;
+    private static final int MIN_X = 1;
     private static final int MAX_X = 20;
-    private static final int MIN_Y = 0;
+    private static final int MIN_Y = 1;
     private static final int MAX_Y = 20;
 
     @BeforeEach
@@ -113,6 +113,7 @@ class RobotTest {
         robotRight.moveForward();
         assertEquals(xRight + 1, robotRight.getX());
         assertEquals(yRight, robotRight.getY());
+
     }
 
     @Test

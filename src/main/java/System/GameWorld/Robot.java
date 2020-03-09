@@ -3,7 +3,8 @@ package System.GameWorld;
 /**
  * A class representing a robot. This has coordinates and a direction.
  *
- * TODO invariant isValidCoordinates() and apply on functions
+ * @invar The robot's coordinates must be at all time valid.
+ *        | isValidCoordinates(getX(), getY())
  *
  * @author Alpha-team
  */
@@ -39,6 +40,14 @@ public class Robot {
         this.direction = direction;
     }
 
+    /**
+     * Checks whether or not the given coordinates are valid for a robot.
+     *
+     * @param x The x coordinate to check.
+     * @param y The Y coordinate to check.
+     *
+     * @return True if and only if the given coordinates are both greater than 0.
+     */
     public static boolean isValidCoordinates(int x, int y) {
         return x >= 0 && y >= 0;
     }
@@ -100,11 +109,16 @@ public class Robot {
 
     /**
      * Moves this robot one step forward in the Direction of
-     * this robot.
+     * this robot, if and only if the position forward for this
+     * robot are valid coordinates.
      */
     public void moveForward() {
-        x = getXForward();
-        y = getYForward();
+        int x = getXForward();
+        int y = getYForward();
+        if (isValidCoordinates(x,y)) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     /**
