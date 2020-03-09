@@ -9,6 +9,9 @@ public class WhileBlock extends CavityBlock {
 
     @Override
     public Block returnToClosestCavity() {
+        if (isAlreadyRan()) {
+            return super.returnToClosestCavity();
+        }
         return this;
     }
 }

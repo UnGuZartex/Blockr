@@ -28,7 +28,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     public Block getCondition() {
-        return conditionalSubConnector.getConnectedConnector().getBlock();
+        return conditionalSubConnector.getConnectedBlock();
     }
 
     @Override
@@ -54,4 +54,21 @@ public abstract class CavityBlock extends FunctionalBlock {
         }
     }
 
+    @Override
+    public boolean isValid() {
+        if (cavitySubConnector.isConnected()) {
+            if (getSubConnectors()[0].isConnected()) {
+                if (getConditionalSubConnector().isConnected()) {
+                    return cavitySubConnector.getConnectedBlock().isValid()
+                            && getSubConnectors()[0].getConnectedBlock().isValid()
+                            && getConditionalSubConnector().getConnectedBlock().isValid();
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
 }

@@ -5,8 +5,14 @@ import System.BlockStructure.Blocks.Block;
 import java.util.ArrayList;
 
 public class ProgramArea {
-    ArrayList<Program> programs = new ArrayList<>();
+    private ArrayList<Program> programs = new ArrayList<>();
     public ProgramArea() {
+    }
+
+    public void deleteProgram(Block blockToDelete) {
+        programs.stream().
+                filter(p -> p.getStartBlock() == blockToDelete).
+                findFirst().ifPresent(toDelete -> programs.remove(toDelete));
     }
 
     public Program getProgram() {

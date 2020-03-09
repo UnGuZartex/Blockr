@@ -1,10 +1,12 @@
-package System.BlockStructure.Connectors;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MainConnectorTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ConnectionHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -12,22 +14,6 @@ class MainConnectorTest {
 
     @AfterEach
     void tearDown() {
-    }
-
-    @Test
-    void getSocket() {
-    }
-
-    @Test
-    void isConnected() {
-    }
-
-    @Test
-    void hasProperSocket() {
-    }
-
-    @Test
-    void canHaveAsSocket() {
     }
 
     @Test

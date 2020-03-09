@@ -4,6 +4,7 @@ import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
