@@ -9,10 +9,10 @@ import java.util.Random;
 
 class GridTest {
 
-    private Grid grid1, grid2, grid3, grid4, grid5;
-    private Cell[][] cells1, cells2, cells3, cells4, cells5;
-    private int height1, height2, height3, height4, height5;
-    private int width1, width2, width3, width4, width5;
+    private Grid grid1, grid2, grid3, grid4, grid5, grid6;
+    private Cell[][] cells1, cells2, cells3, cells4, cells5, cells6;
+    private int height1, height2, height3, height4, height5, height6;
+    private int width1, width2, width3, width4, width5, width6;
     private static final int MAX_WIDTH = 20;
     private static final int MAX_HEIGHT = 20;
     private Random random;
@@ -30,12 +30,15 @@ class GridTest {
         height4 = random.nextInt(MAX_HEIGHT) + 1;
         width5 = random.nextInt(MAX_WIDTH) + 1;
         height5 = random.nextInt(MAX_HEIGHT) + 1;
+        width6 = random.nextInt(MAX_WIDTH) + 1;
+        height6 = random.nextInt(MAX_HEIGHT) + 1;
 
         grid1 = new Grid(width1, height1);
         grid2 = new Grid(width2, height2);
         grid3 = new Grid(width3, height3);
         grid4 = new Grid(width4, height4);
         grid5 = new Grid(width5, height5);
+        grid6 = new Grid(width6, height6);
     }
 
     @AfterEach
@@ -54,6 +57,7 @@ class GridTest {
         assertEquals(height3, grid3.getHeight());
         assertEquals(height4, grid4.getHeight());
         assertEquals(height5, grid5.getHeight());
+        assertEquals(height6, grid6.getHeight());
     }
 
     @Test
@@ -63,13 +67,21 @@ class GridTest {
         assertEquals(width3, grid3.getWidth());
         assertEquals(width4, grid4.getWidth());
         assertEquals(width5, grid5.getWidth());
-    }
-
-    @Test
-    void changeCell() {
+        assertEquals(width6, grid6.getWidth());
     }
 
     @Test
     void getCellAt() {
+
+    }
+
+    @Test
+    void getCells() {
+
+    }
+
+    @Test
+    void getDefaultType() {
+        assertEquals(CellType.BLANK, Grid.getDefaultType());
     }
 }
