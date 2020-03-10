@@ -1,14 +1,24 @@
 package System.Logic;
 
-import GUI.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 
-import java.awt.*;
+import java.util.HashMap;
+
 
 public class Converter {
 
+    private HashMap<String, Block> blockHashMap = new HashMap<>();
 
-    public GUIBlock convert(Block block, int index) {
-        return new GUIBlock(0,index*50, 50,50, Color.BLUE );
+
+    public Block convert(String id) {
+        return blockHashMap.get(id);
+    }
+
+    public void addBlock(String id, Block block) {
+        blockHashMap.put(id, block);
+    }
+
+    public void deleteBlock(String id) {
+        blockHashMap.remove(id);
     }
 }
