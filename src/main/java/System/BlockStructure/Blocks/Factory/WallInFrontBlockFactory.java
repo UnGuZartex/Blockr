@@ -6,6 +6,6 @@ import System.BlockStructure.Blocks.WallInFrontBlock;
 public class WallInFrontBlockFactory extends BlockFactory {
     @Override
     public ConditionalBlock getNewBlock() {
-        return new WallInFrontBlock(getID());
+        return new WallInFrontBlock();
     }
 }

@@ -5,6 +5,6 @@ import System.BlockStructure.Blocks.WhileBlock;
 public class WhileBlockFactory extends BlockFactory {
     @Override
     public WhileBlock getNewBlock() {
-        return new WhileBlock(getID());
+        return new WhileBlock();
     }
 }
