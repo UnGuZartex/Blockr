@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class ProgramArea {
     private ArrayList<Program> programs = new ArrayList<>();
-    public ProgramArea() {
-    }
+
+    private int maxAmountOfBlocks = 30;
 
     public void deleteProgram(Block blockToDelete) {
         programs.stream().
@@ -24,7 +24,26 @@ public class ProgramArea {
         }
     }
 
+    public int getAllBlocksCount() {
+        int sum = 0;
+        for (int i = 0; i < programs.size(); i++) {
+            sum += programs.get(i).getSize();
+        }
+        return sum;
+    }
+
     public void addProgram(Block startBlock) {
+        if (startBlock == null) {
+            throw new IllegalArgumentException("Block can't be null");
+        }
         programs.add(new Program(startBlock));
+    }
+
+    public int getMaxAmountOfBlocks() {
+        return maxAmountOfBlocks;
+    }
+
+    public void setMaxAmountOfBlocks(int maxAmountOfBlocks) {
+        this.maxAmountOfBlocks = maxAmountOfBlocks;
     }
 }

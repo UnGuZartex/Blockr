@@ -19,6 +19,8 @@ public class ProgramGUI {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         canvas.setDimensions(screenSize.width, screenSize.height);
         WhileBlock whileBlock = new WhileBlock();
+        ProgramController programController = new ProgramController();
+
 
         WhileBlock whileBlock2 = new WhileBlock();
 
@@ -56,8 +58,9 @@ public class ProgramGUI {
         connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectorAt(0));
         //moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
 
-        ProgramController.addBlock(whileBlock);
+        programController.addBlock(whileBlock);
 
+        System.out.println(programController.reachedMaxBlocks());
 
 
         java.awt.EventQueue.invokeLater(canvas::show);

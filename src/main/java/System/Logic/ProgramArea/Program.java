@@ -1,6 +1,7 @@
 package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.*;
+import System.BlockStructure.Connectors.SubConnector;
 import System.GameState.GameState;
 
 public class Program {
@@ -50,5 +51,21 @@ public class Program {
 
     public boolean isValidProgram() {
         return startBlock.isValid();
+    }
+
+    public int getSize() {
+        return getSizeOfBlock(startBlock);
+    }
+
+    private int getSizeOfBlock(Block block) {
+        int sizeOfSubConnectList = block.getSubConnectorListSize();
+        int sum = 1;
+        for (int i = 0; i < sizeOfSubConnectList; i++) {
+            SubConnector newSubconnector = block.getSubConnectorAt(i);
+            if (newSubconnector.isConnected()) {
+                sum += getSizeOfBlock(newSubconnector.getConnectedBlock());
+            }
+        }
+        return sum;
     }
 }
