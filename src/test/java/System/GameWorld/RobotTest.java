@@ -38,6 +38,8 @@ class RobotTest {
 
     @AfterEach
     void tearDown() {
+        random = null;
+
         robotUp = null;
         robotDown = null;
         robotLeft = null;

@@ -4,12 +4,24 @@ import System.BlockStructure.Blocks.Block;
 
 public abstract class Connector {
 
+    /**
+     * Variable referring to the connector to which this
+     * connector is connected.
+     */
     protected Connector connectedConnector;
+    /**
+     * Variable referring to the orientation of this connector.
+     */
     private final Orientation orientation;
+    /**
+     * Variable referring block of this connector.
+     */
     private final Block block;
-
-
+    /**
+     * Variable referring to the type of this connector.
+     */
     private final Type type;
+
 
     public Connector(Block block, Orientation orientation, Type type) {
         this.block = block;
