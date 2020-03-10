@@ -18,23 +18,32 @@ public class ProgramGUI {
         BlockrCanvas canvas = new BlockrCanvas("Blockr", library);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         canvas.setDimensions(screenSize.width, screenSize.height);
-        WhileBlock whileBlock = new WhileBlock(58);
+        WhileBlock whileBlock = new WhileBlock();
 
-        WallInFrontBlock wallInFrontBlock = new WallInFrontBlock(5);
-        TurnRightBlock turnRightBlock = new TurnRightBlock(85);
-        TurnLeftBlock turnLeftBlock = new TurnLeftBlock(88);
-        TurnLeftBlock turnLeftBlock2 = new TurnLeftBlock(900);
-        NotBlock notBlock = new NotBlock(900);
+        WhileBlock whileBlock2 = new WhileBlock();
 
 
+        WallInFrontBlock wallInFrontBlock = new WallInFrontBlock();
 
-        MoveForwardBlock moveForwardBlock = new MoveForwardBlock(856);
+        WallInFrontBlock wallInFrontBlock2 = new WallInFrontBlock();
+
+        TurnRightBlock turnRightBlock = new TurnRightBlock();
+        TurnLeftBlock turnLeftBlock = new TurnLeftBlock();
+        TurnLeftBlock turnLeftBlock2 = new TurnLeftBlock();
+        NotBlock notBlock = new NotBlock();
+
+
+
+        MoveForwardBlock moveForwardBlock = new MoveForwardBlock();
 
         ConnectionHandler connectionHandler = new ConnectionHandler();
 
+        //connectionHandler.connect(whileBlock, whileBlock2.getCavitySubConnector());
 
+        //connectionHandler.connect(wallInFrontBlock2, whileBlock2.getConditionalSubConnector());
 
         connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
+
         //connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
 
         //wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());

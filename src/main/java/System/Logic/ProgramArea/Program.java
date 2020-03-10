@@ -5,6 +5,8 @@ import System.GameState.GameState;
 
 public class Program {
 
+
+
     private Block startBlock;
     private Block currentBlock;
 
@@ -14,22 +16,27 @@ public class Program {
     }
 
     public void executeStep() {
-        if (currentBlock != startBlock || !currentBlock.isAlreadyRan()) {
-            System.out.println("Evaluating: " + currentBlock.getFunctionality());
-            currentBlock.getFunctionality().evaluate(GameState.currentLevel);
-            currentBlock.setAlreadyRan(true);
+        if (isValidProgram()) {
+            if (currentBlock != startBlock || !currentBlock.isAlreadyRan()) {
+                System.out.println("Evaluating: " + currentBlock.getFunctionality());
+                currentBlock.getFunctionality().evaluate(GameState.currentLevel);
+                currentBlock.setAlreadyRan(true);
 
-            Block nextBlock;
-            if (!currentBlock.hasNext()) {
-                nextBlock = currentBlock.returnToClosestCavity();
-            } else {
-                nextBlock = currentBlock.getNext();
+                Block nextBlock;
+                if (!currentBlock.hasNext()) {
+                    nextBlock = currentBlock.returnToClosestCavity();
+                } else {
+                    nextBlock = currentBlock.getNext();
+                }
+                currentBlock = nextBlock;
             }
-            currentBlock = nextBlock;
+
         }
-
-
     }
+    public Block getStartBlock() {
+        return startBlock;
+    }
+
 
     public void resetProgram() {
         currentBlock = startBlock;
@@ -39,5 +46,9 @@ public class Program {
 
     public boolean hasWon() {
         return GameState.currentLevel.hasWon();
+    }
+
+    public boolean isValidProgram() {
+        return startBlock.isValid();
     }
 }

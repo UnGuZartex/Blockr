@@ -1,10 +1,12 @@
-package System.BlockStructure.Connectors;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SubConnectorTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ProgramTest {
 
     @BeforeEach
     void setUp() {
@@ -15,22 +17,22 @@ class SubConnectorTest {
     }
 
     @Test
-    void getPlug() {
+    void executeStep() {
     }
 
     @Test
-    void isConnected() {
+    void getStartBlock() {
     }
 
     @Test
-    void hasProperPlug() {
+    void resetProgram() {
     }
 
     @Test
-    void connect() {
+    void hasWon() {
     }
 
     @Test
-    void disconnect() {
+    void isValidProgram() {
     }
 }

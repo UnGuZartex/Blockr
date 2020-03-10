@@ -1,10 +1,12 @@
-package System.BlockStructure.Connectors;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ConnectorTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PABlockHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -15,10 +17,14 @@ class ConnectorTest {
     }
 
     @Test
-    void getOrientation() {
+    void addToPA() {
     }
 
     @Test
-    void getBlock() {
+    void connectToExistingBlock() {
+    }
+
+    @Test
+    void deleteBlock() {
     }
 }

@@ -12,8 +12,8 @@ public abstract class FunctionalBlock extends Block {
 
     private final SubConnector[] subConnector;
 
-    protected FunctionalBlock(int id, BlockFunctionality functionality) {
-        super(id, functionality);
+    protected FunctionalBlock(BlockFunctionality functionality) {
+        super(functionality);
          mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
          subConnector = new SubConnector[]{new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG)};
 
@@ -45,6 +45,9 @@ public abstract class FunctionalBlock extends Block {
 
     @Override
     public Block returnToClosestCavity() {
+        if (!mainConnector.isConnected()) {
+            return this;
+        }
         return mainConnector.getConnectedBlock().returnToClosestCavity();
     }
 }

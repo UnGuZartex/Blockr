@@ -1,10 +1,12 @@
-package System.BlockStructure.Functionality;
+package System.Logic;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TurnRightFunctionalityTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ConverterTest {
 
     @BeforeEach
     void setUp() {
@@ -13,8 +15,8 @@ class TurnRightFunctionalityTest {
     @AfterEach
     void tearDown() {
     }
-
+    
     @Test
-    void evaluate() {
+    void convert() {
     }
 }

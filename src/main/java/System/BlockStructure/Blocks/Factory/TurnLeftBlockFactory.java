@@ -8,6 +8,6 @@ public class TurnLeftBlockFactory extends BlockFactory {
 
     @Override
     public TurnLeftBlock getNewBlock() {
-        return new TurnLeftBlock(getID());
+        return new TurnLeftBlock();
     }
 }
