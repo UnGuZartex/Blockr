@@ -42,18 +42,18 @@ public class ProgramGUI {
 
         //connectionHandler.connect(wallInFrontBlock2, whileBlock2.getConditionalSubConnector());
 
-        //connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
+        connectionHandler.connect(wallInFrontBlock, whileBlock.getConditionalSubConnector());
         //connectionHandler.connect(notBlock, whileBlock.getConditionalSubConnector());
 
         //wallInFrontBlock.getMainConnector().connect(whileBlock.getConditionalSubConnector());
 
 
         connectionHandler.connect(turnRightBlock, whileBlock.getCavitySubConnector());
-        connectionHandler.connect(turnLeftBlock2, turnLeftBlock.getSubConnectors()[0]);
+        connectionHandler.connect(turnLeftBlock2, turnLeftBlock.getSubConnectorAt(0));
         //turnRightBlock.getMainConnector().connect(whileBlock.getCavitySubConnector());
         connectionHandler.connect(turnLeftBlock, whileBlock.getCavitySubConnector());
 
-        connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectors()[0]);
+        connectionHandler.connect(moveForwardBlock, whileBlock.getSubConnectorAt(0));
         //moveForwardBlock.getMainConnector().connect(whileBlock.getSubConnectors()[0]);
 
         ProgramController.addBlock(whileBlock);

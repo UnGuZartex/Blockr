@@ -27,10 +27,6 @@ public abstract class ConditionalBlock extends Block {
         return null;
     }
 
-    @Override
-    public boolean canBeStarter() {
-        return false;
-    }
 
     @Override
     public MainConnector getMainConnector() {

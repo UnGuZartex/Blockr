@@ -5,6 +5,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
+import java.util.List;
+
 public class OperationalBlock extends ConditionalBlock {
 
     private int counter;
@@ -20,7 +22,7 @@ public class OperationalBlock extends ConditionalBlock {
     }
 
     public SubConnector getSocketAt(int index) {
-        return getSubConnectors()[index];
+        return getSubConnectors().get(index);
     }
 
 
@@ -36,11 +38,6 @@ public class OperationalBlock extends ConditionalBlock {
             counter = 0;
         }
         return subConnectors[counter++].getConnectedBlock();
-    }
-
-    @Override
-    public SubConnector[] getSubConnectors() {
-        return subConnectors;
     }
 
     @Override

@@ -22,6 +22,7 @@ public class PABlockHandler {
 
 
     public void deleteBlock(Block block) {
+        connectionHandler.disconnect(block);
         PA.deleteProgram(block);
     }
 }

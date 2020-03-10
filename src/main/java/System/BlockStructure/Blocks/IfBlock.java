@@ -22,7 +22,7 @@ public class IfBlock extends CavityBlock {
             return getCavitySubConnector().isConnected();
         }
         else {
-            return getSubConnectors()[0].isConnected();
+            return getSubConnectors().get(0).isConnected();
         }
     }
 }

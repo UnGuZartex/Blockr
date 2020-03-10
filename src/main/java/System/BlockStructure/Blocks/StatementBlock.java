@@ -13,9 +13,5 @@ public class StatementBlock extends ConditionalBlock {
 
     }
 
-    @Override
-    public SubConnector[] getSubConnectors() {
-        return subConnectors;
-    }
 
 }
