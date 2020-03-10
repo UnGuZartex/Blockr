@@ -4,8 +4,8 @@ import System.BlockStructure.Functionality.IfFunctionality;
 public class IfBlock extends CavityBlock {
 
 
-    public IfBlock(int id) {
-        super(id, new IfFunctionality());
+    public IfBlock() {
+        super(new IfFunctionality());
     }
 
     @Override
