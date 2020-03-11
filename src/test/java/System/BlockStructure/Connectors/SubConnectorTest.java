@@ -1,6 +1,6 @@
 package System.BlockStructure.Connectors;
 
-import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Blocks.Block;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SubConnectorTest {
 
     private SubConnector plugUp, plugDown, socketUp, socketDown;
-    private FunctionalBlock fBlock1;
+    private Block Block1;
 
     @BeforeEach
     void setUp() {

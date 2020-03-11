@@ -8,18 +8,18 @@ public class MainConnector extends Connector {
         super(block, orientation, type);
     }
 
-    public void connect (SubConnector subConnector) throws IllegalStateException, IllegalArgumentException  {
+    public void connect(SubConnector subConnector) throws IllegalStateException, IllegalArgumentException  {
 
         if (this.isConnected()) {
-            throw new IllegalStateException("This plug is already connected to another socket!");
-        }
-
-        if (subConnector.isConnected()) {
-            throw new IllegalArgumentException("The given socket is already connected to another plug!");
+            throw new IllegalStateException("This main connector is already connected to another sub connector!");
         }
 
         if (!canHaveAsSocket(subConnector)) {
-            throw new IllegalArgumentException("The given socket is not compatible with this plug!");
+            throw new IllegalArgumentException("The given sub connector is not compatible with this main connector!");
+        }
+
+        if (subConnector.isConnected()) {
+            throw new IllegalArgumentException("The given sub connector is already connected to another main connector!");
         }
 
         connectedConnector = subConnector;
@@ -28,9 +28,8 @@ public class MainConnector extends Connector {
 
     @Override
     public void disconnect() throws IllegalStateException {
-
         if (!this.isConnected()) {
-            throw new IllegalStateException("This plug is not connected to a socket!");
+            throw new IllegalStateException("This main connecter is not connected!");
         }
 
         Connector tempSocket = connectedConnector;
@@ -38,7 +37,16 @@ public class MainConnector extends Connector {
         tempSocket.disconnect();
     }
 
-    private boolean canHaveAsSocket(SubConnector subConnector) {
+    /**
+     * Check if the given sub connector can be connected to this main connector.
+     *
+     * @param subConnector The subconnector to check.
+     *
+     * @return True if and only if the given sub connector is effective, has an
+     *         opposite orientation to the orientation of this main connector and
+     *         has a connectable type to the type of this main connector.
+     */
+    public boolean canHaveAsSocket(SubConnector subConnector) { // TODO rename to subconnector
         return subConnector != null && getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
     }
 
