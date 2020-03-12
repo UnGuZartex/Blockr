@@ -9,12 +9,12 @@ import System.BlockStructure.Functionality.BlockFunctionality;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FunctionalBlock extends Block {
+public class FunctionalBlock extends Block {
 
     private final MainConnector mainConnector;
 
 
-    protected FunctionalBlock(BlockFunctionality functionality) {
+    public FunctionalBlock(BlockFunctionality functionality) {
         super(functionality);
          mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
          getSubConnectors().add(new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG));

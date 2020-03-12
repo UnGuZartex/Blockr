@@ -1,6 +1,6 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.WallInFrontBlock;
+import System.BlockStructure.Blocks.StatementBlock;
 import System.GameWorld.CellType;
 import System.GameWorld.Level.Level;
 
@@ -10,7 +10,7 @@ import System.GameWorld.Level.Level;
  *
  * @author Alpha-team
  */
-public class WallInFrontFunctionality extends ConditionalBlockFunctionality<WallInFrontBlock> {
+public class WallInFrontFunctionality extends ConditionalBlockFunctionality<StatementBlock> {
 
     /**
      * Evaluates this wall in front functionality and set the evaluation

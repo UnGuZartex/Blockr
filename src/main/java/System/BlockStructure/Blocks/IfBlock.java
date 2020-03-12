@@ -4,8 +4,8 @@ import System.BlockStructure.Functionality.IfFunctionality;
 public class IfBlock extends CavityBlock {
 
 
-    public IfBlock() {
-        super(new IfFunctionality());
+    public IfBlock(IfFunctionality ifFunctionality) {
+        super(ifFunctionality);
     }
 
     @Override
@@ -16,13 +16,5 @@ public class IfBlock extends CavityBlock {
         return getNext();
     }
 
-    @Override
-    public boolean hasNext() {
-        if (getFunctionality().getEvaluation()) {
-            return getCavitySubConnector().isConnected();
-        }
-        else {
-            return getSubConnectors().get(0).isConnected();
-        }
-    }
+
 }
