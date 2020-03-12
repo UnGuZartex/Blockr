@@ -5,7 +5,7 @@ import System.BlockStructure.Blocks.MoveForwardBlock;
 public class MoveForwardBlockFactory extends BlockFactory {
 
     @Override
-    public MoveForwardBlock getNewBlock() {
+    public MoveForwardBlock CreateBlock() {
         return new MoveForwardBlock();
     }
 }

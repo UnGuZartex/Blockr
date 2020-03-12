@@ -1,6 +1,7 @@
 package Controllers;
 
 import GUI.GUIBlock;
+import GUI.GUISocket;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.Converter;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -14,6 +15,11 @@ public class ProgramController {
     private final Converter converter = new Converter();
 
     public void addBlockToPA(GUIBlock block) {
+        Block toAdd = converter.convert(block.getID());
+        blockHandler.addToPA(toAdd);
+    }
+
+    public void connectToSubConnector(GUIBlock block, GUISocket socket) {
         Block toAdd = converter.convert(block.getID());
         blockHandler.addToPA(toAdd);
     }

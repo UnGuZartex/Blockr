@@ -7,7 +7,7 @@ public class TurnRightBlockFactory extends BlockFactory{
 
 
     @Override
-    public TurnRightBlock getNewBlock() {
+    public TurnRightBlock CreateBlock() {
         return new TurnRightBlock();
     }
 }
