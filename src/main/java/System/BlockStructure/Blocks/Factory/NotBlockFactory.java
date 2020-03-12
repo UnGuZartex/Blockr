@@ -1,11 +1,12 @@
 package System.BlockStructure.Blocks.Factory;
 
 
-import System.BlockStructure.Blocks.NotBlock;
+import System.BlockStructure.Blocks.OperationalBlock;
+import System.BlockStructure.Functionality.NotFunctionality;
 
 public class NotBlockFactory extends BlockFactory{
     @Override
-    public NotBlock CreateBlock() {
-        return new NotBlock();
+    public OperationalBlock CreateBlock() {
+        return new OperationalBlock(new NotFunctionality(), 1);
     }
 }

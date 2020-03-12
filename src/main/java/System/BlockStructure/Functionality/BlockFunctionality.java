@@ -14,6 +14,8 @@ public abstract class BlockFunctionality {
      */
     protected boolean evaluation;
 
+
+    BlockFunctionality() {}
     /**
      * Get the evaluation of this functionality.
      *

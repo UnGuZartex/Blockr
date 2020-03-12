@@ -1,6 +1,8 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.WallInFrontBlock;
+import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
+import System.BlockStructure.Blocks.StatementBlock;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
@@ -16,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WallInFrontFunctionalityTest {
 
     private WallInFrontFunctionality functionality;
-    private WallInFrontBlock block1, block2;
+    private StatementBlock block1, block2;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
@@ -35,9 +37,10 @@ class WallInFrontFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        functionality = new WallInFrontFunctionality();
-        block1 = new WallInFrontBlock();
-        block2 = new WallInFrontBlock();
+        WallInFrontBlockFactory factory = new WallInFrontBlockFactory();
+        block1 = factory.CreateBlock();
+        block2 = factory.CreateBlock();
+        functionality = (WallInFrontFunctionality) block1.getFunctionality();
 
         /* Simple field has only one cell */
         pointSimpleBlankUp = new Point(0,0);
@@ -104,7 +107,6 @@ class WallInFrontFunctionalityTest {
 
     @AfterEach
     void tearDown() {
-        functionality = null;
         block1 = null;
         block2 = null;
 
@@ -147,6 +149,7 @@ class WallInFrontFunctionalityTest {
 
     @Test
     void setBlock() {
+        functionality = new WallInFrontFunctionality();
         assertNull(functionality.block);
         functionality.setBlock(block1);
         assertEquals(block1, functionality.block);
