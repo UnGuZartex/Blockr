@@ -12,8 +12,9 @@ import java.util.List;
 public class GUIBlock {
     private int x;
     private int y;
-    List<GUIConnector> connectors = new ArrayList<>();
-    List<CollisionRectangle> blockRectangles = new ArrayList<>();
+    private List<GUIConnector> connectors = new ArrayList<>();
+    private List<CollisionRectangle> blockRectangles = new ArrayList<>();
+    private List<GUIBlock> connectedBlocks;
 
     public GUIBlock(int x, int y) {
 
@@ -23,6 +24,7 @@ public class GUIBlock {
         GUIConnector connector = new GUIConnector(this, 0, 0, Color.blue);
         connectors.add(connector);
 
+        connectedBlocks = new ArrayList<>();
         setPosition(x, y);
     }
 
@@ -36,26 +38,29 @@ public class GUIBlock {
 
     public void setPosition(int x, int y) {
 
+        int deltaX = x - this.x;
+        int deltaY = y - this.y;
+
         for (GUIConnector connector: connectors) {
 
             CollisionCircle circle = connector.getCollisionCircle();
-            int deltaX = circle.getX() - this.x;
-            int deltaY = circle.getY() - this.y;
-
-            circle.setX(x + deltaX);
-            circle.setY(y + deltaY);
+            circle.translate(deltaX, deltaY);
         }
 
         for (CollisionRectangle blockRectangle : blockRectangles) {
-            int deltaX =  blockRectangle.getX() - this.x;
-            int deltaY =  blockRectangle.getY() - this.y;
+            blockRectangle.translate(deltaX, deltaY);
+        }
 
-            blockRectangle.setX(x + deltaX);
-            blockRectangle.setY(y + deltaY);
+        for (GUIBlock block : connectedBlocks) {
+            block.translate(deltaX, deltaY);
         }
 
         this.x = x;
         this.y = y;
+    }
+
+    public void translate(int x, int y) {
+        setPosition(this.x + x, this.y + y);
     }
 
     public void paint(Graphics g) {
@@ -84,5 +89,21 @@ public class GUIBlock {
         }
 
         return false;
+    }
+
+    public void connectWithStaticBlock(GUIBlock other) {
+
+        GUIConnector intersectingConnector;
+
+        for (GUIConnector connector : connectors) {
+            intersectingConnector = other.connectors.stream().filter(x -> x.getCollisionCircle().intersects(connector.getCollisionCircle())).findAny().orElse(null);
+
+            if (intersectingConnector != null) {
+                connectedBlocks.add(other);
+                other.connectedBlocks.add(this);
+                setPosition(intersectingConnector.getCollisionCircle().getX(), intersectingConnector.getCollisionCircle().getY());
+                break;
+            }
+        }
     }
 }
