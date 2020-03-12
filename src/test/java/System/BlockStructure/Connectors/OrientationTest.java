@@ -1,17 +1,14 @@
 package System.BlockStructure.Connectors;
 
-
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class OrientationTest {
 
-    Orientation facingUp;
-    Orientation facingDown;
-    Orientation facingLeft;
-    Orientation facingRight;
+    private Orientation facingUp, facingDown, facingLeft, facingRight;
 
     @BeforeEach
     void setUp() {

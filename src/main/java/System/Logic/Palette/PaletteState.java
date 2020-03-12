@@ -18,33 +18,27 @@ public class PaletteState {
                     new TurnRightBlockFactory()
             };
 
-    public Block[] currentBlocks = new Block[allBlocksFactory.length];
 
     public PaletteState() {
-        refillList();
+        //refillList();
     }
 
     public Block getBlockAt(int index){
-        Block toReturn = currentBlocks[index];
-        if(GameState.currentNbBlocks < GameState.maxNbBlocks) {
-            currentBlocks[index] = allBlocksFactory[index].CreateBlock();
-        }
-        else {
-            Arrays.fill(currentBlocks, null);
-        }
+        Block toReturn = allBlocksFactory[index].CreateBlock();
+//        if (GameState.currentNbBlocks < GameState.maxNbBlocks) {
+//            currentBlocks[index] = allBlocksFactory[index].CreateBlock();
+//        }
+//        else {
+//            Arrays.fill(currentBlocks, null);
+//        }
         return toReturn;
     }
 
-    public void refillList(){
-        for(int i = 0; i < currentBlocks.length; i++) {
-            if(currentBlocks[i] == null) {
-                currentBlocks[i] = allBlocksFactory[i].CreateBlock();
-            }
-        }
-    }
-
-
-    public Block[] getCurrentBlocks() {
-        return currentBlocks.clone();
-    }
+//    public void refillList(){
+//        for(int i = 0; i < currentBlocks.length; i++) {
+//            if(currentBlocks[i] == null) {
+//                currentBlocks[i] = allBlocksFactory[i].CreateBlock();
+//            }
+//        }
+//    }
 }

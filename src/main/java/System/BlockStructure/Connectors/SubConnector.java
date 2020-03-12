@@ -2,30 +2,64 @@ package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
 
+/**
+ * A class for sub connectors. This is a type of connector which
+ * can be connected to a main connector.
+ *
+ * @author Alpha-team
+ */
 public class SubConnector extends Connector {
 
+    /**
+     * Initialise a new sub connector with given block, orientation and type.
+     *
+     * @param block The block to which this connector belongs.
+     * @param orientation The orientation of this connector.
+     * @param type The type of this connector.
+     */
     public SubConnector(Block block, Orientation orientation, Type type) {
         super(block, orientation, type);
     }
 
+    /**
+     * Connect this sub connector to the given main connector.
+     *
+     * @param mainConnector The main connector to connect to.
+     *
+     * @throws IllegalStateException
+     *         This connector is already connected.
+     * @throws IllegalArgumentException
+     *         The given connector is not connected.
+     * @throws IllegalArgumentException
+     *         The given connector is already connected.
+     */
     protected void connect (MainConnector mainConnector) throws IllegalStateException, IllegalArgumentException {
-
         if (this.isConnected()) {
-            throw new IllegalStateException("This socket is already connected to another plug!");
+            throw new IllegalStateException("This sub connector is already connected to another main connector!");
         }
 
-        if (mainConnector.isConnected() && mainConnector.getConnectedConnector() != this) {
-            throw new IllegalArgumentException("The given plug is already connected to another socket!");
+        if (!mainConnector.isConnected()) {
+            throw new IllegalArgumentException("The given main connector should already be connected!");
+        }
+
+        if (mainConnector.getConnectedConnector() != this) {
+            throw new IllegalArgumentException("The given main connector is already connected to another sub connector!");
         }
 
         connectedConnector = mainConnector;
     }
 
+    /**
+     * Disconnect this sub connector from its connected connector.
+     *
+     * @throws IllegalStateException
+     *         If this connector is connected to any connector.
+     */
     @Override
     protected void disconnect() throws IllegalStateException {
 
         if (connectedConnector.isConnected()) {
-            throw new IllegalStateException("This socket is not connected to a plug!");
+            throw new IllegalStateException("This sub connector is not connected!");
         }
 
         connectedConnector = null;

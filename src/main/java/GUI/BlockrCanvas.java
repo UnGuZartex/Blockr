@@ -28,6 +28,10 @@ public class BlockrCanvas extends CanvasWindow {
     private Point dragDelta;
     private Point mousePos;
 
+    private ProgramController programController = new ProgramController();
+    private LevelController levelController = new LevelController();
+
+
     /**
      * Initializes a CanvasWindow object. 
      *
@@ -109,11 +113,11 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
         if (keyCode == KeyEvent.VK_F5) {
-            ProgramController.runProgramStep();
+            programController.runProgramStep();
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
-            ProgramController.resetProgram();
-            LevelController.resetLevel();
+            programController.resetProgram();
+            levelController.loadLevel();
         }
         repaint();
 

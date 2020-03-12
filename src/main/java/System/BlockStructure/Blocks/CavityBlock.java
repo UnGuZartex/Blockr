@@ -1,6 +1,5 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
@@ -11,11 +10,14 @@ public abstract class CavityBlock extends FunctionalBlock {
     private final SubConnector cavitySubConnector;
     private final SubConnector conditionalSubConnector;
 
-    protected <B extends CavityBlock> CavityBlock(int id, ConditionalBlockFunctionality<B> functionality) {
-        super(id, functionality);
+    protected <B extends CavityBlock> CavityBlock(ConditionalBlockFunctionality<B> functionality) {
+        super(functionality);
         functionality.setBlock((B) this);
         cavitySubConnector = new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG);
         conditionalSubConnector = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
+        getSubConnectors().add(cavitySubConnector);
+        getSubConnectors().add(conditionalSubConnector);
+
     }
 
 
@@ -28,7 +30,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     public Block getCondition() {
-        return conditionalSubConnector.getConnectedConnector().getBlock();
+        return conditionalSubConnector.getConnectedBlock();
     }
 
     @Override
@@ -37,7 +39,7 @@ public abstract class CavityBlock extends FunctionalBlock {
             return cavitySubConnector.getConnectedConnector() != null;
         }
         else {
-            return getSubConnectors()[0].getConnectedConnector() != null;
+            return getSubConnectors().get(0).getConnectedConnector() != null;
         }
     }
 
@@ -50,8 +52,25 @@ public abstract class CavityBlock extends FunctionalBlock {
         else {
             setAlreadyRan(true);
             cavitySubConnector.getConnectedBlock().reset();
-            return getSubConnectors()[0].getConnectedBlock();
+            return getSubConnectors().get(0).getConnectedBlock();
         }
     }
 
+    @Override
+    public boolean isValid() {
+        if (cavitySubConnector.isConnected()) {
+            if (getSubConnectors().get(0).isConnected()) {
+                if (getConditionalSubConnector().isConnected()) {
+                    return cavitySubConnector.getConnectedBlock().isValid()
+                            && getSubConnectors().get(0).getConnectedBlock().isValid()
+                            && getConditionalSubConnector().getConnectedBlock().isValid();
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
 }

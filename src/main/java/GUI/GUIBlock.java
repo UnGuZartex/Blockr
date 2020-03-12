@@ -95,4 +95,8 @@ public class GUIBlock {
         polygon.addPoint(0, height);
         return polygon;
     }
+
+    public String getID() {
+        return "ID";
+    }
 }

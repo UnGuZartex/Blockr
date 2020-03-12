@@ -5,34 +5,48 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
+import java.util.List;
+
 public class OperationalBlock extends ConditionalBlock {
 
     private int counter;
 
-    private final SubConnector[] subConnectors;
-
-    public <B extends OperationalBlock> OperationalBlock(int id, ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
-        super(id, functionality);
-        subConnectors = new SubConnector[nbSubConnectors];
+    public <B extends OperationalBlock> OperationalBlock(ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
+        super(functionality);
         for(int i = 0; i < nbSubConnectors; i++) {
-            subConnectors[i] = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
+            getSubConnectors().add(new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET));
         }
     }
 
-    public SubConnector getSocketAt(int index) {
-        return getSubConnectors()[index];
+
+    @Override
+    public boolean hasNext() {
+
+        return getSubConnectorAt(counter).isConnected();
     }
 
     @Override
     public Block getNext() {
-        if (counter >= subConnectors.length) {
+        if (counter >= getSubConnectorListSize()) {
             counter = 0;
         }
-        return subConnectors[counter++].getConnectedBlock();
+        return getSubConnectorAt(counter++).getConnectedBlock();
     }
 
     @Override
-    public SubConnector[] getSubConnectors() {
-        return subConnectors;
+    public boolean isValid() {
+        if (!getMainConnector().isConnected()) {
+            return false;
+        }
+        boolean toReturn = true;
+        for (int i = 0; i < getSubConnectorListSize(); i++) {
+            if (getSubConnectorAt(i).isConnected()) {
+                toReturn = toReturn && getSubConnectorAt(i).getConnectedBlock().isValid();
+            }
+            else {
+                return false;
+            }
+        }
+        return toReturn;
     }
 }

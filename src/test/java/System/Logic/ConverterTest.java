@@ -1,10 +1,12 @@
-package System.BlockStructure.Connections;
+package System.Logic;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CavityConnectorTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ConverterTest {
 
     @BeforeEach
     void setUp() {
@@ -13,8 +15,8 @@ class CavityConnectorTest {
     @AfterEach
     void tearDown() {
     }
-
+    
     @Test
-    void getNext() {
+    void convert() {
     }
 }

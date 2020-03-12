@@ -11,8 +11,8 @@ public abstract class ConditionalBlock extends Block {
 
     protected final MainConnector mainConnector;
 
-    protected <B extends ConditionalBlock> ConditionalBlock(int id, ConditionalBlockFunctionality<B> functionality) {
-        super(id, functionality);
+    protected <B extends ConditionalBlock> ConditionalBlock(ConditionalBlockFunctionality<B> functionality) {
+        super(functionality);
         mainConnector = new MainConnector(this, Orientation.FACING_LEFT, Type.PLUG);
         functionality.setBlock((B) this);
     }
@@ -27,10 +27,6 @@ public abstract class ConditionalBlock extends Block {
         return null;
     }
 
-    @Override
-    public boolean canBeStarter() {
-        return false;
-    }
 
     @Override
     public MainConnector getMainConnector() {
@@ -40,5 +36,13 @@ public abstract class ConditionalBlock extends Block {
     @Override
     public Block returnToClosestCavity() {
         return null;
+    }
+
+    @Override
+    public boolean isValid() {
+        if (!getMainConnector().isConnected()) {
+            return false;
+        }
+        return super.isValid();
     }
 }

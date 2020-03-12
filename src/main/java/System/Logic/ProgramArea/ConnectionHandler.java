@@ -12,8 +12,8 @@ public class ConnectionHandler {
             Block previousConnected = toConnectTo.getConnectedBlock();
             previousConnected.getMainConnector().disconnect();
             Block last = getLastBlock(main);
-            if (last.getSubConnectors().length != 0) {
-                previousConnected.getMainConnector().connect(last.getSubConnectors()[0]);
+            if (last.getSubConnectorListSize() != 0) {
+                previousConnected.getMainConnector().connect(last.getSubConnectorAt(0));
             }
         }
         main.getMainConnector().connect(toConnectTo);
@@ -22,11 +22,8 @@ public class ConnectionHandler {
     private Block getLastBlock(Block main) {
         Block toReturn = main;
         while (toReturn.hasNext()){
-            System.out.println(toReturn.getNext());
             toReturn = toReturn.getNext();
         }
-        System.out.println(toReturn);
-
         return toReturn;
     }
 

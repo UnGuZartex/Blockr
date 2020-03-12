@@ -1,10 +1,12 @@
-package System.GameWorld;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BlockrTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ProgramAreaTest {
 
     @BeforeEach
     void setUp() {
@@ -15,6 +17,14 @@ class BlockrTest {
     }
 
     @Test
-    void initializeGame() {
+    void deleteProgram() {
+    }
+
+    @Test
+    void getProgram() {
+    }
+
+    @Test
+    void addProgram() {
     }
 }

@@ -4,9 +4,10 @@ import System.GameWorld.Level.LevelLoader;
 
 public class LevelController {
 
-    static LevelLoader loader = new LevelLoader();
+    private LevelLoader loader = new LevelLoader();
 
-    public static void resetLevel() {
+    public void loadLevel() {
         loader.loadLevel();
     }
+
 }

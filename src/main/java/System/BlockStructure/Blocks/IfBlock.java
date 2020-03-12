@@ -4,12 +4,15 @@ import System.BlockStructure.Functionality.IfFunctionality;
 public class IfBlock extends CavityBlock {
 
 
-    public IfBlock(int id) {
-        super(id, new IfFunctionality());
+    public IfBlock() {
+        super(new IfFunctionality());
     }
 
     @Override
     public Block returnToClosestCavity() {
+        if (isAlreadyRan()) {
+            return super.returnToClosestCavity();
+        }
         return getNext();
     }
 
@@ -19,7 +22,7 @@ public class IfBlock extends CavityBlock {
             return getCavitySubConnector().isConnected();
         }
         else {
-            return getSubConnectors()[0].isConnected();
+            return getSubConnectors().get(0).isConnected();
         }
     }
 }

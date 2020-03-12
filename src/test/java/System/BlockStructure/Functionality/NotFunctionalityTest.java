@@ -1,9 +1,12 @@
 package System.BlockStructure.Functionality;
 
+import System.BlockStructure.Blocks.NotBlock;
+import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import System.GameWorld.Level.Level;
+import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,10 +14,14 @@ import org.junit.jupiter.api.Test;
 import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class MoveForwardFunctionalityTest {
+class NotFunctionalityTest {
 
-    private MoveForwardFunctionality moveForward;
+    private NotFunctionality functionality;
+    private NotBlock notBlock, block1, block2;
+    private WallInFrontBlock wallInFrontBlock;
+    private ConnectionHandler connectionHandler;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
@@ -32,8 +39,16 @@ class MoveForwardFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        moveForward = new MoveForwardFunctionality();
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler = new ConnectionHandler();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
 
+        functionality = new NotFunctionality();
+        block1 = new NotBlock();
+        block2 = new NotBlock();
+
+        /* Simple field has only one cell */
         pointSimpleBlankUp = new Point(0,0);
         pointSimpleGoalDown = new Point(0,0);
         pointSimpleGoalLeft = new Point(0,0);
@@ -98,7 +113,11 @@ class MoveForwardFunctionalityTest {
 
     @AfterEach
     void tearDown() {
-        moveForward = null;
+        functionality = null;
+        notBlock = null;
+        block1 = null;
+        block2 = null;
+        wallInFrontBlock = null;
 
         pointSimpleBlankUp = null;
         pointSimpleGoalDown = null;
@@ -138,50 +157,115 @@ class MoveForwardFunctionalityTest {
     }
 
     @Test
+    void setBlock() {
+        assertNull(functionality.block);
+        functionality.setBlock(block1);
+        assertEquals(block1, functionality.block);
+        functionality.setBlock(block2);
+        assertEquals(block1, functionality.block);
+    }
+
+    @Test
     void getEvaluation() {
-        assertFalse(moveForward.getEvaluation());
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelSimpleBlankUp);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelSimpleGoalDown);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelSimpleGoalLeft);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
+
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelSimpleBlankRight);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
     }
 
     @Test
     void evaluate() {
-        moveForward.evaluate(levelSimpleBlankUp);
-        assertEquals(pointSimpleBlankUp.x, levelSimpleBlankUp.getRobot().getX());
-        assertEquals(pointSimpleBlankUp.y, levelSimpleBlankUp.getRobot().getY());
-        assertEquals(directionSimpleBlankUp, levelSimpleBlankUp.getRobot().getDirection());
+        notBlock.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        assertFalse(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelSimpleGoalDown);
-        assertEquals(pointSimpleGoalDown.x, levelSimpleGoalDown.getRobot().getX());
-        assertEquals(pointSimpleGoalDown.y, levelSimpleGoalDown.getRobot().getY());
-        assertEquals(directionSimpleGoalDown, levelSimpleGoalDown.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertTrue(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelSimpleGoalLeft);
-        assertEquals(pointSimpleGoalLeft.x, levelSimpleGoalLeft.getRobot().getX());
-        assertEquals(pointSimpleGoalLeft.y, levelSimpleGoalLeft.getRobot().getY());
-        assertEquals(directionSimpleGoalLeft, levelSimpleGoalLeft.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        assertTrue(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelSimpleBlankRight);
-        assertEquals(pointSimpleBlankRight.x, levelSimpleBlankRight.getRobot().getX());
-        assertEquals(pointSimpleBlankRight.y, levelSimpleBlankRight.getRobot().getY());
-        assertEquals(directionSimpleBlankRight, levelSimpleBlankRight.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertFalse(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelUpOnBlankBeforeWall);
-        assertEquals(pointUpOnBlankBeforeWall.x, levelUpOnBlankBeforeWall.getRobot().getX());
-        assertEquals(pointUpOnBlankBeforeWall.y, levelUpOnBlankBeforeWall.getRobot().getY());
-        assertEquals(directionUpOnBlankBeforeWall, levelUpOnBlankBeforeWall.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelSimpleBlankUp);
+        assertTrue(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelDownOnGoalBeforeBlank);
-        assertEquals(pointDownOnGoalBeforeBlank.x, levelDownOnGoalBeforeBlank.getRobot().getX());
-        assertEquals(pointDownOnGoalBeforeBlank.y + 1, levelDownOnGoalBeforeBlank.getRobot().getY());
-        assertEquals(directionDownOnGoalBeforeBlank, levelDownOnGoalBeforeBlank.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelSimpleGoalDown);
+        assertTrue(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelLeftOnGoalBeforeGoal);
-        assertEquals(pointLeftOnGoalBeforeGoal.x - 1, levelLeftOnGoalBeforeGoal.getRobot().getX());
-        assertEquals(pointLeftOnGoalBeforeGoal.y, levelLeftOnGoalBeforeGoal.getRobot().getY());
-        assertEquals(directionLeftOnGoalBeforeGoal, levelLeftOnGoalBeforeGoal.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelSimpleGoalLeft);
+        assertTrue(notBlock.getFunctionality().evaluation);
 
-        moveForward.evaluate(levelRightOnBlankBeforeWall);
-        assertEquals(pointRightOnBlankBeforeWall.x, levelRightOnBlankBeforeWall.getRobot().getX());
-        assertEquals(pointRightOnBlankBeforeWall.y, levelRightOnBlankBeforeWall.getRobot().getY());
-        assertEquals(directionRightOnBlankBeforeWall, levelRightOnBlankBeforeWall.getRobot().getDirection());
+        wallInFrontBlock = new WallInFrontBlock();
+        notBlock = new NotBlock();
+        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
+        notBlock.getFunctionality().evaluate(levelSimpleBlankRight);
+        assertTrue(notBlock.getFunctionality().evaluation);
     }
 }

@@ -1,10 +1,12 @@
-package System.BlockStructure;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BlockTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ConnectionHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -15,14 +17,11 @@ class BlockTest {
     }
 
     @Test
-    void getId() {
+    void connect() {
     }
 
     @Test
-    void getConnection() {
+    void disconnect() {
     }
 
-    @Test
-    void getFunctionality() {
-    }
 }
