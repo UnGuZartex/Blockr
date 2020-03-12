@@ -45,15 +45,15 @@ class NotFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        wallInFrontBlock = factoryWIF.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
 
-        notBlock = factoryNot.CreateBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler = new ConnectionHandler();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
 
         functionality = new NotFunctionality();
-        block1 =  factoryNot.CreateBlock();
-        block2 =  factoryNot.CreateBlock();
+        block1 =  factoryNot.createBlock();
+        block2 =  factoryNot.createBlock();
 
         /* Simple field has only one cell */
         pointSimpleBlankUp = new Point(0,0);
@@ -178,50 +178,50 @@ class NotFunctionalityTest {
         notBlock.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertFalse(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
         assertTrue(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertTrue(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertFalse(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelSimpleBlankUp);
         assertTrue(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelSimpleGoalDown);
         assertTrue(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelSimpleGoalLeft);
         assertTrue(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         assertFalse(notBlock.getFunctionality().getEvaluation());
         notBlock.getFunctionality().evaluate(levelSimpleBlankRight);
@@ -233,44 +233,44 @@ class NotFunctionalityTest {
         notBlock.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertFalse(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
         assertTrue(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertTrue(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertFalse(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelSimpleBlankUp);
         assertTrue(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelSimpleGoalDown);
         assertTrue(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelSimpleGoalLeft);
         assertTrue(notBlock.getFunctionality().evaluation);
 
-        wallInFrontBlock = factoryWIF.CreateBlock();
-        notBlock = factoryNot.CreateBlock();
+        wallInFrontBlock = factoryWIF.createBlock();
+        notBlock = factoryNot.createBlock();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate(levelSimpleBlankRight);
         assertTrue(notBlock.getFunctionality().evaluation);

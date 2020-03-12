@@ -16,7 +16,7 @@ public class IfBlockFactory extends BlockFactory {
      * @return a new if-block
      */
     @Override
-    public IfBlock CreateBlock() {
+    public IfBlock createBlock() {
         return new IfBlock(new IfFunctionality());
     }
 }

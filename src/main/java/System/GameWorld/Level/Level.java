@@ -125,7 +125,6 @@ public class Level {
      *         walk out of the grid, null is returned.
      */
     public CellType getTypeForward() {
-        // TODO return null of throw exception when walk out of bound
         try {
             return grid.getCellAt(robot.getXForward(), robot.getYForward()).getCellType();
         } catch (IndexOutOfBoundsException e) {

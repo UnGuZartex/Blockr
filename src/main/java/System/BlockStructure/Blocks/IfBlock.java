@@ -10,7 +10,7 @@ public class IfBlock extends CavityBlock {
 
     @Override
     public Block returnToClosestCavity() {
-        if (isAlreadyRan()) {
+        if (hasAlreadyRan()) {
             return super.returnToClosestCavity();
         }
         return getNext();

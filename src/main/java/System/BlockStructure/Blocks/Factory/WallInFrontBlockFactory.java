@@ -5,7 +5,7 @@ import System.BlockStructure.Functionality.WallInFrontFunctionality;
 
 public class WallInFrontBlockFactory extends BlockFactory {
     @Override
-    public StatementBlock CreateBlock() {
+    public StatementBlock createBlock() {
         return new StatementBlock(new WallInFrontFunctionality());
     }
 }

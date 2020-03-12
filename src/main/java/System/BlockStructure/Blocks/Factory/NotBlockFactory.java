@@ -6,7 +6,7 @@ import System.BlockStructure.Functionality.NotFunctionality;
 
 public class NotBlockFactory extends BlockFactory{
     @Override
-    public OperationalBlock CreateBlock() {
+    public OperationalBlock createBlock() {
         return new OperationalBlock(new NotFunctionality(), 1);
     }
 }

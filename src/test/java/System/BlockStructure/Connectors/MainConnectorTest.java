@@ -286,36 +286,36 @@ class MainConnectorTest {
 
     @Test
     void canHaveAsSocket() {
-        assertTrue(plugRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
-        assertTrue(plugDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
-        assertTrue(plugLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
-        assertTrue(plugUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
+        assertTrue(plugRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
+        assertTrue(plugDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
+        assertTrue(plugLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
+        assertTrue(plugUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
 
-        assertFalse(plugUp.canHaveAsSocket(null));
+        assertFalse(plugUp.canHaveAsSubConnector(null));
 
-        assertFalse(plugUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
-        assertFalse(plugUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
-        assertFalse(plugUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
+        assertFalse(plugUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
+        assertFalse(plugUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
+        assertFalse(plugUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
 
-        assertFalse(plugLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
-        assertFalse(plugLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
-        assertFalse(plugLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
+        assertFalse(plugLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
+        assertFalse(plugLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
+        assertFalse(plugLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
 
-        assertFalse(plugDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
-        assertFalse(plugDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
-        assertFalse(plugDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
+        assertFalse(plugDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
+        assertFalse(plugDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
+        assertFalse(plugDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
 
-        assertFalse(plugRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
-        assertFalse(plugRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
-        assertFalse(plugRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
+        assertFalse(plugRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
+        assertFalse(plugRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
+        assertFalse(plugRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
 
-        assertFalse(plugUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.PLUG)));
-        assertFalse(plugDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.PLUG)));
-        assertFalse(plugLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.PLUG)));
-        assertFalse(plugRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.PLUG)));
-        assertFalse(socketUp.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
-        assertFalse(socketDown.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
-        assertFalse(socketLeft.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
-        assertFalse(socketRight.canHaveAsSocket(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
+        assertFalse(plugUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.PLUG)));
+        assertFalse(plugDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.PLUG)));
+        assertFalse(plugLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.PLUG)));
+        assertFalse(plugRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.PLUG)));
+        assertFalse(socketUp.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET)));
+        assertFalse(socketDown.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET)));
+        assertFalse(socketLeft.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)));
+        assertFalse(socketRight.canHaveAsSubConnector(new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)));
     }
 }

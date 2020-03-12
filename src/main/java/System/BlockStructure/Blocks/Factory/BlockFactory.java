@@ -15,6 +15,6 @@ public abstract class BlockFactory {
      *
      * @return a new Block that has the correct properties for this type of Block
      */
-    public abstract Block CreateBlock();
+    public abstract Block createBlock();
 
 }

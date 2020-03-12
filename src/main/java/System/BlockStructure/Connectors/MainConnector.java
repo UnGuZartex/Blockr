@@ -40,7 +40,7 @@ public class MainConnector extends Connector {
             throw new IllegalStateException("This main connector is already connected to another sub connector!");
         }
 
-        if (!canHaveAsSocket(subConnector)) {
+        if (!canHaveAsSubConnector(subConnector)) {
             throw new IllegalArgumentException("The given sub connector is not compatible with this main connector!");
         }
 
@@ -79,7 +79,7 @@ public class MainConnector extends Connector {
      *         opposite orientation to the orientation of this main connector and
      *         has a connectable type to the type of this main connector.
      */
-    public boolean canHaveAsSocket(SubConnector subConnector) { // TODO rename to subconnector
+    public boolean canHaveAsSubConnector(SubConnector subConnector) {
         return subConnector != null && getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
     }
 }

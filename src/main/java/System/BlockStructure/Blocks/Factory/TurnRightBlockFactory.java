@@ -8,7 +8,7 @@ public class TurnRightBlockFactory extends BlockFactory{
 
 
     @Override
-    public FunctionalBlock CreateBlock() {
+    public FunctionalBlock createBlock() {
         return new FunctionalBlock(new TurnRightFunctionality());
     }
 }

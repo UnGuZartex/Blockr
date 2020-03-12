@@ -6,7 +6,7 @@ import System.BlockStructure.Functionality.MoveForwardFunctionality;
 public class MoveForwardBlockFactory extends BlockFactory {
 
     @Override
-    public FunctionalBlock CreateBlock() {
+    public FunctionalBlock createBlock() {
         return new FunctionalBlock(new MoveForwardFunctionality());
     }
 }

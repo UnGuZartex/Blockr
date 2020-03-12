@@ -57,13 +57,13 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     @Override
-    public boolean isValid() {
+    public boolean hasProperConnections() {
         if (cavitySubConnector.isConnected()) {
             if (getSubConnectors().get(0).isConnected()) {
                 if (getConditionalSubConnector().isConnected()) {
-                    return cavitySubConnector.getConnectedBlock().isValid()
-                            && getSubConnectors().get(0).getConnectedBlock().isValid()
-                            && getConditionalSubConnector().getConnectedBlock().isValid();
+                    return cavitySubConnector.getConnectedBlock().hasProperConnections()
+                            && getSubConnectors().get(0).getConnectedBlock().hasProperConnections()
+                            && getConditionalSubConnector().getConnectedBlock().hasProperConnections();
                 }
                 else {
                     return false;

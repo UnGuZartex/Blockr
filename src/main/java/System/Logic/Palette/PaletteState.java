@@ -2,9 +2,6 @@ package System.Logic.Palette;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.Factory.*;
-import System.GameState.GameState;
-
-import java.util.Arrays;
 
 public class PaletteState {
     private final BlockFactory[] allBlocksFactory = new BlockFactory[]
@@ -24,7 +21,7 @@ public class PaletteState {
     }
 
     public Block getBlockAt(int index){
-        Block toReturn = allBlocksFactory[index].CreateBlock();
+        Block toReturn = allBlocksFactory[index].createBlock();
 //        if (GameState.currentNbBlocks < GameState.maxNbBlocks) {
 //            currentBlocks[index] = allBlocksFactory[index].CreateBlock();
 //        }

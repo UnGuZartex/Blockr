@@ -12,7 +12,7 @@ public class ConnectionHandler {
             Block previousConnected = toConnectTo.getConnectedBlock();
             previousConnected.getMainConnector().disconnect();
             Block last = getLastBlock(main);
-            if (last.getSubConnectorListSize() != 0) {
+            if (last.getNbSubConnectors() != 0) {
                 previousConnected.getMainConnector().connect(last.getSubConnectorAt(0));
             }
         }

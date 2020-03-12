@@ -18,7 +18,7 @@ public class Program {
 
     public void executeStep() {
         if (isValidProgram()) {
-            if (currentBlock != startBlock || !currentBlock.isAlreadyRan()) {
+            if (currentBlock != startBlock || !currentBlock.hasAlreadyRan()) {
                 System.out.println("Evaluating: " + currentBlock.getFunctionality());
                 currentBlock.getFunctionality().evaluate(GameState.currentLevel);
                 currentBlock.setAlreadyRan(true);
@@ -50,7 +50,7 @@ public class Program {
     }
 
     public boolean isValidProgram() {
-        return startBlock.isValid();
+        return startBlock.hasProperConnections();
     }
 
     public int getSize() {
@@ -58,7 +58,7 @@ public class Program {
     }
 
     private int getSizeOfBlock(Block block) {
-        int sizeOfSubConnectList = block.getSubConnectorListSize();
+        int sizeOfSubConnectList = block.getNbSubConnectors();
         int sum = 1;
         for (int i = 0; i < sizeOfSubConnectList; i++) {
             SubConnector newSubconnector = block.getSubConnectorAt(i);

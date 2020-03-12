@@ -7,7 +7,7 @@ import System.BlockStructure.Functionality.TurnLeftFunctionality;
 public class TurnLeftBlockFactory extends BlockFactory {
 
     @Override
-    public FunctionalBlock CreateBlock() {
+    public FunctionalBlock createBlock() {
         return new FunctionalBlock(new TurnLeftFunctionality());
     }
 }
