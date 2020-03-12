@@ -50,15 +50,16 @@ public class SubConnector extends Connector {
     }
 
     /**
-     * Disconnect this sub connector from its connected connector.
+     * Disconnect this sub connector from its sub connector.
      *
      * @throws IllegalStateException
-     *         If this connector is connected to any connector.
+     *         This connector is already connected to a main connector.
      */
     @Override
     protected void disconnect() throws IllegalStateException {
 
         if (connectedConnector.isConnected()) {
+            System.out.println("Reached");
             throw new IllegalStateException("This sub connector is not connected!");
         }
 

@@ -1,9 +1,16 @@
 package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.Factory.BlockFactory;
+import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Blocks.OperationalBlock;
+import System.BlockStructure.Functionality.MoveForwardFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,6 +70,10 @@ class SubConnectorTest {
 
     @Test
     void getOrientation() {
+        BlockFactory factory = new MoveForwardBlockFactory();
+        block1 = factory.CreateBlock();
+        block2 = factory.CreateBlock();
+
         assertEquals(Orientation.FACING_UP, plugUp.getOrientation());
         assertEquals(Orientation.FACING_DOWN, plugDown.getOrientation());
         assertEquals(Orientation.FACING_LEFT, plugLeft.getOrientation());
@@ -119,6 +130,10 @@ class SubConnectorTest {
         assertEquals(block1, plugDown.getBlock());
         assertEquals(block1, plugLeft.getBlock());
         assertEquals(block1, plugRight.getBlock());
+        assertEquals(block2, mainPlugUp.getBlock());
+        assertEquals(block2, mainPlugDown.getBlock());
+        assertEquals(block2, mainPlugLeft.getBlock());
+        assertEquals(block2, mainPlugRight.getBlock());
 
         assertEquals(block1, socketLeft.getBlock());
         assertEquals(block1, socketRight.getBlock());

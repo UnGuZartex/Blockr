@@ -39,7 +39,6 @@ class MainConnectorTest {
         socketRight.connect(subSocketRight);
     }
 
-
     @AfterEach
     void tearDown() {
         plugUp = null;
@@ -163,22 +162,22 @@ class MainConnectorTest {
     @Test
     void connect_SubAlreadyConnected() {
         try {
-            plugLeft.connect(subSocketRight);
+            (new MainConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET)).connect(subSocketRight);
             assert false;
         } catch (IllegalArgumentException ignore) {}
 
         try {
-            plugLeft.connect(subSocketLeft);
+            (new MainConnector(block1, Orientation.FACING_LEFT, Type.SOCKET)).connect(subSocketLeft);
             assert false;
         } catch (IllegalArgumentException ignore) {}
 
         try {
-            plugLeft.connect(subPlugUp);
+            (new MainConnector(block1, Orientation.FACING_UP, Type.PLUG)).connect(subPlugUp);
             assert false;
         } catch (IllegalArgumentException ignore) {}
 
         try {
-            plugLeft.connect(subPlugDown);
+            (new MainConnector(block1, Orientation.FACING_DOWN, Type.PLUG)).connect(subPlugDown);
             assert false;
         } catch (IllegalArgumentException ignore) {}
     }
