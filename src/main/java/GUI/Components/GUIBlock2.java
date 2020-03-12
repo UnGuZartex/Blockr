@@ -1,9 +1,11 @@
-package GUI;
+package GUI.Components;
+
+import GUI.BlockPolygonBuilder;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GUIBlock {
+public class GUIBlock2 {
     private ArrayList<Rectangle> plugRects = new ArrayList<Rectangle>();
     private ArrayList<Rectangle> socketRects = new ArrayList<Rectangle>();
     private Polygon polygon;
@@ -12,7 +14,7 @@ public class GUIBlock {
     private BlockPolygonBuilder polygonBuilder;
     private static final int CONNECTOR_WIDTH = 15, CONNECTOR_WIDTH_DELTA = 4, CONNECTOR_HEIGHT = 10;
 
-    public GUIBlock(int x, int y, int width, int height, Color color) {
+    public GUIBlock2(int x, int y, int width, int height, Color color) {
         polygonBuilder = new BlockPolygonBuilder(15, 4, 10);
         polygon = initPolygonNormalBlock(width, height);
         polygon.translate(x, y);

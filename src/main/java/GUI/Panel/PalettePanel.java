@@ -1,7 +1,7 @@
 package GUI.Panel;
 
 import Controllers.PaletteController;
-import GUI.GUIBlock;
+import GUI.Components.GUIBlock2;
 
 import java.awt.*;
 
@@ -15,12 +15,12 @@ public class PalettePanel extends GamePanel {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
-        GUIBlock[] toDraw = controller.getBlocks();
+        GUIBlock2[] toDraw = controller.getBlocks();
         g.setColor(Color.GREEN);
         g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
 
         for(int i = 0; i < toDraw.length; i++){
-            toDraw[i].draw(g);
+            //toDraw[i].draw(g);
         }
 
     }

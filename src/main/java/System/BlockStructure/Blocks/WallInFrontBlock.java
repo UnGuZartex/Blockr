@@ -7,4 +7,4 @@ public class WallInFrontBlock extends StatementBlock {
         super(id, new WallInFrontFunctionality());
 
     }
-}
+g}

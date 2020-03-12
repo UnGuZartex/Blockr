@@ -1,14 +1,44 @@
 package GUI.BlockShape;
 
-public abstract class CollisionShape implements CollisionFunctionality, PaintFunctionality {
+import Utility.Position;
 
-    public int x;
-    public int y;
-    protected int collisionDelta;
+import java.awt.*;
 
-    public CollisionShape(int x, int y, int collisionDelta) {
+public abstract class CollisionShape {
+
+    protected int x, y, collisionDelta;
+    private Color color;
+
+    protected CollisionShape(int x, int y, int collisionDelta, Color color) {
         this.x = x;
         this.y = y;
         this.collisionDelta = collisionDelta;
+        this.color = color;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Position getPosition() {
+        return new Position(x, y);
+    }
+
+    public void paint(Graphics g) {
+        g.setColor(color);
+    }
+
+    public abstract boolean contains(int x, int y);
 }

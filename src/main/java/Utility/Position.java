@@ -18,6 +18,14 @@ public class Position {
     }
 
     public double getDistance(Position other) {
-        return Math.sqrt(Math.abs(x - other.x)^2 + Math.abs(y - other.y)^2);
+        return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
