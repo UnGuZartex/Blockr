@@ -3,7 +3,7 @@ package System.BlockStructure.Functionality;
 import System.BlockStructure.Blocks.IfBlock;
 import System.GameWorld.Level.Level;
 
-public class IfFunctionality extends ConditionalBlockFunctionality<IfBlock> {
+public class CavityFunctionality extends ConditionalBlockFunctionality<IfBlock> {
 
 
     @Override

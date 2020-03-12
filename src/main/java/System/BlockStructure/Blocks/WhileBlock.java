@@ -1,9 +1,9 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Functionality.WhileFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
 
 public class WhileBlock extends CavityBlock {
-    public WhileBlock(WhileFunctionality functionality) {
+    public WhileBlock(CavityFunctionality functionality) {
         super(functionality);
     }
 

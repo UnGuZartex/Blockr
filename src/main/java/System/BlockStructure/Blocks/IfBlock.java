@@ -1,11 +1,11 @@
 package System.BlockStructure.Blocks;
-import System.BlockStructure.Functionality.IfFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
 
 public class IfBlock extends CavityBlock {
 
 
-    public IfBlock(IfFunctionality ifFunctionality) {
-        super(ifFunctionality);
+    public IfBlock(CavityFunctionality cavityFunctionality) {
+        super(cavityFunctionality);
     }
 
     @Override
