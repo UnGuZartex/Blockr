@@ -11,6 +11,7 @@
                 <version>2.3.2</version>
                 <configuration>
                     <source>13</source>
+
                     <target>13</target>
                 </configuration>
             </plugin>
@@ -26,6 +27,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+
+                    <overwrite>true</overwrite>
+
+                    <outputDirectory>${basedir}/target/util/resources</outputDirectory>
+                    <resources>
+                        <resource>
+                            <!-- source -->
+                            <directory>${pom.basedir}/util/resources</directory>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -63,10 +81,9 @@
         </plugins>
         <resources>
             <resource>
-                <directory>GUI.Images.imagePacks</directory>
+                <directory>${pom.basedir}/util/resources</directory>
             </resource>
         </resources>
-
 
     </build>
     <groupId>SWOP</groupId>
@@ -77,6 +94,7 @@
         <maven.compiler.source>13</maven.compiler.source>
         <maven.compiler.target>13</maven.compiler.target>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
