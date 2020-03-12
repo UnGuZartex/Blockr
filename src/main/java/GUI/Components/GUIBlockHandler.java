@@ -1,7 +1,10 @@
 package GUI.Components;
 
 import GUI.Blocks.GUIBlock;
+import GUI.Blocks.GUICavityBlock;
+import GUI.Blocks.GUIConditionalBlock;
 import GUI.Blocks.GUIFunctionalityBlock;
+import GUI.Blocks.GUIOperatorBlock;
 import Utility.Position;
 
 import java.awt.*;
@@ -22,8 +25,9 @@ public class GUIBlockHandler {
         // TODO Wegdoen
         blocks = new ArrayList<>();
         blocks.add(new GUIFunctionalityBlock(500, 500));
-        blocks.add(new GUIFunctionalityBlock(200, 500));
-        blocks.add(new GUIFunctionalityBlock(500, 200));
+        blocks.add(new GUICavityBlock(200, 500));
+        blocks.add(new GUIOperatorBlock(500, 200));
+        blocks.add(new GUIConditionalBlock(100, 100));
     }
 
     public void handleMouseEvent(int id, int x, int y) {
@@ -33,7 +37,7 @@ public class GUIBlockHandler {
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && blocks.stream().anyMatch(b -> b.contains(x, y))) {
             OptionalInt blockIndex = IntStream.range(0, blocks.size()).filter(i -> blocks.get(i).contains(x, y)).reduce((first, second) -> second);
             draggedBlock = blocks.get(blockIndex.getAsInt());
-            draggedBlock.disconnectMain();
+            draggedBlock.disconnectMainConnector();
             blocks.remove(blockIndex.getAsInt());
             blocks.add(draggedBlock);
             dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);

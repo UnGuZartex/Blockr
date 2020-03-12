@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class GUIConnector {
 
-    private CollisionCircle collisionCircle;
-    private GUIBlock parentBlock;
+    private final CollisionCircle collisionCircle;
+    private final GUIBlock parentBlock;
     private GUIConnector connectedConnector;
     private int id;
 
@@ -23,10 +23,6 @@ public class GUIConnector {
 
     public int getId() {
         return id;
-    }
-
-    public void setParentBlock(GUIBlock parentBlock) {
-        this.parentBlock = parentBlock;
     }
 
     public GUIConnector getConnectedConnector() {

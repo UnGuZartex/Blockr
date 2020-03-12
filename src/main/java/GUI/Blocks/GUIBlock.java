@@ -15,9 +15,7 @@ public abstract class GUIBlock {
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
 
-    public GUIBlock(int x, int y) {
-        setPosition(x, y);
-    }
+    protected GUIBlock() { }
 
     public int getX() {
         return x;
@@ -27,7 +25,7 @@ public abstract class GUIBlock {
         return y;
     }
 
-    public void disconnectMain() {
+    public void disconnectMainConnector() {
         mainConnector.disconnect();
     }
 
