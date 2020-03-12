@@ -5,7 +5,7 @@ import System.BlockStructure.Blocks.NotBlock;
 
 public class NotBlockFactory extends BlockFactory{
     @Override
-    public NotBlock getNewBlock() {
+    public NotBlock CreateBlock() {
         return new NotBlock();
     }
 }

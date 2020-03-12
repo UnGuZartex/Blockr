@@ -4,7 +4,7 @@ import System.BlockStructure.Blocks.WhileBlock;
 
 public class WhileBlockFactory extends BlockFactory {
     @Override
-    public WhileBlock getNewBlock() {
+    public WhileBlock CreateBlock() {
         return new WhileBlock();
     }
 }
