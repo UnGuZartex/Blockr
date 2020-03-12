@@ -11,8 +11,8 @@ public class OperationalBlock extends ConditionalBlock {
 
     private final SubConnector[] subConnectors;
 
-    public <B extends OperationalBlock> OperationalBlock(int id, ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
-        super(id, functionality);
+    public <B extends OperationalBlock> OperationalBlock(ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
+        super(functionality);
         subConnectors = new SubConnector[nbSubConnectors];
         for(int i = 0; i < nbSubConnectors; i++) {
             subConnectors[i] = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
@@ -21,6 +21,13 @@ public class OperationalBlock extends ConditionalBlock {
 
     public SubConnector getSocketAt(int index) {
         return getSubConnectors()[index];
+    }
+
+
+    @Override
+    public boolean hasNext() {
+
+        return subConnectors[counter].isConnected();
     }
 
     @Override
@@ -34,5 +41,22 @@ public class OperationalBlock extends ConditionalBlock {
     @Override
     public SubConnector[] getSubConnectors() {
         return subConnectors;
+    }
+
+    @Override
+    public boolean isValid() {
+        if (!getMainConnector().isConnected()) {
+            return false;
+        }
+        boolean toReturn = true;
+        for (int i = 0; i < subConnectors.length; i++) {
+            if (subConnectors[i].isConnected()) {
+                toReturn = toReturn && subConnectors[i].getConnectedBlock().isValid();
+            }
+            else {
+                return false;
+            }
+        }
+        return toReturn;
     }
 }

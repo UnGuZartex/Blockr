@@ -1,15 +1,17 @@
 package Controllers;
 
+<<<<<<< HEAD
 import GUI.Components.GUIBlock2;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.Converter;
 import System.Logic.Palette.PaletteState;
+=======
+>>>>>>> 73dc16e351fe71aa1df6685dd8aa41d162396d0c
 
 public class PaletteController {
-    public final PaletteState PALETTE_STATE = new PaletteState();
-    public final Converter converter = new Converter();
 
 
+<<<<<<< HEAD
     public GUIBlock2[] getBlocks() {
         Block[] currentBlocks = PALETTE_STATE.getCurrentBlocks();
         GUIBlock2[] GUIBlocks = new GUIBlock2[currentBlocks.length];
@@ -19,4 +21,6 @@ public class PaletteController {
 
         return GUIBlocks;
     }
+=======
+>>>>>>> 73dc16e351fe71aa1df6685dd8aa41d162396d0c
 }

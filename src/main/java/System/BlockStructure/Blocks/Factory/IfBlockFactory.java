@@ -7,6 +7,6 @@ import System.BlockStructure.Functionality.IfFunctionality;
 public class IfBlockFactory extends BlockFactory {
     @Override
     public IfBlock getNewBlock() {
-        return new IfBlock(getID());
+        return new IfBlock();
     }
 }

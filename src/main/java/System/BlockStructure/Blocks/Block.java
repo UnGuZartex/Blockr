@@ -6,7 +6,6 @@ import System.BlockStructure.Functionality.BlockFunctionality;
 
 public abstract class Block {
 
-    private final int id;
     private final BlockFunctionality functionality;
 
     public boolean isAlreadyRan() {
@@ -16,8 +15,7 @@ public abstract class Block {
     private boolean alreadyRan = false;
 
 
-    protected Block(int id, BlockFunctionality functionality) {
-        this.id = id;
+    protected Block(BlockFunctionality functionality) {
         this.functionality = functionality;
     }
 
@@ -49,6 +47,15 @@ public abstract class Block {
                 Block connectBlock = getSubConnectors()[i].getConnectedBlock();
                 connectBlock.reset();
             }
+        }
+    }
+
+    public boolean isValid() {
+        if (hasNext()) {
+            return getNext().isValid();
+        }
+        else {
+            return true;
         }
     }
 }

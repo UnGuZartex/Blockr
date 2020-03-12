@@ -7,8 +7,8 @@ import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 public class StatementBlock extends ConditionalBlock {
 
     private final SubConnector[] subConnectors;
-    protected <B extends ConditionalBlock> StatementBlock(int id, ConditionalBlockFunctionality<B> functionality) {
-        super(id, functionality);
+    protected <B extends ConditionalBlock> StatementBlock( ConditionalBlockFunctionality<B> functionality) {
+        super(functionality);
         subConnectors = new SubConnector[] {};
 
     }
@@ -17,4 +17,5 @@ public class StatementBlock extends ConditionalBlock {
     public SubConnector[] getSubConnectors() {
         return subConnectors;
     }
+
 }

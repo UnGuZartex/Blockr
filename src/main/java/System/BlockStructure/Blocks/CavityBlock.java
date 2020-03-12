@@ -11,8 +11,8 @@ public abstract class CavityBlock extends FunctionalBlock {
     private final SubConnector cavitySubConnector;
     private final SubConnector conditionalSubConnector;
 
-    protected <B extends CavityBlock> CavityBlock(int id, ConditionalBlockFunctionality<B> functionality) {
-        super(id, functionality);
+    protected <B extends CavityBlock> CavityBlock(ConditionalBlockFunctionality<B> functionality) {
+        super(functionality);
         functionality.setBlock((B) this);
         cavitySubConnector = new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG);
         conditionalSubConnector = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
@@ -28,7 +28,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     public Block getCondition() {
-        return conditionalSubConnector.getConnectedConnector().getBlock();
+        return conditionalSubConnector.getConnectedBlock();
     }
 
     @Override
@@ -54,4 +54,21 @@ public abstract class CavityBlock extends FunctionalBlock {
         }
     }
 
+    @Override
+    public boolean isValid() {
+        if (cavitySubConnector.isConnected()) {
+            if (getSubConnectors()[0].isConnected()) {
+                if (getConditionalSubConnector().isConnected()) {
+                    return cavitySubConnector.getConnectedBlock().isValid()
+                            && getSubConnectors()[0].getConnectedBlock().isValid()
+                            && getConditionalSubConnector().getConnectedBlock().isValid();
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
 }

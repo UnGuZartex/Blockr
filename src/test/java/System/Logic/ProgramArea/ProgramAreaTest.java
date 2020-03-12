@@ -1,10 +1,12 @@
-package System.BlockStructure.Connections;
+package System.Logic.ProgramArea;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BlockConnectorsTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ProgramAreaTest {
 
     @BeforeEach
     void setUp() {
@@ -15,6 +17,14 @@ class BlockConnectorsTest {
     }
 
     @Test
-    void getNext() {
+    void deleteProgram() {
+    }
+
+    @Test
+    void getProgram() {
+    }
+
+    @Test
+    void addProgram() {
     }
 }

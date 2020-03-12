@@ -6,6 +6,6 @@ import System.BlockStructure.Blocks.NotBlock;
 public class NotBlockFactory extends BlockFactory{
     @Override
     public NotBlock getNewBlock() {
-        return new NotBlock(getID());
+        return new NotBlock();
     }
 }

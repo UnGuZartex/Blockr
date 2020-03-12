@@ -6,6 +6,6 @@ public class MoveForwardBlockFactory extends BlockFactory {
 
     @Override
     public MoveForwardBlock getNewBlock() {
-        return new MoveForwardBlock(getID());
+        return new MoveForwardBlock();
     }
 }
