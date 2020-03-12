@@ -1,7 +1,6 @@
 package GUI;
 
 
-import Controllers.LevelController;
 import GUI.BlockShape.CollisionCircle;
 import GUI.Components.GUIBlock;
 import GUI.Components.GUIBlock2;
@@ -11,7 +10,6 @@ import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
-import Utility.Position;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -35,7 +33,6 @@ public class BlockrCanvas extends CanvasWindow {
     private CollisionCircle circle;
 
     private ProgramController programController = new ProgramController();
-    private LevelController levelController = new LevelController();
 
 
     /**
@@ -132,7 +129,6 @@ public class BlockrCanvas extends CanvasWindow {
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
             programController.resetProgram();
-            levelController.loadLevel();
         }
 
         repaint();
