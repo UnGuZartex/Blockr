@@ -2,8 +2,10 @@ package GUI.Components;
 
 import GUI.BlockShape.CollisionCircle;
 import GUI.BlockShape.CollisionRectangle;
+import Utility.Position;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class GUIBlock {
         // TODO beter maken
         CollisionRectangle rect = new CollisionRectangle(0, 0, 100, 100, 0, Color.black);
         blockRectangles.add(rect);
-        GUIConnector connector = new GUIConnector(this, 20, 0, Color.blue);
+        GUIConnector connector = new GUIConnector(this, 0, 0, Color.blue);
         connectors.add(connector);
 
         setPosition(x, y);
@@ -73,7 +75,14 @@ public class GUIBlock {
         return connectorContains || rectangleContains;
     }
 
-    public boolean intersects(GUIBlock other) {
+    public boolean intersectsWithConnector(GUIBlock other) {
+
+        for (GUIConnector connector : connectors) {
+            if (other.connectors.stream().anyMatch(x -> x.getCollisionCircle().intersects(connector.getCollisionCircle()))) {
+                return true;
+            }
+        }
+
         return false;
     }
 }

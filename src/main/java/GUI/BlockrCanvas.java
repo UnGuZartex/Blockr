@@ -5,6 +5,7 @@ import Controllers.LevelController;
 import GUI.BlockShape.CollisionCircle;
 import GUI.Components.GUIBlock;
 import GUI.Components.GUIBlock2;
+import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImageLibrary;
 import Controllers.ProgramController;
 import GUI.Panel.GamePanel;
@@ -31,8 +32,7 @@ public class BlockrCanvas extends CanvasWindow {
     private GUIBlock2 draggedBlock;
     private Point dragDelta;
     private Point mousePos;
-    private GUIBlock block;
-    private CollisionCircle circle;
+    private GUIBlockHandler blockHandler;
 
     private ProgramController programController = new ProgramController();
     private LevelController levelController = new LevelController();
@@ -47,13 +47,10 @@ public class BlockrCanvas extends CanvasWindow {
         super(title);
         panels = new GamePanel[3];
 
-        // TODO Wegdoen
-        block = new GUIBlock(500, 500);
-        circle = new CollisionCircle(0, 0, 20, 0, Color.red);
-
         GamePanel.setImageLibrary(library);
         setPainters();
         initTestBlocks();
+        blockHandler = new GUIBlockHandler();
     }
 
     protected void setDimensions(int width, int height) {
@@ -73,43 +70,13 @@ public class BlockrCanvas extends CanvasWindow {
             panel.paint(g);
         }
 
-        for (GUIBlock2 block : testBlocks) {
-            if (draggedBlock == null || !draggedBlock.equals(block)) {
-                block.draw(g);
-            }
-        }
-
-        if (draggedBlock != null) {
-            draggedBlock.changePosition(mousePos.x + dragDelta.x, mousePos.y + dragDelta.y);
-            draggedBlock.draw(g);
-        }
-
-        circle.paint(g);
-        block.paint(g);
+        blockHandler.paint(g);
     }
 
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
-
-        mousePos = new Point(x, y);
-
-        if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && testBlocks.stream().anyMatch(b -> b.contains(mousePos))) {
-            OptionalInt blockIndex = IntStream.range(0, testBlocks.size()).filter(i -> testBlocks.get(i).contains(mousePos)).reduce((first, second) -> second);
-            draggedBlock = testBlocks.get(blockIndex.getAsInt());
-            testBlocks.remove(blockIndex.getAsInt());
-            testBlocks.add(draggedBlock);
-            dragDelta = new Point(draggedBlock.getPosition().x - x,
-                    draggedBlock.getPosition().y - y);
-        }
-        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
-            draggedBlock.changePosition(dragDelta.x + x, dragDelta.y + y);
-            System.out.println(testBlocks.stream().filter(b -> b != draggedBlock && b.collidesWith(draggedBlock.getPolygon())).findFirst().orElse(null));
-            draggedBlock = null;
-        }
-
-        System.err.print(block.contains(x, y) + " \n");
-
+        blockHandler.handleMouseEvent(id, x, y);
         repaint();
     }
 
