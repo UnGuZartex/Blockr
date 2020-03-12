@@ -75,6 +75,10 @@ public class BlockrCanvas extends CanvasWindow {
         super.handleMouseEvent(id, x, y, clickCount);
         blockHandler.handleMouseEvent(id, x, y);
         repaint();
+
+        CollisionCircle circle1 = new CollisionCircle(0, 0,19, 0, Color.black );
+        CollisionCircle circle2 = new CollisionCircle(0, 21,1, 0, Color.black );
+        System.err.println(circle1.intersects(circle2));
     }
 
     private void initTestBlocks() {
@@ -99,6 +103,5 @@ public class BlockrCanvas extends CanvasWindow {
         }
 
         repaint();
-
     }
 }

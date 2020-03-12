@@ -18,7 +18,8 @@ public class CollisionCircle extends CollisionShape {
     }
 
     public boolean intersects(CollisionCircle other) {
-        return getPosition().getDistance(other.getPosition()) >= getCollisionRadius() + other.getCollisionRadius();
+        System.err.println("CHECK COLLISION: " + getPosition().getDistance(other.getPosition()) + " " + (getCollisionRadius() + other.getCollisionRadius()));
+        return getPosition().getDistance(other.getPosition()) <= getCollisionRadius() + other.getCollisionRadius();
     }
 
     @Override
