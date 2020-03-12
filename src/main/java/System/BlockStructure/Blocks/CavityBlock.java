@@ -36,10 +36,10 @@ public abstract class CavityBlock extends FunctionalBlock {
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation()) {
-            return cavitySubConnector.getConnectedConnector() != null;
+            return getCavitySubConnector().isConnected();
         }
         else {
-            return getSubConnectors().get(0).getConnectedConnector() != null;
+            return getSubConnectors().get(0).isConnected();
         }
     }
 

@@ -3,8 +3,8 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Functionality.WhileFunctionality;
 
 public class WhileBlock extends CavityBlock {
-    public WhileBlock() {
-        super(new WhileFunctionality());
+    public WhileBlock(WhileFunctionality functionality) {
+        super(functionality);
     }
 
     @Override

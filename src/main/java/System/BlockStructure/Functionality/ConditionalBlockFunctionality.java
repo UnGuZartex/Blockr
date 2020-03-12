@@ -16,6 +16,8 @@ public abstract class ConditionalBlockFunctionality<B extends Block> extends Blo
      */
     protected B block;
 
+    ConditionalBlockFunctionality() {}
+
     /**
      * Set the block of this functionality to the given block, only if the block
      * of this functionality is existing.
