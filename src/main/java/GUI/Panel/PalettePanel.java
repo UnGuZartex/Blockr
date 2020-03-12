@@ -1,6 +1,5 @@
 package GUI.Panel;
 
-
 import java.awt.*;
 
 public class PalettePanel extends GamePanel {
@@ -14,8 +13,6 @@ public class PalettePanel extends GamePanel {
         drawBackground(g);
         g.setColor(Color.GREEN);
         g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
-
-
     }
 
     protected void drawBackground(Graphics g) {

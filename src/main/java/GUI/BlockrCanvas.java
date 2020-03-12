@@ -2,12 +2,16 @@ package GUI;
 
 
 import Controllers.LevelController;
+import GUI.BlockShape.CollisionCircle;
+import GUI.Components.GUIBlock;
+import GUI.Components.GUIBlock2;
 import GUI.Images.ImageLibrary;
 import Controllers.ProgramController;
 import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import Utility.Position;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -23,10 +27,12 @@ public class BlockrCanvas extends CanvasWindow {
     public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
 
     private GamePanel[] panels;
-    private ArrayList<GUIBlock> testBlocks = new ArrayList<GUIBlock>();
-    private GUIBlock draggedBlock;
+    private ArrayList<GUIBlock2> testBlocks = new ArrayList<GUIBlock2>();
+    private GUIBlock2 draggedBlock;
     private Point dragDelta;
     private Point mousePos;
+    private GUIBlock block;
+    private CollisionCircle circle;
 
     private ProgramController programController = new ProgramController();
     private LevelController levelController = new LevelController();
@@ -40,6 +46,10 @@ public class BlockrCanvas extends CanvasWindow {
     protected BlockrCanvas(String title, ImageLibrary library) {
         super(title);
         panels = new GamePanel[3];
+
+        // TODO Wegdoen
+        block = new GUIBlock(500, 500);
+        circle = new CollisionCircle(0, 0, 20, 0, Color.red);
 
         GamePanel.setImageLibrary(library);
         setPainters();
@@ -63,7 +73,7 @@ public class BlockrCanvas extends CanvasWindow {
             panel.paint(g);
         }
 
-        for (GUIBlock block : testBlocks) {
+        for (GUIBlock2 block : testBlocks) {
             if (draggedBlock == null || !draggedBlock.equals(block)) {
                 block.draw(g);
             }
@@ -73,6 +83,9 @@ public class BlockrCanvas extends CanvasWindow {
             draggedBlock.changePosition(mousePos.x + dragDelta.x, mousePos.y + dragDelta.y);
             draggedBlock.draw(g);
         }
+
+        circle.paint(g);
+        block.paint(g);
     }
 
     @Override
@@ -95,13 +108,15 @@ public class BlockrCanvas extends CanvasWindow {
             draggedBlock = null;
         }
 
+        System.err.print(block.contains(x, y) + " \n");
+
         repaint();
     }
 
     private void initTestBlocks() {
-        testBlocks.add(new GUIBlock(500, 500, 500, 250, Color.GREEN));
-        testBlocks.add(new GUIBlock(200, 500, 400, 300, Color.BLUE));
-        testBlocks.add(new GUIBlock(500, 300, 300, 100, Color.MAGENTA));
+        testBlocks.add(new GUIBlock2(500, 500, 500, 250, Color.GREEN));
+        testBlocks.add(new GUIBlock2(200, 500, 400, 300, Color.BLUE));
+        testBlocks.add(new GUIBlock2(500, 300, 300, 100, Color.MAGENTA));
     }
 
     private void setPainters() {
@@ -119,6 +134,7 @@ public class BlockrCanvas extends CanvasWindow {
             programController.resetProgram();
             levelController.loadLevel();
         }
+
         repaint();
 
     }
