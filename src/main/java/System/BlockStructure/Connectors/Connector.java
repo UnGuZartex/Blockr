@@ -28,7 +28,13 @@ public abstract class Connector {
      */
     private final Type type;
 
-
+    /**
+     * Initialise a new connector with given block, orientation and type.
+     *
+     * @param block The block of which this connector is.
+     * @param orientation The orientation of this connector.
+     * @param type The type of this connector.
+     */
     public Connector(Block block, Orientation orientation, Type type) {
         this.block = block;
         this.orientation = orientation;
@@ -55,12 +61,12 @@ public abstract class Connector {
 
     /**
      * Get the block of this connector.
-     * @return
+     *
+     * @return the block of this connector.
      */
     public Block getBlock() {
         return block;
     }
-
 
     /**
      * Get the type of this connector.
