@@ -1,13 +1,9 @@
 package GUI.Panel;
 
-import Controllers.PaletteController;
-import GUI.Components.GUIBlock2;
-
 import java.awt.*;
 
 public class PalettePanel extends GamePanel {
-
-    public final PaletteController controller = new PaletteController();
+    
     public PalettePanel(int cornerX, int cornerY, int width, int height) {
         super(cornerX, cornerY, width, height);
     }
