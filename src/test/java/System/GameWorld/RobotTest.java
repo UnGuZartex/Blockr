@@ -38,6 +38,8 @@ class RobotTest {
 
     @AfterEach
     void tearDown() {
+        random = null;
+
         robotUp = null;
         robotDown = null;
         robotLeft = null;
@@ -113,7 +115,6 @@ class RobotTest {
         robotRight.moveForward();
         assertEquals(xRight + 1, robotRight.getX());
         assertEquals(yRight, robotRight.getY());
-
     }
 
     @Test

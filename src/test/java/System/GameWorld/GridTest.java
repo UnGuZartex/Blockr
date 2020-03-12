@@ -18,8 +18,10 @@ class GridTest {
     private Random random;
 
     @BeforeEach
-    void setUp() { // TODO test with cell matrix given and extra methods
+    void setUp() {
         random = new Random();
+
+
         width1 = random.nextInt(MAX_WIDTH) + 1;
         height1 = random.nextInt(MAX_HEIGHT) + 1;
         width2 = random.nextInt(MAX_WIDTH) + 1;
@@ -63,6 +65,8 @@ class GridTest {
 
     @AfterEach
     void tearDown() {
+        random = null;
+
         cells4 = null;
         cells5 = null;
         cells6 = null;

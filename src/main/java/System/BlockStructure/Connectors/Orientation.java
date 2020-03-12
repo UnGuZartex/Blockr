@@ -1,5 +1,10 @@
 package System.BlockStructure.Connectors;
 
+/**
+ * An enum for the different orientations a connector can face.
+ *
+ * @author Alpha-team
+ */
 public enum Orientation {
     FACING_UP() {
         /**
