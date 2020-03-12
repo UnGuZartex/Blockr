@@ -1,27 +1,21 @@
-package GUI.Components;
+package GUI.Blocks;
 
-import GUI.BlockShape.CollisionCircle;
-import GUI.BlockShape.CollisionRectangle;
+import GUI.CollisionShapes.CollisionCircle;
+import GUI.CollisionShapes.CollisionRectangle;
+import GUI.Components.GUIConnector;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUIBlock {
+public abstract class GUIBlock {
     private int x;
     private int y;
-    private GUIConnector mainConnector;
-    private List<GUIConnector> subConnectors = new ArrayList<>();
-    private List<CollisionRectangle> blockRectangles = new ArrayList<>();
+    protected GUIConnector mainConnector;
+    protected List<GUIConnector> subConnectors = new ArrayList<>();
+    protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
 
     public GUIBlock(int x, int y) {
-
-        // TODO beter maken
-        CollisionRectangle rect = new CollisionRectangle(0, 0, 150, 80, 0, Color.black);
-        blockRectangles.add(rect);
-
-        mainConnector = new GUIConnector(this, 75, 0, Color.blue);
-        subConnectors.add(new GUIConnector(this, 75, 80, Color.red));
         setPosition(x, y);
     }
 

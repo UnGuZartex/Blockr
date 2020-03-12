@@ -1,12 +1,10 @@
 package GUI;
 
 
-import GUI.BlockShape.CollisionCircle;
-import GUI.Components.GUIBlock;
-import GUI.Components.GUIBlock2;
+import Controllers.ProgramController;
+import GUI.CollisionShapes.CollisionCircle;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImageLibrary;
-import Controllers.ProgramController;
 import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
@@ -14,10 +12,6 @@ import GUI.Panel.ProgramAreaPanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 public class BlockrCanvas extends CanvasWindow {
 
@@ -26,10 +20,6 @@ public class BlockrCanvas extends CanvasWindow {
     public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
 
     private GamePanel[] panels;
-    private ArrayList<GUIBlock2> testBlocks = new ArrayList<GUIBlock2>();
-    private GUIBlock2 draggedBlock;
-    private Point dragDelta;
-    private Point mousePos;
     private GUIBlockHandler blockHandler;
 
     private ProgramController programController = new ProgramController();
@@ -46,7 +36,6 @@ public class BlockrCanvas extends CanvasWindow {
 
         GamePanel.setImageLibrary(library);
         setPainters();
-        initTestBlocks();
         blockHandler = new GUIBlockHandler();
     }
 
@@ -79,12 +68,6 @@ public class BlockrCanvas extends CanvasWindow {
         CollisionCircle circle1 = new CollisionCircle(0, 0,19, 0, Color.black );
         CollisionCircle circle2 = new CollisionCircle(0, 21,1, 0, Color.black );
         System.err.println(circle1.intersects(circle2));
-    }
-
-    private void initTestBlocks() {
-        testBlocks.add(new GUIBlock2(500, 500, 500, 250, Color.GREEN));
-        testBlocks.add(new GUIBlock2(200, 500, 400, 300, Color.BLUE));
-        testBlocks.add(new GUIBlock2(500, 300, 300, 100, Color.MAGENTA));
     }
 
     private void setPainters() {

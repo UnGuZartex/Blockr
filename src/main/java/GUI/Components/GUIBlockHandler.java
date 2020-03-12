@@ -1,5 +1,7 @@
 package GUI.Components;
 
+import GUI.Blocks.GUIBlock;
+import GUI.Blocks.GUIFunctionalityBlock;
 import Utility.Position;
 
 import java.awt.*;
@@ -19,9 +21,9 @@ public class GUIBlockHandler {
     public GUIBlockHandler() {
         // TODO Wegdoen
         blocks = new ArrayList<>();
-        blocks.add(new GUIBlock(500, 500));
-        blocks.add(new GUIBlock(200, 500));
-        blocks.add(new GUIBlock(500, 200));
+        blocks.add(new GUIFunctionalityBlock(500, 500));
+        blocks.add(new GUIFunctionalityBlock(200, 500));
+        blocks.add(new GUIFunctionalityBlock(500, 200));
     }
 
     public void handleMouseEvent(int id, int x, int y) {

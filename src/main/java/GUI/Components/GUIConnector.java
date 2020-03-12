@@ -1,6 +1,7 @@
 package GUI.Components;
 
-import GUI.BlockShape.CollisionCircle;
+import GUI.CollisionShapes.CollisionCircle;
+import GUI.Blocks.GUIBlock;
 
 import java.awt.*;
 

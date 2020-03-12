@@ -1,4 +1,4 @@
-package GUI.BlockShape;
+package GUI.CollisionShapes;
 
 import Utility.Position;
 
