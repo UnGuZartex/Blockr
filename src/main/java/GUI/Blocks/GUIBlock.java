@@ -105,6 +105,7 @@ public abstract class GUIBlock {
                 return connector;
             }
         }
+        
         return null;
     }
 
