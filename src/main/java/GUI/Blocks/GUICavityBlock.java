@@ -46,11 +46,11 @@ public class GUICavityBlock extends GUIBlock {
         blockRectangles.add(cavityRectangleUnder);
 
         mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector("CAVITY", this, (width+cavityWidth) / 2, height, Color.red)
-        lowerSubConnector = new GUIConnector("SUB_1",this, width / 2, height + lowerheight + cavityHeight, Color.red)
+        cavityConnector = new GUIConnector("CAVITY", this, (width+cavityWidth) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector("SUB_1",this, width / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
-        subConnectors.add(new GUIConnector("CONDITIONAL", this, width, height / 2, Color.red));
+        subConnectors.add(new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red));
 
     }
 
