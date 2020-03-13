@@ -49,6 +49,6 @@ public class PABlockHandler {
     }
 
     public boolean getMaxReached() {
-        return amountOfBlocks >= GameState.maxAmountOfBlocks;
+        return amountOfBlocks >= GameState.getMaxAmountOfBlocks();
     }
 }

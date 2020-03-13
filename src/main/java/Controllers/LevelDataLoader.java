@@ -9,18 +9,18 @@ import java.awt.*;
 public class LevelDataLoader {
 
     public Point getRobotPosition() {
-        return new Point(GameState.currentLevel.getRobot().getX(), GameState.currentLevel.getRobot().getY());
+        return new Point(GameState.getCurrentLevel().getRobot().getX(), GameState.getCurrentLevel().getRobot().getY());
     }
 
     public Direction getRobotDirection() {
-        return GameState.currentLevel.getRobot().getDirection();
+        return GameState.getCurrentLevel().getRobot().getDirection();
     }
 
     public Point getGridSize() {
-        return new Point(GameState.currentLevel.getGrid().getWidth(), GameState.currentLevel.getGrid().getHeight());
+        return new Point(GameState.getCurrentLevel().getGrid().getWidth(), GameState.getCurrentLevel().getGrid().getHeight());
     }
 
     public Cell[][] getGridCells() {
-        return GameState.currentLevel.getGrid().getCells();
+        return GameState.getCurrentLevel().getGrid().getCells();
     }
 }

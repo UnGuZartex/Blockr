@@ -20,7 +20,7 @@ public class Program {
         if (isValidProgram()) {
             if (currentBlock != startBlock || !currentBlock.hasAlreadyRan()) {
                 System.out.println("Evaluating: " + currentBlock.getFunctionality());
-                currentBlock.getFunctionality().evaluate(GameState.currentLevel);
+                currentBlock.getFunctionality().evaluate(GameState.getCurrentLevel());
                 currentBlock.setAlreadyRan(true);
 
                 Block nextBlock;
@@ -46,7 +46,7 @@ public class Program {
     }
 
     public boolean hasWon() {
-        return GameState.currentLevel.hasWon();
+        return GameState.getCurrentLevel().hasWon();
     }
 
     public boolean isValidProgram() {
