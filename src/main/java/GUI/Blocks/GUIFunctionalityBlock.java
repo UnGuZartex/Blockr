@@ -10,6 +10,13 @@ public class GUIFunctionalityBlock extends GUIBlock {
     public GUIFunctionalityBlock(String ID, int x, int y) {
         super(ID, x, y);
     }
+
+    @Override
+    protected void addHeight(int height, GUIBlock previousBlock) {
+        if (mainConnector.isConnected()) {
+            mainConnector.getConnectedGUIBlock().addHeight(height, this);
+        }
+    }
   
     @Override
     protected void setShapes() {

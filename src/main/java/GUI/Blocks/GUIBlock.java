@@ -116,11 +116,7 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    protected void addHeight(int height, GUIBlock previousBlock) {
-        if (mainConnector.isConnected()) {
-            mainConnector.getConnectedGUIBlock().addHeight(height, this);
-        }
-    }
+    protected abstract void addHeight(int height, GUIBlock previousBlock);
 
     public void removeHeight(int height) {
 
