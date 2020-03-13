@@ -44,10 +44,6 @@ public abstract class GUIBlock {
 
             if (connector.isConnected()) {
                 connector.getConnectedGUIBlock().translate(deltaX, deltaY);
-                System.err.println("CONNECTED");
-            }
-            else {
-                System.err.println("NOT CONNECTED");
             }
         }
 
@@ -119,7 +115,6 @@ public abstract class GUIBlock {
         if (intersectingConnector == null) {
 
             for (GUIConnector connector : subConnectors) {
-                System.err.println("BOOLEAN " + (connector.getConnectedConnector() != other.mainConnector) + " "  + connector.getCollisionCircle().intersects(other.mainConnector.getCollisionCircle()));
                 if (connector.getConnectedConnector() != other.mainConnector
                         && connector.getCollisionCircle().intersects(other.mainConnector.getCollisionCircle())) {
                     intersectingConnector = connector;
@@ -132,13 +127,9 @@ public abstract class GUIBlock {
             }
 
             other.mainConnector.connect(intersectingConnector);
-
-
-            System.err.println("SUB " + intersectingConnector.isConnected());
         }
         else {
             mainConnector.connect(intersectingConnector);
-            System.err.println("MAIN: other: " + intersectingConnector.getCollisionCircle().getPosition() + " " + mainConnector.getCollisionCircle().getPosition());
         }
 
         //setPosition(0,0);
