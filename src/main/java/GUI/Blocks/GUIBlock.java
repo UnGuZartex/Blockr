@@ -122,6 +122,10 @@ public abstract class GUIBlock {
         }
     }
 
+    public void removeHeight(int height) {
+
+    }
+
     public void connectWithStaticBlock(GUIBlock other) {
 
         GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;

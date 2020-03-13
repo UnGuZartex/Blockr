@@ -63,7 +63,7 @@ public class GUICavityBlock extends GUIBlock {
     private void decreaseCavityHeight(int decreasement) {
         setNewCavityHeight(cavityHeight - decreasement);
         if (lowerSubConnector.isConnected()) {
-            // TODO
+            lowerSubConnector.getConnectedGUIBlock().translate(0, -decreasement);
         }
     }
 
@@ -72,6 +72,6 @@ public class GUICavityBlock extends GUIBlock {
         height = cavityUpHeight + cavityHeight + cavityDownHeight;
         cavityRectangle.setHeight(cavityHeight);
         cavityRectangleUnder.setY(getY() + cavityUpHeight + cavityHeight);
-        lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY());
+        lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY() + cavityDownHeight);
     }
 }
