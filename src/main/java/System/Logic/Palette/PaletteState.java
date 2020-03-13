@@ -24,7 +24,7 @@ public class PaletteState {
 
     public Block getBlockAt(String ID){
         if (allBlocksFactory.containsKey(ID)) {
-            Block toReturn = allBlocksFactory.get(ID).CreateBlock();
+            Block toReturn = allBlocksFactory.get(ID).createBlock();
             return toReturn;
         }
         else {

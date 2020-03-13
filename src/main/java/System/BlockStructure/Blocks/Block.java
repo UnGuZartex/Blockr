@@ -164,8 +164,4 @@ public abstract class Block {
         return subConnector.size();
     }
 
-    public SubConnector getSubConnectorAt(int index) {
-        return subConnector.get(index);
-
-    }
 }
