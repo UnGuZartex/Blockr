@@ -97,7 +97,6 @@ public abstract class GUIBlock {
             blockRectangle.paint(g);
         }
 
-
         g.drawString(name, this.x + 2, this.y +20);
     }
 

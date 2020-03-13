@@ -18,8 +18,8 @@ public class GUICavityBlock extends GUIBlock {
         int height = 30;
         int lowerheight = 10;
 
-        int width = 100;
         int cavityWidth = 10;
+        int width = 100 + cavityWidth;
         cavityHeight = 20;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
