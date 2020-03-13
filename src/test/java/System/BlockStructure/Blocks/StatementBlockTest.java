@@ -53,8 +53,8 @@ class StatementBlockTest {
 
     @Test
     void returnToClosestCavity() {
-        assertNull(block1.returnToClosestCavity());
-        assertNull(block2.returnToClosestCavity());
+        assertNull(block1.getNextIfNone());
+        assertNull(block2.getNextIfNone());
     }
 
     @Test

@@ -104,11 +104,11 @@ public abstract class Block {
     public abstract Block getNext();
 
     /**
-     * Return to the closest cavity to execute.
+     * Get the next block to execute if there are none left.
      *
-     * @return The cavity in which this block is contained.
+     * @return The block which could be executed next.
      */
-    public abstract Block returnToClosestCavity();
+    public abstract Block getNextIfNone();
 
     /**
      * Set whether or not this block has already ran.

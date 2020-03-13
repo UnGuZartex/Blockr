@@ -37,6 +37,8 @@ class OperationalBlockTest {
         handler.connect(wallInFront2, not2.getSubConnectorAt(0));
         handler.connect(not2, cavoc2.getConditionalSubConnector());
         handler.connect(not3, cavoc3.getConditionalSubConnector());
+
+        
     }
 
     @AfterEach
@@ -79,10 +81,10 @@ class OperationalBlockTest {
 
     @Test
     void returnToClosestCavity() {
-        assertNull(not1.returnToClosestCavity());
-        assertNull(not2.returnToClosestCavity());
-        assertNull(not3.returnToClosestCavity());
-        assertNull(not4.returnToClosestCavity());
+        assertNull(not1.getNextIfNone());
+        assertNull(not2.getNextIfNone());
+        assertNull(not3.getNextIfNone());
+        assertNull(not4.getNextIfNone());
     }
 
     @Test

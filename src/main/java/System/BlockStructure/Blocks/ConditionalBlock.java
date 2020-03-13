@@ -67,7 +67,7 @@ public abstract class ConditionalBlock extends Block {
      *         a cavity block.
      */
     @Override
-    public Block returnToClosestCavity() {
+    public Block getNextIfNone() {
         return null;
     }
 

@@ -25,7 +25,7 @@ public class Program {
 
                 Block nextBlock;
                 if (!currentBlock.hasNext()) {
-                    nextBlock = currentBlock.returnToClosestCavity();
+                    nextBlock = currentBlock.getNextIfNone();
                 } else {
                     nextBlock = currentBlock.getNext();
                 }
