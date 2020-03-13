@@ -5,7 +5,6 @@ import GUI.Blocks.Factories.*;
 import GUI.Components.GUIBlockHandler;
 
 import java.awt.*;
-import java.util.HashMap;
 
 public class PalettePanel extends GamePanel {
 
@@ -17,14 +16,19 @@ public class PalettePanel extends GamePanel {
         super(cornerX, cornerY, width, height);
         this.blockHandler = blockHandler;
         this.controller = controller;
+        addBlocksToGame("IF");
+        addBlocksToGame("WHILE");
+        addBlocksToGame("MOVEF");
+        addBlocksToGame("TURNL");
+        addBlocksToGame("TURNR");
+        addBlocksToGame("NOT");
+        addBlocksToGame("WIF");
 
     }
 
 
     public void addBlocksToGame(String ID) {
-        if(!controller.reachedMaxBlocks()) {
-        }
-
+        blockHandler.addBlock(controller.getBlock(ID, 0,0));
     }
 
     @Override
