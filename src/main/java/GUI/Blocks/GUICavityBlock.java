@@ -21,8 +21,8 @@ public class GUICavityBlock extends GUIBlock {
 
         mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
         subConnectors.add(new GUIConnector(this, width / 2, height, Color.red));
-        subConnectors.add(new GUIConnector(this, width / 2, height, Color.red));
         subConnectors.add(new GUIConnector(this, width, height / 2, Color.red));
+        subConnectors.add(new GUIConnector(this, width / 2, 120 + cavityHeight, Color.red));
 
         setPosition(x, y);
 

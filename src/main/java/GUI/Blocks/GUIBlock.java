@@ -109,15 +109,18 @@ public abstract class GUIBlock {
             if (connector.getConnectedConnector() != mainConnector
                     && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
                 intersectingConnector = connector;
+                break;
             }
         }
 
         if (intersectingConnector == null) {
 
             for (GUIConnector connector : subConnectors) {
+                System.err.println("BOOLEAN " + (connector.getConnectedConnector() != other.mainConnector) + " "  + connector.getCollisionCircle().intersects(other.mainConnector.getCollisionCircle()));
                 if (connector.getConnectedConnector() != other.mainConnector
                         && connector.getCollisionCircle().intersects(other.mainConnector.getCollisionCircle())) {
                     intersectingConnector = connector;
+                    break;
                 }
             }
 
