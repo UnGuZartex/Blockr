@@ -1,4 +1,4 @@
-package GUI.BlockShape;
+package GUI.CollisionShapes;
 
 import java.awt.*;
 
@@ -21,6 +21,14 @@ public class CollisionRectangle extends CollisionShape {
         return height;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     @Override
     public boolean contains(int x, int y) {
         return  x >= this.x && x <= this.x + getCollisionWidth() &&
@@ -31,6 +39,8 @@ public class CollisionRectangle extends CollisionShape {
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(x, y, width, height);
+        g.setColor(Color.black);
+        g.drawRect(x, y, width, height);
     }
 
     private int getCollisionWidth() {

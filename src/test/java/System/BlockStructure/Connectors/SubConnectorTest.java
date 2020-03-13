@@ -17,25 +17,25 @@ class SubConnectorTest {
 
     @BeforeEach
     void setUp() {
-        plugUp = new SubConnector(block1, Orientation.FACING_UP, Type.PLUG);
+        plugUp = new SubConnector("CheckCheck",block1, Orientation.FACING_UP, Type.PLUG);
         mainPlugUp = new MainConnector(block2, Orientation.FACING_DOWN, Type.SOCKET);
         mainPlugUp.connect(plugUp);
-        plugDown = new SubConnector(block1, Orientation.FACING_DOWN, Type.PLUG);
+        plugDown = new SubConnector("CheckCheck",block1, Orientation.FACING_DOWN, Type.PLUG);
         mainPlugDown = new MainConnector(block2, Orientation.FACING_UP, Type.SOCKET);
         mainPlugDown.connect(plugDown);
-        plugLeft = new SubConnector(block1, Orientation.FACING_LEFT, Type.PLUG);
+        plugLeft = new SubConnector("CheckCheck",block1, Orientation.FACING_LEFT, Type.PLUG);
         mainPlugLeft = new MainConnector(block2, Orientation.FACING_LEFT, Type.SOCKET);
-        plugRight = new SubConnector(block1, Orientation.FACING_RIGHT, Type.PLUG);
+        plugRight = new SubConnector("CheckCheck",block1, Orientation.FACING_RIGHT, Type.PLUG);
         mainPlugRight = new MainConnector(block2, Orientation.FACING_LEFT, Type.SOCKET);
 
-        socketUp = new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET);
+        socketUp = new SubConnector("CheckCheck",block1, Orientation.FACING_UP, Type.SOCKET);
         mainSocketUp = new MainConnector(block2, Orientation.FACING_DOWN, Type.PLUG);
-        socketDown = new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET);
+        socketDown = new SubConnector("CheckCheck",block1, Orientation.FACING_DOWN, Type.SOCKET);
         mainSocketDown = new MainConnector(block2, Orientation.FACING_UP, Type.PLUG);
-        socketLeft = new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET);
+        socketLeft = new SubConnector("CheckCheck",block1, Orientation.FACING_LEFT, Type.SOCKET);
         mainSocketLeft = new MainConnector(block2, Orientation.FACING_RIGHT, Type.PLUG);
         mainSocketLeft.connect(socketLeft);
-        socketRight = new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET);
+        socketRight = new SubConnector("CheckCheck",block1, Orientation.FACING_RIGHT, Type.SOCKET);
         mainSocketRight = new MainConnector(block2, Orientation.FACING_LEFT, Type.PLUG);
         mainSocketRight.connect(socketRight);
     }

@@ -1,17 +1,17 @@
 package Controllers;
 
 
-import System.BlockStructure.Blocks.Block;
+import GUI.Blocks.GUIBlock;
 import System.GameWorld.Level.LevelLoader;
-import System.Logic.Converter;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
 
 
 public class ProgramController {
     private final PABlockHandler blockHandler = new PABlockHandler();
-    private final Converter converter = new Converter();
-    private LevelLoader loader = new LevelLoader();
+    private final LevelLoader loader = new LevelLoader();
+    private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+    private final ConnectionController controller = new ConnectionController(converter);
 
 
 //    public void addBlockToPA(GUIBlock block) {
@@ -26,15 +26,15 @@ public class ProgramController {
 //        loadLevel();
 //    }
 
-    //TODO REMOVE V
-    public void addBlock(Block block){
-        blockHandler.addToPA(block);
-    }
 
     public boolean reachedMaxBlocks() {
         return blockHandler.getMaxReached();
     }
 
+
+    public GUIBlock getBlock(String ID, int x, int y) {
+        return converter.createNewGUIBlock(ID, x, y);
+    }
 
     public void resetProgram() {
         Program program = blockHandler.getPA().getProgram();
@@ -57,5 +57,7 @@ public class ProgramController {
     }
 
 
-
+    public ConnectionController getController() {
+        return controller;
+    }
 }

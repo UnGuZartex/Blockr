@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
+import System.GameState.GameState;
 import System.Logic.Palette.PaletteState;
 
 public class PABlockHandler {
@@ -10,9 +11,9 @@ public class PABlockHandler {
     private ConnectionHandler connectionHandler = new ConnectionHandler();
     private int amountOfBlocks = 0;
 
-    public Block getFromPalette(int index) {
+    public Block getFromPalette(String ID) {
         if (!getMaxReached()) {
-            return palette.getBlockAt(index);
+            return palette.getBlockAt(ID);
         }
         else {
             return null;
@@ -48,6 +49,6 @@ public class PABlockHandler {
     }
 
     public boolean getMaxReached() {
-        return amountOfBlocks >= PA.getMaxAmountOfBlocks();
+        return amountOfBlocks >= GameState.maxAmountOfBlocks;
     }
 }
