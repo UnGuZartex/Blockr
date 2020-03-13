@@ -38,10 +38,6 @@ class ConnectionHandlerTest {
 
     @Test
     void connect() {
-        //assertFalse(block1.getSubConnectorAt(0).isConnected());
-        //assertFalse(block3.getMainConnector().isConnected());
-
-
         assertFalse(block2.getMainConnector().isConnected());
         handler.connect(block2, block1.getSubConnectorAt(0));
         assertEquals(block1, block2.getMainConnector().getConnectedBlock());

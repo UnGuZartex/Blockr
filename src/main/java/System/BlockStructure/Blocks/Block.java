@@ -143,13 +143,18 @@ public abstract class Block {
 }
 
 
+    /**
+     * Finds the correct subconnector of a block given its ID.
+     * @param ID the ID to search for
+     * @return The connector in the block with this given ID.
+     */
     public SubConnector getSubConnectorWithID(String ID) {
         for (SubConnector connector:subConnector) {
             if (connector.getID() == ID) {
                 return connector;
             }
         }
-        return null;
+        throw new IllegalStateException("This connection ID cannot exist for this block");
     }
 
 }
