@@ -3,12 +3,14 @@ package GUI.Blocks;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
+import Utility.Position;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GUIBlock {
+
     private int x;
     private int y;
     protected GUIConnector mainConnector;
@@ -89,14 +91,23 @@ public abstract class GUIBlock {
 
     public void connectWithStaticBlock(GUIBlock other) {
 
-        GUIConnector intersectingConnector;
+        GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;
+        Position staticBlockConnectorPosition = null;
+        Position draggedBlockConnector = null;
 
-        if ((intersectingConnector = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
-            mainConnector.connect(intersectingConnector);
+        if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
+            intersectingConnectorMain = mainConnector;
+            draggedBlockConnector = mainConnector.getCollisionCircle().getPosition();
+            staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
-        else if ((intersectingConnector = findCollidingConnector(subConnectors, other.mainConnector)) != null){
-            other.mainConnector.connect(intersectingConnector);
+        else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
+            intersectingConnectorMain = other.mainConnector;
+            staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
+            draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
+
+        setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
+        intersectingConnectorMain.connect(intersectingConnectorSub);
     }
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
