@@ -7,13 +7,12 @@ import java.awt.*;
 
 public class GUIFunctionalityBlock extends GUIBlock {
 
-    public GUIFunctionalityBlock(int x, int y) {
-        super(x, y);
+    public GUIFunctionalityBlock(String ID, int x, int y) {
+        super(ID, x, y);
     }
-
+  
     @Override
     protected void setShapes() {
-
         int height = 80;
         int width = 150;
 

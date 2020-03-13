@@ -71,7 +71,7 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPainters() {
-        panels[0] = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height);
+        panels[0] = new PalettePanel(blockHandler,0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
         panels[1] = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
         panels[2] = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }

@@ -1,11 +1,30 @@
 package GUI.Panel;
 
+import Controllers.ProgramController;
+import GUI.Blocks.Factories.*;
+import GUI.Components.GUIBlockHandler;
+
 import java.awt.*;
+import java.util.HashMap;
 
 public class PalettePanel extends GamePanel {
 
-    public PalettePanel(int cornerX, int cornerY, int width, int height) {
+    private GUIBlockHandler blockHandler;
+    private ProgramController controller;
+
+
+    public PalettePanel(GUIBlockHandler blockHandler, int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
+        this.blockHandler = blockHandler;
+        this.controller = controller;
+
+    }
+
+
+    public void addBlocksToGame(String ID) {
+        if(!controller.reachedMaxBlocks()) {
+        }
+
     }
 
     @Override

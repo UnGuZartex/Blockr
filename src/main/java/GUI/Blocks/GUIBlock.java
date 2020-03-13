@@ -14,8 +14,10 @@ public abstract class GUIBlock {
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
+    private String id;
 
-    protected GUIBlock(int x, int y) {
+    protected GUIBlock(String id, int x, int y) {
+        this.id = id;
         setShapes();
         setPosition(x, y);
     }
