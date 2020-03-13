@@ -7,13 +7,12 @@ import java.awt.*;
 
 public class GUIConditionalBlock extends GUIBlock {
 
-    public GUIConditionalBlock(int x, int y) {
-        super(x, y);
+    public GUIConditionalBlock(String ID, int x, int y) {
+        super(ID, x, y);
     }
 
     @Override
     protected void setShapes() {
-
         int height = 80;
         int width = 150;
 

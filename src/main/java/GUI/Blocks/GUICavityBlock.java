@@ -9,13 +9,12 @@ public class GUICavityBlock extends GUIBlock {
 
     private int cavityHeight;
 
-    public GUICavityBlock(int x, int y) {
-        super(x, y);
+    public GUICavityBlock(String ID, int x, int y) {
+        super(ID,x, y);
     }
 
     @Override
     protected void setShapes() {
-
         int height = 80;
         int width = 150;
         int cavityWidth = 10;

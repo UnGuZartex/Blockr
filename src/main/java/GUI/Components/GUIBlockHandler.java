@@ -24,10 +24,10 @@ public class GUIBlockHandler {
     public GUIBlockHandler() {
         // TODO Wegdoen
         blocks = new ArrayList<>();
-        blocks.add(new GUIFunctionalityBlock(500, 500));
-        blocks.add(new GUICavityBlock(200, 500));
-        blocks.add(new GUIOperatorBlock(500, 200));
-        blocks.add(new GUIConditionalBlock(100, 100));
+        blocks.add(new GUIFunctionalityBlock("8", 500, 500));
+        blocks.add(new GUICavityBlock("5",200, 500));
+        blocks.add(new GUIOperatorBlock("9",500, 200));
+        blocks.add(new GUIConditionalBlock("5", 100, 100));
     }
 
     public void handleMouseEvent(int id, int x, int y) {
