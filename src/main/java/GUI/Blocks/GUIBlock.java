@@ -11,12 +11,13 @@ import java.util.List;
 
 public abstract class GUIBlock {
 
-    private int x;
-    private int y;
+    protected int height;
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
     private String name = "";
+    private int x;
+    private int y;
 
     protected GUIBlock(String name, int x, int y) {
         this.name = name;
@@ -31,6 +32,10 @@ public abstract class GUIBlock {
 
     public int getY() {
         return y;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void disconnectMainConnector() {
@@ -78,7 +83,6 @@ public abstract class GUIBlock {
             blockRectangle.paint(g);
         }
 
-
         g.drawString(name, this.x + 2, this.y +20);
     }
 
@@ -93,6 +97,12 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
+    protected abstract void addHeight(int height, GUIBlock previousBlock);
+
+    public void removeHeight(int height) {
+
+    }
+
     public void connectWithStaticBlock(GUIBlock other) {
 
         GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;
@@ -103,15 +113,22 @@ public abstract class GUIBlock {
             intersectingConnectorMain = mainConnector;
             draggedBlockConnector = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
+            intersectingConnectorMain.connect(intersectingConnectorSub);
+            addHeight(height, this);
+
+            System.err.println("THIS");
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             intersectingConnectorMain = other.mainConnector;
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
-        }
+            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
+            intersectingConnectorMain.connect(intersectingConnectorSub);
+            addHeight(other.height, other);
 
-        setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
-        intersectingConnectorMain.connect(intersectingConnectorSub);
+            System.err.println("THIS 2");
+        }
     }
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {

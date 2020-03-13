@@ -21,6 +21,14 @@ public class CollisionRectangle extends CollisionShape {
         return height;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     @Override
     public boolean contains(int x, int y) {
         return  x >= this.x && x <= this.x + getCollisionWidth() &&

@@ -10,11 +10,10 @@ import java.awt.*;
 
 public class ProgramGUI {
     public static void main(String args[]) throws Exception {
-        ImageLibrary library = ImagePreLoader.createImageLibrary();
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        BlockrCanvas canvas = new BlockrCanvas("Blockr", library, screenSize.width, screenSize.height);
+        BlockrCanvas canvas = new BlockrCanvas("Blockr", screenSize.width, screenSize.height);
         java.awt.EventQueue.invokeLater(canvas::show);
     }
 }

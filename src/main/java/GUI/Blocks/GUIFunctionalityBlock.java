@@ -10,10 +10,18 @@ public class GUIFunctionalityBlock extends GUIBlock {
     public GUIFunctionalityBlock(String name, int x, int y) {
         super(name, x, y);
     }
+
+    @Override
+    protected void addHeight(int height, GUIBlock previousBlock) {
+        if (mainConnector.isConnected()) {
+            mainConnector.getConnectedGUIBlock().addHeight(height, this);
+        }
+    }
   
     @Override
     protected void setShapes() {
-        int height = 50;
+
+        height = 50;
         int width = 100;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
