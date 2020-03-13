@@ -13,8 +13,8 @@ public class GUIFunctionalityBlock extends GUIBlock {
   
     @Override
     protected void setShapes() {
-        int height = 80;
-        int width = 150;
+        int height = 50;
+        int width = 100;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
         mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);

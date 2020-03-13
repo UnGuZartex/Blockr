@@ -24,7 +24,12 @@ public class PaletteState {
     }
 
     public Block getBlockAt(String ID){
-        Block toReturn = allBlocksFactory.get(ID).CreateBlock();
-        return toReturn;
+        if (allBlocksFactory.containsKey(ID)) {
+            Block toReturn = allBlocksFactory.get(ID).CreateBlock();
+            return toReturn;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid ID, choose between: " + allBlocksFactory.keySet());
+        }
     }
 }
