@@ -2,7 +2,7 @@ package System.BlockStructure.Blocks.Factory;
 
 
 import System.BlockStructure.Blocks.IfBlock;
-import System.BlockStructure.Functionality.IfFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
 
 /**
  * A factory to create an If-block
@@ -17,6 +17,6 @@ public class IfBlockFactory extends BlockFactory {
      */
     @Override
     public IfBlock createBlock() {
-        return new IfBlock(new IfFunctionality());
+        return new IfBlock(new CavityFunctionality());
     }
 }

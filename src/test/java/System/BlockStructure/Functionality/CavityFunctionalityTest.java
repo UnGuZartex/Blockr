@@ -1,6 +1,5 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.BlockStructure.Blocks.Factory.IfBlockFactory;
 import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
@@ -18,9 +17,9 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IfFunctionalityTest {
+class CavityFunctionalityTest {
 
-    IfFunctionality ifFunc;
+    CavityFunctionality ifFunc;
     IfBlock if1, if2, block;
     ConditionalBlock cond1;
 
@@ -38,7 +37,7 @@ class IfFunctionalityTest {
         IfBlockFactory ifFactory = new IfBlockFactory();
         if1 = ifFactory.createBlock();
         if2 = ifFactory.createBlock();
-        ifFunc = new IfFunctionality();
+        ifFunc = new CavityFunctionality();
         block = ifFactory.createBlock();
 
         WallInFrontBlockFactory condFactory = new WallInFrontBlockFactory();
