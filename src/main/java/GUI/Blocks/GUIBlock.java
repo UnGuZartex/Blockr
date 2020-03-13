@@ -15,7 +15,10 @@ public abstract class GUIBlock {
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
 
-    protected GUIBlock() { }
+    protected GUIBlock(int x, int y) {
+        setShapes();
+        setPosition(x, y);
+    }
 
     public int getX() {
         return x;
@@ -140,4 +143,6 @@ public abstract class GUIBlock {
 
         //setPosition(0,0);
     }
+
+    protected abstract void setShapes();
 }

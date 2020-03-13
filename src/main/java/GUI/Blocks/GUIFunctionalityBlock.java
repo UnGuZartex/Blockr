@@ -8,6 +8,11 @@ import java.awt.*;
 public class GUIFunctionalityBlock extends GUIBlock {
 
     public GUIFunctionalityBlock(int x, int y) {
+        super(x, y);
+    }
+
+    @Override
+    protected void setShapes() {
 
         int height = 80;
         int width = 150;
@@ -15,7 +20,5 @@ public class GUIFunctionalityBlock extends GUIBlock {
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
         mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
         subConnectors.add(new GUIConnector(this, width / 2, height, Color.red));
-
-        setPosition(x, y);
     }
 }

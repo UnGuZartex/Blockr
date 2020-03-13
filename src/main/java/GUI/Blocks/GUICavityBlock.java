@@ -10,6 +10,11 @@ public class GUICavityBlock extends GUIBlock {
     private int cavityHeight = 50;
 
     public GUICavityBlock(int x, int y) {
+        super(x, y);
+    }
+
+    @Override
+    protected void setShapes() {
 
         int height = 80;
         int width = 150;
@@ -23,8 +28,5 @@ public class GUICavityBlock extends GUIBlock {
         subConnectors.add(new GUIConnector(this, width / 2, height, Color.red));
         subConnectors.add(new GUIConnector(this, width, height / 2, Color.red));
         subConnectors.add(new GUIConnector(this, width / 2, 120 + cavityHeight, Color.red));
-
-        setPosition(x, y);
-
     }
 }
