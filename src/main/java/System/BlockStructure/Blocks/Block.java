@@ -140,5 +140,32 @@ public abstract class Block {
      */
     public boolean hasProperConnections() {
         return !hasNext() || getNext().hasProperConnections();
+}
+
+  public boolean isValid() {
+        if (hasNext()) {
+            return getNext().isValid();
+        }
+        else {
+            return true;
+        }
+    }
+
+    public SubConnector getSubConnectorWithID(String ID) {
+        for (SubConnector connector:subConnector) {
+            if (connector.getID() == ID) {
+                return connector;
+            }
+        }
+        return null;
+    }
+
+    public int getSubConnectorListSize() {
+        return subConnector.size();
+    }
+
+    public SubConnector getSubConnectorAt(int index) {
+        return subConnector.get(index);
+
     }
 }

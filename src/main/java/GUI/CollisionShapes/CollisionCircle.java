@@ -1,4 +1,4 @@
-package GUI.BlockShape;
+package GUI.CollisionShapes;
 
 import Utility.Position;
 
@@ -17,8 +17,12 @@ public class CollisionCircle extends CollisionShape {
         return radius;
     }
 
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     public boolean intersects(CollisionCircle other) {
-        return getPosition().getDistance(other.getPosition()) >= getCollisionRadius() + other.getCollisionRadius();
+        return getPosition().getDistance(other.getPosition()) <= getCollisionRadius() + other.getCollisionRadius();
     }
 
     @Override
