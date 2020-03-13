@@ -15,10 +15,9 @@ public class ProgramGUI {
         ImageLibrary library = ImagePreLoader.createImageLibrary();
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
-        BlockrCanvas canvas = new BlockrCanvas("Blockr", library);
+        BlockrCanvas canvas = new BlockrCanvas("Blockr", library, 900, 600);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //canvas.setDimensions(screenSize.width, screenSize.height);
-        canvas.setDimensions(900, 600);
         java.awt.EventQueue.invokeLater(canvas::show);
     }
 }
