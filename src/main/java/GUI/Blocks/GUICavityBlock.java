@@ -12,8 +12,8 @@ public class GUICavityBlock extends GUIBlock {
     private CollisionRectangle cavityRectangle, cavityRectangleUnder;
     private GUIConnector cavityConnector, lowerSubConnector;
 
-    public GUICavityBlock(String ID, int x, int y) {
-        super(ID,x, y);
+    public GUICavityBlock(String name, int x, int y) {
+        super(name,x, y);
     }
 
     @Override
@@ -45,12 +45,13 @@ public class GUICavityBlock extends GUIBlock {
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
-        mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector(this, (width + cavityWidth) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector(this, width / 2, cavityUpHeight + cavityDownHeight + cavityHeight, Color.red);
+        mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
+        cavityConnector = new GUIConnector("CAVITY", this, (width+cavityWidth) / 2, height, Color.red)
+        lowerSubConnector = new GUIConnector("SUB_1",this, width / 2, height + lowerheight + cavityHeight, Color.red)
         subConnectors.add(cavityConnector);
-        subConnectors.add(new GUIConnector(this, width, cavityUpHeight / 2, Color.red));
         subConnectors.add(lowerSubConnector);
+        subConnectors.add(new GUIConnector("CONDITIONAL", this, width, height / 2, Color.red));
+
     }
 
     private void increaseCavityHeight(int increasement) {

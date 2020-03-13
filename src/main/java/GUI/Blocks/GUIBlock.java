@@ -15,35 +15,16 @@ public abstract class GUIBlock {
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
-    private String id;
     private String name = "";
     private int x;
     private int y;
 
-    protected GUIBlock(String id, int x, int y) {
-        this.id = id;
+    protected GUIBlock(String name, int x, int y) {
+        this.name = name;
         setShapes();
         setPosition(x, y);
-        setName();
     }
 
-    private void setName() {
-        String splitID = id.split("_")[0];
-        String[] splitAll = splitID.split(" ");
-        for(String string:splitAll) {
-            System.out.println(string);
-            if (string.length() == 0)
-                name += " ";
-
-            else if (string.length() == 1) name += " " + string.toUpperCase();
-
-
-            else {
-                name += " " + string.substring(0, 1).toUpperCase()
-                        + string.substring(1).toLowerCase();
-            }
-        }
-    }
 
     public int getX() {
         return x;

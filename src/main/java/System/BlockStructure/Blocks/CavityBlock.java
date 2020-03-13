@@ -13,8 +13,8 @@ public abstract class CavityBlock extends FunctionalBlock {
     protected <B extends CavityBlock> CavityBlock(ConditionalBlockFunctionality<B> functionality) {
         super(functionality);
         functionality.setBlock((B) this);
-        cavitySubConnector = new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG);
-        conditionalSubConnector = new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET);
+        cavitySubConnector = new SubConnector("CAVITY", this, Orientation.FACING_DOWN, Type.PLUG);
+        conditionalSubConnector = new SubConnector("CONDITIONAL", this, Orientation.FACING_RIGHT, Type.SOCKET);
         getSubConnectors().add(cavitySubConnector);
         getSubConnectors().add(conditionalSubConnector);
 

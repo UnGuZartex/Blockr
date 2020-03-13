@@ -2,7 +2,9 @@ package Controllers;
 
 import GUI.Blocks.Factories.*;
 import GUI.Blocks.GUIBlock;
+import GUI.Components.GUIConnector;
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.ProgramArea.PABlockHandler;
 
 import java.util.*;
@@ -12,6 +14,7 @@ public class GUItoSystemInterface {
     private PABlockHandler blockHandler;
     private final HashMap<String, GUIFactory> factories = new HashMap<>();
     private final HashMap<GUIBlock, Block> conversionTable = new HashMap<>();
+
 
 
     public GUItoSystemInterface(PABlockHandler blockHandler) {
@@ -48,5 +51,10 @@ public class GUItoSystemInterface {
             }
         }
         return keys.get(0);
+    }
+
+    public SubConnector getSubConnectorFromGUIBlockWithID(GUIBlock block, String ID) {
+        Block searchedBlock = getBlockFromGUIBlock(block);
+        return searchedBlock.getSubConnectorWithID(ID);
     }
 }

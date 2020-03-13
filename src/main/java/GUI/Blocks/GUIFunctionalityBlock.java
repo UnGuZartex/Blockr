@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class GUIFunctionalityBlock extends GUIBlock {
 
-    public GUIFunctionalityBlock(String ID, int x, int y) {
-        super(ID, x, y);
+    public GUIFunctionalityBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GUIFunctionalityBlock extends GUIBlock {
         int width = 100;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
-        mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
-        subConnectors.add(new GUIConnector(this, width / 2, height, Color.red));
+        mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
+        subConnectors.add(new GUIConnector( "SUB_1", this, width / 2, height, Color.red));
     }
 }
