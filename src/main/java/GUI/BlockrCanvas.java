@@ -30,19 +30,16 @@ public class BlockrCanvas extends CanvasWindow {
      *
      * @param title Window title
      */
-    protected BlockrCanvas(String title, ImageLibrary library) {
+    protected BlockrCanvas(String title, ImageLibrary library, int width, int height) {
         super(title);
         panels = new GamePanel[3];
 
         GamePanel.setImageLibrary(library);
-        setPainters();
         blockHandler = new GUIBlockHandler();
-    }
-
-    protected void setDimensions(int width, int height) {
         this.width = width;
         this.height = height;
         setPainters();
+
     }
 
     @Override

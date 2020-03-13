@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import GUI.Blocks.GUIBlock;
 import System.GameWorld.Level.LevelLoader;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
@@ -30,6 +31,9 @@ public class ProgramController {
     }
 
 
+    public GUIBlock getBlock(String ID, int x, int y) {
+        return converter.createNewGUIBlock(ID, x, y);
+    }
     public void resetProgram() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
