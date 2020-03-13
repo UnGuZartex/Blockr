@@ -117,9 +117,8 @@ public abstract class GUIBlock {
     }
 
     protected void addHeight(int height, GUIBlock previousBlock) {
-
         if (mainConnector.isConnected()) {
-            this.mainConnector.getConnectedGUIBlock().addHeight(height, this);
+            mainConnector.getConnectedGUIBlock().addHeight(height, this);
         }
     }
 
@@ -133,16 +132,22 @@ public abstract class GUIBlock {
             intersectingConnectorMain = mainConnector;
             draggedBlockConnector = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
+            intersectingConnectorMain.connect(intersectingConnectorSub);
+            other.addHeight(height, this);
+
+            System.err.println("THIS");
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             intersectingConnectorMain = other.mainConnector;
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
-        }
+            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
+            intersectingConnectorMain.connect(intersectingConnectorSub);
+            addHeight(other.height, other);
 
-        setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
-        intersectingConnectorMain.connect(intersectingConnectorSub);
-        addHeight(other.height, other);
+            System.err.println("THIS 2");
+        }
     }
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {

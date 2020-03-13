@@ -10,7 +10,7 @@ public class GUICavityBlock extends GUIBlock {
 
     private int cavityHeight, cavityUpHeight, cavityDownHeight;
     private CollisionRectangle cavityRectangle, cavityRectangleUnder;
-    private GUIConnector cavityConnector;
+    private GUIConnector cavityConnector, lowerSubConnector;
 
     public GUICavityBlock(String ID, int x, int y) {
         super(ID,x, y);
@@ -18,8 +18,14 @@ public class GUICavityBlock extends GUIBlock {
 
     @Override
     protected void addHeight(int height, GUIBlock previousBlock) {
+
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
             increaseCavityHeight(height);
+        }
+
+        if (mainConnector.isConnected()) {
+            System.err.println("OK");
+            mainConnector.getConnectedGUIBlock().addHeight(height, this);
         }
     }
 
@@ -41,21 +47,22 @@ public class GUICavityBlock extends GUIBlock {
 
         mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
         cavityConnector = new GUIConnector(this, (width + cavityWidth) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector(this, width / 2, cavityUpHeight + cavityDownHeight + cavityHeight, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(new GUIConnector(this, width, cavityUpHeight / 2, Color.red));
-        //subConnectors.add(new GUIConnector(this, width / 2, cavityUpHeight + cavityDownHeight + cavityHeight, Color.red));
+        subConnectors.add(lowerSubConnector);
     }
 
     private void increaseCavityHeight(int increasement) {
-        setNewCavityHeight(cavityUpHeight + increasement);
-        if (cavityConnector.isConnected()) {
-            // TODO
+        setNewCavityHeight(cavityHeight + increasement);
+        if (lowerSubConnector.isConnected()) {
+            lowerSubConnector.getConnectedGUIBlock().translate(0, increasement);
         }
     }
 
     private void decreaseCavityHeight(int decreasement) {
-        setNewCavityHeight(cavityUpHeight - decreasement);
-        if (cavityConnector.isConnected()) {
+        setNewCavityHeight(cavityHeight - decreasement);
+        if (lowerSubConnector.isConnected()) {
             // TODO
         }
     }
@@ -64,6 +71,7 @@ public class GUICavityBlock extends GUIBlock {
         cavityHeight = newCavityHeight;
         height = cavityUpHeight + cavityHeight + cavityDownHeight;
         cavityRectangle.setHeight(cavityHeight);
-        cavityRectangleUnder.setY(getY() + cavityHeight);
+        cavityRectangleUnder.setY(getY() + cavityUpHeight + cavityHeight);
+        lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY());
     }
 }
