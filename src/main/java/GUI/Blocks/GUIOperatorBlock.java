@@ -6,7 +6,8 @@ import GUI.Components.GUIConnector;
 import java.awt.*;
 
 public class GUIOperatorBlock extends GUIBlock {
-    public GUIOperatorBlock(int x, int y) {
+    public GUIOperatorBlock(String ID, int x, int y) {
+        super(ID);
 
         int height = 80;
         int width = 150;

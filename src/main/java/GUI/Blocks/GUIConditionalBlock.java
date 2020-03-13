@@ -7,7 +7,8 @@ import java.awt.*;
 
 public class GUIConditionalBlock extends GUIBlock {
 
-    public GUIConditionalBlock(int x, int y) {
+    public GUIConditionalBlock(String ID, int x, int y) {
+        super(ID);
 
         int height = 80;
         int width = 150;

@@ -10,6 +10,7 @@ public class IfGUIFactory extends GUIFactory {
 
     @Override
     public GUIBlock createBlock(int x, int y) {
+        counter++;
         return new GUICavityBlock(ID, x,y);
     }
 }

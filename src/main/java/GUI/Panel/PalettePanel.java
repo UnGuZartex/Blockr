@@ -1,9 +1,11 @@
 package GUI.Panel;
 
 import Controllers.ProgramController;
+import GUI.Blocks.Factories.*;
 import GUI.Components.GUIBlockHandler;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class PalettePanel extends GamePanel {
 
@@ -15,12 +17,12 @@ public class PalettePanel extends GamePanel {
         super(cornerX, cornerY, width, height);
         this.blockHandler = blockHandler;
         this.controller = controller;
+
     }
 
 
-    public addBlocksToGame() {
-        if(controller.reachedMaxBlocks()) {
-
+    public void addBlocksToGame(String ID) {
+        if(!controller.reachedMaxBlocks()) {
         }
 
     }

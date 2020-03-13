@@ -7,7 +7,8 @@ import java.awt.*;
 
 public class GUIFunctionalityBlock extends GUIBlock {
 
-    public GUIFunctionalityBlock(int x, int y) {
+    public GUIFunctionalityBlock(String ID, int x, int y) {
+        super(ID);
 
         int height = 80;
         int width = 150;

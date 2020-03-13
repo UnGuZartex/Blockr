@@ -10,9 +10,9 @@ public class PABlockHandler {
     private ConnectionHandler connectionHandler = new ConnectionHandler();
     private int amountOfBlocks = 0;
 
-    public Block getFromPalette(int index) {
+    public Block getFromPalette(String ID) {
         if (!getMaxReached()) {
-            return palette.getBlockAt(index);
+            return palette.getBlockAt(ID);
         }
         else {
             return null;

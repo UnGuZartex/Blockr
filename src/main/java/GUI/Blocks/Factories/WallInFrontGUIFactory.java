@@ -1,15 +1,16 @@
 package GUI.Blocks.Factories;
 
 import GUI.Blocks.GUIBlock;
-import GUI.Blocks.GUICavityBlock;
+import GUI.Blocks.GUIConditionalBlock;
 
-public class WhileGUIFactory extends GUIFactory {
+public class WallInFrontGUIFactory extends GUIFactory{
     private static int counter = 0;
-    private String ID = "WHILE_" + counter;
+    private String ID = "WIF_" + counter;
+
 
     @Override
     public GUIBlock createBlock(int x, int y) {
         counter++;
-        return new GUICavityBlock(ID, x,y);
+        return new GUIConditionalBlock(ID, x,y);
     }
 }
