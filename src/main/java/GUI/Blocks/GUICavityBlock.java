@@ -9,8 +9,8 @@ public class GUICavityBlock extends GUIBlock {
 
     private int cavityHeight = 50;
 
-    public GUICavityBlock(int x, int y) {
-
+    public GUICavityBlock(String id, int x, int y) {
+        super(id);
         int height = 80;
         int width = 150;
         int cavityWidth = 20;

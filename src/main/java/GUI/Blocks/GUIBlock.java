@@ -14,8 +14,11 @@ public abstract class GUIBlock {
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
+    private String id;
 
-    protected GUIBlock() { }
+    protected GUIBlock(String id) {
+        this.id = id;
+    }
 
     public int getX() {
         return x;

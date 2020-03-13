@@ -20,25 +20,10 @@ public class PaletteState {
 
 
     public PaletteState() {
-        //refillList();
     }
 
     public Block getBlockAt(int index){
         Block toReturn = allBlocksFactory[index].CreateBlock();
-//        if (GameState.currentNbBlocks < GameState.maxNbBlocks) {
-//            currentBlocks[index] = allBlocksFactory[index].CreateBlock();
-//        }
-//        else {
-//            Arrays.fill(currentBlocks, null);
-//        }
         return toReturn;
     }
-
-//    public void refillList(){
-//        for(int i = 0; i < currentBlocks.length; i++) {
-//            if(currentBlocks[i] == null) {
-//                currentBlocks[i] = allBlocksFactory[i].CreateBlock();
-//            }
-//        }
-//    }
 }

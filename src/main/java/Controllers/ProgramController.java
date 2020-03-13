@@ -1,7 +1,6 @@
 package Controllers;
 
 
-import System.BlockStructure.Blocks.Block;
 import System.GameWorld.Level.LevelLoader;
 import System.Logic.Converter;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -26,10 +25,6 @@ public class ProgramController {
 //        loadLevel();
 //    }
 
-    //TODO REMOVE V
-    public void addBlock(Block block){
-        blockHandler.addToPA(block);
-    }
 
     public boolean reachedMaxBlocks() {
         return blockHandler.getMaxReached();
