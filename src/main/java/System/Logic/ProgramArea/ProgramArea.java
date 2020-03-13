@@ -26,8 +26,8 @@ public class ProgramArea {
 
     public int getAllBlocksCount() {
         int sum = 0;
-        for (int i = 0; i < programs.size(); i++) {
-            sum += programs.get(i).getSize();
+        for (Program program : programs) {
+            sum += program.getSize();
         }
         return sum;
     }

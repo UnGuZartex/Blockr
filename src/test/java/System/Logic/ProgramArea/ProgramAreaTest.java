@@ -27,4 +27,28 @@ class ProgramAreaTest {
     @Test
     void addProgram() {
     }
+
+    @Test
+    void testDeleteProgram() {
+    }
+
+    @Test
+    void testGetProgram() {
+    }
+
+    @Test
+    void getAllBlocksCount() {
+    }
+
+    @Test
+    void testAddProgram() {
+    }
+
+    @Test
+    void getMaxAmountOfBlocks() {
+    }
+
+    @Test
+    void setMaxAmountOfBlocks() {
+    }
 }
