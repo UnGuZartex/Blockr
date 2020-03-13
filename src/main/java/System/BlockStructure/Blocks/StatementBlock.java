@@ -3,11 +3,20 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
+/**
+ * A class for statement blocks. These are conditional blocks which
+ * declare some kind of statement.
+ *
+ * @author Alpha-team
+ */
 public class StatementBlock extends ConditionalBlock {
 
-    public <B extends ConditionalBlock> StatementBlock(ConditionalBlockFunctionality<B> functionality) {
+    /**
+     * Initialise a new statement block with given functionality.
+     *
+     * @param functionality The functionality for this block
+     */
+    public StatementBlock(ConditionalBlockFunctionality<StatementBlock> functionality) {
         super(functionality);
     }
-
-
 }

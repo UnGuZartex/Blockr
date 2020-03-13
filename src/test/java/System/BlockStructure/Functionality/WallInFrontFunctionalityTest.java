@@ -1,6 +1,5 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.BlockStructure.Blocks.StatementBlock;
 import System.GameWorld.Cell;
@@ -38,8 +37,8 @@ class WallInFrontFunctionalityTest {
     @BeforeEach
     void setUp() {
         WallInFrontBlockFactory factory = new WallInFrontBlockFactory();
-        block1 = factory.CreateBlock();
-        block2 = factory.CreateBlock();
+        block1 = factory.createBlock();
+        block2 = factory.createBlock();
         functionality = (WallInFrontFunctionality) block1.getFunctionality();
 
         /* Simple field has only one cell */

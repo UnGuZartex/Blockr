@@ -20,7 +20,6 @@ public class PaletteState {
         allBlocksFactory.put("MOVE FORWARD", new MoveForwardBlockFactory());
         allBlocksFactory.put("TURN LEFT", new TurnLeftBlockFactory());
         allBlocksFactory.put("TURN RIGHT", new TurnRightBlockFactory());
-
     }
 
     public Block getBlockAt(String ID){
