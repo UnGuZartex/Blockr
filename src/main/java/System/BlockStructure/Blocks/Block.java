@@ -159,9 +159,4 @@ public abstract class Block {
         }
         return null;
     }
-
-    public int getSubConnectorListSize() {
-        return subConnector.size();
-    }
-
 }
