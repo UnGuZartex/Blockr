@@ -75,64 +75,37 @@ public abstract class GUIBlock {
     }
 
     public boolean contains(int x, int y) {
-        boolean connectorContains = subConnectors.stream().anyMatch(i -> i.getCollisionCircle().contains(x, y));
+        boolean connectorContains = subConnectors.stream().anyMatch(i -> i.getCollisionCircle().contains(x, y)) || mainConnector.getCollisionCircle().contains(x, y);
         boolean rectangleContains = blockRectangles.stream().anyMatch(i -> i.contains(x, y));
 
         return connectorContains || rectangleContains;
     }
 
     public boolean intersectsWithConnector(GUIBlock other) {
-
-        for (GUIConnector connector : subConnectors) {
-            if (other.mainConnector.getCollisionCircle().intersects(connector.getCollisionCircle())
-            && connector.getConnectedConnector() != other.mainConnector) {
-                return true;
-            }
-        }
-
-        for (GUIConnector connector : other.subConnectors) {
-            if (mainConnector.getCollisionCircle().intersects(connector.getCollisionCircle())
-            && connector.getConnectedConnector() != mainConnector) {
-                return true;
-            }
-        }
-
-        return false;
+        return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
     public void connectWithStaticBlock(GUIBlock other) {
 
-        GUIConnector intersectingConnector = null;
+        GUIConnector intersectingConnector;
 
-        for (GUIConnector connector : other.subConnectors) {
-            if (connector.getConnectedConnector() != mainConnector
-                    && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
-                intersectingConnector = connector;
-                break;
-            }
-        }
-
-        if (intersectingConnector == null) {
-
-            for (GUIConnector connector : subConnectors) {
-                if (connector.getConnectedConnector() != other.mainConnector
-                        && connector.getCollisionCircle().intersects(other.mainConnector.getCollisionCircle())) {
-                    intersectingConnector = connector;
-                    break;
-                }
-            }
-
-            if (intersectingConnector == null) {
-                return;
-            }
-
-            other.mainConnector.connect(intersectingConnector);
-        }
-        else {
+        if ((intersectingConnector = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
             mainConnector.connect(intersectingConnector);
         }
+        else if ((intersectingConnector = findCollidingConnector(subConnectors, other.mainConnector)) != null){
+            other.mainConnector.connect(intersectingConnector);
+        }
+    }
 
-        //setPosition(0,0);
+    private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
+
+        for (GUIConnector connector : subConnectors) {
+            if (connector.getConnectedConnector() != mainConnector
+                    && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+                return connector;
+            }
+        }
+        return null;
     }
 
     protected abstract void setShapes();

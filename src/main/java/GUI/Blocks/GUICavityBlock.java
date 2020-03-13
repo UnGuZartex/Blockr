@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class GUICavityBlock extends GUIBlock {
 
-    private int cavityHeight = 50;
+    private int cavityHeight;
 
     public GUICavityBlock(int x, int y) {
         super(x, y);
@@ -18,10 +18,11 @@ public class GUICavityBlock extends GUIBlock {
 
         int height = 80;
         int width = 150;
-        int cavityWidth = 20;
+        int cavityWidth = 10;
+        cavityHeight = 50;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, 80, 0, Color.white));
-        blockRectangles.add(new CollisionRectangle(0, height, cavityWidth, cavityHeight, 0, Color.white));
+        blockRectangles.add(new CollisionRectangle(0, height, cavityWidth, 50, 0, Color.white));
         blockRectangles.add(new CollisionRectangle(0, height + cavityHeight, width, 40, 0, Color.white));
 
         mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);

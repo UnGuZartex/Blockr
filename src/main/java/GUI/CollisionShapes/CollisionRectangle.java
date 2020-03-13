@@ -31,6 +31,8 @@ public class CollisionRectangle extends CollisionShape {
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(x, y, width, height);
+        g.setColor(Color.black);
+        g.drawRect(x, y, width, height);
     }
 
     private int getCollisionWidth() {
