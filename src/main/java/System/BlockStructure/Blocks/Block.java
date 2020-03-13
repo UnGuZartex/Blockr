@@ -142,14 +142,6 @@ public abstract class Block {
         return !hasNext() || getNext().hasProperConnections();
 }
 
-  public boolean isValid() {
-        if (hasNext()) {
-            return getNext().isValid();
-        }
-        else {
-            return true;
-        }
-    }
 
     public SubConnector getSubConnectorWithID(String ID) {
         for (SubConnector connector:subConnector) {
