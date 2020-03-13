@@ -116,6 +116,13 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
+    protected void addHeight(int height, GUIBlock previousBlock) {
+
+        if (mainConnector.isConnected()) {
+            this.mainConnector.getConnectedGUIBlock().addHeight(height, this);
+        }
+    }
+
     public void connectWithStaticBlock(GUIBlock other) {
 
         GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;
@@ -135,6 +142,7 @@ public abstract class GUIBlock {
 
         setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
         intersectingConnectorMain.connect(intersectingConnectorSub);
+        addHeight(other.height, other);
     }
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
