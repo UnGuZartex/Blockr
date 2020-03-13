@@ -4,7 +4,6 @@ import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
 
 import java.awt.*;
-import java.util.zip.CheckedInputStream;
 
 public class GUICavityBlock extends GUIBlock {
 
@@ -27,6 +26,15 @@ public class GUICavityBlock extends GUIBlock {
             System.err.println("OK");
             mainConnector.getConnectedGUIBlock().addHeight(height, this);
         }
+    }
+
+    @Override
+    public int getHeight() {
+        if (lowerSubConnector.isConnected()) {
+            return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+        }
+
+        return height;
     }
 
     @Override

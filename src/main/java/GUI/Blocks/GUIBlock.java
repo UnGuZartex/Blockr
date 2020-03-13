@@ -83,7 +83,7 @@ public abstract class GUIBlock {
             blockRectangle.paint(g);
         }
 
-        g.drawString(name, this.x + 2, this.y +20);
+        g.drawString(name, this.x + 2, this.y + 20);
     }
 
     public boolean contains(int x, int y) {
@@ -115,7 +115,7 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
             intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(height, this);
+            addHeight(getHeight(), this);
 
             System.err.println("THIS");
         }
@@ -125,7 +125,7 @@ public abstract class GUIBlock {
             draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
             intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(other.height, other);
+            addHeight(other.getHeight(), other);
 
             System.err.println("THIS 2");
         }
