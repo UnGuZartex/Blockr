@@ -21,10 +21,10 @@ public class PalettePanel extends GamePanel {
         IDMAP.put("IF", new Position(10,0));
         IDMAP.put("WHILE", new Position(10,200));
         IDMAP.put("NOT", new Position(10,300));
-        IDMAP.put("WIF", new Position(10, 400));
-        IDMAP.put("MOVEF", new Position(10,500));
-        IDMAP.put("TURNL", new Position(10,600));
-        IDMAP.put("TURNR", new Position(10,700));
+        IDMAP.put("WALL IN FRONT", new Position(10, 400));
+        IDMAP.put("MOVE FORWARD", new Position(10,500));
+        IDMAP.put("TURN LEFT", new Position(10,600));
+        IDMAP.put("TURN RIGHT", new Position(10,700));
 
         refillPalette();
     }

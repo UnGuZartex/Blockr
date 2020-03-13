@@ -17,11 +17,31 @@ public abstract class GUIBlock {
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
     private String id;
+    private String name = "";
 
     protected GUIBlock(String id, int x, int y) {
         this.id = id;
         setShapes();
         setPosition(x, y);
+        setName();
+    }
+
+    private void setName() {
+        String splitID = id.split("_")[0];
+        String[] splitAll = splitID.split(" ");
+        for(String string:splitAll) {
+            System.out.println(string);
+            if (string.length() == 0)
+                name += " ";
+
+            else if (string.length() == 1) name += " " + string.toUpperCase();
+
+
+            else {
+                name += " " + string.substring(0, 1).toUpperCase()
+                        + string.substring(1).toLowerCase();
+            }
+        }
     }
 
     public int getX() {
@@ -76,6 +96,9 @@ public abstract class GUIBlock {
         for (CollisionRectangle blockRectangle : blockRectangles) {
             blockRectangle.paint(g);
         }
+
+
+        g.drawString(name, this.x + 2, this.y +20);
     }
 
     public boolean contains(int x, int y) {

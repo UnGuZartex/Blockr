@@ -5,7 +5,7 @@ import GUI.Blocks.GUIFunctionalityBlock;
 
 public class TurnLeftGUIFactory extends GUIFactory{
     private static int counter = 0;
-    private String ID = "TURNL_" + counter;
+    private String ID = "TURN LEFT_" + counter;
 
 
     @Override

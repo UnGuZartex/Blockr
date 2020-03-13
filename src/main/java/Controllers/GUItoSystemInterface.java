@@ -19,10 +19,10 @@ public class GUItoSystemInterface {
         factories.put("IF", new IfGUIFactory());
         factories.put("WHILE", new WhileGUIFactory());
         factories.put("NOT", new NotGUIFactory());
-        factories.put("WIF", new WallInFrontGUIFactory());
-        factories.put("MOVEF", new MoveForwardGUIFactory());
-        factories.put("TURNL", new TurnLeftGUIFactory());
-        factories.put("TURNR", new TurnRightGUIFactory());
+        factories.put("WALL IN FRONT", new WallInFrontGUIFactory());
+        factories.put("MOVE FORWARD", new MoveForwardGUIFactory());
+        factories.put("TURN LEFT", new TurnLeftGUIFactory());
+        factories.put("TURN RIGHT", new TurnRightGUIFactory());
     }
 
     public GUIBlock createNewGUIBlock(String ID, int x, int y) {

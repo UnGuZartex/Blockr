@@ -16,10 +16,10 @@ public class PaletteState {
         allBlocksFactory.put("IF", new IfBlockFactory());
         allBlocksFactory.put("WHILE", new WhileBlockFactory());
         allBlocksFactory.put("NOT", new NotBlockFactory());
-        allBlocksFactory.put("WIF", new WallInFrontBlockFactory());
-        allBlocksFactory.put("MOVEF", new MoveForwardBlockFactory());
-        allBlocksFactory.put("TURNL", new TurnLeftBlockFactory());
-        allBlocksFactory.put("TURNR", new TurnRightBlockFactory());
+        allBlocksFactory.put("WALL IN FRONT", new WallInFrontBlockFactory());
+        allBlocksFactory.put("MOVE FORWARD", new MoveForwardBlockFactory());
+        allBlocksFactory.put("TURN LEFT", new TurnLeftBlockFactory());
+        allBlocksFactory.put("TURN RIGHT", new TurnRightBlockFactory());
 
     }
 
