@@ -138,7 +138,7 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
             intersectingConnectorMain.connect(intersectingConnectorSub);
-            other.addHeight(height, this);
+            addHeight(height, this);
 
             System.err.println("THIS");
         }
