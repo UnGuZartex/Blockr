@@ -9,8 +9,9 @@ import System.Logic.ProgramArea.Program;
 
 public class ProgramController {
     private final PABlockHandler blockHandler = new PABlockHandler();
-    private LevelLoader loader = new LevelLoader();
-    private GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+    private final LevelLoader loader = new LevelLoader();
+    private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+    private final ConnectionController controller = new ConnectionController(converter);
 
 
 //    public void addBlockToPA(GUIBlock block) {
@@ -34,6 +35,7 @@ public class ProgramController {
     public GUIBlock getBlock(String ID, int x, int y) {
         return converter.createNewGUIBlock(ID, x, y);
     }
+
     public void resetProgram() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
@@ -55,5 +57,7 @@ public class ProgramController {
     }
 
 
-
+    public ConnectionController getController() {
+        return controller;
+    }
 }

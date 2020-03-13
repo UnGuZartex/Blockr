@@ -14,7 +14,7 @@ public class OperationalBlock extends ConditionalBlock {
     public <B extends OperationalBlock> OperationalBlock(ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
         super(functionality);
         for(int i = 0; i < nbSubConnectors; i++) {
-            getSubConnectors().add(new SubConnector(this, Orientation.FACING_RIGHT, Type.SOCKET));
+            getSubConnectors().add(new SubConnector("SUB_"+i,this, Orientation.FACING_RIGHT, Type.SOCKET));
         }
     }
 

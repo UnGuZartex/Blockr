@@ -10,9 +10,10 @@ public class GUIConnector {
     private final CollisionCircle collisionCircle;
     private final GUIBlock parentBlock;
     private GUIConnector connectedConnector;
-    private int id;
+    private String id;
 
-    public GUIConnector(GUIBlock parentBlock, int x, int y, Color color) {
+    public GUIConnector(String ID, GUIBlock parentBlock, int x, int y, Color color) {
+        this.id = ID;
         collisionCircle = new CollisionCircle(x, y, 10, 0, color);
         this.parentBlock = parentBlock;
     }
@@ -21,7 +22,7 @@ public class GUIConnector {
         return collisionCircle;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

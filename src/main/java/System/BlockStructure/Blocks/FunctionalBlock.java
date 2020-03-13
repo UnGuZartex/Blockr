@@ -17,7 +17,7 @@ public class FunctionalBlock extends Block {
     public FunctionalBlock(BlockFunctionality functionality) {
         super(functionality);
          mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
-         getSubConnectors().add(new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG));
+         getSubConnectors().add(new SubConnector("SUB_1", this, Orientation.FACING_DOWN, Type.PLUG));
 
     }
     @Override

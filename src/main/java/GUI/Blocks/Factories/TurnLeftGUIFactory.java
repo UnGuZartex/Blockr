@@ -4,13 +4,11 @@ import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIFunctionalityBlock;
 
 public class TurnLeftGUIFactory extends GUIFactory{
-    private static int counter = 0;
-    private String ID = "TURN LEFT_" + counter;
+    private String name = "Turn Left";
 
 
     @Override
     public GUIBlock createBlock(int x, int y) {
-        counter++;
-        return new GUIFunctionalityBlock(ID, x,y);
+        return new GUIFunctionalityBlock(name, x,y);
     }
 }

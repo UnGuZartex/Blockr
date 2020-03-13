@@ -64,6 +64,15 @@ public abstract class Block {
         }
     }
 
+    public SubConnector getSubConnectorWithID(String ID) {
+        for (SubConnector connector:subConnector) {
+            if (connector.getID() == ID) {
+                return connector;
+            }
+        }
+        return null;
+    }
+
     public int getSubConnectorListSize() {
         return subConnector.size();
     }
