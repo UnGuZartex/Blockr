@@ -11,13 +11,14 @@ import java.util.List;
 
 public abstract class GUIBlock {
 
-    private int x;
-    private int y;
+    protected int height;
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
     private String id;
     private String name = "";
+    private int x;
+    private int y;
 
     protected GUIBlock(String id, int x, int y) {
         this.id = id;
@@ -50,6 +51,10 @@ public abstract class GUIBlock {
 
     public int getY() {
         return y;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void disconnectMainConnector() {

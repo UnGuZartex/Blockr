@@ -1,10 +1,6 @@
 package GUI.Components;
 
 import GUI.Blocks.GUIBlock;
-import GUI.Blocks.GUICavityBlock;
-import GUI.Blocks.GUIConditionalBlock;
-import GUI.Blocks.GUIFunctionalityBlock;
-import GUI.Blocks.GUIOperatorBlock;
 import Utility.Position;
 
 import java.awt.*;
