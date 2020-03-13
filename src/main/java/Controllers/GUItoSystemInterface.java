@@ -5,7 +5,7 @@ import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class GUItoSystemInterface {
 
@@ -26,8 +26,27 @@ public class GUItoSystemInterface {
     }
 
     public GUIBlock createNewGUIBlock(String ID, int x, int y) {
-        GUIBlock newBlock = factories.get(ID).createBlock(x, y);
-        conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
-        return newBlock;
+        if (factories.containsKey(ID)) {
+            GUIBlock newBlock = factories.get(ID).createBlock(x, y);
+            conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
+            return newBlock;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid ID, choose between: " + factories.keySet());
+        }
+    }
+
+    public Block getBlockFromGUIBlock(GUIBlock block) {
+        return conversionTable.get(block);
+    }
+
+    public GUIBlock getGUIBlockFromBlock(Block block) {
+        List<GUIBlock> keys = new ArrayList<>();
+        for (Map.Entry<GUIBlock, Block> entry : conversionTable.entrySet()) {
+            if (Objects.equals(block, entry.getValue())) {
+                keys.add(entry.getKey());
+            }
+        }
+        return keys.get(0);
     }
 }

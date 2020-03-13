@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
+import System.GameState.GameState;
 import System.Logic.Palette.PaletteState;
 
 public class PABlockHandler {
@@ -48,6 +49,6 @@ public class PABlockHandler {
     }
 
     public boolean getMaxReached() {
-        return amountOfBlocks >= PA.getMaxAmountOfBlocks();
+        return amountOfBlocks >= GameState.maxAmountOfBlocks;
     }
 }
