@@ -5,7 +5,7 @@ import GUI.Blocks.GUIConditionalBlock;
 
 public class WallInFrontGUIFactory extends GUIFactory{
     private static int counter = 0;
-    private String ID = "WIF_" + counter;
+    private String ID = "WALL IN FRONT_" + counter;
 
 
     @Override

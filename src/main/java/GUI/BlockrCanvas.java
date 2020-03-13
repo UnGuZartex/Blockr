@@ -15,8 +15,8 @@ import java.awt.event.KeyEvent;
 
 public class BlockrCanvas extends CanvasWindow {
 
-    public static final double PALETTE_WIDTH_RATIO = 0.2;
-    public static final double PROGRAMAREA_WIDTH_RATIO = 0.4;
+    public static final double PALETTE_WIDTH_RATIO = 0.1;
+    public static final double PROGRAMAREA_WIDTH_RATIO = 0.5;
     public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
 
     private GamePanel[] panels;

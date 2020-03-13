@@ -5,7 +5,7 @@ import GUI.Blocks.GUIFunctionalityBlock;
 
 public class MoveForwardGUIFactory extends GUIFactory{
     private static int counter = 0;
-    private String ID = "MOVEF_" + counter;
+    private String ID = "MOVE FORWARD_" + counter;
 
 
     @Override
