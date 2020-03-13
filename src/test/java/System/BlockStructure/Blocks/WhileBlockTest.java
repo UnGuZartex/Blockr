@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WhileBlockTest {
 
     WhileBlock while1, while2, while3, while4, while5;
-    FunctionalBlock func1, func11, func2, func1Under, func5Under;
+    FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
     WhileBlock whileBlock1, innerWhileBlock1, whileBlock2, outerWhileBlock2;
@@ -51,6 +51,7 @@ class WhileBlockTest {
         func1 = funcFactory.createBlock();
         func11 = funcFactory.createBlock();
         func2 = funcFactory.createBlock();
+        func3 = funcFactory.createBlock();
         func1Under = funcFactory.createBlock();
         func5Under = funcFactory.createBlock();
 
@@ -62,6 +63,7 @@ class WhileBlockTest {
         condBlock2 = condFactory.createBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(while1, func3.getSubConnectorAt(0));
         handler.connect(func11, func1.getSubConnectorAt(0));
         handler.connect(func1, while1.getCavitySubConnector());
         handler.connect(cond1, while1.getConditionalSubConnector());
@@ -237,7 +239,9 @@ class WhileBlockTest {
 
     @Test
     void getNextIfNone() {
-        // TODO finish test
+        assertEquals(while1, while1.getNextIfNone());
+        while1.setAlreadyRan(true);
+        assertEquals(func3, while1.getNextIfNone());
     }
 
     @Test

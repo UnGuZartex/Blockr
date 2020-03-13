@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class IfBlockTest {
 
     IfBlock if1, if2, if3, if4, if5;
-    FunctionalBlock func1, func11, func2, func1Under, func5Under;
+    FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
@@ -44,6 +44,7 @@ class IfBlockTest {
         func1 = funcFactory.createBlock();
         func11 = funcFactory.createBlock();
         func2 = funcFactory.createBlock();
+        func3 = funcFactory.createBlock();
         func1Under = funcFactory.createBlock();
         func5Under = funcFactory.createBlock();
 
@@ -53,6 +54,7 @@ class IfBlockTest {
         cond5 = condFactory.createBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(if1, func3.getSubConnectorAt(0));
         handler.connect(func11, func1.getSubConnectorAt(0));
         handler.connect(func1, if1.getCavitySubConnector());
         handler.connect(cond1, if1.getConditionalSubConnector());
@@ -219,7 +221,9 @@ class IfBlockTest {
 
     @Test
     void getNextIfNone() {
-        // TODO test
+        assertEquals(func1Under, if1.getNextIfNone());
+        if1.setAlreadyRan(true);
+        assertEquals(func3, if1.getNextIfNone());
     }
 
     @Test

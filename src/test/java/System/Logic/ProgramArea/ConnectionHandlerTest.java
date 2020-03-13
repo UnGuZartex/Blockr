@@ -38,27 +38,24 @@ class ConnectionHandlerTest {
 
     @Test
     void connect() {
-        assertFalse(block1.getSubConnectorAt(0).isConnected());
-        assertFalse(block3.getMainConnector().isConnected());
-        handler.connect(block3, block1.getSubConnectorAt(0));
-        assertEquals(block1, block3.getMainConnector().getConnectedBlock());
-        assertEquals(block3, block1.getSubConnectorAt(0).getConnectedBlock());
+        //assertFalse(block1.getSubConnectorAt(0).isConnected());
+        //assertFalse(block3.getMainConnector().isConnected());
+
 
         assertFalse(block2.getMainConnector().isConnected());
         handler.connect(block2, block1.getSubConnectorAt(0));
         assertEquals(block1, block2.getMainConnector().getConnectedBlock());
         assertEquals(block2, block1.getSubConnectorAt(0).getConnectedBlock());
-        assertEquals(block2, block3.getMainConnector().getConnectedBlock());
-        assertEquals(block3, block2.getSubConnectorAt(0).getConnectedBlock());
 
         assertFalse(block4.getMainConnector().isConnected());
+        handler.connect(block3, block4.getSubConnectorAt(0));
         handler.connect(block4, block1.getSubConnectorAt(0));
         assertEquals(block1, block4.getMainConnector().getConnectedBlock());
         assertEquals(block4, block1.getSubConnectorAt(0).getConnectedBlock());
-        assertEquals(block4, block2.getMainConnector().getConnectedBlock());
-        assertEquals(block2, block4.getSubConnectorAt(0).getConnectedBlock());
-        assertEquals(block2, block3.getMainConnector().getConnectedBlock());
-        assertEquals(block3, block2.getSubConnectorAt(0).getConnectedBlock());
+        assertEquals(block3, block2.getMainConnector().getConnectedBlock());
+        assertEquals(block2, block3.getSubConnectorAt(0).getConnectedBlock());
+        assertEquals(block4, block3.getMainConnector().getConnectedBlock());
+        assertEquals(block3, block4.getSubConnectorAt(0).getConnectedBlock());
     }
 
     @Test

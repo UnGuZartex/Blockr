@@ -64,11 +64,10 @@ public class FunctionalBlock extends Block {
     }
 
     /**
-     * Return the next block above this block.
+     * Returns the next executable block if the next block would be null
      *
-     * @return If this block has no block above, than this block is
-     *         returned, else is the next block if none of the block
-     *         above this block returned.
+     * @return if the block has no upper connection it this block gets returned, otherwise the upper
+     * connection is followed such that the closest cavity can be found.
      */
     @Override
     public Block getNextIfNone() {
