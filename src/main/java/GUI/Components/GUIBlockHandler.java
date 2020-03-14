@@ -97,8 +97,6 @@ public class GUIBlockHandler {
 
     private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
 
-        programArea.disconnectInProgramArea(draggedBlock);
-        draggedBlock.disconnectMainConnector();
         GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
         draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
         programArea.addBlockToProgramArea(newBlock);
@@ -115,6 +113,10 @@ public class GUIBlockHandler {
     }
 
     private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+
+        programArea.disconnectInProgramArea(draggedBlock);
+        draggedBlock.disconnectMainConnector();
+
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
