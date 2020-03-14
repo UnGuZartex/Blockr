@@ -10,7 +10,7 @@ public class GUIFunctionalityBlock extends GUIBlock {
     private GUIConnector lowerSubConnector;
 
     public GUIFunctionalityBlock(String name, String id, int x, int y) {
-        super(id, name, x, y);
+        super(name, id, x, y);
     }
 
     @Override
