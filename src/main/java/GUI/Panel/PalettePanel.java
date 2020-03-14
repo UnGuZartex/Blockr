@@ -3,32 +3,27 @@ package GUI.Panel;
 import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
+import System.BlockStructure.Blocks.Block;
 import Utility.Position;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class PalettePanel extends GamePanel {
 
     private ProgramController controller;
-    private final HashMap<String, Position> IDMap = new HashMap<>();
+    private final List<String> IDList;
     public List<GUIBlock> blocks = new ArrayList<>();
 
     public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
-
         this.controller = controller;
-        IDMap.put("IF", new Position(10,0));
-        IDMap.put("WHILE", new Position(10,200));
-        IDMap.put("NOT", new Position(10,300));
-        IDMap.put("WALL IN FRONT", new Position(10, 400));
-        IDMap.put("MOVE FORWARD", new Position(10,500));
-        IDMap.put("TURN LEFT", new Position(10,600));
-        IDMap.put("TURN RIGHT", new Position(10,700));
-
+        IDList = Arrays.asList("IF", "WHILE", "NOT", "WALL IN FRONT", "MOVE FORWARD", "TURN LEFT", "TURN RIGHT");
         refillPalette();
+        setBlockPositions();
     }
 
     public List<GUIBlock> getBlocks() {
@@ -65,11 +60,32 @@ public class PalettePanel extends GamePanel {
 
     private void refillPalette() {
         if (!controller.reachedMaxBlocks()) {
-            for (String id : IDMap.keySet()) {
+            for (String id : IDList) {
                 if (!controller.reachedMaxBlocks()) {
-                    blocks.add(controller.getBlock(id, IDMap.get(id).getX(), IDMap.get(id).getY()));
+                    blocks.add(controller.getBlock(id, 0, 0));
                 }
             }
         }
+    }
+
+    private void setBlockPositions() {
+        int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight()) / (blocks.size() + 1);
+        int currentHeight = freeHeightPerBlock;
+
+        for (GUIBlock block : blocks) {
+            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 2, currentHeight);
+            currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
+        }
+    }
+
+    private int getTotalBlockHeight() {
+
+        int totalHeight = 0;
+
+        for (GUIBlock block : blocks) {
+            totalHeight += block.getHeight();
+        }
+
+        return totalHeight;
     }
 }

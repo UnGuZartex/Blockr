@@ -45,7 +45,7 @@ public class GUICavityBlock extends GUIBlock {
     @Override
     protected void setShapes() {
         int cavityWidth = 10;
-        int width = 100 + cavityWidth;
+        width = 100 + cavityWidth;
         cavityUpHeight = 30;
         cavityDownHeight = 30;
         height = cavityUpHeight + cavityDownHeight;
