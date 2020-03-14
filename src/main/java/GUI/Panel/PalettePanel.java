@@ -14,7 +14,7 @@ public class PalettePanel extends GamePanel {
 
     private ProgramController controller;
     private final HashMap<String, Position> IDMAP = new HashMap<>();
-    private List<GUIBlock> blocks = new ArrayList<>();
+    public List<GUIBlock> blocks = new ArrayList<>();
 
     public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);

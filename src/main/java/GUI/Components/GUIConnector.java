@@ -1,5 +1,6 @@
 package GUI.Components;
 
+import Controllers.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
 
@@ -55,8 +56,11 @@ public class GUIConnector {
         }
     }
 
-    public void connect(GUIConnector other) {
+    public void connect(GUIConnector other, ConnectionController controller) {
 
+        if (!controller.isValidConnection(this.parentBlock, other.parentBlock, other.id)) {
+            return;
+        }
         // TODO moet deze check?
         if (other == null) {
             throw new IllegalArgumentException("todo");

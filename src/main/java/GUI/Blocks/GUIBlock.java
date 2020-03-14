@@ -1,5 +1,6 @@
 package GUI.Blocks;
 
+import Controllers.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
@@ -94,7 +95,7 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    public void connectWithStaticBlock(GUIBlock other) {
+    public void connectWithStaticBlock(GUIBlock other, ConnectionController controller) {
 
         GUIConnector intersectingConnectorSub, intersectingConnectorMain;
         Position staticBlockConnectorPosition;
@@ -105,7 +106,7 @@ public abstract class GUIBlock {
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub);
+            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
             changeHeight(getHeight(), this);
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
@@ -113,7 +114,7 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub);
+            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
             changeHeight(other.getHeight(), other);
         }
     }

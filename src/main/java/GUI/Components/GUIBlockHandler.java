@@ -1,5 +1,6 @@
 package GUI.Components;
 
+import Controllers.ProgramController;
 import GUI.BlockrCanvas;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
@@ -27,9 +28,10 @@ public class GUIBlockHandler {
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
         this.programArea = programArea;
+        blocks.addAll(palette.blocks);
     }
 
-    public void handleMouseEvent(int id, int x, int y) {
+    public void handleMouseEvent(int id, int x, int y, ProgramController programController) {
 
         mousePos = new Position(x, y);
 
@@ -50,7 +52,7 @@ public class GUIBlockHandler {
             Optional<GUIBlock> connectedBlock = blocks.stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
 
             if (connectedBlock.isPresent()) {
-                draggedBlock.connectWithStaticBlock(connectedBlock.get());
+                draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController.getController());
             }
 
             draggedBlock = null;

@@ -59,7 +59,7 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
-        blockHandler.handleMouseEvent(id, x, y);
+        blockHandler.handleMouseEvent(id, x, y, programController);
         repaint();
     }
 
