@@ -112,7 +112,11 @@ public abstract class GUIBlock {
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
+            if (controller.isValidConnection(this, other, intersectingConnectorSub.getId())) {
+                intersectingConnectorMain.connect(intersectingConnectorSub);
+                controller.connectBlocks(this, other, intersectingConnectorSub.getId());
+            }
+
             changeHeight(getHeight(), this);
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
@@ -120,7 +124,11 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
+            if (controller.isValidConnection(this, other, intersectingConnectorSub.getId())) {
+                intersectingConnectorMain.connect(intersectingConnectorSub);
+                controller.connectBlocks(this, other, intersectingConnectorSub.getId());
+            }
+
             changeHeight(other.getHeight(), other);
         }
     }
