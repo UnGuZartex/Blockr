@@ -78,14 +78,14 @@ public class GUIBlockHandler {
                 Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
                 connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programController.getController()));
             }
-            else if (isInPanel(palette.getPanelRectangle(), draggedBlocks)) {
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
 
                 if (blockSourcePanel == palette) {
                     draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 }
                 else if (blockSourcePanel == programArea) {
                     System.err.println("DELETED");
-                    programArea.deleteBlockFromProgramArea(draggedBlock);
+                    programArea.deleteBlockFromProgramArea(draggedBlocks);
                 }
             }
             else {
@@ -93,6 +93,7 @@ public class GUIBlockHandler {
             }
 
             draggedBlock = null;
+            draggedBlocks = null;
         }
     }
 
@@ -108,5 +109,9 @@ public class GUIBlockHandler {
 
     private boolean isInPanel(CollisionRectangle panel, List<GUIBlock> blocks) {
         return blocks.stream().allMatch(b -> b.isInside(panel));
+    }
+
+    private boolean isInPanelAny(CollisionRectangle panel, List<GUIBlock> blocks) {
+        return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 }
