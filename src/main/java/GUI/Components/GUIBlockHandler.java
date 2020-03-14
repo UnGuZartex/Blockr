@@ -70,30 +70,14 @@ public class GUIBlockHandler {
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
-                    GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
-                    draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-                    programArea.addBlockToProgramArea(newBlock);
-                    draggedBlock = newBlock;
-                }
-
-                Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
-
-                if (connectedBlock.isEmpty()) {
-                    if (blockSourcePanel == palette) {
-                        programArea.addBlockToProgramAreaControllerCall(draggedBlock);
-                    }
-                }
-
-                connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programController.getController()));
-            }
-            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
-
-                if (blockSourcePanel == palette) {
-                    draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+                    handleBlockFromPaletteToProgramArea(programController);
                 }
                 else if (blockSourcePanel == programArea) {
-                    programArea.deleteBlockFromProgramArea(draggedBlocks);
+                    handleBlockFromProgramAreaToProgramArea(programController);
                 }
+            }
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
+                handleBlockToPalette();
             }
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
@@ -108,6 +92,42 @@ public class GUIBlockHandler {
     private void handleMouseDragged(int x, int y) {
         if (draggedBlock != null) {
             draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
+        }
+    }
+
+    private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
+        GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
+        draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+        programArea.addBlockToProgramArea(newBlock);
+        draggedBlock = newBlock;
+
+        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
+
+        if (connectedBlock.isEmpty()) {
+            programArea.addBlockToProgramAreaControllerCall(draggedBlock);
+        }
+        else {
+            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController.getController());
+        }
+    }
+
+    private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+        for (GUIBlock block : draggedBlocks) {
+            Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
+
+            if (connectedBlock.isPresent()) {
+                block.connectWithStaticBlock(connectedBlock.get(), programController.getController());
+                break;
+            }
+        }
+    }
+
+    private void handleBlockToPalette() {
+        if (blockSourcePanel == palette) {
+            draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+        }
+        else if (blockSourcePanel == programArea) {
+            programArea.deleteBlockFromProgramArea(draggedBlocks);
         }
     }
 

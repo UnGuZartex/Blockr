@@ -111,7 +111,7 @@ public abstract class Connector {
      * Checks if this connector has a proper connected connector.
      *
      * @return True if and only if this connector is not connected or the connected
-     *         connector of this connector eqauls this connector.
+     *         connector of this connector equals this connector.
      */
     public boolean hasProperConnector() {
         return connectedConnector == null || connectedConnector.getConnectedConnector() == this;

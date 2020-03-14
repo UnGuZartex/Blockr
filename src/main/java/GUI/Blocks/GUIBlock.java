@@ -99,7 +99,7 @@ public abstract class GUIBlock {
     }
 
     public boolean isInside(CollisionRectangle area) {
-        return blockRectangles.stream().allMatch(i -> area.contains(i));
+        return blockRectangles.stream().allMatch(area::contains);
     }
 
     public boolean intersectsWithConnector(GUIBlock other) {
@@ -108,33 +108,38 @@ public abstract class GUIBlock {
 
     public void connectWithStaticBlock(GUIBlock other, ConnectionController controller) {
 
-        GUIConnector intersectingConnectorSub, intersectingConnectorMain;
-        Position staticBlockConnectorPosition;
-        Position draggedBlockConnectorPosition;
+        GUIConnector intersectingConnectorSub;
+        Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
+        GUIBlock main, sub;
 
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
-            intersectingConnectorMain = mainConnector;
+            main = this;
+            sub = other;
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            if (controller.isValidConnection(this, other, intersectingConnectorSub.getId())) {
-                intersectingConnectorMain.connect(intersectingConnectorSub);
-                controller.connectBlocks(this, other, intersectingConnectorSub.getId());
-            }
-
-            changeHeight(getHeight(), this);
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
-            intersectingConnectorMain = other.mainConnector;
+            sub = this;
+            main = other;
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            if (controller.isValidConnection(other, this, intersectingConnectorSub.getId())) {
-                intersectingConnectorMain.connect(intersectingConnectorSub);
-                controller.connectBlocks(other, this, intersectingConnectorSub.getId());
+        }
+        else {
+            throw new IllegalArgumentException("Given block does not have a colliding connector!");
+        }
+
+        if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
+
+            if (!mainConnector.isConnected()) {
+                setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+            }
+            else {
+                other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
             }
 
-            changeHeight(other.getHeight(), other);
+            main.mainConnector.connect(intersectingConnectorSub);
+            controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+            changeHeight(main.getHeight(), main);
         }
     }
 
@@ -158,6 +163,10 @@ public abstract class GUIBlock {
     protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
+
+        if (mainConnector.isConnected()) {
+            return null;
+        }
 
         for (GUIConnector connector : subConnectors) {
             if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
