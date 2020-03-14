@@ -154,6 +154,6 @@ public abstract class Block {
                 return connector;
             }
         }
-        return null;
+        throw new IllegalStateException("This connection ID cannot exist for this block");
     }
 }
