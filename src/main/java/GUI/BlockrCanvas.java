@@ -37,10 +37,10 @@ public class BlockrCanvas extends CanvasWindow {
 
         this.width = width;
         this.height = height;
-        blockHandler = new GUIBlockHandler();
 
         GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
         setPanels();
+        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
     }
 
     protected BlockrCanvas(String title, int width, int height) throws IOException {
@@ -64,7 +64,7 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPanels() {
-        palettePanel = new PalettePanel(blockHandler,0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
         gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }
