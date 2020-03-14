@@ -30,7 +30,7 @@ public class OperationalBlock extends ConditionalBlock {
      */
     public <B extends OperationalBlock> OperationalBlock(ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
         super(functionality);
-        for(int i = 0; i < nbSubConnectors; i++) {
+        for(int i = 1; i < nbSubConnectors+1; i++) {
             getSubConnectors().add(new SubConnector("SUB_"+i,this, Orientation.FACING_RIGHT, Type.SOCKET));
         }
     }
