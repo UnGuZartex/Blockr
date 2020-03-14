@@ -132,14 +132,16 @@ public abstract class GUIBlock {
 
             if (!mainConnector.isConnected()) {
                 setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+                main.mainConnector.connect(intersectingConnectorSub);
+                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                changeHeight(main.getHeight(), main);
             }
             else {
                 other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
+                main.mainConnector.connect(intersectingConnectorSub);
+                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                other.changeHeight(main.getHeight(), main);
             }
-
-            main.mainConnector.connect(intersectingConnectorSub);
-            controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
-            changeHeight(main.getHeight(), main);
         }
     }
 
