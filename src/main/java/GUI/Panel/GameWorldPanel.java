@@ -35,7 +35,6 @@ public class GameWorldPanel extends GamePanel {
     public void paint(Graphics g) {
         // TODO alleen robot pos
         initializeData();
-        g.setColor(Color.BLACK);
         drawBackground(g);
         drawGrid(g);
         drawRobot(g);
@@ -44,7 +43,7 @@ public class GameWorldPanel extends GamePanel {
     @Override
     protected void drawBackground(Graphics g) {
         g.drawImage(library.getGameWorldBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
+        panelRectangle.paintNonFill(g);
     }
 
     private void calculateGridProperties() {
@@ -54,6 +53,7 @@ public class GameWorldPanel extends GamePanel {
     }
 
     private void drawGrid(Graphics g) {
+        g.setColor(Color.black);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
 

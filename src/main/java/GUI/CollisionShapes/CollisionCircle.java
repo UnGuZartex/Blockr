@@ -8,8 +8,8 @@ public class CollisionCircle extends CollisionShape {
 
     private int radius;
 
-    public CollisionCircle(int x, int y, int radius, int collisionDelta, Color color) {
-        super(x, y, collisionDelta, color);
+    public CollisionCircle(int x, int y, int radius, Color color) {
+        super(x, y, color);
         this.radius = radius;
     }
 
@@ -22,7 +22,7 @@ public class CollisionCircle extends CollisionShape {
     }
 
     public boolean intersects(CollisionCircle other) {
-        return getPosition().getDistance(other.getPosition()) <= getCollisionRadius() + other.getCollisionRadius();
+        return getPosition().getDistance(other.getPosition()) < getRadius() + other.getRadius();
     }
 
     @Override
@@ -33,16 +33,18 @@ public class CollisionCircle extends CollisionShape {
     @Override
     public boolean contains(int x, int y) {
         Position checkPos = new Position(x, y);
-        return getPosition().getDistance(checkPos) <= radius + collisionDelta;
+        return getPosition().getDistance(checkPos) < radius;
     }
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        g.setColor(color);
         g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
-    private int getCollisionRadius() {
-        return radius + collisionDelta;
+    @Override
+    public void paintNonFill(Graphics g) {
+        g.setColor(color);
+        g.drawOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 }

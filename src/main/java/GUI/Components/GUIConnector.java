@@ -14,7 +14,7 @@ public class GUIConnector {
 
     public GUIConnector(String ID, GUIBlock parentBlock, int x, int y, Color color) {
         this.id = ID;
-        collisionCircle = new CollisionCircle(x, y, 10, 0, color);
+        collisionCircle = new CollisionCircle(x, y, 10, color);
         this.parentBlock = parentBlock;
     }
 

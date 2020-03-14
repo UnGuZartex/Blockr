@@ -45,16 +45,16 @@ public class GUICavityBlock extends GUIBlock {
         cavityDownHeight = 30;
         height = cavityUpHeight + cavityDownHeight;
 
-        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, cavityWidth, 0, 0, Color.white);
-        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, 0, Color.white);
+        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, cavityWidth, 0, Color.white);
+        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, Color.white);
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, 0, Color.white));
+        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, Color.white));
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
-        mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector("CAVITY", this, (width+cavityWidth) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector("SUB_1",this, width / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        mainConnector = new GUIConnector("MAIN", this, (width - cavityWidth) / 2, 0, Color.blue);
+        cavityConnector = new GUIConnector("CAVITY", this, (width + cavityWidth) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector("SUB_1",this, (width - cavityWidth) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
         subConnectors.add(new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red));

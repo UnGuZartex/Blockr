@@ -1,6 +1,7 @@
 package GUI.Panel;
 
 
+import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Images.ImageLibrary;
 
 import java.awt.*;
@@ -8,24 +9,22 @@ import java.awt.*;
 public abstract class GamePanel {
 
     protected static ImageLibrary library;
-    private int cornerX;
-    private int cornerY;
-    private int width;
-    private int height;
+    protected CollisionRectangle panelRectangle;
 
     protected GamePanel(int cornerX, int cornerY, int width, int height) {
-        this.cornerX = cornerX;
-        this.cornerY = cornerY;
-        this.width = width;
-        this.height = height;
+        panelRectangle = new CollisionRectangle(cornerX, cornerY, width, height, Color.black);
+    }
+
+    public CollisionRectangle getPanelRectangle() {
+        return panelRectangle;
     }
 
     public Point getSize() {
-        return new Point(width, height);
+        return new Point(panelRectangle.getWidth(), panelRectangle.getHeight());
     }
 
     public Point getLeftCorner() {
-        return new Point(cornerX, cornerY);
+        return new Point(panelRectangle.getX(), panelRectangle.getY());
     }
 
     public abstract void paint(Graphics g);
