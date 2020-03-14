@@ -43,11 +43,9 @@ public class GUIConnector {
         }
     }
 
-    public void connect(GUIConnector other, ConnectionController controller) {
+    public void connect(GUIConnector other) {
 
-        if (!controller.isValidConnection(this.parentBlock, other.parentBlock, other.id)) {
-            return;
-        }
+
 
         // TODO moet deze check?
         if (other == null) {

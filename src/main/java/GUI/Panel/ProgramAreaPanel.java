@@ -26,6 +26,7 @@ public class ProgramAreaPanel extends GamePanel {
 
     public void disconnectInProgramArea(GUIBlock GUIBlock) {
         controller.getController().disconnectBlock(GUIBlock);
+        controller.resetProgram();
     }
 
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
