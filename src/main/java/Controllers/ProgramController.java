@@ -28,6 +28,11 @@ public class ProgramController {
         resetProgram();
     }
 
+    public void deleteAsProgram(GUIBlock block) {
+        Block toDelete = converter.getBlockFromGUIBlock(block);
+        blockHandler.deleteProgram(toDelete);
+    }
+
 
 
     public boolean reachedMaxBlocks() {
@@ -36,7 +41,11 @@ public class ProgramController {
 
     public GUIBlock getHightlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
-        return converter.getGUIBlockFromBlock(program.getCurrentBlock());
+        if (program != null) {
+            return converter.getGUIBlockFromBlock(program.getCurrentBlock());
+        }
+
+        return null;
     }
 
 
