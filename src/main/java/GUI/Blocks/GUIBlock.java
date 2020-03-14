@@ -14,14 +14,11 @@ import java.util.List;
 
 public abstract class GUIBlock {
 
-    protected int height;
+    protected int height, width, x, y;
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
-    private String name;
-    private String id;
-    private int x;
-    private int y;
+    private String name, id;
 
     protected GUIBlock(String name, String id, int x, int y) {
         this.name = name;
@@ -44,6 +41,10 @@ public abstract class GUIBlock {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public void setColor(Color color) {
