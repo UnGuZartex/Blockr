@@ -114,6 +114,20 @@ class CollisionCircleTest {
     }
 
     @Test
+    void getColor() {
+        assertEquals(color1, circle1.getColor());
+        assertEquals(color2, circle2.getColor());
+        assertEquals(color3, circle3.getColor());
+    }
+
+    @Test
+    void setColor() {
+        assertEquals(color1, circle1.getColor());
+        circle1.setColor(Color.BLACK);
+        assertEquals(Color.BLACK, circle1.getColor());
+    }
+
+    @Test
     void translate() {
         int extraX1 = random.nextInt(MAX_X) + 1;
         int extraX2 = random.nextInt(MAX_X) + 1;

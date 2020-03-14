@@ -83,7 +83,7 @@ public abstract class CollisionShape {
     /**
      * Get the color of this collision shape.
      *
-     * @return The color of this collision shape. 
+     * @return The color of this collision shape.
      */
     public Color getColor() {
         return color;

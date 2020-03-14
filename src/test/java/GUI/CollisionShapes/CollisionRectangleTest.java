@@ -118,6 +118,20 @@ class CollisionRectangleTest {
     }
 
     @Test
+    void getColor() {
+        assertEquals(color1, rect1.getColor());
+        assertEquals(color2, rect2.getColor());
+        assertEquals(color3, rect3.getColor());
+    }
+
+    @Test
+    void setColor() {
+        assertEquals(color1, rect1.getColor());
+        rect1.setColor(Color.BLACK);
+        assertEquals(Color.BLACK, rect1.getColor());
+    }
+
+    @Test
     void translate() {
         int extraX1 = random.nextInt(MAX_X) + 1;
         int extraX2 = random.nextInt(MAX_X) + 1;
