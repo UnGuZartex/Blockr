@@ -14,16 +14,9 @@ public class GUIFunctionalityBlock extends GUIBlock {
     }
 
     @Override
-    protected void addHeight(int height, GUIBlock previousBlock) {
+    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
         if (mainConnector.isConnected()) {
-            mainConnector.getConnectedGUIBlock().addHeight(height, this);
-        }
-    }
-
-    @Override
-    protected void removeHeight(int height, GUIBlock previousBlock) {
-        if (mainConnector.isConnected()) {
-            mainConnector.getConnectedGUIBlock().removeHeight(height, this);
+            mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
     }
 

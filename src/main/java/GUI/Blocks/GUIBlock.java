@@ -105,7 +105,7 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
             intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(getHeight(), this);
+            changeHeight(getHeight(), this);
 
             System.err.println("THIS");
         }
@@ -115,20 +115,18 @@ public abstract class GUIBlock {
             draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
             intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(other.getHeight(), other);
+            changeHeight(other.getHeight(), other);
 
             System.err.println("THIS 2");
         }
     }
 
     public void disconnect() {
-        removeHeight(getHeight(),this);
+        changeHeight(-getHeight(), this);
         mainConnector.disconnect();
     }
 
-    protected abstract void addHeight(int height, GUIBlock previousBlock);
-
-    protected abstract void removeHeight(int height, GUIBlock previousBlock);
+    protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
 

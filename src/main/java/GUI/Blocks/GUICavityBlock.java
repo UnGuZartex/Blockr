@@ -16,26 +16,14 @@ public class GUICavityBlock extends GUIBlock {
     }
 
     @Override
-    protected void addHeight(int height, GUIBlock previousBlock) {
+    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
 
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
-            increaseCavityHeight(height);
+            changeCavityHeight(heightDelta);
         }
 
         if (mainConnector.isConnected()) {
-            mainConnector.getConnectedGUIBlock().addHeight(height, this);
-        }
-    }
-
-    @Override
-    protected void removeHeight(int height, GUIBlock previousBlock) {
-
-        if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
-            decreaseCavityHeight(height);
-        }
-
-        if (mainConnector.isConnected()) {
-            mainConnector.getConnectedGUIBlock().removeHeight(height, this);
+            mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
     }
 
@@ -73,17 +61,16 @@ public class GUICavityBlock extends GUIBlock {
 
     }
 
-    private void increaseCavityHeight(int increasement) {
-        setNewCavityHeight(cavityHeight + increasement);
-        if (lowerSubConnector.isConnected()) {
-            lowerSubConnector.getConnectedGUIBlock().translate(0, increasement);
-        }
-    }
+    private void changeCavityHeight(int heightDelta) throws IllegalArgumentException {
 
-    private void decreaseCavityHeight(int decreasement) {
-        setNewCavityHeight(cavityHeight - decreasement);
+        if (cavityHeight + heightDelta < 0) {
+            throw new IllegalArgumentException("Invalid height delta, cavity height can't be < 0!");
+        }
+
+        setNewCavityHeight(cavityHeight + heightDelta);
+
         if (lowerSubConnector.isConnected()) {
-            lowerSubConnector.getConnectedGUIBlock().translate(0, -decreasement);
+            lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
         }
     }
 
