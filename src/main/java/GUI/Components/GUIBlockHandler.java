@@ -54,7 +54,7 @@ public class GUIBlockHandler {
             else {
                 draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
                 draggedBlocks = draggedBlock.getConnectedBlocks();
-                programArea.deleteBlockFromProgramArea(draggedBlocks);
+                programArea.disconnectInProgramArea(draggedBlock);
                 programArea.setBlockDrawLayerFirst(draggedBlocks);
                 blockSourcePanel = programArea;
             }

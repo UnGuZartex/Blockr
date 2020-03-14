@@ -23,6 +23,7 @@ public class ProgramController {
 
     public void deleteFromPA(GUIBlock block) {
         Block toDelete = converter.getBlockFromGUIBlock(block);
+        converter.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
         resetProgram();
     }

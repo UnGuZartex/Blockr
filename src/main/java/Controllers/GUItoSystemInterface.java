@@ -59,4 +59,8 @@ public class GUItoSystemInterface {
         Block searchedBlock = getBlockFromGUIBlock(block);
         return searchedBlock.getSubConnectorWithID(ID);
     }
+
+    public void removeBlock(GUIBlock block) {
+        conversionTable.remove(block);
+    }
 }

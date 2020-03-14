@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 
 import java.awt.*;
@@ -10,23 +11,28 @@ public class ProgramAreaPanel extends GamePanel {
 
     private List<GUIBlock> blocks = new ArrayList<>();
 
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height) {
+    private ProgramController controller;
+
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
+        this.controller = controller;
     }
 
     public void addBlockToProgramArea(GUIBlock block) {
         blocks.add(block);
         System.err.println("COUNT: " + blocks.size());
-        // TODO controller call
+        controller.addBlockToPA(block);
     }
 
-    public void disconnectInProgramArea(List<GUIBlock> GUIBlocks) {
-        // TODO controller call
+    public void disconnectInProgramArea(GUIBlock GUIBlock) {
+        controller.getController().disconnectBlock(GUIBlock);
     }
 
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         blocks.removeAll(GUIBlocks);
-        // TODO controller call
+        for (GUIBlock block:GUIBlocks) {
+            controller.deleteFromPA(block);
+        }
     }
 
     public List<GUIBlock> getBlocks() {
