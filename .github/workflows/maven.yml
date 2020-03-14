@@ -15,3 +15,12 @@ jobs:
         java-version: 13
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Executable
+        path: ./target/site/jacoco
+    - name: Download artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: Executable

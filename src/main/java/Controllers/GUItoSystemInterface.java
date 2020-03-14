@@ -31,7 +31,9 @@ public class GUItoSystemInterface {
     public GUIBlock createNewGUIBlock(String ID, int x, int y) {
         if (factories.containsKey(ID)) {
             GUIBlock newBlock = factories.get(ID).createBlock(x, y);
-            conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
+            if (newBlock != null) {
+                conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
+            }
             return newBlock;
         }
         else {

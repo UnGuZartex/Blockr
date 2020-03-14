@@ -9,11 +9,10 @@ import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import System.GameWorld.Level.Level;
 import System.Logic.ProgramArea.ConnectionHandler;
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,15 +30,15 @@ class NotFunctionalityTest {
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Point pointUpOnBlankBeforeWall, pointDownOnGoalBeforeBlank,
-            pointLeftOnGoalBeforeGoal, pointRightOnBlankBeforeWall;
+    private Position PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
+            PositionLeftOnGoalBeforeGoal, PositionRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
     private Cell[][] cellsUpOnBlankBeforeWall, cellsDownOnGoalBeforeBlank,
             cellsLeftOnGoalBeforeGoal, cellsRightOnBlankBeforeWall;
 
     private Level levelSimpleBlankUp, levelSimpleGoalDown, levelSimpleGoalLeft, levelSimpleBlankRight;
-    private Point pointSimpleBlankUp, pointSimpleGoalDown, pointSimpleGoalLeft, pointSimpleBlankRight;
+    private Position PositionSimpleBlankUp, PositionSimpleGoalDown, PositionSimpleGoalLeft, PositionSimpleBlankRight;
     private Direction directionSimpleBlankUp, directionSimpleGoalDown, directionSimpleGoalLeft, directionSimpleBlankRight;
     private Cell[][] cellsSimpleBlankUp, cellsSimpleGoalDown, cellsSimpleGoalLeft, cellsSimpleBlankRight;
 
@@ -56,14 +55,14 @@ class NotFunctionalityTest {
         block2 =  factoryNot.createBlock();
 
         /* Simple field has only one cell */
-        pointSimpleBlankUp = new Point(0,0);
-        pointSimpleGoalDown = new Point(0,0);
-        pointSimpleGoalLeft = new Point(0,0);
-        pointSimpleBlankRight = new Point(0,0);
-        pointUpOnBlankBeforeWall = new Point(1,1);
-        pointDownOnGoalBeforeBlank = new Point(1,1);
-        pointLeftOnGoalBeforeGoal = new Point(1,1);
-        pointRightOnBlankBeforeWall = new Point(1,1);
+        PositionSimpleBlankUp = new Position(0,0);
+        PositionSimpleGoalDown = new Position(0,0);
+        PositionSimpleGoalLeft = new Position(0,0);
+        PositionSimpleBlankRight = new Position(0,0);
+        PositionUpOnBlankBeforeWall = new Position(1,1);
+        PositionDownOnGoalBeforeBlank = new Position(1,1);
+        PositionLeftOnGoalBeforeGoal = new Position(1,1);
+        PositionRightOnBlankBeforeWall = new Position(1,1);
 
         directionSimpleBlankUp = Direction.UP;
         directionSimpleGoalDown = Direction.DOWN;
@@ -108,14 +107,14 @@ class NotFunctionalityTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
 
-        levelSimpleBlankUp = new Level(pointSimpleBlankUp, directionSimpleBlankUp, cellsSimpleBlankUp);
-        levelSimpleGoalDown = new Level(pointSimpleGoalDown, directionSimpleGoalDown, cellsSimpleGoalDown);
-        levelSimpleGoalLeft = new Level(pointSimpleGoalLeft, directionSimpleGoalLeft, cellsSimpleGoalLeft);
-        levelSimpleBlankRight = new Level(pointSimpleBlankRight, directionSimpleBlankRight, cellsSimpleBlankRight);
-        levelUpOnBlankBeforeWall = new Level(pointUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
-        levelDownOnGoalBeforeBlank = new Level(pointDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
-        levelLeftOnGoalBeforeGoal = new Level(pointLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
-        levelRightOnBlankBeforeWall = new Level(pointRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
+        levelSimpleBlankUp = new Level(PositionSimpleBlankUp, directionSimpleBlankUp, cellsSimpleBlankUp);
+        levelSimpleGoalDown = new Level(PositionSimpleGoalDown, directionSimpleGoalDown, cellsSimpleGoalDown);
+        levelSimpleGoalLeft = new Level(PositionSimpleGoalLeft, directionSimpleGoalLeft, cellsSimpleGoalLeft);
+        levelSimpleBlankRight = new Level(PositionSimpleBlankRight, directionSimpleBlankRight, cellsSimpleBlankRight);
+        levelUpOnBlankBeforeWall = new Level(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
+        levelDownOnGoalBeforeBlank = new Level(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
+        levelLeftOnGoalBeforeGoal = new Level(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
+        levelRightOnBlankBeforeWall = new Level(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
     }
 
     @AfterEach
@@ -126,14 +125,14 @@ class NotFunctionalityTest {
         block2 = null;
         wallInFrontBlock = null;
 
-        pointSimpleBlankUp = null;
-        pointSimpleGoalDown = null;
-        pointSimpleGoalLeft = null;
-        pointSimpleBlankRight = null;
-        pointUpOnBlankBeforeWall = null;
-        pointDownOnGoalBeforeBlank = null;
-        pointLeftOnGoalBeforeGoal = null;
-        pointRightOnBlankBeforeWall = null;
+        PositionSimpleBlankUp = null;
+        PositionSimpleGoalDown = null;
+        PositionSimpleGoalLeft = null;
+        PositionSimpleBlankRight = null;
+        PositionUpOnBlankBeforeWall = null;
+        PositionDownOnGoalBeforeBlank = null;
+        PositionLeftOnGoalBeforeGoal = null;
+        PositionRightOnBlankBeforeWall = null;
 
         directionSimpleBlankUp = null;
         directionSimpleGoalDown = null;

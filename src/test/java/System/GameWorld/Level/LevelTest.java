@@ -5,17 +5,17 @@ import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import static org.junit.jupiter.api.Assertions.*;
 
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 
 class LevelTest {
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Point pointUpOnBlankBeforeWall, pointDownOnGoalBeforeBlank,
+    private Position pointUpOnBlankBeforeWall, pointDownOnGoalBeforeBlank,
             pointLeftOnGoalBeforeGoal, pointRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
@@ -23,21 +23,21 @@ class LevelTest {
             cellsLeftOnGoalBeforeGoal, cellsRightOnBlankBeforeWall;
 
     private Level levelSimpleBlankUp, levelSimpleGoalDown, levelSimpleGoalLeft, levelSimpleBlankRight;
-    private Point pointSimpleBlankUp, pointSimpleGoalDown, pointSimpleGoalLeft, pointSimpleBlankRight;
+    private Position pointSimpleBlankUp, pointSimpleGoalDown, pointSimpleGoalLeft, pointSimpleBlankRight;
     private Direction directionSimpleBlankUp, directionSimpleGoalDown, directionSimpleGoalLeft, directionSimpleBlankRight;
     private Cell[][] cellsSimpleBlankUp, cellsSimpleGoalDown, cellsSimpleGoalLeft, cellsSimpleBlankRight;
 
     @BeforeEach
     void setUp() {
         /* Simple field has only one cell */
-        pointSimpleBlankUp = new Point(0,0);
-        pointSimpleGoalDown = new Point(0,0);
-        pointSimpleGoalLeft = new Point(0,0);
-        pointSimpleBlankRight = new Point(0,0);
-        pointUpOnBlankBeforeWall = new Point(1,1);
-        pointDownOnGoalBeforeBlank = new Point(1,1);
-        pointLeftOnGoalBeforeGoal = new Point(1,1);
-        pointRightOnBlankBeforeWall = new Point(1,1);
+        pointSimpleBlankUp = new Position(0,0);
+        pointSimpleGoalDown = new Position(0,0);
+        pointSimpleGoalLeft = new Position(0,0);
+        pointSimpleBlankRight = new Position(0,0);
+        pointUpOnBlankBeforeWall = new Position(1,1);
+        pointDownOnGoalBeforeBlank = new Position(1,1);
+        pointLeftOnGoalBeforeGoal = new Position(1,1);
+        pointRightOnBlankBeforeWall = new Position(1,1);
 
         directionSimpleBlankUp = Direction.UP;
         directionSimpleGoalDown = Direction.DOWN;
@@ -134,41 +134,41 @@ class LevelTest {
     @Test
     void LevelPointDirectionCell() {
         try {
-            Level level = new Level(new Point(-1,0), Direction.UP, cellsDownOnGoalBeforeBlank);
+            Level level = new Level(new Position(-1,0), Direction.UP, cellsDownOnGoalBeforeBlank);
             assert false;
         } catch (IllegalArgumentException ignored) {};
 
         try {
-            Level level = new Level(new Point(0,-1), Direction.UP, cellsDownOnGoalBeforeBlank);
+            Level level = new Level(new Position(0,-1), Direction.UP, cellsDownOnGoalBeforeBlank);
             assert false;
         } catch (IllegalArgumentException ignored) {};
 
         try {
-            Level level = new Level(new Point(5,1), Direction.UP, cellsDownOnGoalBeforeBlank);
+            Level level = new Level(new Position(5,1), Direction.UP, cellsDownOnGoalBeforeBlank);
             assert false;
         } catch (IllegalArgumentException ignored) {};
 
         try {
-            Level level = new Level(new Point(1,5), Direction.UP, cellsDownOnGoalBeforeBlank);
+            Level level = new Level(new Position(1,5), Direction.UP, cellsDownOnGoalBeforeBlank);
             assert false;
         } catch (IllegalArgumentException ignored) {};
 
         try {
-            Level level = new Level(new Point(0, 0), Direction.UP, new Cell[][] {{new Cell(CellType.WALL)}});
+            Level level = new Level(new Position(0, 0), Direction.UP, new Cell[][] {{new Cell(CellType.WALL)}});
             assert false;
         } catch (IllegalArgumentException ignored) {};
     }
 
     @Test
     void isValidRobotPositionInCells() {
-        assertTrue(Level.isValidRobotPositionInCells(pointSimpleBlankUp.x, pointSimpleBlankUp.y, cellsSimpleBlankUp));
-        assertTrue(Level.isValidRobotPositionInCells(pointSimpleGoalDown.x, pointSimpleGoalDown.y, cellsSimpleGoalDown));
-        assertTrue(Level.isValidRobotPositionInCells(pointSimpleGoalLeft.x, pointSimpleGoalLeft.y, cellsSimpleGoalLeft));
-        assertTrue(Level.isValidRobotPositionInCells(pointSimpleBlankRight.x, pointSimpleBlankRight.y, cellsSimpleBlankRight));
-        assertTrue(Level.isValidRobotPositionInCells(pointUpOnBlankBeforeWall.x, pointUpOnBlankBeforeWall.y, cellsUpOnBlankBeforeWall));
-        assertTrue(Level.isValidRobotPositionInCells(pointDownOnGoalBeforeBlank.x, pointDownOnGoalBeforeBlank.y, cellsDownOnGoalBeforeBlank));
-        assertTrue(Level.isValidRobotPositionInCells(pointLeftOnGoalBeforeGoal.x, pointLeftOnGoalBeforeGoal.y, cellsLeftOnGoalBeforeGoal));
-        assertTrue(Level.isValidRobotPositionInCells(pointRightOnBlankBeforeWall.x, pointRightOnBlankBeforeWall.y, cellsRightOnBlankBeforeWall));
+        assertTrue(Level.isValidRobotPositionInCells(pointSimpleBlankUp.getX(), pointSimpleBlankUp.getY(), cellsSimpleBlankUp));
+        assertTrue(Level.isValidRobotPositionInCells(pointSimpleGoalDown.getX(), pointSimpleGoalDown.getY(), cellsSimpleGoalDown));
+        assertTrue(Level.isValidRobotPositionInCells(pointSimpleGoalLeft.getX(), pointSimpleGoalLeft.getY(), cellsSimpleGoalLeft));
+        assertTrue(Level.isValidRobotPositionInCells(pointSimpleBlankRight.getX(), pointSimpleBlankRight.getY(), cellsSimpleBlankRight));
+        assertTrue(Level.isValidRobotPositionInCells(pointUpOnBlankBeforeWall.getX(), pointUpOnBlankBeforeWall.getY(), cellsUpOnBlankBeforeWall));
+        assertTrue(Level.isValidRobotPositionInCells(pointDownOnGoalBeforeBlank.getX(), pointDownOnGoalBeforeBlank.getY(), cellsDownOnGoalBeforeBlank));
+        assertTrue(Level.isValidRobotPositionInCells(pointLeftOnGoalBeforeGoal.getX(), pointLeftOnGoalBeforeGoal.getY(), cellsLeftOnGoalBeforeGoal));
+        assertTrue(Level.isValidRobotPositionInCells(pointRightOnBlankBeforeWall.getX(), pointRightOnBlankBeforeWall.getY(), cellsRightOnBlankBeforeWall));
 
         assertFalse(Level.isValidRobotPositionInCells(-1, 0, cellsUpOnBlankBeforeWall));
         assertFalse(Level.isValidRobotPositionInCells( 0, -1, cellsUpOnBlankBeforeWall));
@@ -179,36 +179,36 @@ class LevelTest {
 
     @Test
     void getRobot() {
-        assertEquals(pointSimpleBlankUp.x, levelSimpleBlankUp.getRobot().getX());
-        assertEquals(pointSimpleBlankUp.y, levelSimpleBlankUp.getRobot().getY());
+        assertEquals(pointSimpleBlankUp.getX(), levelSimpleBlankUp.getRobot().getX());
+        assertEquals(pointSimpleBlankUp.getY(), levelSimpleBlankUp.getRobot().getY());
         assertEquals(directionSimpleBlankUp, levelSimpleBlankUp.getRobot().getDirection());
 
-        assertEquals(pointSimpleGoalDown.x, levelSimpleGoalDown.getRobot().getX());
-        assertEquals(pointSimpleGoalDown.y, levelSimpleGoalDown.getRobot().getY());
+        assertEquals(pointSimpleGoalDown.getX(), levelSimpleGoalDown.getRobot().getX());
+        assertEquals(pointSimpleGoalDown.getY(), levelSimpleGoalDown.getRobot().getY());
         assertEquals(directionSimpleGoalDown, levelSimpleGoalDown.getRobot().getDirection());
 
-        assertEquals(pointSimpleGoalLeft.x, levelSimpleGoalLeft.getRobot().getX());
-        assertEquals(pointSimpleGoalLeft.y, levelSimpleGoalLeft.getRobot().getY());
+        assertEquals(pointSimpleGoalLeft.getX(), levelSimpleGoalLeft.getRobot().getX());
+        assertEquals(pointSimpleGoalLeft.getY(), levelSimpleGoalLeft.getRobot().getY());
         assertEquals(directionSimpleGoalLeft, levelSimpleGoalLeft.getRobot().getDirection());
 
-        assertEquals(pointSimpleBlankRight.x, levelSimpleBlankRight.getRobot().getX());
-        assertEquals(pointSimpleBlankRight.y, levelSimpleBlankRight.getRobot().getY());
+        assertEquals(pointSimpleBlankRight.getX(), levelSimpleBlankRight.getRobot().getX());
+        assertEquals(pointSimpleBlankRight.getY(), levelSimpleBlankRight.getRobot().getY());
         assertEquals(directionSimpleBlankRight, levelSimpleBlankRight.getRobot().getDirection());
 
-        assertEquals(pointUpOnBlankBeforeWall.x, levelUpOnBlankBeforeWall.getRobot().getX());
-        assertEquals(pointUpOnBlankBeforeWall.y, levelUpOnBlankBeforeWall.getRobot().getY());
+        assertEquals(pointUpOnBlankBeforeWall.getX(), levelUpOnBlankBeforeWall.getRobot().getX());
+        assertEquals(pointUpOnBlankBeforeWall.getY(), levelUpOnBlankBeforeWall.getRobot().getY());
         assertEquals(directionUpOnBlankBeforeWall, levelUpOnBlankBeforeWall.getRobot().getDirection());
 
-        assertEquals(pointDownOnGoalBeforeBlank.x, levelDownOnGoalBeforeBlank.getRobot().getX());
-        assertEquals(pointDownOnGoalBeforeBlank.y, levelDownOnGoalBeforeBlank.getRobot().getY());
+        assertEquals(pointDownOnGoalBeforeBlank.getX(), levelDownOnGoalBeforeBlank.getRobot().getX());
+        assertEquals(pointDownOnGoalBeforeBlank.getY(), levelDownOnGoalBeforeBlank.getRobot().getY());
         assertEquals(directionDownOnGoalBeforeBlank, levelDownOnGoalBeforeBlank.getRobot().getDirection());
 
-        assertEquals(pointLeftOnGoalBeforeGoal.x, levelLeftOnGoalBeforeGoal.getRobot().getX());
-        assertEquals(pointLeftOnGoalBeforeGoal.y, levelLeftOnGoalBeforeGoal.getRobot().getY());
+        assertEquals(pointLeftOnGoalBeforeGoal.getX(), levelLeftOnGoalBeforeGoal.getRobot().getX());
+        assertEquals(pointLeftOnGoalBeforeGoal.getY(), levelLeftOnGoalBeforeGoal.getRobot().getY());
         assertEquals(directionLeftOnGoalBeforeGoal, levelLeftOnGoalBeforeGoal.getRobot().getDirection());
 
-        assertEquals(pointRightOnBlankBeforeWall.x, levelRightOnBlankBeforeWall.getRobot().getX());
-        assertEquals(pointRightOnBlankBeforeWall.y, levelRightOnBlankBeforeWall.getRobot().getY());
+        assertEquals(pointRightOnBlankBeforeWall.getX(), levelRightOnBlankBeforeWall.getRobot().getX());
+        assertEquals(pointRightOnBlankBeforeWall.getY(), levelRightOnBlankBeforeWall.getRobot().getY());
         assertEquals(directionRightOnBlankBeforeWall, levelRightOnBlankBeforeWall.getRobot().getDirection());
     }
 
