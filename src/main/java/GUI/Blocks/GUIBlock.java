@@ -125,11 +125,18 @@ public abstract class GUIBlock {
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
         else {
-            throw new IllegalArgumentException("todo");
+            throw new IllegalArgumentException("Given block does not have a colliding connector!");
         }
 
         if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
-            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+
+            if (!mainConnector.isConnected()) {
+                setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+            }
+            else {
+                other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
+            }
+
             main.mainConnector.connect(intersectingConnectorSub);
             controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
             changeHeight(main.getHeight(), main);

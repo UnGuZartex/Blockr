@@ -9,10 +9,16 @@ public class GUICavityBlock extends GUIBlock {
 
     private int cavityHeight, cavityUpHeight, cavityDownHeight;
     private CollisionRectangle cavityRectangle, cavityRectangleUnder;
-    private GUIConnector cavityConnector, lowerSubConnector;
+    private GUIConnector cavityConnector, conditionalConnector, lowerSubConnector;
 
     public GUICavityBlock(String name, String id, int x, int y) {
         super(name, id, x, y);
+    }
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+        conditionalConnector.getConnectedGUIBlock().setColor(color);
     }
 
     @Override
@@ -55,9 +61,10 @@ public class GUICavityBlock extends GUIBlock {
         mainConnector = new GUIConnector("MAIN", this, (width - cavityWidth) / 2, 0, Color.blue);
         cavityConnector = new GUIConnector("CAVITY", this, (width + cavityWidth) / 2, cavityUpHeight, Color.red);
         lowerSubConnector = new GUIConnector("SUB_1",this, (width - cavityWidth) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        conditionalConnector = new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
-        subConnectors.add(new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red));
+        subConnectors.add(conditionalConnector);
 
     }
 
