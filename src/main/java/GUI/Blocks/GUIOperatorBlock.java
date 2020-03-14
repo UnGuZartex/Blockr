@@ -11,7 +11,14 @@ public class GUIOperatorBlock extends GUIBlock {
 }
 
     @Override
-    protected void addHeight(int height, GUIBlock previousBlock) { }
+    protected void addHeight(int height, GUIBlock previousBlock) {
+
+    }
+
+    @Override
+    protected void removeHeight(int height, GUIBlock previousBlock) {
+
+    }
 
     @Override
     protected void setShapes() {

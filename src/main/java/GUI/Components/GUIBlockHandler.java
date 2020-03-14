@@ -25,7 +25,7 @@ public class GUIBlockHandler {
         if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && blocks.stream().anyMatch(b -> b.contains(x, y))) {
             OptionalInt blockIndex = IntStream.range(0, blocks.size()).filter(i -> blocks.get(i).contains(x, y)).reduce((first, second) -> second);
             draggedBlock = blocks.get(blockIndex.getAsInt());
-            draggedBlock.disconnectMainConnector();
+            draggedBlock.disconnect();
             blocks.remove(blockIndex.getAsInt());
             blocks.add(draggedBlock);
             dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);

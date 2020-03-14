@@ -15,6 +15,9 @@ public class GUIConditionalBlock extends GUIBlock {
     protected void addHeight(int height, GUIBlock previousBlock) { }
 
     @Override
+    protected void removeHeight(int height, GUIBlock previousBlock) { }
+
+    @Override
     protected void setShapes() {
 
         height = 30;

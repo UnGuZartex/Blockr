@@ -23,8 +23,19 @@ public class GUICavityBlock extends GUIBlock {
         }
 
         if (mainConnector.isConnected()) {
-            System.err.println("OK");
             mainConnector.getConnectedGUIBlock().addHeight(height, this);
+        }
+    }
+
+    @Override
+    protected void removeHeight(int height, GUIBlock previousBlock) {
+
+        if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
+            decreaseCavityHeight(height);
+        }
+
+        if (mainConnector.isConnected()) {
+            mainConnector.getConnectedGUIBlock().removeHeight(height, this);
         }
     }
 

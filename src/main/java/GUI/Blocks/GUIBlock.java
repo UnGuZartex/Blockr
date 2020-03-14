@@ -38,10 +38,6 @@ public abstract class GUIBlock {
         return height;
     }
 
-    public void disconnectMainConnector() {
-        mainConnector.disconnect();
-    }
-
     public void setPosition(int x, int y) {
 
         int deltaX = x - this.x;
@@ -97,12 +93,6 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    protected abstract void addHeight(int height, GUIBlock previousBlock);
-
-    public void removeHeight(int height) {
-
-    }
-
     public void connectWithStaticBlock(GUIBlock other) {
 
         GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;
@@ -131,6 +121,15 @@ public abstract class GUIBlock {
         }
     }
 
+    public void disconnect() {
+        removeHeight(getHeight(),this);
+        mainConnector.disconnect();
+    }
+
+    protected abstract void addHeight(int height, GUIBlock previousBlock);
+
+    protected abstract void removeHeight(int height, GUIBlock previousBlock);
+
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
 
         for (GUIConnector connector : subConnectors) {
@@ -141,6 +140,10 @@ public abstract class GUIBlock {
         }
         
         return null;
+    }
+
+    private void disconnectMainConnector() {
+        mainConnector.disconnect();
     }
 
     protected abstract void setShapes();
