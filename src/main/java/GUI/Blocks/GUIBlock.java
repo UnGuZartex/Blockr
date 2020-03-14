@@ -28,7 +28,6 @@ public abstract class GUIBlock {
         setPosition(x, y);
     }
 
-
     public int getX() {
         return x;
     }
@@ -43,6 +42,12 @@ public abstract class GUIBlock {
 
     public int getHeight() {
         return height;
+    }
+
+    public void setColor(Color color) {
+        for (CollisionRectangle rectangle : blockRectangles) {
+            rectangle.setColor(color);
+        }
     }
 
     public void setPosition(int x, int y) {
@@ -124,9 +129,9 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            if (controller.isValidConnection(this, other, intersectingConnectorSub.getId())) {
+            if (controller.isValidConnection(other, this, intersectingConnectorSub.getId())) {
                 intersectingConnectorMain.connect(intersectingConnectorSub);
-                controller.connectBlocks(this, other, intersectingConnectorSub.getId());
+                controller.connectBlocks(other, this, intersectingConnectorSub.getId());
             }
 
             changeHeight(other.getHeight(), other);

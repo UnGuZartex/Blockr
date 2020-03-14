@@ -15,8 +15,6 @@ public class GUItoSystemInterface {
     private final HashMap<String, GUIFactory> factories = new HashMap<>();
     private final HashMap<GUIBlock, Block> conversionTable = new HashMap<>();
 
-
-
     public GUItoSystemInterface(PABlockHandler blockHandler) {
         this.blockHandler = blockHandler;
         factories.put("IF", new IfGUIFactory());

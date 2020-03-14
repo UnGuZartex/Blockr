@@ -36,6 +36,14 @@ public abstract class CollisionShape {
         this.y = y;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void translate(int x, int y) {
         this.x += x;
         this.y += y;
