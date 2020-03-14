@@ -180,4 +180,9 @@ class SubConnectorTest {
         assertThrows(IllegalStateException.class, () -> { socketLeft.disconnect(); });
         assertThrows(IllegalStateException.class, () -> { socketRight.disconnect(); });
     }
+
+    @Test
+    void getID() {
+        assertEquals("CheckCheck", socketDown.getID());
+    }
 }

@@ -142,15 +142,12 @@ public abstract class Block {
         return !hasNext() || getNext().hasProperConnections();
 }
 
-  public boolean isValid() {
-        if (hasNext()) {
-            return getNext().isValid();
-        }
-        else {
-            return true;
-        }
-    }
 
+    /**
+     * Finds the correct subconnector of a block given its ID.
+     * @param ID the ID to search for
+     * @return The connector in the block with this given ID.
+     */
     public SubConnector getSubConnectorWithID(String ID) {
         for (SubConnector connector:subConnector) {
             if (connector.getID() == ID) {

@@ -23,19 +23,19 @@ public class ProgramController {
 
     public void deleteFromPA(GUIBlock block) {
         Block toDelete = converter.getBlockFromGUIBlock(block);
-        blockHandler.deleteBlock(toDelete);
+        blockHandler.deleteProgram(toDelete);
         resetProgram();
     }
 
 
 
     public boolean reachedMaxBlocks() {
-        return blockHandler.getMaxReached();
+        return blockHandler.hasReachedMaxBlocks();
     }
 
     public GUIBlock getHightlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
-        
+        return converter.getGUIBlockFromBlock(program.getCurrentBlock());
     }
 
 

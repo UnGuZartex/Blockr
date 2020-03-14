@@ -21,7 +21,6 @@ class GridTest {
     void setUp() {
         random = new Random();
 
-
         width1 = random.nextInt(MAX_WIDTH) + 1;
         height1 = random.nextInt(MAX_HEIGHT) + 1;
         width2 = random.nextInt(MAX_WIDTH) + 1;
@@ -77,6 +76,15 @@ class GridTest {
         grid4 = null;
         grid5 = null;
         grid6 = null;
+    }
+
+    @Test
+    void constructorDimensionCheck() {
+        assertThrows(IllegalArgumentException.class, () -> { new Grid(0,0, new Cell[0][0]); });
+        assertThrows(IllegalArgumentException.class, () -> { new Grid(0,-1, new Cell[0][0]); });
+        assertThrows(IllegalArgumentException.class, () -> { new Grid(-1,0, new Cell[0][0]); });
+        assertThrows(IllegalArgumentException.class, () -> { new Grid(2,5, new Cell[2][2]); });
+        assertThrows(IllegalArgumentException.class, () -> { new Grid(5,2, new Cell[2][2]); });
     }
 
     @Test

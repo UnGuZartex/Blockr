@@ -84,9 +84,11 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     /**
-     * // TODO documentation
+     * Get the next block to execute, this depends on the evaluation of the condition of this block.
+     * If the condition is true, the next block is the first in the cavity, otherwise, the next block
+     * is the first block under the while.
      *
-     * @return
+     * @return The next block to execute
      */
     @Override
     public Block getNext() {
