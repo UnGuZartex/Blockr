@@ -17,6 +17,8 @@ public class ConnectionHandler {
      * @param toConnectTo The sub connector to connect to the main connector of the given block.
      *
      * @pre The given block may not have any connection on it's main connector.
+     *
+     * @post The given block its main connector is connected to the given sub connector. 
      */
     public void connect(Block main, SubConnector toConnectTo) {
         if (toConnectTo.isConnected()) {
@@ -50,6 +52,8 @@ public class ConnectionHandler {
      * Disconnect the given block on it's main connector.
      *
      * @param toDisconnect The block to disconnect.
+     *
+     * @post The given block is disconnected on its mainconnector
      */
     public void disconnect(Block toDisconnect) {
         toDisconnect.getMainConnector().disconnect();

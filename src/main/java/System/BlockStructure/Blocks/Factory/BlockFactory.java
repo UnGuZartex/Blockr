@@ -9,7 +9,6 @@ import System.BlockStructure.Blocks.*;
  */
 public abstract class BlockFactory {
 
-
     /**
      * Abstract method a BlockFactory needs to implement to create a new Block.
      *

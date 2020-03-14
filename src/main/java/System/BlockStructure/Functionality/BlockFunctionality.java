@@ -32,6 +32,8 @@ public abstract class BlockFunctionality {
      * Evaluate this functionality with the given level.
      *
      * @param level The level to apply this functionality on.
+     *
+     * @effect Evaluates this functionality on the given level.
      */
     public abstract void evaluate(Level level);
 }

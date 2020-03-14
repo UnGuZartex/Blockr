@@ -18,6 +18,8 @@ public class PaletteState {
 
     /**
      * Initialise a new palette state and add all different blocks to the
+     *
+     * @effect Add all different kind of factories the hashmap.
      */
     public PaletteState() {
         allBlocksFactory.put("IF", new IfBlockFactory());

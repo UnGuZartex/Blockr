@@ -22,6 +22,7 @@ public abstract class Block {
      */
     private final List<SubConnector> subConnector = new ArrayList<>();
     /**
+    /**
      * Variable referring to whether or not this block has already ran.
      */
     private boolean alreadyRan = false;
@@ -30,6 +31,8 @@ public abstract class Block {
      * Initialise a new block with given functionality
      *
      * @param functionality The functionality of this block.
+     *
+     * @post The functionality of this block is set to the given functionality.
      */
     protected Block(BlockFunctionality functionality) {
         this.functionality = functionality;
@@ -121,6 +124,10 @@ public abstract class Block {
 
     /**
      * Reset this block and all its connected blocks.
+     *
+     * @post The already ran variable of this block is set to false
+     *       and all connected blocks through sub connectors are
+     *       reset.
      */
     public void reset() {
         alreadyRan = false;

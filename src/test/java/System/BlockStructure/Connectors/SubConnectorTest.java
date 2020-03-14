@@ -64,6 +64,24 @@ class SubConnectorTest {
     }
 
     @Test
+    void hasProperConnector() {
+        assertTrue(plugUp.hasProperConnector());
+        assertTrue(mainPlugUp.hasProperConnector());
+        assertTrue(plugDown.hasProperConnector());
+        assertTrue(mainPlugDown.hasProperConnector());
+        assertTrue(plugLeft.hasProperConnector());
+        assertTrue(mainPlugLeft.hasProperConnector());
+        assertTrue(plugRight.hasProperConnector());
+        assertTrue(socketUp.hasProperConnector());
+        assertTrue(mainSocketUp.hasProperConnector());
+        assertTrue(socketDown.hasProperConnector());
+        assertTrue(socketLeft.hasProperConnector());
+        assertTrue(mainSocketLeft.hasProperConnector());
+        assertTrue(socketRight.hasProperConnector());
+        assertTrue(mainSocketRight.hasProperConnector());
+    }
+    
+    @Test
     void getOrientation() {
         BlockFactory factory = new MoveForwardBlockFactory();
         block1 = factory.createBlock();

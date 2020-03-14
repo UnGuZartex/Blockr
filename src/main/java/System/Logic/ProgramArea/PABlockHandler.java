@@ -8,6 +8,9 @@ import System.Logic.Palette.PaletteState;
 /**
  * A class to handle the blocks in the program area.
  *
+ * @invar There must be a proper number of blocks in the program area.
+ *        | hasProperNbBlocks()
+ *
  * @author Alpha-team
  */
 public class PABlockHandler {
@@ -30,6 +33,16 @@ public class PABlockHandler {
     private int amountOfBlocks = 0;
 
     /**
+     * Checks whether or not the maximum number of blocks has been reached.
+     *
+     * @return True if and only if the amount of blocks is smaller or equal
+     *         to the maximum number of blocks.
+     */
+    public boolean hasProperNbBlocks() {
+        return amountOfBlocks <= GameState.getMaxAmountOfBlocks();
+    }
+
+    /**
      * Get the block with given ID from the palette.
      *
      * @param ID The ID of the block to get.
@@ -50,6 +63,9 @@ public class PABlockHandler {
      * Add the given block to the program area and update if the
      * max number has not been reached yet.
      *
+     * @post The given block is added to the program area if the
+     *       maximum number of blocks hasn't been reached.
+     *
      * @param block The block to add to the program area.
      */
     public void addToPA(Block block) {
@@ -67,6 +83,8 @@ public class PABlockHandler {
      * @param subConnector The sub connector of the block to connect to.
      *
      * @pre The given sub connector should be from a block which is in the program area.
+     *
+     * @post The two blocks are connected.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
         connectionHandler.connect(block, subConnector);
@@ -83,6 +101,8 @@ public class PABlockHandler {
      *      program area of this program area block handler.
      * @pre The given block may not be the starting block of any program
      *      in the program area of this program area block handler.
+     *
+     * @post The given block is disconnected.
      */
     public void disconnectInPA(Block block) {
         connectionHandler.disconnect(block);
@@ -93,6 +113,8 @@ public class PABlockHandler {
      * Delete a program from the program area with given start block.
      *
      * @param block The starting block of the program to delete.
+     *
+     * @post The given block is deleted from the program area.
      */
     public void deleteProgram(Block block) {
         PA.deleteProgram(block);
@@ -101,6 +123,8 @@ public class PABlockHandler {
 
     /**
      * Update the amount of blocks used in the program area.
+     *
+     * @post The total number of blocks has been updated.
      */
     private void Update() {
         amountOfBlocks = PA.getAllBlocksCount();

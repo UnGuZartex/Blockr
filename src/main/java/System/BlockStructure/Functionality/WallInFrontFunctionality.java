@@ -18,6 +18,9 @@ public class WallInFrontFunctionality extends ConditionalBlockFunctionality<Stat
      * a wall is in front of the robot in the given level.
      *
      * @param level The level to apply this functionality on.
+     *
+     * @post The evaluation is set to whether or not the robot in the given
+     *       level is facing a wall.
      */
     @Override
     public void evaluate(Level level) {

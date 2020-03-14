@@ -59,6 +59,24 @@ class MainConnectorTest {
     }
 
     @Test
+    void hasProperConnector() {
+        assertTrue(plugUp.hasProperConnector());
+        assertTrue(subPlugUp.hasProperConnector());
+        assertTrue(plugDown.hasProperConnector());
+        assertTrue(subPlugDown.hasProperConnector());
+        assertTrue(plugLeft.hasProperConnector());
+        assertTrue(subPlugLeft.hasProperConnector());
+        assertTrue(plugRight.hasProperConnector());
+        assertTrue(socketUp.hasProperConnector());
+        assertTrue(subSocketUp.hasProperConnector());
+        assertTrue(socketDown.hasProperConnector());
+        assertTrue(socketLeft.hasProperConnector());
+        assertTrue(subSocketLeft.hasProperConnector());
+        assertTrue(socketRight.hasProperConnector());
+        assertTrue(subSocketRight.hasProperConnector());
+    }
+
+    @Test
     void getOrientation() {
         assertEquals(Orientation.FACING_UP, plugUp.getOrientation());
         assertEquals(Orientation.FACING_DOWN, plugDown.getOrientation());

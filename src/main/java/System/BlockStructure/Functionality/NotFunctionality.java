@@ -16,6 +16,9 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      * to this functionality.
      *
      * @param level The level to apply this functionality on.
+     *
+     * @post Set the evaluation of this functionality to the inverse of the evaluation
+     *       of the functionality of the block of this functionality.
      */
     @Override
     public void evaluate(Level level) {

@@ -14,6 +14,8 @@ public class WhileBlock extends CavityBlock {
      * Initialise a new while block with given cavity functionality.
      *
      * @param functionality The functionality for this block.
+     *
+     * @effect Calls super constructor with given functionality.
      */
     public WhileBlock(CavityFunctionality functionality) {
         super(functionality);

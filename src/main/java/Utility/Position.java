@@ -21,6 +21,9 @@ public class Position {
      *
      * @param x The x-coordinate for this position.
      * @param y The y-coordinate for this position.
+     *
+     * @post The x coordinate of this position is set to the given x.
+     * @post The y coordinate of this position is set to the given y.
      */
     public Position(int x, int y) {
         this.x = x;
