@@ -150,8 +150,15 @@ public abstract class GUIBlock {
         }
     }
 
-    public void disconnect() {
+    public void resetHeight() {
+        changeHeight(getHeight(), this);
+    }
+
+    public void disconnectHeight() {
         changeHeight(-getHeight(), this);
+    }
+
+    public void disconnectMainConnector() {
         mainConnector.disconnect();
     }
 
