@@ -28,7 +28,7 @@ public class ProgramController {
 
 
     public boolean reachedMaxBlocks() {
-        return blockHandler.getMaxReached();
+        return blockHandler.hasReachedMaxBlocks();
     }
 
 
