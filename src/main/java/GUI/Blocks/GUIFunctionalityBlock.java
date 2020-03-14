@@ -32,7 +32,6 @@ public class GUIFunctionalityBlock extends GUIBlock {
   
     @Override
     protected void setShapes() {
-
         height = 50;
         int width = 100;
 

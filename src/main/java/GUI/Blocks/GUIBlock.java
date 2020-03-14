@@ -106,6 +106,25 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
+    public void connectBetweenStaticBlock(GUIBlock other, ConnectionController controller) {
+
+        GUIConnector collidingConnector = null;
+
+        for (GUIConnector connector : subConnectors) {
+            if (!connector.getConnectedConnector().equals(mainConnector) && connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+                collidingConnector = connector;
+                break;
+            }
+        }
+
+        if (collidingConnector == null) {
+            // TODO exception
+        }
+
+        // TODO?? (misschien gaat dit niet meer lukken)
+
+    }
+
     public void connectWithStaticBlock(GUIBlock other, ConnectionController controller) {
 
         GUIConnector intersectingConnectorSub;
@@ -129,15 +148,16 @@ public abstract class GUIBlock {
         }
 
         if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
-
             if (!mainConnector.isConnected()) {
-                setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+                setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()),
+                        staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
                 controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 changeHeight(main.getHeight(), main);
             }
             else {
-                other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
+                other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()),
+                        draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
                 controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 other.changeHeight(main.getHeight(), main);

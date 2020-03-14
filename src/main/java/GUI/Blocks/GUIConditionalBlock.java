@@ -16,7 +16,6 @@ public class GUIConditionalBlock extends GUIBlock {
 
     @Override
     protected void setShapes() {
-
         height = 30;
         int width = 100;
 

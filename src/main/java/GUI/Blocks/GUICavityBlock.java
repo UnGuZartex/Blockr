@@ -44,7 +44,6 @@ public class GUICavityBlock extends GUIBlock {
 
     @Override
     protected void setShapes() {
-
         int cavityWidth = 10;
         int width = 100 + cavityWidth;
         cavityUpHeight = 30;
@@ -65,7 +64,6 @@ public class GUICavityBlock extends GUIBlock {
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
         subConnectors.add(conditionalConnector);
-
     }
 
     private void changeCavityHeight(int heightDelta) throws IllegalArgumentException {
