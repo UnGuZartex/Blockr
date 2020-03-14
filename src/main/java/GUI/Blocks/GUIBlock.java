@@ -147,8 +147,7 @@ public abstract class GUIBlock {
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
 
         for (GUIConnector connector : subConnectors) {
-            if (connector.getConnectedConnector() != mainConnector
-                    && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+            if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
                 return connector;
             }
         }

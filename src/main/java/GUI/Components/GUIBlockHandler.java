@@ -72,11 +72,17 @@ public class GUIBlockHandler {
                 if (blockSourcePanel == palette) {
                     GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
                     draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-                    programArea.addBlockToProgramArea(newBlock);
                     draggedBlock = newBlock;
                 }
 
                 Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
+
+                if (connectedBlock.isEmpty()) {
+                    if (blockSourcePanel == palette) {
+                        programArea.addBlockToProgramArea(draggedBlock);
+                    }
+                }
+
                 connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programController.getController()));
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
