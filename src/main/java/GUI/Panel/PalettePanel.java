@@ -39,13 +39,15 @@ public class PalettePanel extends GamePanel {
         return controller.getBlock(ID, x, y);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        drawBackground(g);
-
+    public void drawBlocks(Graphics g) {
         for (GUIBlock block : blocks) {
             block.paint(g);
         }
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        drawBackground(g);
     }
 
     protected void drawBackground(Graphics g) {
@@ -61,9 +63,5 @@ public class PalettePanel extends GamePanel {
                 }
             }
         }
-    }
-
-    private void addBlocksToGame(String ID, int x, int y) {
-
     }
 }

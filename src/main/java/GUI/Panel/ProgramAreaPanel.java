@@ -16,10 +16,15 @@ public class ProgramAreaPanel extends GamePanel {
 
     public void addBlockToProgramArea(GUIBlock block) {
         blocks.add(block);
+        System.err.println("COUNT: " + blocks.size());
+        // TODO controller call
     }
 
     public void deleteBlockFromProgramArea(GUIBlock block) {
+        System.err.println("COUNT - BEFORE: " + blocks.size());
         blocks.remove(block);
+        System.err.println("COUNT - AFTER: " + blocks.size());
+        // TODO controller call
     }
 
     public List<GUIBlock> getBlocks() {
@@ -34,15 +39,17 @@ public class ProgramAreaPanel extends GamePanel {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
-
-        for (GUIBlock block : blocks) {
-            block.paint(g);
-        }
     }
 
     @Override
     protected void drawBackground(Graphics g) {
         g.drawImage(library.getProgramAreaBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
         panelRectangle.paintNonFill(g);
+    }
+
+    public void drawBlocks(Graphics g) {
+        for (GUIBlock block : blocks) {
+            block.paint(g);
+        }
     }
 }
