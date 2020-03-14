@@ -12,7 +12,7 @@ public class ProgramController {
     private final PABlockHandler blockHandler = new PABlockHandler();
     private final LevelLoader loader = new LevelLoader();
     private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
-    private final ConnectionController controller = new ConnectionController(converter);
+    private final ConnectionController controller = new ConnectionController(converter, blockHandler);
 
 
     public void addBlockToPA(GUIBlock block) {

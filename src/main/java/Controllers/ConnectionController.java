@@ -6,26 +6,28 @@ import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.PABlockHandler;
 
 public class ConnectionController {
 
     private final GUItoSystemInterface converter;
-    private final ConnectionHandler connector = new ConnectionHandler();
+    private final PABlockHandler handler;
 
-    public ConnectionController(GUItoSystemInterface converter) {
+    public ConnectionController(GUItoSystemInterface converter, PABlockHandler handler) {
         this.converter = converter;
+        this.handler = handler;
     }
 
     public void connectBlocks(GUIBlock withMain, GUIBlock withSub, String connectionID) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
         SubConnector subConnector = converter.getSubConnectorFromGUIBlockWithID(withSub, connectionID);
-        connector.connect(mainBlock, subConnector);
+        handler.connectToExistingBlock(mainBlock, subConnector);
     }
 
     public void disconnectBlock(GUIBlock withMain) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
         if (mainBlock.getMainConnector().isConnected()) {
-            connector.disconnect(mainBlock);
+            handler.disconnectInPA(mainBlock);
         }
     }
 
