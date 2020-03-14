@@ -118,13 +118,14 @@ public abstract class GUIBlock {
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
             main = this;
             sub = other;
+            Pcontroller.deleteAsProgram(this);
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             sub = this;
             main = other;
-            Pcontroller.deleteAsProgram(main);
+            Pcontroller.deleteAsProgram(other);
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
@@ -148,8 +149,17 @@ public abstract class GUIBlock {
                 other.changeHeight(main.getHeight(), main);
             }
         }
-    }
+        Pcontroller.addBlockToPA(getHighest(this));
 
+    }
+    public GUIBlock getHighest(GUIBlock block) {
+        if (mainConnector.isConnected()) {
+            return block.getHighest(mainConnector.getConnectedGUIBlock());
+        }
+        else {
+            return this;
+        }
+    }
     public void resetHeight() {
         changeHeight(getHeight(), this);
     }

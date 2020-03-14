@@ -116,15 +116,18 @@ public class GUIBlockHandler {
     }
 
     private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+        boolean connectionFound = false;
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
             if (connectedBlock.isPresent()) {
                 block.connectWithStaticBlock(connectedBlock.get(), programController);
+                connectionFound = true;
                 break;
             }
-
-            programController.addBlockToPA(block);
+        }
+        if (!connectionFound) {
+            programController.addBlockToPA(draggedBlocks.get(0));
         }
     }
 
