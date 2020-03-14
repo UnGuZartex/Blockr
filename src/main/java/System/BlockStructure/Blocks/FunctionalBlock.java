@@ -24,11 +24,16 @@ public class FunctionalBlock extends Block {
      * created.
      *
      * @param functionality The functionality of this functionality block.
+     *
+     * @effect Calls super constructor with given functionality
+     * @effect Set the main connector to a new connector which is facing up
+     *         and has the socket type.
+     * @effect Add a new sub connector to the sub connector list facing down
+     *         with the plug type.
      */
     public FunctionalBlock(BlockFunctionality functionality) {
-        super(functionality);
+         super(functionality);
          mainConnector = new MainConnector(this, Orientation.FACING_UP, Type.SOCKET);
-
          getSubConnectors().add(new SubConnector("SUB_1", this, Orientation.FACING_DOWN, Type.PLUG));
     }
 

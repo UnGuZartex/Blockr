@@ -19,6 +19,10 @@ public class SubConnector extends Connector {
      * @param block The block to which this connector belongs.
      * @param orientation The orientation of this connector.
      * @param type The type of this connector.
+     *
+     * @effect calls the super constructor with given block, orientation and type.
+     *
+     * @post the id of this subconnector is set to the given id.
      */
     public SubConnector(String ID, Block block, Orientation orientation, Type type) {
         super(block, orientation, type);
@@ -26,9 +30,21 @@ public class SubConnector extends Connector {
     }
 
     /**
+     * Get the id of this sub connector.
+     *
+     * @return The id of this sub connector.
+     */
+    public String getID() {
+        return id;
+    }
+
+    /**
      * Connect this sub connector to the given main connector.
      *
      * @param mainConnector The main connector to connect to.
+     *
+     *
+     * @post This sub connector is connected to the given main connector.
      *
      * @throws IllegalStateException
      *         This connector is already connected.
@@ -56,6 +72,8 @@ public class SubConnector extends Connector {
     /**
      * Disconnect this sub connector from its sub connector.
      *
+     * @post This sub connector isn't connected to any sub connector anymore.
+     *
      * @throws IllegalStateException
      *         This connector is already connected to a main connector.
      */
@@ -68,9 +86,5 @@ public class SubConnector extends Connector {
         }
 
         connectedConnector = null;
-    }
-
-    public String getID() {
-        return id;
     }
 }

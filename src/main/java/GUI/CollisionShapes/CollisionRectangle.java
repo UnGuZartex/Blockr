@@ -2,6 +2,11 @@ package GUI.CollisionShapes;
 
 import java.awt.*;
 
+/**
+ * A closs for rectangles.
+ *
+ * @author Alpha-team
+ */
 public class CollisionRectangle extends CollisionShape {
 
     /**
@@ -124,6 +129,8 @@ public class CollisionRectangle extends CollisionShape {
      * Get the collision width for this rectangle.
      *
      * @return The width of this rectangle.
+     *
+     * @post This collision shape is painted at its coordinates in its color.
      */
     private int getCollisionWidth() {
         return width;

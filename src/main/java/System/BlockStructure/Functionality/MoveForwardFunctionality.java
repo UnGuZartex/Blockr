@@ -13,6 +13,8 @@ public class MoveForwardFunctionality extends BlockFunctionality {
      * Evaluate this move forward functionality on the given level.
      *
      * @param level The level to apply this move forward functionality on.
+     *
+     * @post The robot in the given level has moved one step forward if it was possible.
      */
     @Override
     public void evaluate(Level level) {

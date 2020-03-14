@@ -16,6 +16,8 @@ public class Cell {
      * Initialise a new Cell with given CellType.
      *
      * @param cellType The CellType for this Cell.
+     *
+     * @post The cell type of this cell is set to the given type.
      */
     public Cell(CellType cellType) {
         this.cellType = cellType;

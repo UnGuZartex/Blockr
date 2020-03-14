@@ -14,6 +14,8 @@ public class TurnLeftFunctionality extends BlockFunctionality {
      * robot in the given level to the left.
      *
      * @param level The level to apply this functionality on.
+     *
+     * @post The robot in the given level has turned to the left.
      */
     @Override
     public void evaluate(Level level) {

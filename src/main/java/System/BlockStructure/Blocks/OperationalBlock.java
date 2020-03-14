@@ -27,6 +27,10 @@ public class OperationalBlock extends ConditionalBlock {
      * @param nbSubConnectors The number of sub connectors this operation should
      *                        have, thus the number of inner statements.
      * @param <B> The type of block the functionality should belong to.
+     *
+     * @effect The super constructor is called with given functionality.
+     * @effect All the sub connectors are initialised to a new sub connector which is
+     *         facing right and has the socket type.
      */
     public <B extends OperationalBlock> OperationalBlock(ConditionalBlockFunctionality<B> functionality, int nbSubConnectors) {
         super(functionality);

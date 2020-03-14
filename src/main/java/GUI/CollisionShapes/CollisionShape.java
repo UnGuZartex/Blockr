@@ -26,6 +26,8 @@ public abstract class CollisionShape {
      * @param x The x coordinate for this collision shape.
      * @param y The y coordinate for this collision shape.
      * @param color The color for this collision shape.
+     *
+     * @post The properties of this collision shape are set to the given parameters.
      */
     protected CollisionShape(int x, int y, Color color) {
         this.x = x;
@@ -104,6 +106,8 @@ public abstract class CollisionShape {
      *
      * @param x The amount to translate in the x direction.
      * @param y The amount to translate in the y direction.
+     *
+     * @post The coordinates of this shape are increased with the given amounts.
      */
     public void translate(int x, int y) {
         this.x += x;
@@ -123,6 +127,8 @@ public abstract class CollisionShape {
      * Paint this collision shape.
      *
      * @param g The graphics to paint this shape with.
+     *
+     * @post This collision shape is painted at its coordinates in its color.
      */
     public abstract void paint(Graphics g);
 
@@ -130,6 +136,8 @@ public abstract class CollisionShape {
      * Paint this collision shape without fill.
      *
      * @param g The graphics to paint this shape with.
+     *
+     * @post This collision shape is painted on its coordinates.
      */
     public abstract void paintNonFill(Graphics g);
 

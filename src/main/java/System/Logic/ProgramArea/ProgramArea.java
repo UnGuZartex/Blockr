@@ -37,6 +37,8 @@ public class ProgramArea {
      *
      * @param startBlock The start block for the new program.
      *
+     * @post A new program with given start block is added to this program area.
+     *
      * @throws IllegalArgumentException
      *         If the given start block is not effective.
      */
@@ -50,6 +52,8 @@ public class ProgramArea {
     /**
      * Delete the program from this program area which has the given block
      * as starting block. If no such program exists, nothing happens.
+     *
+     * @post The program with the given startblock is deleted from this program area.
      *
      * @param blockToDelete The starting block for the program to delete.
      */

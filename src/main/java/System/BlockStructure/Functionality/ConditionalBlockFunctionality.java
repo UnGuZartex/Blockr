@@ -26,6 +26,9 @@ public abstract class ConditionalBlockFunctionality<B extends Block> extends Blo
      * of this functionality is existing.
      *
      * @param block The block to assign to this functionality.
+     *
+     * @post The block of this functionality is set to the given block if it was
+     *       not effective yet.
      */
     public void setBlock(B block) {
         if (this.block == null) {

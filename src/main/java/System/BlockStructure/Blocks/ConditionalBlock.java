@@ -23,6 +23,11 @@ public abstract class ConditionalBlock extends Block {
      *
      * @param functionality The functionality of this conditional block.
      * @param <B> The type of block the functionality should belong to.
+     *
+     * @effect Calls super constructor with given functionality.
+     * @effect Set the main connector of this conditional block to a new connector
+     *         facing left and with type plug.
+     * @effect Set the block of the given functionality to this block.
      */
     protected <B extends ConditionalBlock> ConditionalBlock(ConditionalBlockFunctionality<B> functionality) {
         super(functionality);

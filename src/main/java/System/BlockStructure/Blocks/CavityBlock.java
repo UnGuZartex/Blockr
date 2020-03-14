@@ -28,6 +28,14 @@ public abstract class CavityBlock extends FunctionalBlock {
      *
      * @param functionality The functionality of this block.
      * @param <B> The block type this functionality belongs to.
+     *
+     * @effect Call super constructor with the given functionality.
+     * @effect Set the cavity connector to a new sub connector which is facing down
+     *         and has type plug.
+     * @effect Set the conditional connector to a new sub connector which is facing
+     *         right and has the type socket.
+     * @effect Add the cavity connector to the sub connector list.
+     * @effect Add the conditional connector to the sub connector list.
      */
     protected <B extends CavityBlock> CavityBlock(ConditionalBlockFunctionality<B> functionality) {
         super(functionality);

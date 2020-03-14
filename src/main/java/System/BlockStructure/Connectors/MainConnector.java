@@ -16,6 +16,8 @@ public class MainConnector extends Connector {
      * @param block The block of this main connector.
      * @param orientation The orientation of this main connector.
      * @param type The type of this main connector.
+     *
+     * @effect Calls the super constructor with given block, orientation and type.
      */
     public MainConnector(Block block, Orientation orientation, Type type) {
         super(block, orientation, type);
@@ -26,6 +28,9 @@ public class MainConnector extends Connector {
      * sub connector will also be connected to this main connector.
      *
      * @param subConnector The sub connector to connect to.
+     *
+     * @post The given sub connector is connected to this main connector.
+     * @post This main connector is connected to the given sub connector.
      *
      * @throws IllegalStateException
      *         If this main connector is already connected.
@@ -55,6 +60,10 @@ public class MainConnector extends Connector {
     /**
      * Disconnect this main connector from it"s connected connector. The
      * connected connector will also disconnect from this connector.
+     *
+     * @post This main connector will not be connected anymore.
+     * @post The sub connector of this main connector will not be connected
+     *       anymore.
      *
      * @throws IllegalStateException
      *         If the this connector is not connected.

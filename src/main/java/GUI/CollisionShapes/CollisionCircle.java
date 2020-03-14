@@ -77,6 +77,8 @@ public class CollisionCircle extends CollisionShape {
      * Paint this collision circle.
      *
      * @param g The graphics to paint this shape with.
+     *
+     * @post This collision shape is painted at its coordinates in its color.
      */
     @Override
     public void paint(Graphics g) {
@@ -88,6 +90,8 @@ public class CollisionCircle extends CollisionShape {
      * Paint this collision circle without fill.
      *
      * @param g The graphics to paint this shape with.
+     *
+     * @post This collision shape is painted on its coordinates.
      */
     @Override
     public void paintNonFill(Graphics g) {

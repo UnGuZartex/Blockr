@@ -27,6 +27,11 @@ class PABlockHandlerTest {
     }
 
     @Test
+    void hasProperNbBlocks() {
+        assertTrue(handler.hasProperNbBlocks());
+    }
+
+    @Test
     void getFromPalette() {
         assertTrue(handler.getFromPalette("IF") instanceof IfBlock);
         handler.addToPA((new MoveForwardBlockFactory()).createBlock());

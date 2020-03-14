@@ -6,6 +6,9 @@ import System.BlockStructure.Blocks.Block;
  * An abstract class for connectors. These are the objects
  * which can connect blocks to each other.
  *
+ * @invar A connector must have a proper connector at all times.
+ *        | hasProperConnector()
+ *        
  * @author Alpha-team
  */
 public abstract class Connector {
@@ -34,6 +37,10 @@ public abstract class Connector {
      * @param block The block of which this connector is.
      * @param orientation The orientation of this connector.
      * @param type The type of this connector.
+     *
+     * @post The block of this connector equals the given block.
+     * @post The orientation of this connector equals the given orientation.
+     * @post The type of this connector equals the given type.
      */
     public Connector(Block block, Orientation orientation, Type type) {
         this.block = block;
@@ -101,10 +108,22 @@ public abstract class Connector {
     }
 
     /**
+     * Checks if this connector has a proper connected connector.
+     *
+     * @return True if and only if this connector is not connected or the connected
+     *         connector of this connector eqauls this connector.
+     */
+    public boolean hasProperConnector() {
+        return connectedConnector == null || connectedConnector.getConnectedConnector() == this;
+    }
+
+    /**
      * Disconnect this connector from it's connector.
      *
      * @throws IllegalStateException
      *         If this connector is not connected to a connector.
+     *
+     * @post This connector is not connected anymore.
      */
     protected abstract void disconnect() throws IllegalStateException;
 }

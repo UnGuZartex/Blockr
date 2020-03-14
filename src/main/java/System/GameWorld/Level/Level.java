@@ -32,6 +32,10 @@ public class Level {
      * @param robotDirection The direction for the robot of this level.
      * @param gridCells The cells for the grid of this level.
      *
+     * @post The robot of this level is set to a new robot with given
+     *       position and direction.
+     * @post The grid of this level is set to a new grid with the
+     *       given cells.
      * @throws IllegalArgumentException
      *         When the given robot position is an invalid position in the cells.
      */

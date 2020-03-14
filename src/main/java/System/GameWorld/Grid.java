@@ -32,6 +32,8 @@ public class Grid {
      * @post A new grid is initialised with the given cells and
      *       the height and width of this grid is set to the the
      *       dimensions of the given cells.
+     *
+     * @effect Calls constructor with given cells and its dimensions.
      */
     public Grid(Cell[][] cells) {
         this(cells.length, cells[0].length, cells);

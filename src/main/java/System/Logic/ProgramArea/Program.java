@@ -27,6 +27,10 @@ public class Program {
      * Initialise a new program with given start block and reset the program.
      *
      * @param start The start block for this program.
+     *
+     * @effect The program is reset and thus ready for execution.
+     *
+     * @post The startblock of this program is set to the given block.
      */
     public Program(Block start) {
         startBlock = start;
@@ -36,6 +40,10 @@ public class Program {
     /**
      * Execute a step of this program and set the current block
      * to the next block to execute if it is not finished yet.
+     *
+     * @effect The functionality of the current block is evaluated.
+     *
+     * @post The currentblock of this program is set to the next block.
      *
      * @throws IllegalStateException
      *         If this program is not valid.
@@ -96,6 +104,9 @@ public class Program {
     /**
      * Reset this program. The blocks in this program are reset
      * and the current block is set to the start block.
+     *
+     * @post The current block is set to the start block.
+     * @post the start block is reset.
      */
     public void resetProgram() {
         currentBlock = startBlock;

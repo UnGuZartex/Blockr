@@ -32,7 +32,11 @@ public class Robot {
      * @param direction The initial direction for this robot.
      *
      * @pre The x and y coordinates must be greater than or
-     *       equal to 0.
+     *      equal to 0.
+     *
+     * @post The x coordinate of this robot is set to the given x coordinate.
+     * @post The y coordinate of this robot is set to the given y coordinate.
+     * @post The direction of this robot is set to the given direction.
      */
     public Robot(int x, int y, Direction direction) {
         this.x = x;
@@ -109,8 +113,10 @@ public class Robot {
 
     /**
      * Moves this robot one step forward in the Direction of
-     * this robot, if and only if the position forward for this
-     * robot are valid coordinates.
+     * this robot.
+     *
+     * @post The coordinates of this robot are moved forward if this
+     *       is still a proper position for this robot.
      */
     public void moveForward() {
         int x = getXForward();
@@ -123,6 +129,8 @@ public class Robot {
 
     /**
      * Turn this robot to the left from its current Direction.
+     *
+     * @post The direction of this robot is turned to the left.
      */
     public void turnLeft() {
         direction = direction.turnLeft();
@@ -130,6 +138,8 @@ public class Robot {
 
     /**
      * Turn this robot to the right from its current Direction.
+     *
+     * @post The direction of this robot is turned to the rigth.
      */
     public void turnRight() {
         direction = direction.turnRight();
