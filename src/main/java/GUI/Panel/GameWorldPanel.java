@@ -34,7 +34,8 @@ public class GameWorldPanel extends GamePanel {
 
     @Override
     public void paint(Graphics g) {
-        loader.getRobotPosition();
+        this.robotPos = loader.getRobotPosition();
+        this.robotDirection = loader.getRobotDirection();
         drawBackground(g);
         drawGrid(g);
         drawRobot(g);
