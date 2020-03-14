@@ -3,14 +3,15 @@ package GUI.Panel;
 import Controllers.LevelDataLoader;
 import System.GameWorld.Cell;
 import System.GameWorld.Direction;
+import Utility.Position;
 
 import java.awt.*;
 
 public class GameWorldPanel extends GamePanel {
 
     private LevelDataLoader loader = new LevelDataLoader();
-    private Point gridCellSize;
-    private Point robotPos;
+    private Position gridCellSize;
+    private Position robotPos;
     private Direction robotDirection;
     private int cellSize;
     private int gridStartingPointX;
@@ -33,8 +34,7 @@ public class GameWorldPanel extends GamePanel {
 
     @Override
     public void paint(Graphics g) {
-        // TODO alleen robot pos
-        initializeData();
+        loader.getRobotPosition();
         drawBackground(g);
         drawGrid(g);
         drawRobot(g);
@@ -47,9 +47,9 @@ public class GameWorldPanel extends GamePanel {
     }
 
     private void calculateGridProperties() {
-        cellSize = Math.min((getSize().x - mingridDelta) / gridCellSize.x, (getSize().y - mingridDelta) / gridCellSize.y);
-        gridStartingPointX = getLeftCorner().x + (getSize().x - (cellSize * gridCellSize.x)) / 2;
-        gridStartingPointY = getLeftCorner().y + (getSize().y - (cellSize * gridCellSize.y)) / 2;
+        cellSize = Math.min((getSize().x - mingridDelta) / gridCellSize.getX(), (getSize().y - mingridDelta) / gridCellSize.getY());
+        gridStartingPointX = getLeftCorner().x + (getSize().x - (cellSize * gridCellSize.getX())) / 2;
+        gridStartingPointY = getLeftCorner().y + (getSize().y - (cellSize * gridCellSize.getY())) / 2;
     }
 
     private void drawGrid(Graphics g) {
@@ -57,8 +57,8 @@ public class GameWorldPanel extends GamePanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
 
-        for (int x = 0; x < gridCellSize.x; x++) {
-            for (int y = 0; y < gridCellSize.y; y++) {
+        for (int x = 0; x < gridCellSize.getX(); x++) {
+            for (int y = 0; y < gridCellSize.getY(); y++) {
                 g.drawImage(library.getImage(cells[x][y].getCellType().name()), gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize, null);
                 g.drawRect(gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize);
             }
@@ -68,6 +68,6 @@ public class GameWorldPanel extends GamePanel {
     }
 
     private void drawRobot(Graphics g) {
-        g.drawImage(library.getRobotImage(robotDirection.name()), gridStartingPointX + robotPos.x * cellSize, gridStartingPointY + robotPos.y * cellSize, cellSize, cellSize, null);
+        g.drawImage(library.getRobotImage(robotDirection.name()), gridStartingPointX + robotPos.getX() * cellSize, gridStartingPointY + robotPos.getY() * cellSize, cellSize, cellSize, null);
     }
 }
