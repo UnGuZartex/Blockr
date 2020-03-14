@@ -91,6 +91,7 @@ public class GUIBlockHandler {
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
             }
+            palette.update();
 
             draggedBlock = null;
             draggedBlocks = null;
