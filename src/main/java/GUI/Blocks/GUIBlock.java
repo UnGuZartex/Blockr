@@ -1,9 +1,11 @@
 package GUI.Blocks;
 
 import Controllers.ConnectionController;
+import Controllers.ProgramController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
+import System.Logic.ProgramArea.ConnectionHandler;
 import Utility.Position;
 
 import java.awt.*;
@@ -106,9 +108,10 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    public void connectWithStaticBlock(GUIBlock other, ConnectionController controller) {
+    public void connectWithStaticBlock(GUIBlock other, ProgramController Pcontroller) {
 
         GUIConnector intersectingConnectorSub;
+        ConnectionController controller = Pcontroller.getController();
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
         GUIBlock main, sub;
 
@@ -121,6 +124,7 @@ public abstract class GUIBlock {
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             sub = this;
             main = other;
+            Pcontroller.deleteAsProgram(main);
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
@@ -129,6 +133,7 @@ public abstract class GUIBlock {
         }
 
         if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
+
 
             if (!mainConnector.isConnected()) {
                 setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));

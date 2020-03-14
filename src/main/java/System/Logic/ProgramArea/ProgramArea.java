@@ -44,7 +44,9 @@ public class ProgramArea {
         if (startBlock == null) {
             throw new IllegalArgumentException("Block can't be null");
         }
-        programs.add(new Program(startBlock));
+        if (!programs.stream().anyMatch(p -> p.getStartBlock() == startBlock)) {
+            programs.add(new Program(startBlock));
+        }
     }
 
     /**

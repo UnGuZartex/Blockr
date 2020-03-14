@@ -83,7 +83,9 @@ public class BlockrCanvas extends CanvasWindow {
 
             programController.runProgramStep();
             previousBlock = programController.getHightlightedBlock();
-            previousBlock.setColor(Color.red);
+            if (previousBlock != null) {
+                previousBlock.setColor(Color.red);
+            }
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
             programController.resetProgram();

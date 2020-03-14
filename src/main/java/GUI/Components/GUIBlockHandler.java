@@ -107,7 +107,7 @@ public class GUIBlockHandler {
             programArea.addBlockToProgramAreaControllerCall(draggedBlock);
         }
         else {
-            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController.getController());
+            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController);
         }
     }
 
@@ -116,9 +116,11 @@ public class GUIBlockHandler {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
             if (connectedBlock.isPresent()) {
-                block.connectWithStaticBlock(connectedBlock.get(), programController.getController());
+                block.connectWithStaticBlock(connectedBlock.get(), programController);
                 break;
             }
+
+            programController.addBlockToPA(block);
         }
     }
 
