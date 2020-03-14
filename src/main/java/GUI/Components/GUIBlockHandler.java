@@ -72,6 +72,7 @@ public class GUIBlockHandler {
                 if (blockSourcePanel == palette) {
                     GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
                     draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+                    programArea.addBlockToProgramArea(draggedBlock);
                     draggedBlock = newBlock;
                 }
 
@@ -79,7 +80,7 @@ public class GUIBlockHandler {
 
                 if (connectedBlock.isEmpty()) {
                     if (blockSourcePanel == palette) {
-                        programArea.addBlockToProgramArea(draggedBlock);
+                        programArea.addBlockToProgramAreaControllerCall(draggedBlock);
                     }
                 }
 

@@ -20,7 +20,9 @@ public class ProgramAreaPanel extends GamePanel {
 
     public void addBlockToProgramArea(GUIBlock block) {
         blocks.add(block);
-        System.err.println("COUNT: " + blocks.size());
+    }
+
+    public void addBlockToProgramAreaControllerCall(GUIBlock block) {
         controller.addBlockToPA(block);
     }
 
