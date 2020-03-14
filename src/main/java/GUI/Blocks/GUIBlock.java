@@ -17,11 +17,13 @@ public abstract class GUIBlock {
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
     private String name;
+    private String id;
     private int x;
     private int y;
 
-    protected GUIBlock(String name, int x, int y) {
+    protected GUIBlock(String name, String id, int x, int y) {
         this.name = name;
+        this.id = id;
         setShapes();
         setPosition(x, y);
     }
@@ -33,6 +35,10 @@ public abstract class GUIBlock {
 
     public int getY() {
         return y;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getHeight() {

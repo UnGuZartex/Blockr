@@ -11,8 +11,8 @@ public class GUICavityBlock extends GUIBlock {
     private CollisionRectangle cavityRectangle, cavityRectangleUnder;
     private GUIConnector cavityConnector, lowerSubConnector;
 
-    public GUICavityBlock(String name, int x, int y) {
-        super(name,x, y);
+    public GUICavityBlock(String name, String id, int x, int y) {
+        super(name, id, x, y);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class CollisionRectangle extends CollisionShape {
 
     public boolean contains(CollisionRectangle other) {
         return  x < other.x && x + width > other.x + other.width &&
-                y < other.y && y + height > other.y + height;
+                y < other.y && y + height > other.y + other.height;
     }
 
     @Override

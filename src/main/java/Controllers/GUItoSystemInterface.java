@@ -28,11 +28,11 @@ public class GUItoSystemInterface {
         factories.put("TURN RIGHT", new TurnRightGUIFactory());
     }
 
-    public GUIBlock createNewGUIBlock(String ID, int x, int y) {
-        if (factories.containsKey(ID)) {
-            GUIBlock newBlock = factories.get(ID).createBlock(x, y);
+    public GUIBlock createNewGUIBlock(String id, int x, int y) {
+        if (factories.containsKey(id)) {
+            GUIBlock newBlock = factories.get(id).createBlock(id, x, y);
             if (newBlock != null) {
-                conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
+                conversionTable.put(newBlock, blockHandler.getFromPalette(id));
             }
             return newBlock;
         }

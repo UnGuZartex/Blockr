@@ -35,19 +35,6 @@ public class GUIConnector {
         return connectedConnector != null;
     }
 
-    private void connectSlave(GUIConnector other) {
-
-        if (other == null) {
-            // TODO
-        }
-
-        if (isConnected()) {
-            // TODO
-        }
-
-        connectedConnector = other;
-    }
-
     public void disconnect() {
         if (connectedConnector != null) {
             GUIConnector connectorTemp = connectedConnector;
@@ -61,6 +48,7 @@ public class GUIConnector {
         if (!controller.isValidConnection(this.parentBlock, other.parentBlock, other.id)) {
             return;
         }
+
         // TODO moet deze check?
         if (other == null) {
             throw new IllegalArgumentException("todo");
@@ -75,7 +63,7 @@ public class GUIConnector {
         }
 
         connectedConnector = other;
-        other.connectSlave(this);
+        other.connectAsSlave(this);
     }
 
     public GUIBlock getParentBlock() {
@@ -84,5 +72,18 @@ public class GUIConnector {
 
     public GUIBlock getConnectedGUIBlock() {
         return connectedConnector.getParentBlock();
+    }
+
+    private void connectAsSlave(GUIConnector other) {
+
+        if (other == null) {
+            // TODO
+        }
+
+        if (isConnected()) {
+            // TODO
+        }
+
+        connectedConnector = other;
     }
 }

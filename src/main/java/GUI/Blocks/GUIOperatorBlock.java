@@ -6,8 +6,8 @@ import GUI.Components.GUIConnector;
 import java.awt.*;
 
 public class GUIOperatorBlock extends GUIBlock {
-    public GUIOperatorBlock(String name, int x, int y) {
-        super(name, x, y);
+    public GUIOperatorBlock(String name, String id, int x, int y) {
+        super(name, id, x, y);
 }
 
     @Override

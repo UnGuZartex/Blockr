@@ -31,14 +31,12 @@ public class PalettePanel extends GamePanel {
         refillPalette();
     }
 
-    public void addBlocksToGame(String ID, int x, int y) {
-        if (!controller.reachedMaxBlocks()) {
-            blocks.add(controller.getBlock(ID, x, y));
-        }
-    }
-
     public List<GUIBlock> getBlocks() {
         return new ArrayList<>(blocks);
+    }
+
+    public GUIBlock getNewBlock(String ID, int x, int y) {
+        return controller.getBlock(ID, x, y);
     }
 
     @Override
@@ -58,8 +56,14 @@ public class PalettePanel extends GamePanel {
     private void refillPalette() {
         if (!controller.reachedMaxBlocks()) {
             for (String id : IDMap.keySet()) {
-                addBlocksToGame(id, IDMap.get(id).getX(), IDMap.get(id).getY());
+                if (!controller.reachedMaxBlocks()) {
+                    blocks.add(controller.getBlock(id, IDMap.get(id).getX(), IDMap.get(id).getY()));
+                }
             }
         }
+    }
+
+    private void addBlocksToGame(String ID, int x, int y) {
+
     }
 }

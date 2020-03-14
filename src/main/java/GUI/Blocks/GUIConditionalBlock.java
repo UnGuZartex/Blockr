@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class GUIConditionalBlock extends GUIBlock {
 
-    public GUIConditionalBlock(String name, int x, int y) {
-        super(name, x, y);
+    public GUIConditionalBlock(String name, String id, int x, int y) {
+        super(name, id, x, y);
     }
 
     @Override
