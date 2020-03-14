@@ -1,59 +1,91 @@
 package GUI.Panel;
 
 import Controllers.ProgramController;
+import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
+import System.BlockStructure.Blocks.Block;
 import Utility.Position;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class PalettePanel extends GamePanel {
 
-    private GUIBlockHandler blockHandler;
     private ProgramController controller;
-    private final HashMap<String, Position> IDMAP = new HashMap<>();
+    private final List<String> IDList;
+    public List<GUIBlock> blocks = new ArrayList<>();
 
-
-    public PalettePanel(GUIBlockHandler blockHandler, int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
-        this.blockHandler = blockHandler;
         this.controller = controller;
-        IDMAP.put("IF", new Position(10,0));
-        IDMAP.put("WHILE", new Position(10,200));
-        IDMAP.put("NOT", new Position(10,300));
-        IDMAP.put("WALL IN FRONT", new Position(10, 400));
-        IDMAP.put("MOVE FORWARD", new Position(10,500));
-        IDMAP.put("TURN LEFT", new Position(10,600));
-        IDMAP.put("TURN RIGHT", new Position(10,700));
-
+        IDList = Arrays.asList("IF", "WHILE", "NOT", "WALL IN FRONT", "MOVE FORWARD", "TURN LEFT", "TURN RIGHT");
         refillPalette();
+        setBlockPositions();
     }
 
+    public List<GUIBlock> getBlocks() {
+        return new ArrayList<>(blocks);
+    }
 
-    public void addBlocksToGame(String ID, int x, int y) {
-        if (!controller.reachedMaxBlocks()) {
-            blockHandler.addBlock(controller.getBlock(ID, x, y));
+    public GUIBlock getNewBlock(String ID, int x, int y) {
+        return controller.getBlock(ID, x, y);
+    }
+
+    public void drawBlocks(Graphics g) {
+        for (GUIBlock block : blocks) {
+            block.paint(g);
         }
     }
 
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
-        g.setColor(Color.GREEN);
-        g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
     }
 
     protected void drawBackground(Graphics g) {
         g.drawImage(library.getPaletteBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        g.drawRect(getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y);
+        panelRectangle.paintNonFill(g);
+    }
+
+    public void update() {
+        if (controller.reachedMaxBlocks()) {
+            blocks.clear();
+        } else if (blocks.size() == 0) {
+            refillPalette();
+        }
     }
 
     private void refillPalette() {
         if (!controller.reachedMaxBlocks()) {
-            for (String id : IDMAP.keySet()) {
-                addBlocksToGame(id, IDMAP.get(id).getX(), IDMAP.get(id).getY());
+            for (String id : IDList) {
+                if (!controller.reachedMaxBlocks()) {
+                    blocks.add(controller.getBlock(id, 0, 0));
+                }
             }
         }
+    }
 
+    private void setBlockPositions() {
+        int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight()) / (blocks.size() + 1);
+        int currentHeight = freeHeightPerBlock;
+
+        for (GUIBlock block : blocks) {
+            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 2, currentHeight);
+            currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
+        }
+    }
+
+    private int getTotalBlockHeight() {
+
+        int totalHeight = 0;
+
+        for (GUIBlock block : blocks) {
+            totalHeight += block.getHeight();
+        }
+
+        return totalHeight;
     }
 }

@@ -142,26 +142,19 @@ public abstract class Block {
         return !hasNext() || getNext().hasProperConnections();
 }
 
-  public boolean isValid() {
-        if (hasNext()) {
-            return getNext().isValid();
-        }
-        else {
-            return true;
-        }
-    }
 
+    /**
+     * Finds the correct subconnector of a block given its ID.
+     * @param ID the ID to search for
+     * @return The connector in the block with this given ID.
+     */
     public SubConnector getSubConnectorWithID(String ID) {
+        System.out.println(ID);
         for (SubConnector connector:subConnector) {
-            if (connector.getID() == ID) {
+            if (connector.getID().equals(ID)) {
                 return connector;
             }
         }
-        return null;
+        throw new IllegalStateException("This connection ID cannot exist for this block");
     }
-
-    public int getSubConnectorListSize() {
-        return subConnector.size();
-    }
-
 }

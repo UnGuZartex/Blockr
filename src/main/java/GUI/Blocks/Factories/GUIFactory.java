@@ -13,6 +13,7 @@ public abstract class GUIFactory {
      *
      * @return a new GUIBlock
      */
-    public abstract GUIBlock createBlock(int x, int y);
+    // TODO params
+    public abstract GUIBlock createBlock(String id, int x, int y);
 }
 

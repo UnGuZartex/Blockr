@@ -2,8 +2,8 @@ package System.GameWorld.Level;
 
 import System.GameWorld.*;
 import System.GameWorld.Robot;
+import Utility.Position;
 
-import java.awt.*;
 
 /**
  * A class for the level, containing a Robot and a grid.
@@ -35,11 +35,11 @@ public class Level {
      * @throws IllegalArgumentException
      *         When the given robot position is an invalid position in the cells.
      */
-    public Level(Point robotPosition, Direction robotDirection, Cell[][] gridCells) throws IllegalArgumentException {
-        if (!isValidRobotPositionInCells(robotPosition.x, robotPosition.y, gridCells)) {
+    public Level(Position robotPosition, Direction robotDirection, Cell[][] gridCells) throws IllegalArgumentException {
+        if (!isValidRobotPositionInCells(robotPosition.getX(), robotPosition.getY(), gridCells)) {
             throw new IllegalArgumentException("The given robot position is invalid in the cells");
         }
-        this.robot = new Robot(robotPosition.x, robotPosition.y, robotDirection);
+        this.robot = new Robot(robotPosition.getX(), robotPosition.getY(), robotDirection);
         this.grid = new Grid(gridCells);
     }
 

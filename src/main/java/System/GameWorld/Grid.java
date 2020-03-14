@@ -72,7 +72,7 @@ public class Grid {
      * @throws IllegalArgumentException
      *         When the given arguments are none valid dimensions.
      */
-    private Grid(int width, int height, Cell[][] cells) throws IllegalArgumentException{
+    protected Grid(int width, int height, Cell[][] cells) throws IllegalArgumentException{
         if (!areProperDimensions(width, height, cells)) {
             throw new IllegalArgumentException("The given dimensions are invalid");
         }

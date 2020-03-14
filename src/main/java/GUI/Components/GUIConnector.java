@@ -1,5 +1,6 @@
 package GUI.Components;
 
+import Controllers.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
 
@@ -14,7 +15,7 @@ public class GUIConnector {
 
     public GUIConnector(String ID, GUIBlock parentBlock, int x, int y, Color color) {
         this.id = ID;
-        collisionCircle = new CollisionCircle(x, y, 10, 0, color);
+        collisionCircle = new CollisionCircle(x, y, 10, color);
         this.parentBlock = parentBlock;
     }
 
@@ -34,19 +35,6 @@ public class GUIConnector {
         return connectedConnector != null;
     }
 
-    private void connectSlave(GUIConnector other) {
-
-        if (other == null) {
-            // TODO
-        }
-
-        if (isConnected()) {
-            // TODO
-        }
-
-        connectedConnector = other;
-    }
-
     public void disconnect() {
         if (connectedConnector != null) {
             GUIConnector connectorTemp = connectedConnector;
@@ -57,21 +45,20 @@ public class GUIConnector {
 
     public void connect(GUIConnector other) {
 
-        // TODO moet deze check?
         if (other == null) {
-            throw new IllegalArgumentException("todo");
+            throw new IllegalArgumentException("Given connector is null!");
         }
 
         if (isConnected()) {
-            throw new IllegalStateException("todo");
+            throw new IllegalStateException("This connector is already connected!");
         }
 
         if (other.isConnected()) {
-            throw new IllegalStateException("todo");
+            throw new IllegalStateException("The given connector is already connected!");
         }
 
         connectedConnector = other;
-        other.connectSlave(this);
+        other.connectAsSlave(this);
     }
 
     public GUIBlock getParentBlock() {
@@ -80,5 +67,18 @@ public class GUIConnector {
 
     public GUIBlock getConnectedGUIBlock() {
         return connectedConnector.getParentBlock();
+    }
+
+    private void connectAsSlave(GUIConnector other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException("The given connector is null!");
+        }
+
+        if (isConnected()) {
+            throw new IllegalStateException("This connector is already connected!");
+        }
+
+        connectedConnector = other;
     }
 }

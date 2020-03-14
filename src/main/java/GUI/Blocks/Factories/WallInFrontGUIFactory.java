@@ -7,7 +7,7 @@ public class WallInFrontGUIFactory extends GUIFactory{
     private String name = "Wall In Front";
 
     @Override
-    public GUIBlock createBlock(int x, int y) {
-        return new GUIConditionalBlock(name, x,y);
+    public GUIBlock createBlock(String id, int x, int y) {
+        return new GUIConditionalBlock(name, id, x,y);
     }
 }

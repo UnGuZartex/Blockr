@@ -8,7 +8,7 @@ public class TurnRightGUIFactory extends GUIFactory{
 
 
     @Override
-    public GUIBlock createBlock(int x, int y) {
-        return new GUIFunctionalityBlock(name, x,y);
+    public GUIBlock createBlock(String id, int x, int y) {
+        return new GUIFunctionalityBlock(name, id, x,y);
     }
 }

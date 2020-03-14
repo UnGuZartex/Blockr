@@ -4,67 +4,78 @@ import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
 
 import java.awt.*;
-import java.util.zip.CheckedInputStream;
 
 public class GUICavityBlock extends GUIBlock {
 
     private int cavityHeight, cavityUpHeight, cavityDownHeight;
     private CollisionRectangle cavityRectangle, cavityRectangleUnder;
-    private GUIConnector cavityConnector, lowerSubConnector;
+    private GUIConnector cavityConnector, conditionalConnector, lowerSubConnector;
 
-    public GUICavityBlock(String name, int x, int y) {
-        super(name,x, y);
+    public GUICavityBlock(String name, String id, int x, int y) {
+        super(name, id, x, y);
     }
 
     @Override
-    protected void addHeight(int height, GUIBlock previousBlock) {
+    public void setColor(Color color) {
+        super.setColor(color);
+        conditionalConnector.getConnectedGUIBlock().setColor(color);
+    }
+
+    @Override
+    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
 
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
-            increaseCavityHeight(height);
+            changeCavityHeight(heightDelta);
         }
 
         if (mainConnector.isConnected()) {
-            System.err.println("OK");
-            mainConnector.getConnectedGUIBlock().addHeight(height, this);
+            mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
+    }
+
+    @Override
+    public int getHeight() {
+        if (lowerSubConnector.isConnected()) {
+            return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+        }
+
+        return height;
     }
 
     @Override
     protected void setShapes() {
-
         int cavityWidth = 10;
-        int width = 100 + cavityWidth;
+        width = 100 + cavityWidth;
         cavityUpHeight = 30;
         cavityDownHeight = 30;
         height = cavityUpHeight + cavityDownHeight;
 
-        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, cavityWidth, 0, 0, Color.white);
-        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, 0, Color.white);
+        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, cavityWidth, 0, Color.white);
+        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, Color.white);
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, 0, Color.white));
+        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, Color.white));
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
-        mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector("CAVITY", this, (width+cavityWidth) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector("SUB_1",this, width / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        mainConnector = new GUIConnector("MAIN", this, (width - cavityWidth) / 2, 0, Color.blue);
+        cavityConnector = new GUIConnector("CAVITY", this, (width + cavityWidth) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector("SUB_1",this, (width - cavityWidth) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        conditionalConnector = new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
-        subConnectors.add(new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red));
-
+        subConnectors.add(conditionalConnector);
     }
 
-    private void increaseCavityHeight(int increasement) {
-        setNewCavityHeight(cavityHeight + increasement);
-        if (lowerSubConnector.isConnected()) {
-            lowerSubConnector.getConnectedGUIBlock().translate(0, increasement);
+    private void changeCavityHeight(int heightDelta) throws IllegalArgumentException {
+
+        if (cavityHeight + heightDelta < 0) {
+            throw new IllegalArgumentException("Invalid height delta, cavity height can't be < 0!");
         }
-    }
 
-    private void decreaseCavityHeight(int decreasement) {
-        setNewCavityHeight(cavityHeight - decreasement);
+        setNewCavityHeight(cavityHeight + heightDelta);
+
         if (lowerSubConnector.isConnected()) {
-            lowerSubConnector.getConnectedGUIBlock().translate(0, -decreasement);
+            lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
         }
     }
 

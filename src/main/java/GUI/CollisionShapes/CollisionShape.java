@@ -6,13 +6,12 @@ import java.awt.*;
 
 public abstract class CollisionShape {
 
-    protected int x, y, collisionDelta;
-    private Color color;
+    protected int x, y;
+    protected Color color;
 
-    protected CollisionShape(int x, int y, int collisionDelta, Color color) {
+    protected CollisionShape(int x, int y, Color color) {
         this.x = x;
         this.y = y;
-        this.collisionDelta = collisionDelta;
         this.color = color;
     }
 
@@ -37,6 +36,14 @@ public abstract class CollisionShape {
         this.y = y;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void translate(int x, int y) {
         this.x += x;
         this.y += y;
@@ -46,9 +53,9 @@ public abstract class CollisionShape {
         return new Position(x, y);
     }
 
-    public void paint(Graphics g) {
-        g.setColor(color);
-    }
+    public abstract void paint(Graphics g);
+
+    public abstract void paintNonFill(Graphics g);
 
     public abstract boolean contains(int x, int y);
 }

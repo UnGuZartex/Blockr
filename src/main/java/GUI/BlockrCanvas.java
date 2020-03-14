@@ -1,6 +1,7 @@
 package GUI;
 
 import Controllers.ProgramController;
+import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImagePreLoader;
 import GUI.Panel.GamePanel;
@@ -22,6 +23,7 @@ public class BlockrCanvas extends CanvasWindow {
     private GameWorldPanel gameWorldPanel;
     private PalettePanel palettePanel;
     private GUIBlockHandler blockHandler;
+    private GUIBlock previousBlock;
 
     private ProgramController programController = new ProgramController();
 
@@ -37,10 +39,10 @@ public class BlockrCanvas extends CanvasWindow {
 
         this.width = width;
         this.height = height;
-        blockHandler = new GUIBlockHandler();
 
         GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
         setPanels();
+        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
     }
 
     protected BlockrCanvas(String title, int width, int height) throws IOException {
@@ -53,19 +55,20 @@ public class BlockrCanvas extends CanvasWindow {
         programAreaPanel.paint(g);
         gameWorldPanel.paint(g);
         palettePanel.paint(g);
-        blockHandler.paint(g);
+        programAreaPanel.drawBlocks(g);
+        palettePanel.drawBlocks(g);
     }
 
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
-        blockHandler.handleMouseEvent(id, x, y);
+        blockHandler.handleMouseEvent(id, x, y, programController);
         repaint();
     }
 
     private void setPanels() {
-        palettePanel = new PalettePanel(blockHandler,0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
-        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
+        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height, programController);
         gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }
 
@@ -73,7 +76,16 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
 
         if (keyCode == KeyEvent.VK_F5) {
+
+            if (previousBlock != null) {
+                previousBlock.setColor(Color.white);
+            }
+
             programController.runProgramStep();
+            previousBlock = programController.getHightlightedBlock();
+            if (previousBlock != null) {
+                previousBlock.setColor(Color.red);
+            }
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
             programController.resetProgram();

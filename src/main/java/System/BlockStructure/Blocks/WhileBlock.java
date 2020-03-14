@@ -20,9 +20,10 @@ public class WhileBlock extends CavityBlock {
     }
 
     /**
-     * TODO documentation
+     * Returns the next block if any other block didn't have a next block to run.
      *
-     * @return
+     * @return if this block has already ran all of its connectors then return the closest
+     * cavity. Otherwise return itself for evaluation.
      */
     @Override
     public Block getNextIfNone() {

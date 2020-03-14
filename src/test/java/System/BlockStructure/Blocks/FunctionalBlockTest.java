@@ -62,6 +62,12 @@ class FunctionalBlockTest {
     }
 
     @Test
+    void getSubConnectorWithID() {
+        assertEquals(turnLeft.getSubConnectorAt(0), turnLeft.getSubConnectorWithID("SUB_1"));
+        assertThrows(IllegalStateException.class,  () -> {turnLeft.getSubConnectorWithID("INVALID");});
+    }
+
+    @Test
     void reset() {
         moveForward.setAlreadyRan(true);
         turnLeft.setAlreadyRan(true);

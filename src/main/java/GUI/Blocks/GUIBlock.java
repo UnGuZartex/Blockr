@@ -1,8 +1,11 @@
 package GUI.Blocks;
 
+import Controllers.ConnectionController;
+import Controllers.ProgramController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
+import System.Logic.ProgramArea.ConnectionHandler;
 import Utility.Position;
 
 import java.awt.*;
@@ -11,20 +14,18 @@ import java.util.List;
 
 public abstract class GUIBlock {
 
-    protected int height;
+    protected int height, width, x, y;
     protected GUIConnector mainConnector;
     protected List<GUIConnector> subConnectors = new ArrayList<>();
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
-    private String name = "";
-    private int x;
-    private int y;
+    private String name, id;
 
-    protected GUIBlock(String name, int x, int y) {
+    protected GUIBlock(String name, String id, int x, int y) {
         this.name = name;
+        this.id = id;
         setShapes();
         setPosition(x, y);
     }
-
 
     public int getX() {
         return x;
@@ -34,12 +35,22 @@ public abstract class GUIBlock {
         return y;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public int getHeight() {
         return height;
     }
 
-    public void disconnectMainConnector() {
-        mainConnector.disconnect();
+    public int getWidth() {
+        return width;
+    }
+
+    public void setColor(Color color) {
+        for (CollisionRectangle rectangle : blockRectangles) {
+            rectangle.setColor(color);
+        }
     }
 
     public void setPosition(int x, int y) {
@@ -83,59 +94,107 @@ public abstract class GUIBlock {
             blockRectangle.paint(g);
         }
 
-        g.drawString(name, this.x + 2, this.y +20);
+        g.drawString(name, this.x + 2, this.y + 20);
     }
 
     public boolean contains(int x, int y) {
-        boolean connectorContains = subConnectors.stream().anyMatch(i -> i.getCollisionCircle().contains(x, y)) || mainConnector.getCollisionCircle().contains(x, y);
-        boolean rectangleContains = blockRectangles.stream().anyMatch(i -> i.contains(x, y));
+        return blockRectangles.stream().anyMatch(i -> i.contains(x, y));
+    }
 
-        return connectorContains || rectangleContains;
+    public boolean isInside(CollisionRectangle area) {
+        return blockRectangles.stream().allMatch(area::contains);
     }
 
     public boolean intersectsWithConnector(GUIBlock other) {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    protected abstract void addHeight(int height, GUIBlock previousBlock);
+    public void connectWithStaticBlock(GUIBlock other, ProgramController Pcontroller) {
 
-    public void removeHeight(int height) {
-
-    }
-
-    public void connectWithStaticBlock(GUIBlock other) {
-
-        GUIConnector intersectingConnectorSub, intersectingConnectorMain = null;
-        Position staticBlockConnectorPosition = null;
-        Position draggedBlockConnector = null;
+        GUIConnector intersectingConnectorSub;
+        ConnectionController controller = Pcontroller.getController();
+        Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
+        GUIBlock main, sub;
 
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
-            intersectingConnectorMain = mainConnector;
-            draggedBlockConnector = mainConnector.getCollisionCircle().getPosition();
+            main = this;
+            sub = other;
+            Pcontroller.deleteAsProgram(this);
+            draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(height, this);
-
-            System.err.println("THIS");
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
-            intersectingConnectorMain = other.mainConnector;
+            sub = this;
+            main = other;
+            Pcontroller.deleteAsProgram(other);
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
-            draggedBlockConnector = intersectingConnectorSub.getCollisionCircle().getPosition();
-            setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnector.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnector.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub);
-            addHeight(other.height, other);
+            draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+        }
+        else {
+            throw new IllegalArgumentException("Given block does not have a colliding connector!");
+        }
 
-            System.err.println("THIS 2");
+        if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
+
+
+            if (!mainConnector.isConnected()) {
+                setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
+                main.mainConnector.connect(intersectingConnectorSub);
+                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                changeHeight(main.getHeight(), main);
+            }
+            else {
+                other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
+                main.mainConnector.connect(intersectingConnectorSub);
+                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                other.changeHeight(main.getHeight(), main);
+            }
+        }
+        Pcontroller.addBlockToPA(getHighest(this));
+
+    }
+    public GUIBlock getHighest(GUIBlock block) {
+        if (mainConnector.isConnected()) {
+            return block.getHighest(mainConnector.getConnectedGUIBlock());
+        }
+        else {
+            return this;
         }
     }
+    public void resetHeight() {
+        changeHeight(getHeight(), this);
+    }
+
+    public void disconnectHeight() {
+        changeHeight(-getHeight(), this);
+    }
+
+    public void disconnectMainConnector() {
+        mainConnector.disconnect();
+    }
+
+    public List<GUIBlock> getConnectedBlocks() {
+        List<GUIBlock> blocks = new ArrayList<>(List.of(this));
+
+        for (GUIConnector connector : subConnectors) {
+            if (connector.isConnected()) {
+                blocks.addAll(connector.getConnectedGUIBlock().getConnectedBlocks());
+            }
+        }
+
+        return blocks;
+    }
+
+    protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
 
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
 
+        if (mainConnector.isConnected()) {
+            return null;
+        }
+
         for (GUIConnector connector : subConnectors) {
-            if (connector.getConnectedConnector() != mainConnector
-                    && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+            if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
                 return connector;
             }
         }

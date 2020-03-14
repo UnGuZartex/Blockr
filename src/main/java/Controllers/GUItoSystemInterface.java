@@ -15,8 +15,6 @@ public class GUItoSystemInterface {
     private final HashMap<String, GUIFactory> factories = new HashMap<>();
     private final HashMap<GUIBlock, Block> conversionTable = new HashMap<>();
 
-
-
     public GUItoSystemInterface(PABlockHandler blockHandler) {
         this.blockHandler = blockHandler;
         factories.put("IF", new IfGUIFactory());
@@ -28,10 +26,12 @@ public class GUItoSystemInterface {
         factories.put("TURN RIGHT", new TurnRightGUIFactory());
     }
 
-    public GUIBlock createNewGUIBlock(String ID, int x, int y) {
-        if (factories.containsKey(ID)) {
-            GUIBlock newBlock = factories.get(ID).createBlock(x, y);
-            conversionTable.put(newBlock, blockHandler.getFromPalette(ID));
+    public GUIBlock createNewGUIBlock(String id, int x, int y) {
+        if (factories.containsKey(id)) {
+            GUIBlock newBlock = factories.get(id).createBlock(id, x, y);
+            if (newBlock != null) {
+                conversionTable.put(newBlock, blockHandler.getFromPalette(id));
+            }
             return newBlock;
         }
         else {
@@ -56,5 +56,9 @@ public class GUItoSystemInterface {
     public SubConnector getSubConnectorFromGUIBlockWithID(GUIBlock block, String ID) {
         Block searchedBlock = getBlockFromGUIBlock(block);
         return searchedBlock.getSubConnectorWithID(ID);
+    }
+
+    public void removeBlock(GUIBlock block) {
+        conversionTable.remove(block);
     }
 }

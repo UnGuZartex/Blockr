@@ -1,59 +1,159 @@
 package GUI.Components;
 
+import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
+import GUI.CollisionShapes.CollisionRectangle;
+import GUI.Panel.GamePanel;
+import GUI.Panel.PalettePanel;
+import GUI.Panel.ProgramAreaPanel;
 import Utility.Position;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 public class GUIBlockHandler {
-    GUIBlock draggedBlock;
-    List<GUIBlock> blocks = new ArrayList<>();
-    private Position dragDelta;
-    private Position mousePos;
 
+    private final PalettePanel palette;
+    private final ProgramAreaPanel programArea;
+    private GamePanel blockSourcePanel;
+    private GUIBlock draggedBlock;
+    private List<GUIBlock> draggedBlocks;
+    private Position lastValidPosition, dragDelta;
 
-    public void handleMouseEvent(int id, int x, int y) {
+    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
+        this.palette = palette;
+        this.programArea = programArea;
+    }
 
-        mousePos = new Position(x, y);
+    public void handleMouseEvent(int id, int x, int y, ProgramController programController) {
 
-        if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && blocks.stream().anyMatch(b -> b.contains(x, y))) {
-            OptionalInt blockIndex = IntStream.range(0, blocks.size()).filter(i -> blocks.get(i).contains(x, y)).reduce((first, second) -> second);
-            draggedBlock = blocks.get(blockIndex.getAsInt());
-            draggedBlock.disconnectMainConnector();
-            blocks.remove(blockIndex.getAsInt());
-            blocks.add(draggedBlock);
-            dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
+        if (id == MouseEvent.MOUSE_PRESSED) {
+            handleMousePressed(x, y);
         }
-        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
-            draggedBlock.setPosition(dragDelta.getX() + x, dragDelta.getY() + y);
-            Optional<GUIBlock> connectedBlock = blocks.stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
+        else if (id == MouseEvent.MOUSE_RELEASED) {
+            handleMouseReleased(programController);
+        }
+        else if (id == MouseEvent.MOUSE_DRAGGED) {
+            handleMouseDragged(x, y);
+        }
+    }
 
-            if (connectedBlock.isPresent()) {
-                draggedBlock.connectWithStaticBlock(connectedBlock.get());
+    private void handleMousePressed(int x, int y) {
+
+        boolean paletteBlockContainsMouse = AnyContains(palette.getBlocks(), x, y);
+        boolean programAreaContainsMouse = AnyContains(programArea.getBlocks(), x, y);
+
+        if (paletteBlockContainsMouse || programAreaContainsMouse) {
+            if (paletteBlockContainsMouse) {
+                draggedBlock = palette.getBlocks().stream().filter(b -> b.contains(x, y)).findAny().get();
+                draggedBlocks = new ArrayList<>(List.of(draggedBlock));
+                blockSourcePanel = palette;
+            }
+            else {
+                draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
+                draggedBlocks = draggedBlock.getConnectedBlocks();
+                draggedBlock.disconnectHeight();
+                programArea.setBlockDrawLayerFirst(draggedBlocks);
+                blockSourcePanel = programArea;
             }
 
-            draggedBlock = null;
+            dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
+            lastValidPosition = new Position(draggedBlock.getX(), draggedBlock.getY());
         }
     }
 
-    public void paint(Graphics g) {
-
-        for (GUIBlock block : blocks) {
-            block.paint(g);
-        }
+    private void handleMouseReleased(ProgramController programController) {
 
         if (draggedBlock != null) {
-            draggedBlock.setPosition(mousePos.getX() + dragDelta.getX(), mousePos.getY() + dragDelta.getY());
+            if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
+                if (blockSourcePanel == palette) {
+                    handleBlockFromPaletteToProgramArea(programController);
+                }
+                else if (blockSourcePanel == programArea) {
+                    handleBlockFromProgramAreaToProgramArea(programController);
+                }
+            }
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
+                handleBlockToPalette();
+            }
+            else {
+                draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+                draggedBlock.resetHeight();
+            }
+
+            palette.update();
+            draggedBlock = null;
+            draggedBlocks = null;
         }
     }
 
-    public void addBlock(GUIBlock block) {
-        this.blocks.add(block);
+    private void handleMouseDragged(int x, int y) {
+        if (draggedBlock != null) {
+            draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
+        }
+    }
+
+    private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
+
+        GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
+        draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+        programArea.addBlockToProgramArea(newBlock);
+        draggedBlock = newBlock;
+
+        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
+
+        if (connectedBlock.isEmpty()) {
+            programArea.addBlockToProgramAreaControllerCall(draggedBlock);
+        }
+        else {
+            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController);
+        }
+    }
+
+    private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+        boolean connectionFound = false;
+        programArea.disconnectInProgramArea(draggedBlock);
+        draggedBlock.disconnectMainConnector();
+
+
+        for (GUIBlock block : draggedBlocks) {
+            Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
+
+            if (connectedBlock.isPresent()) {
+                block.connectWithStaticBlock(connectedBlock.get(), programController);
+                connectionFound = true;
+                break;
+            }
+        }
+        if (!connectionFound) {
+            programController.addBlockToPA(draggedBlocks.get(0));
+        }
+    }
+
+    private void handleBlockToPalette() {
+
+        programArea.disconnectInProgramArea(draggedBlock);
+        draggedBlock.disconnectMainConnector();
+
+        if (blockSourcePanel == palette) {
+            draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+        }
+        else if (blockSourcePanel == programArea) {
+            programArea.deleteBlockFromProgramArea(draggedBlocks);
+        }
+    }
+
+    private boolean AnyContains(List<GUIBlock> blocks, int x, int y) {
+        return blocks.stream().anyMatch(b -> b.contains(x, y));
+    }
+
+    private boolean isInPanel(CollisionRectangle panel, List<GUIBlock> blocks) {
+        return blocks.stream().allMatch(b -> b.isInside(panel));
+    }
+
+    private boolean isInPanelAny(CollisionRectangle panel, List<GUIBlock> blocks) {
+        return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 }

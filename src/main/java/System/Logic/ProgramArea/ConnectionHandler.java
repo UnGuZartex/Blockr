@@ -40,7 +40,7 @@ public class ConnectionHandler {
      */
     private Block getLastBlock(Block main) {
         Block toReturn = main;
-        while (toReturn.hasNext()){
+        while (toReturn.hasNext()) {
             toReturn = toReturn.getNext();
         }
         return toReturn;

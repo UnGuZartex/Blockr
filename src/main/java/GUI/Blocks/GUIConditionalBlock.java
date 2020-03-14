@@ -7,21 +7,19 @@ import java.awt.*;
 
 public class GUIConditionalBlock extends GUIBlock {
 
-    public GUIConditionalBlock(String name, int x, int y) {
-        super(name, x, y);
+    public GUIConditionalBlock(String name, String id, int x, int y) {
+        super(name, id, x, y);
     }
 
     @Override
-    protected void addHeight(int height, GUIBlock previousBlock) { }
+    protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
 
     @Override
     protected void setShapes() {
-
         height = 30;
-        int width = 100;
+        width = 100;
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, height, 0, Color.white));
+        blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
         mainConnector = new GUIConnector("MAIN", this, 0, height / 2, Color.blue);
     }
-
 }
