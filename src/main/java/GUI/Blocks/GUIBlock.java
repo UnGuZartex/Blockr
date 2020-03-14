@@ -145,6 +145,10 @@ public abstract class GUIBlock {
         }
     }
 
+    public void resetHeight() {
+        changeHeight(getHeight(), this);
+    }
+
     public void disconnectHeight() {
         changeHeight(-getHeight(), this);
     }

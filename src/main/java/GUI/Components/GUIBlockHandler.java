@@ -84,6 +84,7 @@ public class GUIBlockHandler {
             }
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
+                draggedBlock.resetHeight();
             }
 
             palette.update();
