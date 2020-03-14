@@ -8,11 +8,10 @@ import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import System.GameWorld.Level.Level;
 import System.Logic.ProgramArea.ConnectionHandler;
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,8 +23,8 @@ class IfBlockTest {
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Point pointUpOnBlankBeforeWall, pointDownOnGoalBeforeBlank,
-            pointLeftOnGoalBeforeGoal, pointRightOnBlankBeforeWall;
+    private Position PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
+            PositionLeftOnGoalBeforeGoal, PositionRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
     private Cell[][] cellsUpOnBlankBeforeWall, cellsDownOnGoalBeforeBlank,
@@ -64,10 +63,10 @@ class IfBlockTest {
         handler.connect(cond5, if5.getConditionalSubConnector());
         handler.connect(func5Under, if5.getSubConnectorAt(0));
 
-        pointUpOnBlankBeforeWall = new Point(1,1);
-        pointDownOnGoalBeforeBlank = new Point(1,1);
-        pointLeftOnGoalBeforeGoal = new Point(1,1);
-        pointRightOnBlankBeforeWall = new Point(1,1);
+        PositionUpOnBlankBeforeWall = new Position(1,1);
+        PositionDownOnGoalBeforeBlank = new Position(1,1);
+        PositionLeftOnGoalBeforeGoal = new Position(1,1);
+        PositionRightOnBlankBeforeWall = new Position(1,1);
 
         directionUpOnBlankBeforeWall = Direction.UP;
         directionDownOnGoalBeforeBlank = Direction.DOWN;
@@ -95,10 +94,10 @@ class IfBlockTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
 
-        levelUpOnBlankBeforeWall = new Level(pointUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
-        levelDownOnGoalBeforeBlank = new Level(pointDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
-        levelLeftOnGoalBeforeGoal = new Level(pointLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
-        levelRightOnBlankBeforeWall = new Level(pointRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
+        levelDownOnGoalBeforeBlank = new Level(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
+        levelLeftOnGoalBeforeGoal = new Level(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
+        levelRightOnBlankBeforeWall = new Level(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
 
     }
 
@@ -120,10 +119,10 @@ class IfBlockTest {
         cond3 = null;
         cond5 = null;
 
-        pointUpOnBlankBeforeWall = null;
-        pointDownOnGoalBeforeBlank = null;
-        pointLeftOnGoalBeforeGoal = null;
-        pointRightOnBlankBeforeWall = null;
+        PositionUpOnBlankBeforeWall = null;
+        PositionDownOnGoalBeforeBlank = null;
+        PositionLeftOnGoalBeforeGoal = null;
+        PositionRightOnBlankBeforeWall = null;
 
         directionUpOnBlankBeforeWall = null;
         directionDownOnGoalBeforeBlank = null;

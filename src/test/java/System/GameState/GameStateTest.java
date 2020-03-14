@@ -4,11 +4,10 @@ import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import System.GameWorld.Level.Level;
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +20,8 @@ class GameStateTest {
     void setUp() {
         nbBlocks1 = 2;
         nbBlocks2 = 5;
-        level1 = new Level(new Point(0,0), Direction.UP, new Cell[][] {{new Cell(CellType.BLANK)}});
-        level2 = new Level(new Point(0,0), Direction.UP, new Cell[][] {{new Cell(CellType.BLANK)}});
+        level1 = new Level(new Position(0,0), Direction.UP, new Cell[][] {{new Cell(CellType.BLANK)}});
+        level2 = new Level(new Position(0,0), Direction.UP, new Cell[][] {{new Cell(CellType.BLANK)}});
         GameState.setCurrentLevel(level1);
         GameState.setMaxAmountOfBlocks(nbBlocks1);
     }

@@ -4,8 +4,8 @@ import System.GameState.GameState;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
+import Utility.Position;
 
-import java.awt.*;
 
 /**
  * A class to load levels.
@@ -28,6 +28,6 @@ public class LevelLoader {
      * set in the game state.
      */
     public void loadLevel() {
-        GameState.setCurrentLevel(new Level(new Point(1,1), Direction.LEFT, cells));
+        GameState.setCurrentLevel(new Level(new Position(1,1), Direction.LEFT, cells));
     }
 }

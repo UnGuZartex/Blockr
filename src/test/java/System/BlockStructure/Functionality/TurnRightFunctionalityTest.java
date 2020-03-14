@@ -4,11 +4,11 @@ import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
 import System.GameWorld.Level.Level;
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,10 +78,10 @@ class TurnRightFunctionalityTest {
         }
         cellsRight[xRight][yRight] = new Cell(CellType.BLANK);
 
-        levelUp = new Level(new Point(xUp, yUp), Direction.UP, cellsUp);
-        levelDown = new Level(new Point(xDown, yDown), Direction.DOWN, cellsDown);
-        levelLeft = new Level(new Point(xLeft, yLeft), Direction.LEFT, cellsLeft);
-        levelRight = new Level(new Point(xRight, yRight), Direction.RIGHT, cellsRight);
+        levelUp = new Level(new Position(xUp, yUp), Direction.UP, cellsUp);
+        levelDown = new Level(new Position(xDown, yDown), Direction.DOWN, cellsDown);
+        levelLeft = new Level(new Position(xLeft, yLeft), Direction.LEFT, cellsLeft);
+        levelRight = new Level(new Position(xRight, yRight), Direction.RIGHT, cellsRight);
     }
 
     @AfterEach
