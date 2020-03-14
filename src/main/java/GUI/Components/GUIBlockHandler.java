@@ -54,6 +54,7 @@ public class GUIBlockHandler {
             else {
                 draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
                 draggedBlocks = draggedBlock.getConnectedBlocks();
+                programArea.deleteBlockFromProgramArea(draggedBlocks);
                 programArea.setBlockDrawLayerFirst(draggedBlocks);
                 blockSourcePanel = programArea;
             }
@@ -84,7 +85,6 @@ public class GUIBlockHandler {
                     draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 }
                 else if (blockSourcePanel == programArea) {
-                    System.err.println("DELETED");
                     programArea.deleteBlockFromProgramArea(draggedBlocks);
                 }
             }

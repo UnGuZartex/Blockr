@@ -20,10 +20,12 @@ public class ProgramAreaPanel extends GamePanel {
         // TODO controller call
     }
 
-    public void deleteBlockFromProgramArea(List<GUIBlock> GUIblocks) {
-        System.err.println("COUNT - BEFORE: " + blocks.size());
-        blocks.removeAll(GUIblocks);
-        System.err.println("COUNT - AFTER: " + blocks.size());
+    public void disconnectInProgramArea(List<GUIBlock> GUIBlocks) {
+        // TODO controller call
+    }
+
+    public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
+        blocks.removeAll(GUIBlocks);
         // TODO controller call
     }
 
