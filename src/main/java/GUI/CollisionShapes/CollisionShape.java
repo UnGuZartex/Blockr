@@ -18,7 +18,7 @@ public abstract class CollisionShape {
     /**
      * Variable referring to the color of this collision shape.
      */
-    protected final Color color;
+    protected Color color;
 
     /**
      * Initialise a new collision shape with given x,y coordinates and color.
@@ -78,6 +78,24 @@ public abstract class CollisionShape {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Get the color of this collision shape.
+     *
+     * @return The color of this collision shape. 
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * Set the color of this collision shape.
+     *
+     * @param color The new color for this collision shape.
+     */
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     /**

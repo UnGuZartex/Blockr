@@ -1,6 +1,7 @@
 package GUI;
 
 import Controllers.ProgramController;
+import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImagePreLoader;
 import GUI.Panel.GamePanel;
@@ -22,6 +23,7 @@ public class BlockrCanvas extends CanvasWindow {
     private GameWorldPanel gameWorldPanel;
     private PalettePanel palettePanel;
     private GUIBlockHandler blockHandler;
+    private GUIBlock previousBlock;
 
     private ProgramController programController = new ProgramController();
 
@@ -66,7 +68,7 @@ public class BlockrCanvas extends CanvasWindow {
 
     private void setPanels() {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
-        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height);
+        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height, programController);
         gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height);
     }
 
@@ -74,7 +76,14 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
 
         if (keyCode == KeyEvent.VK_F5) {
+
+            if (previousBlock != null) {
+                previousBlock.setColor(Color.white);
+            }
+
             programController.runProgramStep();
+            previousBlock = programController.getHightlightedBlock();
+            previousBlock.setColor(Color.red);
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
             programController.resetProgram();

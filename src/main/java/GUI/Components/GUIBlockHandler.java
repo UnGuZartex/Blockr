@@ -54,6 +54,7 @@ public class GUIBlockHandler {
             else {
                 draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
                 draggedBlocks = draggedBlock.getConnectedBlocks();
+                programArea.disconnectInProgramArea(draggedBlock);
                 programArea.setBlockDrawLayerFirst(draggedBlocks);
                 blockSourcePanel = programArea;
             }
@@ -76,23 +77,31 @@ public class GUIBlockHandler {
                 }
 
                 Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
+
+                if (connectedBlock.isEmpty()) {
+                    if (blockSourcePanel == palette) {
+                        programArea.addBlockToProgramAreaControllerCall(draggedBlock);
+                    }
+                }
+
                 connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programController.getController()));
             }
-            else if (isInPanel(palette.getPanelRectangle(), draggedBlocks)) {
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
 
                 if (blockSourcePanel == palette) {
                     draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 }
                 else if (blockSourcePanel == programArea) {
-                    System.err.println("DELETED");
-                    programArea.deleteBlockFromProgramArea(draggedBlock);
+                    programArea.deleteBlockFromProgramArea(draggedBlocks);
                 }
             }
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
             }
 
+            palette.update();
             draggedBlock = null;
+            draggedBlocks = null;
         }
     }
 
@@ -108,5 +117,9 @@ public class GUIBlockHandler {
 
     private boolean isInPanel(CollisionRectangle panel, List<GUIBlock> blocks) {
         return blocks.stream().allMatch(b -> b.isInside(panel));
+    }
+
+    private boolean isInPanelAny(CollisionRectangle panel, List<GUIBlock> blocks) {
+        return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 }

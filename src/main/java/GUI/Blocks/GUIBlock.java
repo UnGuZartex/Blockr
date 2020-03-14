@@ -28,7 +28,6 @@ public abstract class GUIBlock {
         setPosition(x, y);
     }
 
-
     public int getX() {
         return x;
     }
@@ -43,6 +42,12 @@ public abstract class GUIBlock {
 
     public int getHeight() {
         return height;
+    }
+
+    public void setColor(Color color) {
+        for (CollisionRectangle rectangle : blockRectangles) {
+            rectangle.setColor(color);
+        }
     }
 
     public void setPosition(int x, int y) {
@@ -112,7 +117,11 @@ public abstract class GUIBlock {
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
+            if (controller.isValidConnection(this, other, intersectingConnectorSub.getId())) {
+                intersectingConnectorMain.connect(intersectingConnectorSub);
+                controller.connectBlocks(this, other, intersectingConnectorSub.getId());
+            }
+
             changeHeight(getHeight(), this);
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
@@ -120,7 +129,11 @@ public abstract class GUIBlock {
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
             setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
-            intersectingConnectorMain.connect(intersectingConnectorSub, controller);
+            if (controller.isValidConnection(other, this, intersectingConnectorSub.getId())) {
+                intersectingConnectorMain.connect(intersectingConnectorSub);
+                controller.connectBlocks(other, this, intersectingConnectorSub.getId());
+            }
+
             changeHeight(other.getHeight(), other);
         }
     }
@@ -147,8 +160,7 @@ public abstract class GUIBlock {
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
 
         for (GUIConnector connector : subConnectors) {
-            if (connector.getConnectedConnector() != mainConnector
-                    && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+            if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
                 return connector;
             }
         }

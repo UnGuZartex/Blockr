@@ -55,6 +55,14 @@ public class PalettePanel extends GamePanel {
         panelRectangle.paintNonFill(g);
     }
 
+    public void update() {
+        if (controller.reachedMaxBlocks()) {
+            blocks.clear();
+        } else if (blocks.size() == 0) {
+            refillPalette();
+        }
+    }
+
     private void refillPalette() {
         if (!controller.reachedMaxBlocks()) {
             for (String id : IDMap.keySet()) {

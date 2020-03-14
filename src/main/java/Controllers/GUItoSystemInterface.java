@@ -15,8 +15,6 @@ public class GUItoSystemInterface {
     private final HashMap<String, GUIFactory> factories = new HashMap<>();
     private final HashMap<GUIBlock, Block> conversionTable = new HashMap<>();
 
-
-
     public GUItoSystemInterface(PABlockHandler blockHandler) {
         this.blockHandler = blockHandler;
         factories.put("IF", new IfGUIFactory());
@@ -58,5 +56,9 @@ public class GUItoSystemInterface {
     public SubConnector getSubConnectorFromGUIBlockWithID(GUIBlock block, String ID) {
         Block searchedBlock = getBlockFromGUIBlock(block);
         return searchedBlock.getSubConnectorWithID(ID);
+    }
+
+    public void removeBlock(GUIBlock block) {
+        conversionTable.remove(block);
     }
 }
