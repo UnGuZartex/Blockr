@@ -72,14 +72,10 @@ public class GUIBlockHandler {
                     handleBlockFromPaletteToProgramArea(programController);
                 }
                 else if (blockSourcePanel == programArea) {
-                    programArea.disconnectInProgramArea(draggedBlock);
-                    draggedBlock.disconnectMainConnector();
                     handleBlockFromProgramAreaToProgramArea(programController);
                 }
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
-                programArea.disconnectInProgramArea(draggedBlock);
-                draggedBlock.disconnectMainConnector();
                 handleBlockToPalette();
             }
             else {
@@ -100,6 +96,9 @@ public class GUIBlockHandler {
     }
 
     private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
+
+        programArea.disconnectInProgramArea(draggedBlock);
+        draggedBlock.disconnectMainConnector();
         GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
         draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
         programArea.addBlockToProgramArea(newBlock);
@@ -132,6 +131,10 @@ public class GUIBlockHandler {
     }
 
     private void handleBlockToPalette() {
+
+        programArea.disconnectInProgramArea(draggedBlock);
+        draggedBlock.disconnectMainConnector();
+
         if (blockSourcePanel == palette) {
             draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
         }
