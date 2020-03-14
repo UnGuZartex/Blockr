@@ -33,6 +33,11 @@ public class ProgramController {
         return blockHandler.getMaxReached();
     }
 
+    public GUIBlock getHightlightedBlock() {
+        Program program = blockHandler.getPA().getProgram();
+        
+    }
+
 
     public GUIBlock getBlock(String ID, int x, int y) {
         if (!reachedMaxBlocks()) {
