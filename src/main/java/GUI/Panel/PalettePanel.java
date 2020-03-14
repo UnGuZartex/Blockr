@@ -13,20 +13,20 @@ import java.util.List;
 public class PalettePanel extends GamePanel {
 
     private ProgramController controller;
-    private final HashMap<String, Position> IDMAP = new HashMap<>();
+    private final HashMap<String, Position> IDMap = new HashMap<>();
     public List<GUIBlock> blocks = new ArrayList<>();
 
     public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
 
         this.controller = controller;
-        IDMAP.put("IF", new Position(10,0));
-        IDMAP.put("WHILE", new Position(10,200));
-        IDMAP.put("NOT", new Position(10,300));
-        IDMAP.put("WALL IN FRONT", new Position(10, 400));
-        IDMAP.put("MOVE FORWARD", new Position(10,500));
-        IDMAP.put("TURN LEFT", new Position(10,600));
-        IDMAP.put("TURN RIGHT", new Position(10,700));
+        IDMap.put("IF", new Position(10,0));
+        IDMap.put("WHILE", new Position(10,200));
+        IDMap.put("NOT", new Position(10,300));
+        IDMap.put("WALL IN FRONT", new Position(10, 400));
+        IDMap.put("MOVE FORWARD", new Position(10,500));
+        IDMap.put("TURN LEFT", new Position(10,600));
+        IDMap.put("TURN RIGHT", new Position(10,700));
 
         refillPalette();
     }
@@ -35,6 +35,10 @@ public class PalettePanel extends GamePanel {
         if (!controller.reachedMaxBlocks()) {
             blocks.add(controller.getBlock(ID, x, y));
         }
+    }
+
+    public List<GUIBlock> getBlocks() {
+        return new ArrayList<>(blocks);
     }
 
     @Override
@@ -53,8 +57,8 @@ public class PalettePanel extends GamePanel {
 
     private void refillPalette() {
         if (!controller.reachedMaxBlocks()) {
-            for (String id : IDMAP.keySet()) {
-                addBlocksToGame(id, IDMAP.get(id).getX(), IDMAP.get(id).getY());
+            for (String id : IDMap.keySet()) {
+                addBlocksToGame(id, IDMap.get(id).getX(), IDMap.get(id).getY());
             }
         }
     }

@@ -22,6 +22,15 @@ public class ProgramAreaPanel extends GamePanel {
         blocks.remove(block);
     }
 
+    public List<GUIBlock> getBlocks() {
+        return new ArrayList<>(blocks);
+    }
+
+    public void setBlockDrawLayerFirst(List<GUIBlock> highestLayerBlocks) {
+        blocks.remove(highestLayerBlocks);
+        blocks.addAll(highestLayerBlocks);
+    }
+
     @Override
     public void paint(Graphics g) {
         drawBackground(g);

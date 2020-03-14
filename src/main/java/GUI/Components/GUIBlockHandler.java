@@ -1,20 +1,16 @@
 package GUI.Components;
 
 import Controllers.ProgramController;
-import GUI.BlockrCanvas;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import Utility.Position;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 public class GUIBlockHandler {
 
@@ -23,7 +19,7 @@ public class GUIBlockHandler {
     private GUIBlock draggedBlock;
     private List<GUIBlock> draggedBlocks;
     private List<GUIBlock> blocks = new ArrayList<>();
-    private Position oldBlockPosition, dragDelta, mousePos;
+    private Position lastValidPosition, dragDelta;
 
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
@@ -33,21 +29,43 @@ public class GUIBlockHandler {
 
     public void handleMouseEvent(int id, int x, int y, ProgramController programController) {
 
-        mousePos = new Position(x, y);
-
-        if (id == MouseEvent.MOUSE_PRESSED && draggedBlock == null && blocks.stream().anyMatch(b -> b.contains(x, y))) {
-            OptionalInt blockIndex = IntStream.range(0, blocks.size()).filter(i -> blocks.get(i).contains(x, y)).reduce((first, second) -> second);
-            draggedBlock = blocks.get(blockIndex.getAsInt());
-            draggedBlocks = draggedBlock.getConnectedBlocks();
-            draggedBlock.disconnect();
-
-            // Get blocks on first layer zo they draw first
-            blocks.remove(draggedBlocks);
-            blocks.addAll(draggedBlocks);
-
-            dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
+        if (id == MouseEvent.MOUSE_PRESSED) {
+            handleMousePressed(x, y);
         }
-        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
+
+        if (id == MouseEvent.MOUSE_RELEASED) {
+            handleMouseReleased(x, y, programController);
+        }
+
+        if (id == MouseEvent.MOUSE_DRAGGED) {
+            handleMouseDragged(x, y);
+        }
+    }
+
+    private void handleMousePressed(int x, int y) {
+
+        boolean paletteBlockContainsMouse = AnyContains(palette.getBlocks(), x, y);
+        boolean programAreaContainsMouse = AnyContains(programArea.getBlocks(), x, y);
+
+        if (paletteBlockContainsMouse || programAreaContainsMouse) {
+            if (paletteBlockContainsMouse) {
+                draggedBlock = palette.getBlocks().stream().filter(b -> b.contains(x, y)).findAny().get();
+            }
+            else if (programAreaContainsMouse) {
+                draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
+                draggedBlocks = draggedBlock.getConnectedBlocks();
+                programArea.setBlockDrawLayerFirst(draggedBlocks);
+            }
+
+            draggedBlock.disconnect();
+            dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
+            lastValidPosition = new Position(x, y);
+        }
+    }
+
+    private void handleMouseReleased(int x, int y, ProgramController programController) {
+
+        if (draggedBlock != null) {
             draggedBlock.setPosition(dragDelta.getX() + x, dragDelta.getY() + y);
             Optional<GUIBlock> connectedBlock = blocks.stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
 
@@ -59,18 +77,15 @@ public class GUIBlockHandler {
         }
     }
 
-    public void paint(Graphics g) {
-
-        for (GUIBlock block : blocks) {
-            block.paint(g);
-        }
-
+    private void handleMouseDragged(int x, int y) {
         if (draggedBlock != null) {
-            draggedBlock.setPosition(mousePos.getX() + dragDelta.getX(), mousePos.getY() + dragDelta.getY());
+            draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
     }
 
-    //TODO private boolean is
+    private boolean AnyContains(List<GUIBlock> blocks, int x, int y) {
+        return blocks.stream().anyMatch(b -> b.contains(x, y));
+    }
 
     private boolean isInPanel(CollisionRectangle panel, GUIBlock block) {
         return block.isInside(panel);

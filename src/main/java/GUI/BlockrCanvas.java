@@ -53,7 +53,6 @@ public class BlockrCanvas extends CanvasWindow {
         programAreaPanel.paint(g);
         gameWorldPanel.paint(g);
         palettePanel.paint(g);
-        blockHandler.paint(g);
     }
 
     @Override
