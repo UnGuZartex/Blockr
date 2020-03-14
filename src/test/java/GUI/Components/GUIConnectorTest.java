@@ -94,7 +94,7 @@ class GUIConnectorTest {
         assertEquals(color3, connector3.getCollisionCircle().getColor());
 
         assertEquals(x4, connector4.getCollisionCircle().getX());
-        assertEquals(y4, connector4.getCollisiongit Circle().getY());
+        assertEquals(y4, connector4.getCollisionCircle().getY());
         assertEquals(color4, connector4.getCollisionCircle().getColor());
     }
 
