@@ -45,19 +45,16 @@ public class GUIConnector {
 
     public void connect(GUIConnector other) {
 
-
-
-        // TODO moet deze check?
         if (other == null) {
-            throw new IllegalArgumentException("todo");
+            throw new IllegalArgumentException("Given connector is null!");
         }
 
         if (isConnected()) {
-            throw new IllegalStateException("todo");
+            throw new IllegalStateException("This connector is already connected!");
         }
 
         if (other.isConnected()) {
-            throw new IllegalStateException("todo");
+            throw new IllegalStateException("The given connector is already connected!");
         }
 
         connectedConnector = other;
@@ -75,11 +72,11 @@ public class GUIConnector {
     private void connectAsSlave(GUIConnector other) {
 
         if (other == null) {
-            // TODO
+            throw new IllegalArgumentException("The given connector is null!");
         }
 
         if (isConnected()) {
-            // TODO
+            throw new IllegalStateException("This connector is already connected!");
         }
 
         connectedConnector = other;
