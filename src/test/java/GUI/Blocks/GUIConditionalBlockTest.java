@@ -131,11 +131,6 @@ class GUIConditionalBlockTest {
     }
 
     @Test
-    void connectWithStaticBlock() {
-        // TODO testing
-    }
-
-    @Test
     void getHighest() {
         assertEquals(cond1, cond1.getHighest());
         NotGUIFactory nf = new NotGUIFactory();

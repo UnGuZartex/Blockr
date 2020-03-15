@@ -5,6 +5,11 @@ import GUI.Components.GUIConnector;
 
 import java.awt.*;
 
+/**
+ * A class for operation blocks in the GUI.
+ *
+ * @author Alpha-team
+ */
 public class GUIOperatorBlock extends GUIBlock {
 
     /**
@@ -30,7 +35,13 @@ public class GUIOperatorBlock extends GUIBlock {
         super(name, id, x, y);
     }
 
-
+    /**
+     * Set the color of this block.
+     *
+     * @param color The new color for this block.
+     *
+     * @effect The color of the connected block is also set to the given color.
+     */
     @Override
     public void setColor(Color color) {
         super.setColor(color);
@@ -52,7 +63,14 @@ public class GUIOperatorBlock extends GUIBlock {
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
 
     /**
-     * 
+     * Set the shapes of this operator block.
+     *
+     * @post The height of this block is set to the default height.
+     * @post The width of this block is set to the default width.
+     *
+     * @effect A new main connector is initialised.
+     * @effect A new sub connector is initialised and added to the
+     *         sub connector list.
      */
     @Override
     protected void setShapes() {

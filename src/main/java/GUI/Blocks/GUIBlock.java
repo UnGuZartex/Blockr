@@ -129,7 +129,6 @@ public abstract class GUIBlock {
      * @post All main connector is translated to the given position.
      * @post The sub connector and its connected blocks are translated.
      */
-    // TODO uitgebreider testen
     public void setPosition(int x, int y) {
         int deltaX = x - this.x;
         int deltaY = y - this.y;
@@ -232,12 +231,11 @@ public abstract class GUIBlock {
      *
      * @return True if and only if the two blocks have colliding connectors.
      */
-    // TODO uitgebreider testen
     public boolean intersectsWithConnector(GUIBlock other) {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    // TODO alles
+    // TODO doc
     public void connectWithStaticBlock(GUIBlock other, ProgramController Pcontroller) {
 
         GUIConnector intersectingConnectorSub;
@@ -297,11 +295,12 @@ public abstract class GUIBlock {
         }
     }
 
-
+    // TODO doc
     public void resetHeight() {
         changeHeight(getHeight(), this);
     }
 
+    // TODO doc
     public void disconnectHeight() {
         changeHeight(-getHeight(), this);
     }
