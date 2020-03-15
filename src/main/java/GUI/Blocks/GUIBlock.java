@@ -235,8 +235,28 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    // TODO doc
-    public void connectWithStaticBlock(GUIBlock other, ProgramController programController, ConnectionController connectionController) {
+    /**
+     * The current dragged block or set of blocks this block is in is being connected with a given
+     * static block if possible, while using the given program controller and connection controller to handle
+     * program and connection actions.
+     *
+     * @param other The given static block
+     * @param programController The given program controller
+     * @param connectionController The given connection controller
+     *
+     * @post The height of this block and its connected set of blocks is changed accordingly.
+     * @post The position of this block set is changed accordingly to the type of completed connection.
+     *
+     * @effect The main connector of this block is connected to a sub connector of the given static block, if possible.
+     * @effect A sub connector of this block is connected to the main connector of the given static block, if possible.
+     * @effect The connection controller adds a logical system connection depending on the type of connection.
+     * @effect The program controller adds the highest block from the set this block is in to the logical program area.
+     * @effect The height of the given static block and its connected set of blocks is changed accordingly.
+     * @effect The position of the static block set is changed accordingly to the type of completed connection.
+     *
+     * @throws IllegalArgumentException When the given block does not have a colliding connector
+     */
+    public void connectWithStaticBlock(GUIBlock other, ProgramController programController, ConnectionController connectionController) throws IllegalArgumentException{
 
         GUIConnector intersectingConnectorSub;
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
