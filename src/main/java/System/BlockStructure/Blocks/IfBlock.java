@@ -32,7 +32,7 @@ public class IfBlock extends CavityBlock {
         if (hasAlreadyRan()) {
             return super.getNextIfNone();
         }
-        return getNext();
+        return getSubConnectorAt(0).getConnectedBlock();
     }
 
 
