@@ -14,7 +14,6 @@ public class LevelDataLoader {
     }
 
     public Direction getRobotDirection() {
-        System.err.println("ROBOT POINTER: " + GameState.getCurrentLevel().getRobot());
         return GameState.getCurrentLevel().getRobot().getDirection();
     }
 

@@ -71,7 +71,6 @@ public class GUIGrid implements RobotListener {
 
     @Override
     public void onRobotChangedDirection(Direction newDirection) {
-        System.err.println("CHANGED " + newDirection);
         robotDirection = newDirection;
     }
 }
