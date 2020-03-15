@@ -1,6 +1,5 @@
 package GUI.Blocks.Factories;
 
-import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIFunctionalityBlock;
 
 /**
@@ -26,7 +25,7 @@ public class MoveForwardGUIFactory extends GUIFactory{
      * @return A new functional block with given id and coordinates and the correct name.
      */
     @Override
-    public GUIBlock createBlock(String id, int x, int y) {
+    public GUIFunctionalityBlock createBlock(String id, int x, int y) {
         return new GUIFunctionalityBlock(name, id, x,y);
     }
 }

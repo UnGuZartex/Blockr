@@ -1,6 +1,5 @@
 package GUI.Blocks.Factories;
 
-import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIOperatorBlock;
 
 /**
@@ -25,7 +24,7 @@ public class NotGUIFactory extends GUIFactory {
      * @return A new operator block with given id and coordinates and the correct name.
      */
     @Override
-    public GUIBlock createBlock(String id, int x, int y) {
+    public GUIOperatorBlock createBlock(String id, int x, int y) {
         return new GUIOperatorBlock(name, id, x,y);
     }
 }

@@ -1,6 +1,5 @@
 package GUI.Blocks.Factories;
 
-import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 
 /**
@@ -25,7 +24,7 @@ public class IfGUIFactory extends GUIFactory {
      * @return A new cavity block block with given id and coordinates and the correct name.
      */
     @Override
-    public GUIBlock createBlock(String id, int x, int y) {
+    public GUICavityBlock createBlock(String id, int x, int y) {
         return new GUICavityBlock(name, id, x, y);
     }
 }

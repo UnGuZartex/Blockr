@@ -1,6 +1,5 @@
 package GUI.Blocks.Factories;
 
-import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 
 /**
@@ -22,10 +21,10 @@ public class WhileGUIFactory extends GUIFactory {
      * @param x The x coordinate for the block to create.
      * @param y The y coordinate for the block to create.
      *
-     * @return A new cavityblock block with given id and coordinates and the correct name.
+     * @return A new cavity block block with given id and coordinates and the correct name.
      */
     @Override
-    public GUIBlock createBlock(String id, int x, int y) {
+    public GUICavityBlock createBlock(String id, int x, int y) {
         return new GUICavityBlock(name, id, x, y);
     }
 }

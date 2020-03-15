@@ -1,6 +1,5 @@
 package GUI.Blocks.Factories;
 
-import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIConditionalBlock;
 
 /**
@@ -25,7 +24,7 @@ public class WallInFrontGUIFactory extends GUIFactory{
      * @return A new conditional block with given coordinates and the correct name.
      */
     @Override
-    public GUIBlock createBlock(String id, int x, int y) {
+    public GUIConditionalBlock createBlock(String id, int x, int y) {
         return new GUIConditionalBlock(name, id, x,y);
     }
 }
