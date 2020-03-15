@@ -19,4 +19,19 @@ public interface ProgramListener {
      * This event is called when the player has lost the game.
      */
     void onGameLost();
+
+    /**
+     * This event is called when the program has been reset.
+     */
+    void onProgramReset();
+
+    /**
+     * This event is called when the program area contains too much programs.
+     */
+    void onTooManyPrograms();
+
+    /**
+     * This event is called when the current program is invalid.
+     */
+    void onProgramInvalid();
 }

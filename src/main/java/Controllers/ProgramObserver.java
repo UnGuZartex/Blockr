@@ -42,7 +42,7 @@ public class ProgramObserver {
     /**
      * Notify the listeners that the program has finished and the game is won.
      *
-     @effect The listeners are notified about the new game state.
+     * @effect The listeners are notified about the new game state.
      */
     public void notifyGameWon() {
         for (ProgramListener listener : listeners) {
@@ -53,11 +53,44 @@ public class ProgramObserver {
     /**
      * Notify the listeners that the player has lost the game.
      *
-     @effect The listeners are notified about the new game state.
+     * @effect The listeners are notified about the new game state.
      */
     public void notifyGameLost() {
         for (ProgramListener listener : listeners) {
             listener.onGameLost();
+        }
+    }
+
+    /**
+     * Notify the listeners that the program has been reset.
+     *
+     * @effect The listeners are notified about the program reset.
+     */
+    public void notifyProgramReset() {
+        for (ProgramListener listener : listeners) {
+            listener.onProgramReset();
+        }
+    }
+
+    /**
+     * Notify the listeners that the program is invalid.
+     *
+     * @effect The listeners are notified about the warning.
+     */
+    public void notifyProgramInvalid() {
+        for (ProgramListener listener : listeners) {
+            listener.onProgramInvalid();
+        }
+    }
+
+    /**
+     * Notify the listeners that there are too many programs in the program area.
+     *
+     * @effect The listeners are notified about the warning.
+     */
+    public void notifyTooManyPrograms() {
+        for (ProgramListener listener : listeners) {
+            listener.onTooManyPrograms();
         }
     }
 }

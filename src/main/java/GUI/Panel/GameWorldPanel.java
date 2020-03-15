@@ -13,8 +13,8 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
 
     public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
-        GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
         controller.subscribeListener(this);
+        GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
     }
 
     public void resetGameText() {
@@ -50,5 +50,20 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     @Override
     public void onGameLost() {
         gameState = "YOU LOSE!  :(";
+    }
+
+    @Override
+    public void onProgramReset() {
+        gameState = "";
+    }
+
+    @Override
+    public void onTooManyPrograms() {
+        gameState = "TOO MANY PROGRAMS IN PA!";
+    }
+
+    @Override
+    public void onProgramInvalid() {
+        gameState = "INVALID PROGRAM";
     }
 }

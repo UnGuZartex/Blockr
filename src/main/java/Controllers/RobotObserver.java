@@ -58,7 +58,7 @@ public class RobotObserver {
      *
      * @param newDirection The new robot direction
      *
-     @effect The listeners are notified about the new robot direction.
+     * @effect The listeners are notified about the new robot direction.
      */
     public void notifyRobotChangedDirection(Direction newDirection) {
         for (RobotListener listener : listeners) {

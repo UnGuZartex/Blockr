@@ -67,24 +67,38 @@ public class ProgramArea {
     /**
      * Execute a program step if possible.
      *
-     * @effect If there is only one program in this program area, then the
-     *         current program executes for one step.
+     * @effect If there is only one program in this program area and that program is valid,
+     *         then the current program executes for one step.
+     * @effect The observer notifies its listeners that the amount of programs is too high
+     *         in the program area if that's the case.
+     * @effect The observer notifies its listeners that the program is invalid
+     *         if there's only one program in the program area and if it's invalid.
      * @effect The observer notifies its listeners whether the game is won or not
      *         when the program is fully finished executing.
      */
     public void runProgramStep() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
-            program.executeStep();
 
-            if (program.isFinished()) {
-                if (GameState.getCurrentLevel().hasWon()) {
-                    observer.notifyGameWon();
-                }
-                else {
-                    observer.notifyGameLost();
+            if (program.isValidProgram()) {
+                program.executeStep();
+
+                if (program.isFinished()) {
+                    if (GameState.getCurrentLevel().hasWon()) {
+                        observer.notifyGameWon();
+                    }
+                    else {
+                        observer.notifyGameLost();
+                    }
                 }
             }
+            else {
+                System.err.println("NOT VALID");
+                observer.notifyProgramInvalid();
+            }
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
         }
     }
 
@@ -92,11 +106,14 @@ public class ProgramArea {
      * Reset all programs to their initial state.
      *
      * @effect Each program in the programs list is reset.
+     * @effect The observer notifies its listeners that the program has been reset.
      */
     public void resetProgram() {
         for (Program program : programs) {
             program.resetProgram();
         }
+
+        observer.notifyProgramReset();
     }
 
     /**

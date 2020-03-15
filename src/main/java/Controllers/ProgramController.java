@@ -9,7 +9,7 @@ import System.Logic.ProgramArea.Program;
 
 
 public class ProgramController {
-    
+
     private final PABlockHandler blockHandler = new PABlockHandler();
     private final LevelLoader loader = new LevelLoader();
     private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
