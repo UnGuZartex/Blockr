@@ -262,8 +262,6 @@ public abstract class GUIBlock {
         }
 
         if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
-
-
             if (!mainConnector.isConnected()) {
                 setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
@@ -277,6 +275,7 @@ public abstract class GUIBlock {
                 other.changeHeight(main.getHeight(), main);
             }
         }
+
         Pcontroller.addBlockToPA(getHighest());
     }
 
@@ -295,12 +294,18 @@ public abstract class GUIBlock {
         }
     }
 
-    // TODO doc
+    /**
+     * Reset the height of the block structure connected to this block's main connector
+     * as if the current block and its connected sub-blocks where added to the block structure.
+     */
     public void resetHeight() {
         changeHeight(getHeight(), this);
     }
 
-    // TODO doc
+    /**
+     * Decrease the height of the block structure connected to this block's main connector
+     * as if the current block and its connected sub-blocks where removed from the block structure.
+     */
     public void disconnectHeight() {
         changeHeight(-getHeight(), this);
     }
