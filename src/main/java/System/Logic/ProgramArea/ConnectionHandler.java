@@ -49,13 +49,17 @@ public class ConnectionHandler {
     }
 
     /**
-     * Disconnect the given block on it's main connector.
+     * Disconnect the given block on it's main connector, if the
+     * connector is connected.
      *
      * @param toDisconnect The block to disconnect.
      *
-     * @post The given block is disconnected on its mainconnector
+     * @post The given block is disconnected on its mainconnector,
+     *       if the connector was connected.
      */
     public void disconnect(Block toDisconnect) {
-        toDisconnect.getMainConnector().disconnect();
+        if (toDisconnect.getMainConnector().isConnected()) {
+            toDisconnect.getMainConnector().disconnect();
+        }
     }
 }

@@ -34,7 +34,10 @@ public class GUIOperatorBlock extends GUIBlock {
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-        subConnector.getConnectedGUIBlock().setColor(color);
+
+        if (subConnector.isConnected()) {
+            subConnector.getConnectedGUIBlock().setColor(color);
+        }
     }
 
     /**

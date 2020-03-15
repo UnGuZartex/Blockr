@@ -24,4 +24,8 @@ public class LevelDataLoader {
     public Cell[][] getGridCells() {
         return GameState.getCurrentLevel().getGrid().getCells();
     }
+
+    public void subscribe(RobotListener listener) {
+        GameState.getCurrentLevel().getRobot().subscribe(listener);
+    }
 }
