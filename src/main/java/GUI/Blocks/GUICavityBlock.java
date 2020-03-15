@@ -18,7 +18,10 @@ public class GUICavityBlock extends GUIBlock {
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-        conditionalConnector.getConnectedGUIBlock().setColor(color);
+
+        if (conditionalConnector.isConnected()) {
+            conditionalConnector.getConnectedGUIBlock().setColor(color);
+        }
     }
 
     @Override

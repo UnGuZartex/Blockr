@@ -26,9 +26,7 @@ public class ConnectionController {
 
     public void disconnectBlock(GUIBlock withMain) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
-        if (mainBlock.getMainConnector().isConnected()) {
-            handler.disconnectInPA(mainBlock);
-        }
+        handler.disconnectInPA(mainBlock);
     }
 
     public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, String connectionID) {

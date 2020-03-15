@@ -1,21 +1,23 @@
 package GUI.Panel;
 
 import Controllers.ProgramController;
+import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
+import System.BlockStructure.Blocks.Block;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgramAreaPanel extends GamePanel {
+public class ProgramAreaPanel extends GamePanel implements ProgramListener {
 
     private List<GUIBlock> blocks = new ArrayList<>();
-
     private ProgramController controller;
 
     public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
         this.controller = controller;
+        controller.subscribeListener(this);
     }
 
     public void addBlockToProgramArea(GUIBlock block) {
@@ -47,6 +49,12 @@ public class ProgramAreaPanel extends GamePanel {
         blocks.addAll(highestLayerBlocks);
     }
 
+    public void drawBlocks(Graphics g) {
+        for (GUIBlock block : blocks) {
+            block.paint(g);
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
@@ -58,9 +66,35 @@ public class ProgramAreaPanel extends GamePanel {
         panelRectangle.paintNonFill(g);
     }
 
-    public void drawBlocks(Graphics g) {
+    @Override
+    public void onGameWon() {
+        changeBlockColors(Color.green);
+    }
+
+    @Override
+    public void onGameLost() {
+        changeBlockColors(Color.orange);
+    }
+
+    @Override
+    public void onProgramReset() {
+        System.err.println("OKE");
+        changeBlockColors(Color.white);
+    }
+
+    @Override
+    public void onTooManyPrograms() {
+        changeBlockColors(Color.red);
+    }
+
+    @Override
+    public void onProgramInvalid() {
+        changeBlockColors(Color.red);
+    }
+
+    private void changeBlockColors(Color color) {
         for (GUIBlock block : blocks) {
-            block.paint(g);
+            block.setColor(color);
         }
     }
 }

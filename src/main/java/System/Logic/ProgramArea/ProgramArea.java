@@ -1,6 +1,10 @@
 package System.Logic.ProgramArea;
 
+import Controllers.ProgramListener;
+import Controllers.ProgramObserver;
+import Controllers.RobotListener;
 import System.BlockStructure.Blocks.Block;
+import System.GameState.GameState;
 
 import java.util.ArrayList;
 
@@ -17,6 +21,34 @@ public class ProgramArea {
     private ArrayList<Program> programs = new ArrayList<>();
 
     /**
+     * Variabele referring to the observer of this class.
+     * This observer will notify listeners about the events of the program.
+     */
+    private ProgramObserver observer = new ProgramObserver();
+
+    /**
+     * Unsubscribe a given program listener from the program observer
+     *
+     * @param listener The given listener
+     *
+     * @effect the given listener is subscribed to the program observer
+     */
+    public void subscribe(ProgramListener listener) {
+        observer.subscribe(listener);
+    }
+
+    /**
+     * Subscribe a given program listener to the program observer
+     *
+     * @param listener The given listener
+     *
+     * @effect the given listener is unsubscribed from the program observer
+     */
+    public void unsubscribe(ProgramListener listener) {
+        observer.unsubscribe(listener);
+    }
+
+    /**
      * Get the program in the program area.
      *
      * @return If there is only one program in this program area,
@@ -30,6 +62,58 @@ public class ProgramArea {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Execute a program step if possible.
+     *
+     * @effect If there is only one program in this program area and that program is valid,
+     *         then the current program executes for one step.
+     * @effect The observer notifies its listeners that the amount of programs is too high
+     *         in the program area if that's the case.
+     * @effect The observer notifies its listeners that the program is invalid
+     *         if there's only one program in the program area and if it's invalid.
+     * @effect The observer notifies its listeners whether the game is won or not
+     *         when the program is fully finished executing.
+     */
+    public void runProgramStep() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                program.executeStep();
+
+                if (program.isFinished()) {
+                    if (GameState.getCurrentLevel().hasWon()) {
+                        observer.notifyGameWon();
+                    }
+                    else {
+                        observer.notifyGameLost();
+                    }
+                }
+            }
+            else {
+                System.err.println("NOT VALID");
+                observer.notifyProgramInvalid();
+            }
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
+    }
+
+    /**
+     * Reset all programs to their initial state.
+     *
+     * @effect Each program in the programs list is reset.
+     * @effect The observer notifies its listeners that the program has been reset.
+     */
+    public void resetProgram() {
+        for (Program program : programs) {
+            program.resetProgram();
+        }
+
+        observer.notifyProgramReset();
     }
 
     /**

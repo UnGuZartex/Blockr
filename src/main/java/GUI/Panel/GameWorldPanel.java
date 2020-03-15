@@ -1,44 +1,31 @@
 package GUI.Panel;
 
-import Controllers.LevelDataLoader;
-import System.GameWorld.Cell;
-import System.GameWorld.Direction;
-import Utility.Position;
+import Controllers.ProgramController;
+import Controllers.ProgramListener;
+import GUI.Components.GUIGrid;
 
 import java.awt.*;
 
-public class GameWorldPanel extends GamePanel {
+public class GameWorldPanel extends GamePanel implements ProgramListener {
 
-    private LevelDataLoader loader = new LevelDataLoader();
-    private Position gridCellSize;
-    private Position robotPos;
-    private Direction robotDirection;
-    private int cellSize;
-    private int gridStartingPointX;
-    private int gridStartingPointY;
-    private Cell[][] cells;
-    private int mingridDelta = 20;
+    private GUIGrid GUIGrid;
+    private String gameState = "";
 
-    public GameWorldPanel(int cornerX, int cornerY, int width, int height) {
+    public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
-        initializeData();
-        calculateGridProperties();
+        controller.subscribeListener(this);
+        GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
     }
 
-    private void initializeData() {
-        robotPos = loader.getRobotPosition();
-        robotDirection = loader.getRobotDirection();
-        gridCellSize = loader.getGridSize();
-        cells = loader.getGridCells();
+    public void resetGameText() {
+        gameState = "";
     }
 
     @Override
     public void paint(Graphics g) {
-        this.robotPos = loader.getRobotPosition();
-        this.robotDirection = loader.getRobotDirection();
         drawBackground(g);
-        drawGrid(g);
-        drawRobot(g);
+        GUIGrid.paint(g, library);
+        drawGameState(g);
     }
 
     @Override
@@ -47,28 +34,36 @@ public class GameWorldPanel extends GamePanel {
         panelRectangle.paintNonFill(g);
     }
 
-    private void calculateGridProperties() {
-        cellSize = Math.min((getSize().x - mingridDelta) / gridCellSize.getX(), (getSize().y - mingridDelta) / gridCellSize.getY());
-        gridStartingPointX = getLeftCorner().x + (getSize().x - (cellSize * gridCellSize.getX())) / 2;
-        gridStartingPointY = getLeftCorner().y + (getSize().y - (cellSize * gridCellSize.getY())) / 2;
+    private void drawGameState(Graphics g) {
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
+        g.setFont(newFont);
+        g.drawString(gameState, panelRectangle.getX(), 100);
+        g.setFont(currentFont);
     }
 
-    private void drawGrid(Graphics g) {
-        g.setColor(Color.black);
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(3));
-
-        for (int x = 0; x < gridCellSize.getX(); x++) {
-            for (int y = 0; y < gridCellSize.getY(); y++) {
-                g.drawImage(library.getImage(cells[x][y].getCellType().name()), gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize, null);
-                g.drawRect(gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize);
-            }
-        }
-
-        g2.setStroke(new BasicStroke(1));
+    @Override
+    public void onGameWon() {
+        gameState = "YOU WIN!  :)";
     }
 
-    private void drawRobot(Graphics g) {
-        g.drawImage(library.getRobotImage(robotDirection.name()), gridStartingPointX + robotPos.getX() * cellSize, gridStartingPointY + robotPos.getY() * cellSize, cellSize, cellSize, null);
+    @Override
+    public void onGameLost() {
+        gameState = "YOU LOSE!  :(";
+    }
+
+    @Override
+    public void onProgramReset() {
+        gameState = "";
+    }
+
+    @Override
+    public void onTooManyPrograms() {
+        gameState = "TOO MANY PROGRAMS!";
+    }
+
+    @Override
+    public void onProgramInvalid() {
+        gameState = "INVALID PROGRAM";
     }
 }

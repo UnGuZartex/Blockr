@@ -30,4 +30,11 @@ public class LevelLoader {
     public void loadLevel() {
         GameState.setCurrentLevel(new Level(new Position(1,1), Direction.LEFT, cells));
     }
+
+    /**
+     * Reset the current level
+     */
+    public void resetLevel() {
+        GameState.getCurrentLevel().reset();
+    }
 }

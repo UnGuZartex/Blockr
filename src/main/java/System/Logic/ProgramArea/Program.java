@@ -51,6 +51,7 @@ public class Program {
      *         If there is no level loaded.
      */
     public void executeStep() {
+
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is invalid!");
         }
@@ -60,7 +61,6 @@ public class Program {
         }
 
         if (!isFinished()) {
-            System.out.println("Evaluating: " + currentBlock.getFunctionality());
             currentBlock.getFunctionality().evaluate(GameState.getCurrentLevel());
             currentBlock.setAlreadyRan(true);
 
@@ -111,15 +111,6 @@ public class Program {
     public void resetProgram() {
         currentBlock = startBlock;
         startBlock.reset();
-    }
-
-    /**
-     * Checks whether or not this program has won the game.
-     *
-     * @return True if and only if the current level in the game state has won.
-     */
-    public boolean hasWon() {
-        return GameState.getCurrentLevel().hasWon();
     }
 
     /**

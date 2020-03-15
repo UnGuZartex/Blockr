@@ -55,6 +55,7 @@ public class PalettePanel extends GamePanel {
             blocks.clear();
         } else if (blocks.size() == 0) {
             refillPalette();
+            setBlockPositions();
         }
     }
 
