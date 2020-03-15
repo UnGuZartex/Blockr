@@ -1,10 +1,13 @@
 package GUI.Panel;
 
+import Controllers.ConnectionController;
+import Controllers.GUItoSystemInterface;
 import Controllers.ProgramController;
 import GUI.Blocks.Factories.GUIFactory;
 import GUI.Blocks.Factories.MoveForwardGUIFactory;
 import GUI.Blocks.GUIBlock;
 import System.GameWorld.Level.LevelLoader;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +29,13 @@ class ProgramAreaPanelTest {
         cornerY = 8;
         width = 500;
         height = 800;
-        controller = new ProgramController();
+        PABlockHandler blockHandler = new PABlockHandler();
+        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        controller = new ProgramController(converter, blockHandler);
+        ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
-        panel = new ProgramAreaPanel(cornerX, cornerY, width, height, controller);
+        panel = new ProgramAreaPanel(cornerX, cornerY, width, height, controller, connectionController);
         GUIFactory f = new MoveForwardGUIFactory();
         block = f.createBlock("id", 0, 0);
         panel.addBlockToProgramArea(block);

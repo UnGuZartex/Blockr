@@ -1,10 +1,12 @@
 package GUI.Panel;
 
+import Controllers.GUItoSystemInterface;
 import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 import System.GameState.GameState;
 import System.GameWorld.Level.LevelLoader;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,9 @@ class PalettePanelTest {
         cornerY = 8;
         width = 500;
         height = 800;
-        controller = new ProgramController();
+        PABlockHandler blockHandler = new PABlockHandler();
+        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        controller = new ProgramController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
         panel = new PalettePanel(cornerX, cornerY, width, height, controller);

@@ -1,7 +1,9 @@
 package GUI.Panel;
 
+import Controllers.GUItoSystemInterface;
 import Controllers.ProgramController;
 import System.GameWorld.Level.LevelLoader;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,9 @@ class GameWorldPanelTest {
         cornerY = 8;
         width = 500;
         height = 800;
-        controller = new ProgramController();
+        PABlockHandler blockHandler = new PABlockHandler();
+        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        controller = new ProgramController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
         panel = new GameWorldPanel(cornerX, cornerY, width, height, controller);
