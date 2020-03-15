@@ -20,20 +20,7 @@ public class IfBlock extends CavityBlock {
     public IfBlock(CavityFunctionality cavityFunctionality) {
         super(cavityFunctionality);
     }
-
-    @Override
-    public Block getNext() {
-        if (getFunctionality().getEvaluation()) {
-            setAlreadyRan(true);
-            return getCavitySubConnector().getConnectedBlock();
-        }
-        else if (getCavitySubConnector().isConnected()) {
-            getCavitySubConnector().getConnectedBlock().reset();
-        }
-        setAlreadyRan(true);
-        return super.getNext();
-    }
-
+    
     /**
      * Get the next block to execute, this depends on the evaluation of the condition of this block.
      * If the condition is true, the next block is the first in the cavity, otherwise, the next block
