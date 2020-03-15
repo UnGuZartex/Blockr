@@ -1,11 +1,13 @@
 package GUI.Components;
 
+import Controllers.ConnectionController;
 import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import System.Logic.ProgramArea.Program;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;
@@ -27,13 +29,13 @@ public class GUIBlockHandler {
         this.programArea = programArea;
     }
 
-    public void handleMouseEvent(int id, int x, int y, ProgramController programController) {
+    public void handleMouseEvent(int id, int x, int y) {
 
         if (id == MouseEvent.MOUSE_PRESSED) {
             handleMousePressed(x, y);
         }
         else if (id == MouseEvent.MOUSE_RELEASED) {
-            handleMouseReleased(programController);
+            handleMouseReleased();
         }
         else if (id == MouseEvent.MOUSE_DRAGGED) {
             handleMouseDragged(x, y);
@@ -64,15 +66,15 @@ public class GUIBlockHandler {
         }
     }
 
-    private void handleMouseReleased(ProgramController programController) {
+    private void handleMouseReleased() {
 
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
-                    handleBlockFromPaletteToProgramArea(programController);
+                    handleBlockFromPaletteToProgramArea();
                 }
                 else if (blockSourcePanel == programArea) {
-                    handleBlockFromProgramAreaToProgramArea(programController);
+                    handleBlockFromProgramAreaToProgramArea();
                 }
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
@@ -95,7 +97,7 @@ public class GUIBlockHandler {
         }
     }
 
-    private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
+    private void handleBlockFromPaletteToProgramArea() {
 
         GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
         draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
@@ -108,11 +110,11 @@ public class GUIBlockHandler {
             programArea.addBlockToProgramAreaControllerCall(draggedBlock);
         }
         else {
-            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController);
+            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
         }
     }
 
-    private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+    private void handleBlockFromProgramAreaToProgramArea() {
         boolean connectionFound = false;
         programArea.disconnectInProgramArea(draggedBlock);
         draggedBlock.disconnectMainConnector();
@@ -122,13 +124,13 @@ public class GUIBlockHandler {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
             if (connectedBlock.isPresent()) {
-                block.connectWithStaticBlock(connectedBlock.get(), programController);
+                block.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
                 connectionFound = true;
                 break;
             }
         }
         if (!connectionFound) {
-            programController.addBlockToPA(draggedBlocks.get(0));
+            programArea.addBlockToProgramAreaControllerCall(draggedBlocks.get(0));
         }
     }
 

@@ -236,24 +236,23 @@ public abstract class GUIBlock {
     }
 
     // TODO doc
-    public void connectWithStaticBlock(GUIBlock other, ProgramController Pcontroller) {
+    public void connectWithStaticBlock(GUIBlock other, ProgramController programController, ConnectionController connectionController) {
 
         GUIConnector intersectingConnectorSub;
-        ConnectionController controller = Pcontroller.getController();
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
         GUIBlock main, sub;
 
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
             main = this;
             sub = other;
-            Pcontroller.deleteAsProgram(this);
+            programController.deleteAsProgram(this);
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             sub = this;
             main = other;
-            Pcontroller.deleteAsProgram(other);
+            programController.deleteAsProgram(other);
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
@@ -261,22 +260,22 @@ public abstract class GUIBlock {
             throw new IllegalArgumentException("Given block does not have a colliding connector!");
         }
 
-        if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
+        if (connectionController.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
             if (!mainConnector.isConnected()) {
                 setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
-                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                connectionController.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 changeHeight(main.getHeight(), main);
             }
             else {
                 other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
-                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                connectionController.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 other.changeHeight(main.getHeight(), main);
             }
         }
 
-        Pcontroller.addBlockToPA(getHighest());
+        programController.addBlockToPA(getHighest());
     }
 
     /**

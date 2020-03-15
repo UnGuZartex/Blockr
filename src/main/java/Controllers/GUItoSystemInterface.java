@@ -41,7 +41,7 @@ public class GUItoSystemInterface {
 
     public Block getBlockFromGUIBlock(GUIBlock block) throws IllegalArgumentException {
 
-        if (conversionTable.containsKey(block)) {
+        if (!conversionTable.containsKey(block)) {
             throw new IllegalArgumentException("The given GUI block is not present in the conversion table!");
         }
 

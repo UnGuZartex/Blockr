@@ -1,5 +1,7 @@
 package GUI;
 
+import Controllers.ConnectionController;
+import Controllers.GUItoSystemInterface;
 import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
@@ -8,6 +10,7 @@ import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import System.Logic.ProgramArea.PABlockHandler;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,7 +28,8 @@ public class BlockrCanvas extends CanvasWindow {
     private GUIBlockHandler blockHandler;
     private GUIBlock previousBlock;
 
-    private ProgramController programController = new ProgramController();
+    private ProgramController programController;
+    private ConnectionController connectionController;
 
     /**
      * Initializes a CanvasWindow object. 
@@ -40,7 +44,9 @@ public class BlockrCanvas extends CanvasWindow {
         this.height = height;
 
         GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
+        setControllers();
         setPanels();
+
         blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
     }
 
@@ -61,13 +67,13 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
-        blockHandler.handleMouseEvent(id, x, y, programController);
+        blockHandler.handleMouseEvent(id, x, y);
         repaint();
     }
 
     private void setPanels() {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
-        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height, programController);
+        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height, programController, connectionController);
         gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height, programController);
     }
 
@@ -92,5 +98,12 @@ public class BlockrCanvas extends CanvasWindow {
         }
 
         repaint();
+    }
+
+    private void setControllers() {
+        PABlockHandler blockHandler = new PABlockHandler();
+        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        connectionController = new ConnectionController(converter, blockHandler);
+        programController = new ProgramController(converter, blockHandler);
     }
 }

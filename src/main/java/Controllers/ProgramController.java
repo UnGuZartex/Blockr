@@ -10,10 +10,14 @@ import System.Logic.ProgramArea.Program;
 
 public class ProgramController {
 
-    private final PABlockHandler blockHandler = new PABlockHandler();
     private final LevelLoader loader = new LevelLoader();
-    private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
-    private final ConnectionController controller = new ConnectionController(converter, blockHandler);
+    private final GUItoSystemInterface converter;
+    private final PABlockHandler blockHandler;
+
+    public ProgramController(GUItoSystemInterface converter, PABlockHandler blockHandler) {
+        this.converter = converter;
+        this.blockHandler = blockHandler;
+    }
 
     public void addBlockToPA(GUIBlock block) {
         Block toAdd = converter.getBlockFromGUIBlock(block);
@@ -29,8 +33,7 @@ public class ProgramController {
     }
 
     public void deleteAsProgram(GUIBlock block) {
-        Block toDelete = converter.getBlockFromGUIBlock(block);
-        blockHandler.deleteProgram(toDelete);
+        blockHandler.deleteProgram(converter.getBlockFromGUIBlock(block));
     }
 
     public boolean reachedMaxBlocks() {
@@ -47,10 +50,7 @@ public class ProgramController {
     }
 
     public GUIBlock getBlock(String ID, int x, int y) {
-        if (!reachedMaxBlocks()) {
-            return converter.createNewGUIBlock(ID, x, y);
-        }
-        return null;
+        return converter.createNewGUIBlock(ID, x, y);
     }
 
     public void resetProgram() {
@@ -68,9 +68,5 @@ public class ProgramController {
 
     public void unsubscribeListener(ProgramListener listener) {
         blockHandler.getPA().unsubscribe(listener);
-    }
-
-    public ConnectionController getController() {
-        return controller;
     }
 }

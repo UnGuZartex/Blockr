@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import Controllers.ConnectionController;
 import Controllers.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
@@ -12,12 +13,23 @@ import java.util.List;
 public class ProgramAreaPanel extends GamePanel implements ProgramListener {
 
     private List<GUIBlock> blocks = new ArrayList<>();
-    private ProgramController controller;
+    private ProgramController programController;
+    private ConnectionController connectionController;
 
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController programController,
+                            ConnectionController connectionController) {
         super(cornerX, cornerY, width, height);
-        this.controller = controller;
-        controller.subscribeListener(this);
+        this.programController = programController;
+        this.connectionController = connectionController;
+        programController.subscribeListener(this);
+    }
+
+    public ProgramController getProgramController() {
+        return programController;
+    }
+
+    public ConnectionController getConnectionController() {
+        return connectionController;
     }
 
     public void addBlockToProgramArea(GUIBlock block) {
@@ -25,18 +37,18 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     public void addBlockToProgramAreaControllerCall(GUIBlock block) {
-        controller.addBlockToPA(block);
+        programController.addBlockToPA(block);
     }
 
     public void disconnectInProgramArea(GUIBlock GUIBlock) {
-        controller.getController().disconnectBlock(GUIBlock);
-        controller.resetProgram();
+        connectionController.disconnectBlock(GUIBlock);
+        programController.resetProgram();
     }
 
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         blocks.removeAll(GUIBlocks);
         for (GUIBlock block:GUIBlocks) {
-            controller.deleteFromPA(block);
+            programController.deleteFromPA(block);
         }
     }
 
