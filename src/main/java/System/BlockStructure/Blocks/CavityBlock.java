@@ -106,7 +106,9 @@ public abstract class CavityBlock extends FunctionalBlock {
         }
         else {
             setAlreadyRan(true);
-            cavitySubConnector.getConnectedBlock().reset();
+            if (cavitySubConnector.isConnected()) {
+                cavitySubConnector.getConnectedBlock().reset();
+            }
             return getSubConnectors().get(0).getConnectedBlock();
         }
     }

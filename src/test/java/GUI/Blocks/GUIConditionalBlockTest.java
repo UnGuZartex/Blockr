@@ -1,6 +1,7 @@
 package GUI.Blocks;
 
 import GUI.Blocks.Factories.MoveForwardGUIFactory;
+import GUI.Blocks.Factories.NotGUIFactory;
 import GUI.Blocks.Factories.WallInFrontGUIFactory;
 import GUI.CollisionShapes.CollisionRectangle;
 import org.junit.jupiter.api.AfterEach;
@@ -131,29 +132,34 @@ class GUIConditionalBlockTest {
 
     @Test
     void connectWithStaticBlock() {
-
+        // TODO testing
     }
 
     @Test
     void getHighest() {
-    }
-
-    @Test
-    void resetHeight() {
-    }
-
-    @Test
-    void disconnectHeight() {
+        assertEquals(cond1, cond1.getHighest());
+        NotGUIFactory nf = new NotGUIFactory();
+        GUIOperatorBlock not = nf.createBlock("0", 0,0);
+        not.subConnectors.get(0).connect(cond1.mainConnector);
+        assertEquals(not, cond1.getHighest());
     }
 
     @Test
     void disconnectMainConnector() {
+        NotGUIFactory nf = new NotGUIFactory();
+        GUIOperatorBlock not = nf.createBlock("0", 0,0);
+        not.subConnectors.get(0).connect(cond1.mainConnector);
+        assertTrue(cond1.mainConnector.isConnected());
+        assertTrue(not.subConnectors.get(0).isConnected());
+        assertEquals(not, cond1.mainConnector.getConnectedGUIBlock());
+
+        cond1.disconnectMainConnector();
+        assertFalse(cond1.mainConnector.isConnected());
+        assertFalse(not.subConnectors.get(0).isConnected());
     }
 
     @Test
     void getConnectedBlocks() {
+        assertEquals(1, cond1.getConnectedBlocks().size());
     }
-
-
-
 }

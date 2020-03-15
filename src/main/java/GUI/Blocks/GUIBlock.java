@@ -11,6 +11,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for GUI blocks.
+ *
+ * @author Alpha-team
+ */
 public abstract class GUIBlock {
 
     /**
@@ -188,13 +193,10 @@ public abstract class GUIBlock {
         for (GUIConnector connector: subConnectors) {
             connector.getCollisionCircle().paint(g);
         }
-
         mainConnector.getCollisionCircle().paint(g);
-
         for (CollisionRectangle blockRectangle : blockRectangles) {
             blockRectangle.paint(g);
         }
-
         g.drawString(name, this.x + 2, this.y + 20);
     }
 
@@ -277,19 +279,25 @@ public abstract class GUIBlock {
                 other.changeHeight(main.getHeight(), main);
             }
         }
-        Pcontroller.addBlockToPA(getHighest(this));
-
+        Pcontroller.addBlockToPA(getHighest());
     }
 
-
-    public GUIBlock getHighest(GUIBlock block) {
+    /**
+     * Get the hightest block in the connections.
+     *
+     * @return This block if no block is higher, else the highest
+     *         block of the block connected to the main connector.
+     */
+    public GUIBlock getHighest() {
         if (mainConnector.isConnected()) {
-            return block.getHighest(mainConnector.getConnectedGUIBlock());
+            return mainConnector.getConnectedGUIBlock().getHighest();
         }
         else {
             return this;
         }
     }
+
+
     public void resetHeight() {
         changeHeight(getHeight(), this);
     }
@@ -298,19 +306,30 @@ public abstract class GUIBlock {
         changeHeight(-getHeight(), this);
     }
 
+    /**
+     * Disconnect the main connector of this block.
+     *
+     * @post The main connector is not connected anymore.
+     * @post The sub connector which was connected to the main connector
+     *       is not connected anymore.
+     */
     public void disconnectMainConnector() {
         mainConnector.disconnect();
     }
 
+    /**
+     * Get a list of all the connected blocks.
+     *
+     * @return A list with all the connected blocks to this block through
+     *         a sub connector.
+     */
     public List<GUIBlock> getConnectedBlocks() {
         List<GUIBlock> blocks = new ArrayList<>(List.of(this));
-
         for (GUIConnector connector : subConnectors) {
             if (connector.isConnected()) {
                 blocks.addAll(connector.getConnectedGUIBlock().getConnectedBlocks());
             }
         }
-
         return blocks;
     }
 
