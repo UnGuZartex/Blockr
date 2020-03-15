@@ -7,13 +7,42 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * A class to load image libraries.
+ *
+ * @author Alpha-team
+ */
 public class ImagePreLoader {
+
+    /**
+     * Variable referring to the image directory of the images.
+     */
     private static String imageDir = System.getProperty("user.dir") + "/util/resources/imagePacks/";
 
+    /**
+     * Create a new image library.
+     *
+     * @return A new default image library.
+     *
+     * @throws IOException
+     *         If no valid library is found.
+     */
     public static ImageLibrary createImageLibrary() throws IOException {
         return createImageLibrary("default");
     }
 
+    /**
+     * Create a new image library with given name.
+     *
+     * @param imagePackName The name of the image pack.
+     *
+     * @return A new image library with the given name.
+     *
+     * @throws IOException
+     *         If the given image pack name does not exist.
+     * @throws IOException
+     *         If the default image does not exist.
+     */
     public static ImageLibrary createImageLibrary(String imagePackName) throws IOException {
         HashMap<String, Image> images = new HashMap<>();
         String imagePath = imageDir + imagePackName + "/";
