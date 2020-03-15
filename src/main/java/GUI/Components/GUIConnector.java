@@ -4,7 +4,11 @@ import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
 import java.awt.*;
 
-
+/**
+ * A class used as a GUI connector to connect GUI Blocks visually.
+ *
+ * @author Alpha-team
+ */
 public class GUIConnector {
 
     /**
