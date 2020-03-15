@@ -53,19 +53,20 @@ public class ProgramController {
     }
 
     public void resetProgram() {
-        Program program = blockHandler.getPA().getProgram();
-        if (program != null) {
-            program.resetProgram();
-        }
-
+        blockHandler.getPA().resetProgram();
         loader.resetLevel();
     }
 
     public void runProgramStep() {
-        Program program = blockHandler.getPA().getProgram();
-        if (program != null) {
-            program.executeStep();
-        }
+        blockHandler.getPA().runProgramStep();
+    }
+
+    public void subscribeListener(ProgramListener listener) {
+        blockHandler.getPA().subscribe(listener);
+    }
+
+    public void unsubscribeListener(ProgramListener listener) {
+        blockHandler.getPA().unsubscribe(listener);
     }
 
     public ConnectionController getController() {

@@ -48,7 +48,7 @@ public class Robot {
      * Variabele referring to the observer of this class.
      * This observer will notify listeners about the events of the robot.
      */
-    private RobotObserver observer;
+    private RobotObserver observer = new RobotObserver();
 
     /**
      * Initialise a new robot with given x and y coordinates, as
@@ -67,7 +67,6 @@ public class Robot {
      * @post The original x coordinate of this robot is set to the given x coordinate.
      * @post The original y coordinate of this robot is set to the given y coordinate.
      * @post The original direction of this robot is set to the given direction.
-     * @Post The observer of this robot is created
      */
     public Robot(int x, int y, Direction direction) {
 
@@ -78,8 +77,6 @@ public class Robot {
         xStart = x;
         yStart = y;
         directionStart = direction;
-
-        observer = new RobotObserver();
     }
 
     /**

@@ -1,25 +1,20 @@
 package GUI.Panel;
 
+import Controllers.ProgramController;
+import Controllers.ProgramListener;
 import GUI.Components.GUIGrid;
 
 import java.awt.*;
 
-public class GameWorldPanel extends GamePanel {
+public class GameWorldPanel extends GamePanel implements ProgramListener {
 
     private GUIGrid GUIGrid;
     private String gameState = "";
 
-    public GameWorldPanel(int cornerX, int cornerY, int width, int height) {
+    public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
         GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
-    }
-
-    public void setWin() {
-        gameState = "YOU WIN!";
-    }
-
-    public void setLose() {
-        gameState = "YOU LOSE!";
+        controller.subscribeListener(this);
     }
 
     public void resetGameText() {
@@ -45,5 +40,15 @@ public class GameWorldPanel extends GamePanel {
         g.setFont(newFont);
         g.drawString(gameState, panelRectangle.getX(), 100);
         g.setFont(currentFont);
+    }
+
+    @Override
+    public void onGameWon() {
+        gameState = "YOU WIN!  :)";
+    }
+
+    @Override
+    public void onGameLost() {
+        gameState = "YOU LOSE!  :(";
     }
 }

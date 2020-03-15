@@ -87,7 +87,6 @@ class ProgramTest {
         validProgram.executeStep();
         validProgram.executeStep();
         assertTrue(validProgram.isFinished());
-        assertTrue(validProgram.hasWon());
     }
 
     @Test
@@ -132,15 +131,6 @@ class ProgramTest {
         assertFalse(validProgram.getStartBlock().hasAlreadyRan());
         assertFalse(moveForwardComplete.hasAlreadyRan());
         assertFalse(validProgram.isFinished());
-    }
-
-    @Test
-    void hasWon() {
-        assertFalse(validProgram.hasWon());
-        assertFalse(invalidProgram.hasWon());
-        validProgram.executeStep();
-        validProgram.executeStep();
-        assertTrue(validProgram.hasWon());
     }
 
     @Test
