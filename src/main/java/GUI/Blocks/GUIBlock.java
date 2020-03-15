@@ -235,25 +235,44 @@ public abstract class GUIBlock {
         return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
     }
 
-    // TODO doc
-    public void connectWithStaticBlock(GUIBlock other, ProgramController Pcontroller) {
+    /**
+     * The current dragged block or set of blocks this block is in is being connected with a given
+     * static block if possible, while using the given program controller and connection controller to handle
+     * program and connection actions.
+     *
+     * @param other The given static block
+     * @param programController The given program controller
+     * @param connectionController The given connection controller
+     *
+     * @post The height of this block and its connected set of blocks is changed accordingly.
+     * @post The position of this block set is changed accordingly to the type of completed connection.
+     *
+     * @effect The main connector of this block is connected to a sub connector of the given static block, if possible.
+     * @effect A sub connector of this block is connected to the main connector of the given static block, if possible.
+     * @effect The connection controller adds a logical system connection depending on the type of connection.
+     * @effect The program controller adds the highest block from the set this block is in to the logical program area.
+     * @effect The height of the given static block and its connected set of blocks is changed accordingly.
+     * @effect The position of the static block set is changed accordingly to the type of completed connection.
+     *
+     * @throws IllegalArgumentException When the given block does not have a colliding connector
+     */
+    public void connectWithStaticBlock(GUIBlock other, ProgramController programController, ConnectionController connectionController) throws IllegalArgumentException{
 
         GUIConnector intersectingConnectorSub;
-        ConnectionController controller = Pcontroller.getController();
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
         GUIBlock main, sub;
 
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
             main = this;
             sub = other;
-            Pcontroller.deleteAsProgram(this);
+            programController.deleteAsProgram(this);
             draggedBlockConnectorPosition = mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             sub = this;
             main = other;
-            Pcontroller.deleteAsProgram(other);
+            programController.deleteAsProgram(other);
             staticBlockConnectorPosition = other.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
@@ -261,23 +280,22 @@ public abstract class GUIBlock {
             throw new IllegalArgumentException("Given block does not have a colliding connector!");
         }
 
-        if (controller.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
-
-
+        if (connectionController.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
             if (!mainConnector.isConnected()) {
                 setPosition(staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX()), staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
-                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                connectionController.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 changeHeight(main.getHeight(), main);
             }
             else {
                 other.setPosition(draggedBlockConnectorPosition.getX() + (other.getX() - staticBlockConnectorPosition.getX()), draggedBlockConnectorPosition.getY() + (other.getY() - staticBlockConnectorPosition.getY()));
                 main.mainConnector.connect(intersectingConnectorSub);
-                controller.connectBlocks(main, sub, intersectingConnectorSub.getId());
+                connectionController.connectBlocks(main, sub, intersectingConnectorSub.getId());
                 other.changeHeight(main.getHeight(), main);
             }
         }
-        Pcontroller.addBlockToPA(getHighest());
+
+        programController.addBlockToPA(getHighest());
     }
 
     /**
@@ -295,12 +313,18 @@ public abstract class GUIBlock {
         }
     }
 
-    // TODO doc
+    /**
+     * Reset the height of the block structure connected to this block's main connector
+     * as if the current block and its connected sub-blocks where added to the block structure.
+     */
     public void resetHeight() {
         changeHeight(getHeight(), this);
     }
 
-    // TODO doc
+    /**
+     * Decrease the height of the block structure connected to this block's main connector
+     * as if the current block and its connected sub-blocks where removed from the block structure.
+     */
     public void disconnectHeight() {
         changeHeight(-getHeight(), this);
     }

@@ -39,7 +39,12 @@ public class GUItoSystemInterface {
         }
     }
 
-    public Block getBlockFromGUIBlock(GUIBlock block) {
+    public Block getBlockFromGUIBlock(GUIBlock block) throws IllegalArgumentException {
+
+        if (!conversionTable.containsKey(block)) {
+            throw new IllegalArgumentException("The given GUI block is not present in the conversion table!");
+        }
+
         return conversionTable.get(block);
     }
 

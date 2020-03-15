@@ -1,6 +1,5 @@
 package GUI.Components;
 
-import Controllers.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.GamePanel;
@@ -13,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A class used to handle GUI blocks.
+ *
+ * @author Alpha-team
+ */
 public class GUIBlockHandler {
 
     private final PalettePanel palette;
@@ -27,19 +31,32 @@ public class GUIBlockHandler {
         this.programArea = programArea;
     }
 
-    public void handleMouseEvent(int id, int x, int y, ProgramController programController) {
+    /**
+     * Handle the current mouse event with the given id, x and y coordinate.
+     * @param id the given mouse event id
+     * @param x the given mouse x-coordinate
+     * @param y the given mouse y-coordinate
+     *
+     * @effect The right mouse event is handled accordingly.
+     */
+    public void handleMouseEvent(int id, int x, int y) {
 
         if (id == MouseEvent.MOUSE_PRESSED) {
             handleMousePressed(x, y);
         }
         else if (id == MouseEvent.MOUSE_RELEASED) {
-            handleMouseReleased(programController);
+            handleMouseReleased();
         }
         else if (id == MouseEvent.MOUSE_DRAGGED) {
             handleMouseDragged(x, y);
         }
     }
 
+    /**
+     * todo
+     * @param x
+     * @param y
+     */
     private void handleMousePressed(int x, int y) {
 
         boolean paletteBlockContainsMouse = AnyContains(palette.getBlocks(), x, y);
@@ -64,15 +81,18 @@ public class GUIBlockHandler {
         }
     }
 
-    private void handleMouseReleased(ProgramController programController) {
+    /**
+     * todo
+     */
+    private void handleMouseReleased() {
 
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
-                    handleBlockFromPaletteToProgramArea(programController);
+                    handleBlockFromPaletteToProgramArea();
                 }
                 else if (blockSourcePanel == programArea) {
-                    handleBlockFromProgramAreaToProgramArea(programController);
+                    handleBlockFromProgramAreaToProgramArea();
                 }
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
@@ -89,13 +109,24 @@ public class GUIBlockHandler {
         }
     }
 
+    /**
+     * Handle the event where the mouse is dragged with the given x and y coordinates of the mouse.
+     *
+     * @param x the given x-coordinate of the mouse
+     * @param y the given y-coordinate of the mouse
+     *
+     * @effect The position of the dragged block is updated accordingly.
+     */
     private void handleMouseDragged(int x, int y) {
         if (draggedBlock != null) {
             draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
     }
 
-    private void handleBlockFromPaletteToProgramArea(ProgramController programController) {
+    /**
+     * todo
+     */
+    private void handleBlockFromPaletteToProgramArea() {
 
         GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
         draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
@@ -108,30 +139,40 @@ public class GUIBlockHandler {
             programArea.addBlockToProgramAreaControllerCall(draggedBlock);
         }
         else {
-            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programController);
+            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
         }
     }
 
-    private void handleBlockFromProgramAreaToProgramArea(ProgramController programController) {
+    /**
+     * todo
+     */
+    private void handleBlockFromProgramAreaToProgramArea() {
+
         boolean connectionFound = false;
         programArea.disconnectInProgramArea(draggedBlock);
         draggedBlock.disconnectMainConnector();
-
 
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
             if (connectedBlock.isPresent()) {
-                block.connectWithStaticBlock(connectedBlock.get(), programController);
+                block.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
                 connectionFound = true;
                 break;
             }
         }
         if (!connectionFound) {
-            programController.addBlockToPA(draggedBlocks.get(0));
+            programArea.addBlockToProgramAreaControllerCall(draggedBlocks.get(0));
         }
     }
 
+    /**
+     * Handle the event where the dragged gui bock goes from a certain position to the palette
+     *
+     * @effect Disconnect the dragged block from its previous set of blocks.
+     * @effect Reset the position of the original palette block if the dragged block came from the palette.
+     * @effect Delete the block from the program area if the dragged block came from the program area.
+     */
     private void handleBlockToPalette() {
 
         programArea.disconnectInProgramArea(draggedBlock);
@@ -145,14 +186,40 @@ public class GUIBlockHandler {
         }
     }
 
+    /**
+     * Return whether any block in the given list of gui blocks contains the point defined
+     * by the given x and y coordinate.
+     *
+     * @param blocks the given list of gui blocks
+     * @param x the given x-coordinate
+     * @param y the given y-coordinate
+     *
+     * @return whether any block in the given list of gui blocks contains the point.
+     */
     private boolean AnyContains(List<GUIBlock> blocks, int x, int y) {
         return blocks.stream().anyMatch(b -> b.contains(x, y));
     }
 
+    /**
+     * Checks if a given gui block is in a given collision rectangle panel.
+     *
+     * @param panel the given panel
+     * @param blocks the given gui block
+     *
+     * @return if the given gui block is in the given panel.
+     */
     private boolean isInPanel(CollisionRectangle panel, List<GUIBlock> blocks) {
         return blocks.stream().allMatch(b -> b.isInside(panel));
     }
 
+    /**
+     * Checks if a given list of guiblocks is in a given collision rectangle panel.
+     *
+     * @param panel the given panel
+     * @param blocks the given list of gui blocks
+     *
+     * @return if the given list of gui blocks is in the given panel.
+     */
     private boolean isInPanelAny(CollisionRectangle panel, List<GUIBlock> blocks) {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }

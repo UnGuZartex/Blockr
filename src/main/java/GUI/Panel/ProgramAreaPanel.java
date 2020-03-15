@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import Controllers.ConnectionController;
 import Controllers.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
@@ -20,10 +21,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Variable referring to the blocks in the program area panel.
      */
     private List<GUIBlock> blocks = new ArrayList<>();
-    /**
-     * Variable referring to the controller for the program.
-     */
-    private ProgramController controller;
+    private ProgramController programController;
+    private ConnectionController connectionController;
 
     /**
      * Initialise a new program area panel with given corner, dimensions and controller.
@@ -32,17 +31,29 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param cornerY The y coordinate for the corner of this panel.
      * @param width The width of this panel.
      * @param height The height of this panel.
-     * @param controller The controller to control this panel.
+     * @param programController The program controller used to handle program actions.
+     * @param connectionController The connection controller used to handle connections.
      *
      * @effect Calls super constructor with given coordinates and dimensions.
      * @effect Subscribes this panel as a listener to the panel.
      *
-     * @post The controller of this panel is set to the given controller.
+     * @post The program controller of this panel is set to the given program controller.
+     * @post The connection controller of this panel is set to the given connection controller.
      */
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController programController,
+                ConnectionController connectionController) {
         super(cornerX, cornerY, width, height);
-        this.controller = controller;
-        controller.subscribeListener(this);
+        this.programController = programController;
+        this.connectionController = connectionController;
+        programController.subscribeListener(this);
+    }
+
+    public ProgramController getProgramController() {
+        return programController;
+    }
+
+    public ConnectionController getConnectionController() {
+        return connectionController;
     }
 
     /**
@@ -62,7 +73,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param block The block to add to the program area.
      */
     public void addBlockToProgramAreaControllerCall(GUIBlock block) {
-        controller.addBlockToPA(block);
+        programController.addBlockToPA(block);
     }
 
     /**
@@ -74,8 +85,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @effect The program is reset.
      */
     public void disconnectInProgramArea(GUIBlock GUIBlock) {
-        controller.getController().disconnectBlock(GUIBlock);
-        controller.resetProgram();
+        connectionController.disconnectBlock(GUIBlock);
+        programController.resetProgram();
     }
 
     /**
@@ -88,7 +99,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         blocks.removeAll(GUIBlocks);
         for (GUIBlock block:GUIBlocks) {
-            controller.deleteFromPA(block);
+            programController.deleteFromPA(block);
         }
     }
 

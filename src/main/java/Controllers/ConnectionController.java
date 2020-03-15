@@ -11,22 +11,22 @@ import System.Logic.ProgramArea.PABlockHandler;
 public class ConnectionController {
 
     private final GUItoSystemInterface converter;
-    private final PABlockHandler handler;
+    private final PABlockHandler blockHandler;
 
-    public ConnectionController(GUItoSystemInterface converter, PABlockHandler handler) {
+    public ConnectionController(GUItoSystemInterface converter, PABlockHandler blockHandler) {
         this.converter = converter;
-        this.handler = handler;
+        this.blockHandler = blockHandler;
     }
 
     public void connectBlocks(GUIBlock withMain, GUIBlock withSub, String connectionID) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
         SubConnector subConnector = converter.getSubConnectorFromGUIBlockWithID(withSub, connectionID);
-        handler.connectToExistingBlock(mainBlock, subConnector);
+        blockHandler.connectToExistingBlock(mainBlock, subConnector);
     }
 
     public void disconnectBlock(GUIBlock withMain) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
-        handler.disconnectInPA(mainBlock);
+        blockHandler.disconnectInPA(mainBlock);
     }
 
     public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, String connectionID) {
