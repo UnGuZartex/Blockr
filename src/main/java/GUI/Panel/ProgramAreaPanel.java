@@ -10,7 +10,6 @@ import java.util.List;
 public class ProgramAreaPanel extends GamePanel {
 
     private List<GUIBlock> blocks = new ArrayList<>();
-
     private ProgramController controller;
 
     public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
@@ -47,6 +46,12 @@ public class ProgramAreaPanel extends GamePanel {
         blocks.addAll(highestLayerBlocks);
     }
 
+    public void drawBlocks(Graphics g) {
+        for (GUIBlock block : blocks) {
+            block.paint(g);
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
@@ -56,11 +61,5 @@ public class ProgramAreaPanel extends GamePanel {
     protected void drawBackground(Graphics g) {
         g.drawImage(library.getProgramAreaBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
         panelRectangle.paintNonFill(g);
-    }
-
-    public void drawBlocks(Graphics g) {
-        for (GUIBlock block : blocks) {
-            block.paint(g);
-        }
     }
 }

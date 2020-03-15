@@ -14,7 +14,6 @@ public class ProgramController {
     private final GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
     private final ConnectionController controller = new ConnectionController(converter, blockHandler);
 
-
     public void addBlockToPA(GUIBlock block) {
         Block toAdd = converter.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
@@ -33,8 +32,6 @@ public class ProgramController {
         blockHandler.deleteProgram(toDelete);
     }
 
-
-
     public boolean reachedMaxBlocks() {
         return blockHandler.hasReachedMaxBlocks();
     }
@@ -48,7 +45,6 @@ public class ProgramController {
         return null;
     }
 
-
     public GUIBlock getBlock(String ID, int x, int y) {
         if (!reachedMaxBlocks()) {
             return converter.createNewGUIBlock(ID, x, y);
@@ -61,8 +57,8 @@ public class ProgramController {
         if (program != null) {
             program.resetProgram();
         }
-        loadLevel();
 
+        loader.resetLevel();
     }
 
     public void runProgramStep() {
@@ -71,11 +67,6 @@ public class ProgramController {
             program.executeStep();
         }
     }
-
-    public void loadLevel() {
-        loader.loadLevel();
-    }
-
 
     public ConnectionController getController() {
         return controller;

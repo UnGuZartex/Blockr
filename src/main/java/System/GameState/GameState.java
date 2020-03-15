@@ -16,7 +16,7 @@ public class GameState {
     /**
      * Variable referring to the maximum amount of blocks which may be used.
      */
-    private static int maxAmountOfBlocks = 30;
+    private static int maxAmountOfBlocks = 10;
 
     /**
      * Get the current level in the game.

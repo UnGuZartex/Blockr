@@ -135,4 +135,13 @@ public class Level {
             return null;
         }
     }
+
+    /**
+     * Reset the level to its original state
+     *
+     * @effect The robot is reset to its original state
+     */
+    public void reset() {
+        robot.reset();
+    }
 }

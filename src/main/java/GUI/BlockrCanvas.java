@@ -89,6 +89,7 @@ public class BlockrCanvas extends CanvasWindow {
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
             programController.resetProgram();
+            gameWorldPanel.resetGameText();
         }
 
         repaint();

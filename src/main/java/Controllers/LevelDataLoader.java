@@ -14,6 +14,7 @@ public class LevelDataLoader {
     }
 
     public Direction getRobotDirection() {
+        System.err.println("ROBOT POINTER: " + GameState.getCurrentLevel().getRobot());
         return GameState.getCurrentLevel().getRobot().getDirection();
     }
 
@@ -23,5 +24,9 @@ public class LevelDataLoader {
 
     public Cell[][] getGridCells() {
         return GameState.getCurrentLevel().getGrid().getCells();
+    }
+
+    public void subscribe(RobotListener listener) {
+        GameState.getCurrentLevel().getRobot().subscribe(listener);
     }
 }

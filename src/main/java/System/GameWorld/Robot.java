@@ -1,5 +1,9 @@
 package System.GameWorld;
 
+import Controllers.RobotListener;
+import Controllers.RobotObserver;
+import Utility.Position;
+
 /**
  * A class representing a robot. This has coordinates and a direction.
  *
@@ -14,14 +18,37 @@ public class Robot {
      * Variable referring to the x coordinate of this robot.
      */
     private int x;
+
     /**
      * Variable referring to the y coordinate of this robot.
      */
     private int y;
+
+    /**
+     * Variable referring to the original x coordinate of this robot.
+     */
+    private int xStart;
+
+    /**
+     * Variable referring to the original y coordinate of this robot.
+     */
+    private int yStart;
+
     /**
      * Variable referring to the direction of this robot.
      */
     private Direction direction;
+
+    /**
+     * Variable referring to the original direction of this robot.
+     */
+    private Direction directionStart;
+
+    /**
+     * Variabele referring to the observer of this class.
+     * This observer will notify listeners about the events of the robot.
+     */
+    private RobotObserver observer;
 
     /**
      * Initialise a new robot with given x and y coordinates, as
@@ -37,11 +64,44 @@ public class Robot {
      * @post The x coordinate of this robot is set to the given x coordinate.
      * @post The y coordinate of this robot is set to the given y coordinate.
      * @post The direction of this robot is set to the given direction.
+     * @post The original x coordinate of this robot is set to the given x coordinate.
+     * @post The original y coordinate of this robot is set to the given y coordinate.
+     * @post The original direction of this robot is set to the given direction.
+     * @Post The observer of this robot is created
      */
     public Robot(int x, int y, Direction direction) {
+
         this.x = x;
         this.y = y;
         this.direction = direction;
+
+        xStart = x;
+        yStart = y;
+        directionStart = direction;
+
+        observer = new RobotObserver();
+    }
+
+    /**
+     * Unsubscribe a given robot listener from the robot observer
+     *
+     * @param listener The given listener
+     *
+     * @effect the given listener is subscribed to the robot observer
+     */
+    public void subscribe(RobotListener listener) {
+        observer.subscribe(listener);
+    }
+
+    /**
+     * Subscribe a given robot listener to the robot observer
+     *
+     * @param listener The given listener
+     *
+     * @effect the given listener is unsubscribed from the robot observer
+     */
+    public void unsubscribe(RobotListener listener) {
+        observer.unsubscribe(listener);
     }
 
     /**
@@ -117,6 +177,8 @@ public class Robot {
      *
      * @post The coordinates of this robot are moved forward if this
      *       is still a proper position for this robot.
+     *
+     * @effect The observer notifies its listeners about the robots new position.
      */
     public void moveForward() {
         int x = getXForward();
@@ -125,23 +187,49 @@ public class Robot {
             this.x = x;
             this.y = y;
         }
+
+        observer.notifyRobotMoved(new Position(x, y));
     }
 
     /**
      * Turn this robot to the left from its current Direction.
      *
      * @post The direction of this robot is turned to the left.
+     *
+     * @effect The observer notifies its listeners about the robots new direction
      */
     public void turnLeft() {
         direction = direction.turnLeft();
+        observer.notifyRobotChangedDirection(direction);
     }
 
     /**
      * Turn this robot to the right from its current Direction.
      *
-     * @post The direction of this robot is turned to the rigth.
+     * @post The direction of this robot is turned to the right.
+     *
+     * @effect The observer notifies its listeners about the robots new direction.
      */
     public void turnRight() {
         direction = direction.turnRight();
+        observer.notifyRobotChangedDirection(direction);
+    }
+
+    /**
+     * Reset the robot to its original state.
+     *
+     * @post The direction of this robot is reset to its original value.
+     * @post The position of this robot is reset to its original value.
+     *
+     * @effect The observer notifies its listeners about the robots new position.
+     * @effect The observer notifies its listeners about the robots new direction.
+     */
+    public void reset() {
+        x = xStart;
+        y = yStart;
+        direction = directionStart;
+
+        observer.notifyRobotMoved(new Position(x, y));
+        observer.notifyRobotChangedDirection(direction);
     }
 }
