@@ -59,7 +59,7 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
 
     @Override
     public void onTooManyPrograms() {
-        gameState = "TOO MANY PROGRAMS IN PA!";
+        gameState = "TOO MANY PROGRAMS!";
     }
 
     @Override

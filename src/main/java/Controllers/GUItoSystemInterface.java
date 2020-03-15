@@ -45,14 +45,13 @@ public class GUItoSystemInterface {
 
     public GUIBlock getGUIBlockFromBlock(Block block) {
 
-        List<GUIBlock> keys = new ArrayList<>();
         for (Map.Entry<GUIBlock, Block> entry : conversionTable.entrySet()) {
             if (Objects.equals(block, entry.getValue())) {
-                keys.add(entry.getKey());
+                return entry.getKey();
             }
         }
 
-        return keys.get(0);
+        return null;
     }
 
     public SubConnector getSubConnectorFromGUIBlockWithID(GUIBlock block, String ID) {
