@@ -353,4 +353,13 @@ public abstract class GUIBlock {
         }
         return null;
     }
+
+    /**
+     * Get the color of this block.
+     *
+     * @return The color of the rectangles of this block.
+     */
+    public Color getColor() {
+        return blockRectangles.get(0).getColor();
+    }
 }

@@ -20,7 +20,7 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the game state.
      */
-    private String gameState = "";
+    protected String gameState = "";
 
     /**
      * Initialise a new game world panel with given corner, dimension and controller.

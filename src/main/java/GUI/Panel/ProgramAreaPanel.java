@@ -51,7 +51,9 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param block The block to add to the program area.
      */
     public void addBlockToProgramArea(GUIBlock block) {
-        blocks.add(block);
+        if (!blocks.contains(block)) {
+            blocks.add(block);
+        }
     }
 
     /**
