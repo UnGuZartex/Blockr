@@ -21,6 +21,19 @@ public class IfBlock extends CavityBlock {
         super(cavityFunctionality);
     }
 
+    @Override
+    public Block getNext() {
+        if (getFunctionality().getEvaluation()) {
+            setAlreadyRan(true);
+            return getCavitySubConnector().getConnectedBlock();
+        }
+        else if (getCavitySubConnector().isConnected()) {
+            getCavitySubConnector().getConnectedBlock().reset();
+        }
+        setAlreadyRan(true);
+        return super.getNext();
+    }
+
     /**
      * Returns the next block if any other block didn't have a next block to run.
      *
@@ -29,12 +42,12 @@ public class IfBlock extends CavityBlock {
      */
     @Override
     public Block getNextIfNone() {
+
         if (hasAlreadyRan()) {
             return super.getNextIfNone();
         }
+
         setAlreadyRan(true);
         return getSubConnectorAt(0).getConnectedBlock();
     }
-
-
 }

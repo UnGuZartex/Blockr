@@ -79,6 +79,7 @@ public class FunctionalBlock extends Block {
         if (!mainConnector.isConnected()) {
             return this;
         }
+
         return mainConnector.getConnectedBlock().getNextIfNone();
     }
 }
