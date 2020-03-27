@@ -1,7 +1,5 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Blocks.Factory.IfBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +14,10 @@ class StatementBlockTest {
 
     @BeforeEach
     void setUp() {
-        WallInFrontBlockFactory factory = new WallInFrontBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
+        block1 = new WallInFrontBlock();
+        block2 = new WallInFrontBlock();
 
-        IfBlockFactory factory2 = new IfBlockFactory();
-        cavoc = factory2.createBlock();
+        cavoc = new IfBlock();
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(block1, cavoc.getConditionalSubConnector());
     }
@@ -51,11 +47,11 @@ class StatementBlockTest {
         assertEquals(block2.getMainConnector(), block2.mainConnector);
     }
 
-    @Test
-    void returnToClosestCavity() {
-        assertNull(block1.getNextIfNone());
-        assertNull(block2.getNextIfNone());
-    }
+//    @Test
+//    void returnToClosestCavity() {
+//        assertNull(block1.getNextIfNone());
+//        assertNull(block2.getNextIfNone());
+//    }
 
     @Test
     void getSubConnectorAt() {
@@ -69,26 +65,26 @@ class StatementBlockTest {
         assertEquals(0, block2.getNbSubConnectors());
     }
 
-    @Test
-    void setAlreadyRan() {
-        assertFalse(block1.hasAlreadyRan());
-        block1.setAlreadyRan(true); // false -> true
-        assertTrue(block1.hasAlreadyRan());
-        block1.setAlreadyRan(true); // true -> true
-        assertTrue(block1.hasAlreadyRan());
-        block1.setAlreadyRan(false); // true -> false
-        assertFalse(block1.hasAlreadyRan());
-        block1.setAlreadyRan(false); // false -> false
-        assertFalse(block1.hasAlreadyRan());
-    }
+//    @Test
+//    void setAlreadyRan() {
+//        assertFalse(block1.hasAlreadyRan());
+//        block1.setAlreadyRan(true); // false -> true
+//        assertTrue(block1.hasAlreadyRan());
+//        block1.setAlreadyRan(true); // true -> true
+//        assertTrue(block1.hasAlreadyRan());
+//        block1.setAlreadyRan(false); // true -> false
+//        assertFalse(block1.hasAlreadyRan());
+//        block1.setAlreadyRan(false); // false -> false
+//        assertFalse(block1.hasAlreadyRan());
+//    }
 
-    @Test
-    void reset() {
-        block1.setAlreadyRan(true);
-        assertTrue(block1.hasAlreadyRan());
-        block1.reset();
-        assertFalse(block1.hasAlreadyRan());
-    }
+//    @Test
+//    void reset() {
+//        block1.setAlreadyRan(true);
+//        assertTrue(block1.hasAlreadyRan());
+//        block1.reset();
+//        assertFalse(block1.hasAlreadyRan());
+//    }
 
     @Test
     void hasProperConnections() {

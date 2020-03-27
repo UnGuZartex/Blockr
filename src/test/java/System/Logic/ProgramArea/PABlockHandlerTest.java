@@ -1,8 +1,8 @@
 package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
 import System.BlockStructure.Blocks.IfBlock;
+import System.BlockStructure.Blocks.MoveForwardBlock;
 import System.GameState.GameState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,32 +34,32 @@ class PABlockHandlerTest {
     @Test
     void getFromPalette() {
         assertTrue(handler.getFromPalette("IF") instanceof IfBlock);
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
+        handler.addToPA(new MoveForwardBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertNull(handler.getFromPalette("IF"));
     }
 
     @Test
     void addToPA() {
         assertEquals(0, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertEquals(1, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertEquals(2, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertEquals(3, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertEquals(3, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
     }
 
     @Test
     void connectToExistingBlock() {
         assertEquals(0, handler.getPA().getAllBlocksCount());
-        Block block1 = (new MoveForwardBlockFactory()).createBlock();
-        Block block2 = (new MoveForwardBlockFactory()).createBlock();
-        Block block3 = (new MoveForwardBlockFactory()).createBlock();
+        Block block1 = new MoveForwardBlock();
+        Block block2 = new MoveForwardBlock();
+        Block block3 = new MoveForwardBlock();
         handler.addToPA(block1);
         assertEquals(1, handler.getPA().getAllBlocksCount());
         handler.connectToExistingBlock(block2, block1.getSubConnectorAt(0));
@@ -71,9 +71,9 @@ class PABlockHandlerTest {
     @Test
     void disconnectInPA() {
         assertEquals(0, handler.getPA().getAllBlocksCount());
-        Block block1 = (new MoveForwardBlockFactory()).createBlock();
-        Block block2 = (new MoveForwardBlockFactory()).createBlock();
-        Block block3 = (new MoveForwardBlockFactory()).createBlock();
+        Block block1 = new MoveForwardBlock();
+        Block block2 = new MoveForwardBlock();
+        Block block3 = new MoveForwardBlock();
         handler.addToPA(block1);
         handler.connectToExistingBlock(block2, block1.getSubConnectorAt(0));
         handler.connectToExistingBlock(block3, block2.getSubConnectorAt(0));
@@ -88,11 +88,11 @@ class PABlockHandlerTest {
 
     @Test
     void deleteProgram() {
-        Block block = (new MoveForwardBlockFactory()).createBlock();
+        Block block = new MoveForwardBlock();
         assertEquals(0, handler.getPA().getAllBlocksCount());
         handler.addToPA(block);
         assertEquals(1, handler.getPA().getAllBlocksCount());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertEquals(2, handler.getPA().getAllBlocksCount());
         handler.deleteProgram(block);
     }
@@ -100,12 +100,12 @@ class PABlockHandlerTest {
     @Test
     void hasReachedMaxBlocks() {
         assertFalse(handler.hasReachedMaxBlocks());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertFalse(handler.hasReachedMaxBlocks());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertFalse(handler.hasReachedMaxBlocks());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
         assertTrue(handler.hasReachedMaxBlocks());
-        handler.addToPA((new MoveForwardBlockFactory()).createBlock());
+        handler.addToPA(new MoveForwardBlock());
     }
 }

@@ -62,13 +62,7 @@ public class Program {
 
         if (!isFinished()) {
             currentBlock.getFunctionality().evaluate(GameState.getCurrentLevel());
-            currentBlock.setAlreadyRan(true);
-
-            if (!currentBlock.hasNext()) {
-                currentBlock = currentBlock.getNextIfNone();
-            } else {
-                currentBlock = currentBlock.getNext();
-            }
+            currentBlock = currentBlock.getNext();
         }
     }
 
@@ -80,7 +74,7 @@ public class Program {
      *         has already run.
      */
     public boolean isFinished() {
-        return currentBlock == startBlock && currentBlock.hasAlreadyRan();
+        return currentBlock == null;
     }
 
     /**

@@ -1,7 +1,7 @@
 package System.BlockStructure.Functionality;
 
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.BlockStructure.Blocks.StatementBlock;
+import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
@@ -35,9 +35,9 @@ class WallInFrontFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        WallInFrontBlockFactory factory = new WallInFrontBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
+        block1 = new WallInFrontBlock();
+        block2 = new WallInFrontBlock();
+
         functionality = (WallInFrontFunctionality) block1.getFunctionality();
 
         /* Simple field has only one cell */

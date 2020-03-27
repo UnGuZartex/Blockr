@@ -14,6 +14,11 @@ import java.util.List;
 public abstract class Block {
 
     /**
+     * Variable referring to the last cavity visited
+     */
+    private Block returnToBlock;
+
+    /**
      * Variable referring to the functionality of this block.
      */
     private final BlockFunctionality functionality;
@@ -22,10 +27,6 @@ public abstract class Block {
      */
     private final List<SubConnector> subConnector = new ArrayList<>();
     /**
-    /**
-     * Variable referring to whether or not this block has already ran.
-     */
-    private boolean alreadyRan = false;
 
     /**
      * Initialise a new block with given functionality
@@ -76,14 +77,6 @@ public abstract class Block {
         return subConnector.size();
     }
 
-    /**
-     * Check whether or not this block has already ran.
-     *
-     * @return True if and only if this block has already ran.
-     */
-    public boolean hasAlreadyRan() {
-        return alreadyRan;
-    }
 
     /**
      * Get the main connector of this block.
@@ -91,6 +84,7 @@ public abstract class Block {
      * @return The main connector of this block.
      */
     public abstract MainConnector getMainConnector();
+
 
     /**
      * Check whether or not this block has a next block.
@@ -107,22 +101,6 @@ public abstract class Block {
     public abstract Block getNext();
 
     /**
-     * Get the next block to execute if there are none left.
-     *
-     * @return The block which could be executed next.
-     */
-    public abstract Block getNextIfNone();
-
-    /**
-     * Set whether or not this block has already ran.
-     *
-     * @param alreadyRan The new value of already ran.
-     */
-    public void setAlreadyRan(boolean alreadyRan) {
-        this.alreadyRan = alreadyRan;
-    }
-
-    /**
      * Reset this block and all its connected blocks.
      *
      * @post The already ran variable of this block is set to false
@@ -130,7 +108,7 @@ public abstract class Block {
      *       reset.
      */
     public void reset() {
-        alreadyRan = false;
+        setReturnToBlock(null);
         for(int i = 0; i < getSubConnectors().size(); i++) {
             if (getSubConnectors().get(i).isConnected()) {
                 Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
@@ -163,5 +141,14 @@ public abstract class Block {
             }
         }
         throw new IllegalStateException("This connection ID cannot exist for this block");
+    }
+
+
+    protected Block getReturnToBlock() {
+        return returnToBlock;
+    }
+
+    protected void setReturnToBlock(Block returnToBlock) {
+        this.returnToBlock = returnToBlock;
     }
 }

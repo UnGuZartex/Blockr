@@ -1,9 +1,8 @@
 package System.BlockStructure.Functionality;
 
 import System.BlockStructure.Blocks.ConditionalBlock;
-import System.BlockStructure.Blocks.Factory.IfBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.BlockStructure.Blocks.IfBlock;
+import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
@@ -34,14 +33,12 @@ class CavityFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        IfBlockFactory ifFactory = new IfBlockFactory();
-        if1 = ifFactory.createBlock();
-        if2 = ifFactory.createBlock();
+        if1 = new IfBlock();
+        if2 = new IfBlock();
         ifFunc = new CavityFunctionality();
-        block = ifFactory.createBlock();
+        block = new IfBlock();
 
-        WallInFrontBlockFactory condFactory = new WallInFrontBlockFactory();
-        cond1 = condFactory.createBlock();
+        cond1 = new WallInFrontBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());

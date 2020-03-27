@@ -1,8 +1,5 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Blocks.Factory.IfBlockFactory;
-import System.BlockStructure.Blocks.Factory.NotBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,19 +15,16 @@ class OperationalBlockTest {
 
     @BeforeEach
     void setUp() {
-        NotBlockFactory factory = new NotBlockFactory();
-        not1 = factory.createBlock();
-        not2 = factory.createBlock();
-        not3 = factory.createBlock();
-        not4 = factory.createBlock();
+        not1 = new NotBlock();
+        not2 = new NotBlock();
+        not3 = new NotBlock();
+        not4 = new NotBlock();
 
-        WallInFrontBlockFactory factory2 = new WallInFrontBlockFactory();
-        wallInFront1 = factory2.createBlock();
-        wallInFront2 = factory2.createBlock();
+        wallInFront1 = new WallInFrontBlock();
+        wallInFront2 = new WallInFrontBlock();
 
-        IfBlockFactory factory3 = new IfBlockFactory();
-        cavoc3 = factory3.createBlock();
-        cavoc2 = factory3.createBlock();
+        cavoc3 = new IfBlock();
+        cavoc2 = new IfBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(wallInFront1, not1.getSubConnectorAt(0));
@@ -79,13 +73,13 @@ class OperationalBlockTest {
         assertEquals(not4.getMainConnector(), not4.mainConnector);
     }
 
-    @Test
-    void returnToClosestCavity() {
-        assertNull(not1.getNextIfNone());
-        assertNull(not2.getNextIfNone());
-        assertNull(not3.getNextIfNone());
-        assertNull(not4.getNextIfNone());
-    }
+//    @Test
+//    void returnToClosestCavity() {
+//        assertNull(not1.getNextIfNone());
+//        assertNull(not2.getNextIfNone());
+//        assertNull(not3.getNextIfNone());
+//        assertNull(not4.getNextIfNone());
+//    }
 
     @Test
     void hasProperConnections() {
@@ -103,24 +97,24 @@ class OperationalBlockTest {
         assertEquals(1, not4.getNbSubConnectors());
     }
 
-    @Test
-    void setAlreadyRan() {
-        assertFalse(not1.hasAlreadyRan());
-        not1.setAlreadyRan(true); // false -> true
-        assertTrue(not1.hasAlreadyRan());
-        not1.setAlreadyRan(true); // true -> true
-        assertTrue(not1.hasAlreadyRan());
-        not1.setAlreadyRan(false); // true -> false
-        assertFalse(not1.hasAlreadyRan());
-        not1.setAlreadyRan(false); // false -> false
-        assertFalse(not1.hasAlreadyRan());
-    }
-
-    @Test
-    void reset() {
-        not1.setAlreadyRan(true);
-        assertTrue(not1.hasAlreadyRan());
-        not1.reset();
-        assertFalse(not1.hasAlreadyRan());
-    }
+//    @Test
+//    void setAlreadyRan() {
+//        assertFalse(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(true); // false -> true
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(true); // true -> true
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(false); // true -> false
+//        assertFalse(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(false); // false -> false
+//        assertFalse(not1.hasAlreadyRan());
+//    }
+//
+//    @Test
+//    void reset() {
+//        not1.setAlreadyRan(true);
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.reset();
+//        assertFalse(not1.hasAlreadyRan());
+//    }
 }

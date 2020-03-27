@@ -65,16 +65,6 @@ public abstract class ConditionalBlock extends Block {
         return mainConnector;
     }
 
-    /**
-     * Return to the closest cavity to execute.
-     *
-     * @return Null cause a conditional block is not contained into
-     *         a cavity block.
-     */
-    @Override
-    public Block getNextIfNone() {
-        return null;
-    }
 
     /**
      * Checks whether or not this conditional block has proper connections.

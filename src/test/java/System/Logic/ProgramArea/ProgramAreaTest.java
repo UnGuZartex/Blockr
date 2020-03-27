@@ -1,7 +1,7 @@
 package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
+import System.BlockStructure.Blocks.MoveForwardBlock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +19,9 @@ class ProgramAreaTest {
         pa1 = new ProgramArea();
         pa2 = new ProgramArea();
 
-        MoveForwardBlockFactory mfFactory = new MoveForwardBlockFactory();
-        start1 = mfFactory.createBlock();
-        start2a = mfFactory.createBlock();
-        start2b = mfFactory.createBlock();
+        start1 = new MoveForwardBlock();
+        start2a = new MoveForwardBlock();
+        start2b =new MoveForwardBlock();
 
         pa1.addProgram(start1);
         pa2.addProgram(start2a);
@@ -50,7 +49,7 @@ class ProgramAreaTest {
 
     @Test
     void addProgram_ValidProgram() {
-        Block block = (new MoveForwardBlockFactory()).createBlock();
+        Block block = new MoveForwardBlock();
         pa0.addProgram(block); // No error may be thrown
         assertEquals(block, pa0.getProgram().getStartBlock());
     }

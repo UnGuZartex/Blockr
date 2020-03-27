@@ -1,8 +1,5 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
-import System.BlockStructure.Blocks.Factory.WhileBlockFactory;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
@@ -35,31 +32,28 @@ class WhileBlockTest {
 
     @BeforeEach
     void setUp() {
-        WhileBlockFactory whileBlockFactory = new WhileBlockFactory();
-        while1 = whileBlockFactory.createBlock();
-        while2 = whileBlockFactory.createBlock();
-        while3 = whileBlockFactory.createBlock();
-        while4 = whileBlockFactory.createBlock();
-        while5 = whileBlockFactory.createBlock();
-        whileBlock1 = whileBlockFactory.createBlock();
-        innerWhileBlock1 = whileBlockFactory.createBlock();
-        whileBlock2 = whileBlockFactory.createBlock();
-        outerWhileBlock2 = whileBlockFactory.createBlock();
+        while1 = new WhileBlock();
+        while2 = new WhileBlock();
+        while3 = new WhileBlock();
+        while4 = new WhileBlock();
+        while5 = new WhileBlock();
+        whileBlock1 = new WhileBlock();
+        innerWhileBlock1 = new WhileBlock();
+        whileBlock2 =new WhileBlock();
+        outerWhileBlock2 = new WhileBlock();
 
-        MoveForwardBlockFactory funcFactory = new MoveForwardBlockFactory();
-        func1 = funcFactory.createBlock();
-        func11 = funcFactory.createBlock();
-        func2 = funcFactory.createBlock();
-        func3 = funcFactory.createBlock();
-        func1Under = funcFactory.createBlock();
-        func5Under = funcFactory.createBlock();
+        func1 = new MoveForwardBlock();
+        func11 =new MoveForwardBlock();
+        func2 = new MoveForwardBlock();
+        func3 =new MoveForwardBlock();
+        func1Under =new MoveForwardBlock();
+        func5Under = new MoveForwardBlock();
 
-        WallInFrontBlockFactory condFactory = new WallInFrontBlockFactory();
-        cond1 = condFactory.createBlock();
-        cond3 = condFactory.createBlock();
-        cond5 = condFactory.createBlock();
-        condBlock1 = condFactory.createBlock();
-        condBlock2 = condFactory.createBlock();
+        cond1 = new WallInFrontBlock();
+        cond3 = new WallInFrontBlock();
+        cond5 = new WallInFrontBlock();
+        condBlock1 = new WallInFrontBlock();
+        condBlock2 = new WallInFrontBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(while1, func3.getSubConnectorAt(0));
@@ -236,12 +230,12 @@ class WhileBlockTest {
         assertFalse(whileBlock2.hasProperConnections());
     }
 
-    @Test
-    void getNextIfNone() {
-        assertEquals(while1, while1.getNextIfNone());
-        while1.setAlreadyRan(true);
-        assertEquals(func3, while1.getNextIfNone());
-    }
+//    @Test
+//    void getNextIfNone() {
+//        assertEquals(while1, while1.getNextIfNone());
+//        while1.setAlreadyRan(true);
+//        assertEquals(func3, while1.getNextIfNone());
+//    }
 
     @Test
     void getNbSubConnectors() {
@@ -252,54 +246,54 @@ class WhileBlockTest {
         assertEquals(3, while5.getNbSubConnectors());
     }
 
-    @Test
-    void hasAlreadyRan() {
-        assertFalse(while1.hasAlreadyRan());
-        assertFalse(while2.hasAlreadyRan());
-        assertFalse(while3.hasAlreadyRan());
-        assertFalse(while4.hasAlreadyRan());
-        assertFalse(while5.hasAlreadyRan());
-        while1.setAlreadyRan(true);
-        while2.setAlreadyRan(true);
-        while3.setAlreadyRan(false);
-        while4.setAlreadyRan(false);
-        while5.setAlreadyRan(true);
-        assertTrue(while1.hasAlreadyRan());
-        assertTrue(while2.hasAlreadyRan());
-        assertFalse(while3.hasAlreadyRan());
-        assertFalse(while4.hasAlreadyRan());
-        assertTrue(while5.hasAlreadyRan());
-    }
-
-    @Test
-    void setAlreadyRan() {
-        assertFalse(while1.hasAlreadyRan());
-        while1.setAlreadyRan(true); // false -> true
-        assertTrue(while1.hasAlreadyRan());
-        while1.setAlreadyRan(true); // true -> true
-        assertTrue(while1.hasAlreadyRan());
-        while1.setAlreadyRan(false); // true -> false
-        assertFalse(while1.hasAlreadyRan());
-        while1.setAlreadyRan(false); // false -> false
-        assertFalse(while1.hasAlreadyRan());
-    }
-
-    @Test
-    void reset() {
-        while1.setAlreadyRan(true);
-        func1.setAlreadyRan(true);
-        func11.setAlreadyRan(true);
-        func1Under.setAlreadyRan(true);
-        cond1.setAlreadyRan(true);
-        while1.reset();
-        assertFalse(while1.hasAlreadyRan());
-        assertFalse(func1.hasAlreadyRan());
-        assertFalse(func11.hasAlreadyRan());
-        assertFalse(func1Under.hasAlreadyRan());
-        assertFalse(cond1.hasAlreadyRan());
-
-        while4.setAlreadyRan(true);
-        while4.reset();
-        assertFalse(while4.hasAlreadyRan());
-    }
+//    @Test
+//    void hasAlreadyRan() {
+//        assertFalse(while1.hasAlreadyRan());
+//        assertFalse(while2.hasAlreadyRan());
+//        assertFalse(while3.hasAlreadyRan());
+//        assertFalse(while4.hasAlreadyRan());
+//        assertFalse(while5.hasAlreadyRan());
+//        while1.setAlreadyRan(true);
+//        while2.setAlreadyRan(true);
+//        while3.setAlreadyRan(false);
+//        while4.setAlreadyRan(false);
+//        while5.setAlreadyRan(true);
+//        assertTrue(while1.hasAlreadyRan());
+//        assertTrue(while2.hasAlreadyRan());
+//        assertFalse(while3.hasAlreadyRan());
+//        assertFalse(while4.hasAlreadyRan());
+//        assertTrue(while5.hasAlreadyRan());
+//    }
+//
+//    @Test
+//    void setAlreadyRan() {
+//        assertFalse(while1.hasAlreadyRan());
+//        while1.setAlreadyRan(true); // false -> true
+//        assertTrue(while1.hasAlreadyRan());
+//        while1.setAlreadyRan(true); // true -> true
+//        assertTrue(while1.hasAlreadyRan());
+//        while1.setAlreadyRan(false); // true -> false
+//        assertFalse(while1.hasAlreadyRan());
+//        while1.setAlreadyRan(false); // false -> false
+//        assertFalse(while1.hasAlreadyRan());
+//    }
+//
+//    @Test
+//    void reset() {
+//        while1.setAlreadyRan(true);
+//        func1.setAlreadyRan(true);
+//        func11.setAlreadyRan(true);
+//        func1Under.setAlreadyRan(true);
+//        cond1.setAlreadyRan(true);
+//        while1.reset();
+//        assertFalse(while1.hasAlreadyRan());
+//        assertFalse(func1.hasAlreadyRan());
+//        assertFalse(func11.hasAlreadyRan());
+//        assertFalse(func1Under.hasAlreadyRan());
+//        assertFalse(cond1.hasAlreadyRan());
+//
+//        while4.setAlreadyRan(true);
+//        while4.reset();
+//        assertFalse(while4.hasAlreadyRan());
+//    }
 }

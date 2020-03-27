@@ -6,6 +6,7 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
 
+
 /**
  * A class for functional blocks. These are the most common blocks.
  *
@@ -55,7 +56,12 @@ public class FunctionalBlock extends Block {
      */
     @Override
     public Block getNext() {
-        return getSubConnectors().get(0).getConnectedBlock();
+        if (hasNext()) {
+            Block nextBlock = getSubConnectors().get(0).getConnectedBlock();
+            nextBlock.setReturnToBlock(this.getReturnToBlock());
+            return nextBlock;
+        }
+        return getReturnToBlock();
     }
 
     /**
@@ -66,20 +72,5 @@ public class FunctionalBlock extends Block {
     @Override
     public MainConnector getMainConnector() {
         return mainConnector;
-    }
-
-    /**
-     * Returns the next executable block if the next block would be null
-     *
-     * @return if the block has no upper connection it this block gets returned, otherwise the upper
-     * connection is followed such that the closest cavity can be found.
-     */
-    @Override
-    public Block getNextIfNone() {
-        if (!mainConnector.isConnected()) {
-            return this;
-        }
-
-        return mainConnector.getConnectedBlock().getNextIfNone();
     }
 }

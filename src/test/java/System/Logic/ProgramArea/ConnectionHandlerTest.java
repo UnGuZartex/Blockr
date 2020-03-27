@@ -1,7 +1,7 @@
 package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
+import System.BlockStructure.Blocks.MoveForwardBlock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +18,11 @@ class ConnectionHandlerTest {
     void setUp() {
         handler = new ConnectionHandler();
 
-        MoveForwardBlockFactory factory = new MoveForwardBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
-        block3 = factory.createBlock();
-        block4 = factory.createBlock();
-        block5 = factory.createBlock();
+        block1 = new MoveForwardBlock();
+        block2 = new MoveForwardBlock();
+        block3 = new MoveForwardBlock();
+        block4 = new MoveForwardBlock();
+        block5 = new MoveForwardBlock();
     }
 
     @AfterEach

@@ -121,4 +121,30 @@ public abstract class CavityBlock extends FunctionalBlock {
         // All connected blocks are valid
         return true;
     }
+
+    /**
+     * Get the next block to execute, this depends on the evaluation of the condition of this block.
+     * If the condition is true, the next block is the first in the cavity, otherwise, the next block
+     * is the first block under the while.
+     *
+     * @return The next block to execute
+     */
+    @Override
+    public Block getNext() {
+        if (getFunctionality().getEvaluation()) {
+            if (hasNext()) {
+                Block nextBlock = getCavitySubConnector().getConnectedBlock();
+                nextBlock.setReturnToBlock(getNewReturnBlock());
+                return nextBlock;
+            }
+            return getNewReturnBlock();
+        }
+//        else if (getCavitySubConnector().isConnected()) {
+//            getCavitySubConnector().getConnectedBlock().reset();
+//        }
+
+        return super.getNext();
+    }
+
+    protected abstract Block getNewReturnBlock();
 }

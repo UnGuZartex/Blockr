@@ -1,8 +1,7 @@
 package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.BlockFactory;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
+import System.BlockStructure.Blocks.MoveForwardBlock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,9 +82,8 @@ class SubConnectorTest {
     
     @Test
     void getOrientation() {
-        BlockFactory factory = new MoveForwardBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
+        block1 = new MoveForwardBlock();
+        block2 = new MoveForwardBlock();
 
         assertEquals(Orientation.FACING_UP, plugUp.getOrientation());
         assertEquals(Orientation.FACING_DOWN, plugDown.getOrientation());
