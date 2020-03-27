@@ -1,11 +1,6 @@
 package GUI;
 
-
-import Controllers.ConnectionController;
-import Controllers.GUItoSystemInterface;
-import Controllers.ProgramController;
 import System.GameWorld.Level.LevelLoader;
-import System.Logic.ProgramArea.PABlockHandler;
 
 import java.awt.*;
 
