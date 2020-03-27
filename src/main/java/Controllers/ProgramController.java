@@ -32,10 +32,6 @@ public class ProgramController {
         resetProgram();
     }
 
-    public void deleteAsProgram(GUIBlock block) {
-        blockHandler.deleteProgram(converter.getBlockFromGUIBlock(block));
-    }
-
     public boolean reachedMaxBlocks() {
         return blockHandler.hasReachedMaxBlocks();
     }
