@@ -22,6 +22,8 @@ class ProgramAreaPanelTest {
     int cornerX, cornerY, width, height;
     ProgramController controller;
     GUIBlock block;
+    GUItoSystemInterface converter;
+
 
     @BeforeEach
     void setUp() {
@@ -30,14 +32,13 @@ class ProgramAreaPanelTest {
         width = 500;
         height = 800;
         PABlockHandler blockHandler = new PABlockHandler();
-        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        converter = new GUItoSystemInterface(blockHandler);
         controller = new ProgramController(converter, blockHandler);
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();
         panel = new ProgramAreaPanel(cornerX, cornerY, width, height, controller, connectionController);
-        GUIFactory f = new MoveForwardGUIFactory();
-        block = f.createBlock("id", 0, 0);
+        block = converter.createNewGUIBlock("MOVE FORWARD", 0,0 );
         panel.addBlockToProgramArea(block);
     }
 
@@ -51,8 +52,7 @@ class ProgramAreaPanelTest {
     @Test
     void addBlockToProgramArea() {
         assertTrue(panel.getBlocks().contains(block));
-        GUIFactory f = new MoveForwardGUIFactory();
-        GUIBlock block2 = f.createBlock("id", 0, 0);
+        GUIBlock block2 = converter.createNewGUIBlock("MOVE FORWARD", 0, 0);
         assertFalse(panel.getBlocks().contains(block2));
         panel.addBlockToProgramArea(block2);
         assertTrue(panel.getBlocks().contains(block2));
