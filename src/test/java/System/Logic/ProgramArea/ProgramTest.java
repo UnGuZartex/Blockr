@@ -102,9 +102,9 @@ class ProgramTest {
         validProgram.executeStep();
         assertEquals(moveForwardComplete, validProgram.getCurrentBlock());
         validProgram.executeStep();
-        assertEquals(null, validProgram.getCurrentBlock());
+        assertNull(validProgram.getCurrentBlock());
         validProgram.executeStep();
-        assertEquals(null, validProgram.getCurrentBlock());
+        assertNull(validProgram.getCurrentBlock());
     }
 
 //    @Test
