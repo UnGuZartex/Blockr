@@ -130,14 +130,6 @@ class GUIConditionalBlockTest {
         assertFalse(cond1.intersectsWithConnector(block));
     }
 
-    @Test
-    void getHighest() {
-        assertEquals(cond1, cond1.getHighest());
-        NotGUIFactory nf = new NotGUIFactory();
-        GUIOperatorBlock not = nf.createBlock("0", 0,0);
-        not.subConnectors.get(0).connect(cond1.mainConnector);
-        assertEquals(not, cond1.getHighest());
-    }
 
     @Test
     void disconnectMainConnector() {

@@ -1,5 +1,6 @@
 package System.Logic.ProgramArea;
 
+import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 import System.GameState.GameState;
@@ -87,9 +88,13 @@ public class PABlockHandler {
      * @post The two blocks are connected.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
+        PA.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
+        PA.addHighestAsProgram(block);
         Update();
     }
+
+
 
     /**
      * Disconnect the given block in the program area and update the

@@ -143,9 +143,9 @@ public class ProgramArea {
      * @param blockToDelete The starting block for the program to delete.
      */
     public void deleteProgram(Block blockToDelete) {
-        programs.stream().
-                filter(p -> p.getStartBlock() == blockToDelete).
-                findFirst().ifPresent(toDelete -> programs.remove(toDelete));
+        programs.stream()
+                .filter(p -> p.getStartBlock() == blockToDelete)
+                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
     }
 
     /**
@@ -160,5 +160,24 @@ public class ProgramArea {
             sum += program.getSize();
         }
         return sum;
+    }
+
+    /**
+     * Get the hightest block in the connections.
+     *
+     * @return This block if no block is higher, else the highest
+     *         block of the block connected to the main connector.
+     */
+    public Block getHighestBlock(Block block) {
+        if (block.getMainConnector().isConnected()) {
+            return getHighestBlock(block.getMainConnector().getConnectedBlock());
+        }
+        else {
+            return block;
+        }
+    }
+
+    public void addHighestAsProgram(Block block) {
+        addProgram(getHighestBlock(block));
     }
 }

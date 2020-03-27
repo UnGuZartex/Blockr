@@ -135,12 +135,7 @@ public class GUIBlockHandler {
 
         Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
 
-        if (connectedBlock.isEmpty()) {
-            programArea.addBlockToProgramAreaControllerCall(draggedBlock);
-        }
-        else {
-            draggedBlock.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
-        }
+        connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
     /**
@@ -148,21 +143,17 @@ public class GUIBlockHandler {
      */
     private void handleBlockFromProgramAreaToProgramArea() {
 
-        boolean connectionFound = false;
         programArea.disconnectInProgramArea(draggedBlock);
         draggedBlock.disconnectMainConnector();
+        programArea.addBlockToProgramArea(draggedBlock);
 
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
 
             if (connectedBlock.isPresent()) {
-                block.connectWithStaticBlock(connectedBlock.get(), programArea.getProgramController(), programArea.getConnectionController());
-                connectionFound = true;
+                block.connectWithStaticBlock(connectedBlock.get(), programArea.getConnectionController());
                 break;
             }
-        }
-        if (!connectionFound) {
-            programArea.addBlockToProgramAreaControllerCall(draggedBlocks.get(0));
         }
     }
 
