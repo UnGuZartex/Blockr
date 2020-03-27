@@ -81,7 +81,6 @@ public class SubConnector extends Connector {
     protected void disconnect() throws IllegalStateException {
 
         if (connectedConnector.isConnected()) {
-            System.out.println("Reached");
             throw new IllegalStateException("This sub connector is not connected!");
         }
 

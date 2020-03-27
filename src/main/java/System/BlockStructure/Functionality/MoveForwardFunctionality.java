@@ -19,7 +19,6 @@ public class MoveForwardFunctionality extends BlockFunctionality {
     @Override
     public void evaluate(Level level) {
         if (level.canMoveForward()) {
-            System.out.println("Executed move forward functionality.");
             level.getRobot().moveForward();
         }
     }

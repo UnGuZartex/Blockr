@@ -22,6 +22,9 @@ public class IfBlock extends CavityBlock {
 
     @Override
     protected Block getNewReturnBlock() {
-        return getSubConnectorAt(0).getConnectedBlock();
+        if (getSubConnectorAt(0).isConnected()) {
+            return getSubConnectorAt(0).getConnectedBlock();
+        }
+        return getReturnToBlock();
     }
 }

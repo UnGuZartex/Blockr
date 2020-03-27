@@ -184,7 +184,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      */
     @Override
     public void onProgramReset() {
-        System.err.println("OKE");
         changeBlockColors(Color.white);
     }
 

@@ -134,7 +134,6 @@ public abstract class Block {
      * @return The connector in the block with this given ID.
      */
     public SubConnector getSubConnectorWithID(String ID) {
-        System.out.println(ID);
         for (SubConnector connector:subConnector) {
             if (connector.getID().equals(ID)) {
                 return connector;

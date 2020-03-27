@@ -93,7 +93,6 @@ public class ProgramArea {
                 }
             }
             else {
-                System.err.println("NOT VALID");
                 observer.notifyProgramInvalid();
             }
         }
