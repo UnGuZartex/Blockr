@@ -76,8 +76,8 @@ class ProgramTest {
     void executeStep_ProgramFinished() {
         validProgram.executeStep();
         validProgram.executeStep();
-        validProgram.executeStep();
         assertTrue(validProgram.isFinished());
+        validProgram.executeStep();
     }
 
     @Test
@@ -102,9 +102,9 @@ class ProgramTest {
         validProgram.executeStep();
         assertEquals(moveForwardComplete, validProgram.getCurrentBlock());
         validProgram.executeStep();
-        assertEquals(turnLeftComplete, validProgram.getCurrentBlock());
+        assertEquals(null, validProgram.getCurrentBlock());
         validProgram.executeStep();
-        assertEquals(turnLeftComplete, validProgram.getCurrentBlock());
+        assertEquals(null, validProgram.getCurrentBlock());
     }
 
 //    @Test

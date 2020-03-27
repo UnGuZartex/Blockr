@@ -210,13 +210,13 @@ class WhileBlockTest {
         assertNull(while2.getNext());
 
         while3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertNull(while3.getNext());
+        assertEquals(while3, while3.getNext());
 
         while4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertNull(while4.getNext());
 
         while5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertNull(while5.getNext());
+        assertEquals(while5, while5.getNext());
     }
 
     @Test

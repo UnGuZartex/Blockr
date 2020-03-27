@@ -200,7 +200,7 @@ class IfBlockTest {
         assertNull(if4.getNext());
 
         if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertNull(if5.getNext());
+        assertEquals(func5Under, if5.getNext());
     }
 
     @Test

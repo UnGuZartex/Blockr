@@ -52,6 +52,6 @@ public class PaletteState {
                 default:  throw new IllegalArgumentException("Invalid ID, choose between: " + allBlocksFactory.keySet());
             }
         }
-        return null;
+        throw new IllegalArgumentException("Invalid ID, choose between: " + allBlocksFactory.keySet());
     }
 }
