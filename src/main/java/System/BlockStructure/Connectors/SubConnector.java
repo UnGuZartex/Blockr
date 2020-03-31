@@ -10,32 +10,17 @@ import System.BlockStructure.Blocks.Block;
  */
 public class SubConnector extends Connector {
 
-
-    private final String id;
     /**
      * Initialise a new sub connector with given block, orientation and type.
      *
-     * @param ID The id of the block
      * @param block The block to which this connector belongs.
      * @param orientation The orientation of this connector.
      * @param type The type of this connector.
      *
      * @effect calls the super constructor with given block, orientation and type.
-     *
-     * @post the id of this subconnector is set to the given id.
      */
-    public SubConnector(String ID, Block block, Orientation orientation, Type type) {
+    public SubConnector(Block block, Orientation orientation, Type type) {
         super(block, orientation, type);
-        this.id = ID;
-    }
-
-    /**
-     * Get the id of this sub connector.
-     *
-     * @return The id of this sub connector.
-     */
-    public String getID() {
-        return id;
     }
 
     /**

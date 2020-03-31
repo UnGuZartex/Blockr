@@ -1,10 +1,9 @@
 package System.Logic.ProgramArea;
 
-import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 import System.GameState.GameState;
-import System.Logic.Palette.PaletteState;
+import System.Logic.Palette.Palette;
 
 /**
  * A class to handle the blocks in the program area.
@@ -19,7 +18,7 @@ public class PABlockHandler {
     /**
      * Variable referring to the palette state in this program area block handler.
      */
-    private PaletteState palette = new PaletteState();
+    private Palette palette = new Palette();
     /**
      * Variable referring to the program area in this program area block handler.
      */
@@ -44,17 +43,17 @@ public class PABlockHandler {
     }
 
     /**
-     * Get the block with given ID from the palette.
+     * Get the block at the given index from the palette.
      *
-     * @param ID The ID of the block to get.
+     * @param index The index of the wanted block in the palette
      *
      * @return A block from the palette with given ID if the max
      *         number of blocks has not been reached yet, otherwise
-     *         is null returned.
+     *         return null.
      */
-    public Block getFromPalette(String ID) {
+    public Block getFromPalette(int index) {
         if (!hasReachedMaxBlocks()) {
-            return palette.getNewBlockWithID(ID);
+            return palette.getNewBlock(index);
         } else {
             return null;
         }
@@ -87,14 +86,15 @@ public class PABlockHandler {
      *
      * @post The two blocks are connected.
      */
+    /**
+     * TODO EFFECT
+     */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
         PA.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
         PA.addHighestAsProgram(block);
         Update();
     }
-
-
 
     /**
      * Disconnect the given block in the program area and update the

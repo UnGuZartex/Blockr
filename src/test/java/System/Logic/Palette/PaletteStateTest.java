@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PaletteStateTest {
 
-    PaletteState palette;
+    Palette palette;
     Block block;
 
     @BeforeEach
     void setUp() {
-        palette = new PaletteState();
+        palette = new Palette();
     }
 
     @AfterEach

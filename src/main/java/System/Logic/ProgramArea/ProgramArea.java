@@ -162,13 +162,17 @@ public class ProgramArea {
         return sum;
     }
 
+    public void addHighestAsProgram(Block block) {
+        addProgram(getHighestBlock(block));
+    }
+
     /**
-     * Get the hightest block in the connections.
+     * Get the highest block in the connections.
      *
      * @return This block if no block is higher, else the highest
      *         block of the block connected to the main connector.
      */
-    public Block getHighestBlock(Block block) {
+    private Block getHighestBlock(Block block) {
         if (block.getMainConnector().isConnected()) {
             return getHighestBlock(block.getMainConnector().getConnectedBlock());
         }
@@ -177,7 +181,4 @@ public class ProgramArea {
         }
     }
 
-    public void addHighestAsProgram(Block block) {
-        addProgram(getHighestBlock(block));
-    }
 }

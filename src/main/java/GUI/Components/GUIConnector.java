@@ -12,10 +12,6 @@ import java.awt.*;
 public class GUIConnector {
 
     /**
-     * Variable referring to the id of this connector.
-     */
-    private String id;
-    /**
      * Variable referring to the collision circle of this connector.
      */
     private final CollisionCircle collisionCircle;
@@ -33,9 +29,8 @@ public class GUIConnector {
     private static final int DEFAULT_CIRCLE_RADIUS = 10;
 
     /**
-     * Initialise a new GUI connector with given id, parent block, coordinates and color.
+     * Initialise a new GUI connector, parent block, coordinates and color.
      *
-     * @param ID The ID for this GUI block.
      * @param parentBlock The parent block for this GUI connector.
      * @param x The x coordinate for this GUI connector.
      * @param y The y coordinate for this GUI connector.
@@ -44,11 +39,9 @@ public class GUIConnector {
      * @effect The collision circle is set to a new collision circle with the given
      *         coordinates and the default radius and the given color.
      *
-     * @post The ID of this connector is set to the given connector.
      * @post The parent block of this connector is set to the given connector.
      */
-    public GUIConnector(String ID, GUIBlock parentBlock, int x, int y, Color color) {
-        this.id = ID;
+    public GUIConnector(GUIBlock parentBlock, int x, int y, Color color) {
         collisionCircle = new CollisionCircle(x, y, DEFAULT_CIRCLE_RADIUS, color);
         this.parentBlock = parentBlock;
     }
@@ -63,16 +56,7 @@ public class GUIConnector {
     }
 
     /**
-     * Get the ID of this GUI connector.
-     *
-     * @return The id of this GUI connector.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Checks whether or not this GUI connector is connected.
+     * Checks whether this GUI connector is connected.
      *
      * @return True if and only if this GUI connector has a connected connector.
      */

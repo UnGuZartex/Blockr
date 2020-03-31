@@ -7,4 +7,9 @@ public class NotBlock extends OperationalBlock {
     public <B extends OperationalBlock> NotBlock() {
         super(new NotFunctionality(), 1);
     }
+
+    @Override
+    public Block clone() {
+        return new NotBlock();
+    }
 }

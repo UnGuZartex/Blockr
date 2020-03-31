@@ -27,4 +27,9 @@ public class IfBlock extends CavityBlock {
         }
         return getReturnToBlock();
     }
+
+    @Override
+    public Block clone() {
+        return new IfBlock();
+    }
 }

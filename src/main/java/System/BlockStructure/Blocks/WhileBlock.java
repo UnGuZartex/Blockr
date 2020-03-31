@@ -24,4 +24,9 @@ public class WhileBlock extends CavityBlock {
     protected Block getNewReturnBlock() {
         return this;
     }
+
+    @Override
+    public Block clone() {
+        return new WhileBlock();
+    }
 }

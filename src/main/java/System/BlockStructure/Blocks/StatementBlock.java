@@ -21,4 +21,9 @@ public class StatementBlock extends ConditionalBlock {
     public StatementBlock(ConditionalBlockFunctionality<StatementBlock> functionality) {
         super(functionality);
     }
+
+    @Override
+    public Block clone() {
+        return new StatementBlock((ConditionalBlockFunctionality<StatementBlock>) functionality);
+    }
 }

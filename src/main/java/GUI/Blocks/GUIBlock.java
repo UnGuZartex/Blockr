@@ -35,15 +35,14 @@ public abstract class GUIBlock {
      */
     protected List<CollisionRectangle> blockRectangles = new ArrayList<>();
     /**
-     * Variables referring to the name and id of this block.
+     * Variable referring to the id of this block.
      */
-    private final String name, id;
+    protected final String name;
 
     /**
-     * Initialise a new GUI block with given name, id and coordinates.
+     * Initialise a new GUI block with given name and coordinates.
      *
      * @param name The name for this block.
-     * @param id The id for this block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
@@ -51,11 +50,9 @@ public abstract class GUIBlock {
      * @effect The position of this block is set with given coordinates.
      *
      * @post The name of this block is set to the given name.
-     * @post The id of this block is set to the given id.
      */
-    protected GUIBlock(String name, String id, int x, int y) {
+    protected GUIBlock(String name, int x, int y) {
         this.name = name;
-        this.id = id;
         setShapes();
         setPosition(x, y);
     }
@@ -76,15 +73,6 @@ public abstract class GUIBlock {
      */
     public int getY() {
         return y;
-    }
-
-    /**
-     * Get the id of this block.
-     *
-     * @return The id of this block.
-     */
-    public String getId() {
-        return id;
     }
 
     /**
@@ -336,6 +324,18 @@ public abstract class GUIBlock {
     }
 
     /**
+     * Get the color of this block.
+     *
+     * @return The color of the rectangles of this block.
+     */
+    public Color getColor() {
+        return blockRectangles.get(0).getColor();
+    }
+
+    @Override
+    public abstract GUIBlock clone();
+
+    /**
      * Check whether or not the any sub connector collides with the main connector.
      *
      * @param subConnectors The sub connectors to check.
@@ -355,14 +355,5 @@ public abstract class GUIBlock {
             }
         }
         return null;
-    }
-
-    /**
-     * Get the color of this block.
-     *
-     * @return The color of the rectangles of this block.
-     */
-    public Color getColor() {
-        return blockRectangles.get(0).getColor();
     }
 }

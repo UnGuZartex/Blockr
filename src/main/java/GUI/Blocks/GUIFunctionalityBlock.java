@@ -22,17 +22,16 @@ public class GUIFunctionalityBlock extends GUIBlock {
     private GUIConnector lowerSubConnector;
 
     /**
-     * Initialise a new functionality block with given name, id and coordinates
+     * Initialise a new functionality block with given name and coordinates
      *
      * @param name The name for this block.
-     * @param id The id for this block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
      * @effect Calls super constructor with given parameters.
      */
-    public GUIFunctionalityBlock(String name, String id, int x, int y) {
-        super(name, id, x, y);
+    public GUIFunctionalityBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     // TODO doc
@@ -58,7 +57,7 @@ public class GUIFunctionalityBlock extends GUIBlock {
      * Set the shapes of this functional block.
      *
      * @post The height of this block is set to the default height.
-     * @post The width of this block is set  to the default width.
+     * @post The width of this block is set to the default width.
      *
      * @effect A new collision rectangle is added to the rectangles of this block.
      * @effect A new main connector is initialised for this block.
@@ -74,5 +73,10 @@ public class GUIFunctionalityBlock extends GUIBlock {
         mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
         lowerSubConnector = new GUIConnector( "SUB_1", this, width / 2, height, Color.red);
         subConnectors.add(lowerSubConnector);
+    }
+
+    @Override
+    public GUIBlock clone() {
+        return new GUIFunctionalityBlock(name, x, y);
     }
 }

@@ -26,17 +26,16 @@ public class GUICavityBlock extends GUIBlock {
     private GUIConnector cavityConnector, conditionalConnector, lowerSubConnector;
 
     /**
-     * Initialise a new cavity block with given name, id and coordinates.
+     * Initialise a new cavity block with given name and coordinates.
      *
      * @param name The name for this cavity block.
-     * @param id The id for this cavity block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
      * @effect Calls the super constructor with given parameters.
      */
-    public GUICavityBlock(String name, String id, int x, int y) {
-        super(name, id, x, y);
+    public GUICavityBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     /**
@@ -114,13 +113,18 @@ public class GUICavityBlock extends GUIBlock {
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
-        mainConnector = new GUIConnector("MAIN", this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector("CAVITY", this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector("SUB_1",this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
-        conditionalConnector = new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red);
+        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
+        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, Color.red);
         subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
         subConnectors.add(conditionalConnector);
+    }
+
+    @Override
+    public GUIBlock clone() {
+        return new GUICavityBlock(name, x, y);
     }
 
     // TODO doc
