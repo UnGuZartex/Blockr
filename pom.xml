@@ -130,7 +130,13 @@
             <systemPath>${project.basedir}/lib/AnnotationsDoclets.jar</systemPath>
             <scope>system</scope>
         </dependency>
-
+        <dependency>
+            <groupId>SWOP</groupId>
+            <artifactId>GameWorldAPI</artifactId>
+            <version>latest</version>
+            <systemPath>${project.basedir}/lib/GameWorldAPI-latest.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
     </dependencies>
 
 

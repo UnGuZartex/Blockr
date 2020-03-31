@@ -16,22 +16,13 @@ public class Palette {
     /**
      * Variable referring to the blocks in the palette.
      */
-    private final List<Block> paletteBlocks = new ArrayList<>();
+    private final List<Block> paletteBlocks;
 
     /**
-     * Initialise a new palette state
-     *
-     * @effect Add all different kind of factories the hashmap.
+     * TODO descr
      */
-    // TODO LIJST
-    public Palette() {
-        paletteBlocks.add(new IfBlock());
-        paletteBlocks.add(new WhileBlock());
-        paletteBlocks.add(new NotBlock());
-        paletteBlocks.add(new WallInFrontBlock());
-        paletteBlocks.add(new MoveForwardBlock());
-        paletteBlocks.add(new TurnLeftBlock());
-        paletteBlocks.add(new TurnLeftBlock());
+    public Palette (List<Block> paletteBlocks) {
+        this.paletteBlocks = paletteBlocks;
     }
 
     /**

@@ -5,6 +5,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.GameState.GameState;
 import System.Logic.Palette.Palette;
 
+import java.util.List;
+
 /**
  * A class to handle the blocks in the program area.
  *
@@ -18,19 +20,23 @@ public class PABlockHandler {
     /**
      * Variable referring to the palette state in this program area block handler.
      */
-    private Palette palette = new Palette();
+    private final Palette palette;
     /**
      * Variable referring to the program area in this program area block handler.
      */
-    private ProgramArea PA = new ProgramArea();
+    private final ProgramArea PA = new ProgramArea();
     /**
      * Variable referring to the connection handler in this program area block handler.
      */
-    private ConnectionHandler connectionHandler = new ConnectionHandler();
+    private final ConnectionHandler connectionHandler = new ConnectionHandler();
     /**
      * Variable referring to the amount of blocks used in this program area block handler.
      */
     private int amountOfBlocks = 0;
+
+    public PABlockHandler(List<Block> paletteBlocks) {
+        palette = new Palette(paletteBlocks);
+    }
 
     /**
      * Checks whether or not the maximum number of blocks has been reached.
