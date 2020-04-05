@@ -1,7 +1,9 @@
 package System.Logic.ProgramArea;
 
+import GameWorldUtility.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.MoveForwardBlock;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Functionality.ActionFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,9 @@ class ProgramAreaTest {
         pa1 = new ProgramArea();
         pa2 = new ProgramArea();
 
-        start1 = new MoveForwardBlock();
-        start2a = new MoveForwardBlock();
-        start2b =new MoveForwardBlock();
+        start1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        start2a = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        start2b = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
         pa1.addProgram(start1);
         pa2.addProgram(start2a);
@@ -49,7 +51,7 @@ class ProgramAreaTest {
 
     @Test
     void addProgram_ValidProgram() {
-        Block block = new MoveForwardBlock();
+        Block block = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
         pa0.addProgram(block); // No error may be thrown
         assertEquals(block, pa0.getProgram().getStartBlock());
     }

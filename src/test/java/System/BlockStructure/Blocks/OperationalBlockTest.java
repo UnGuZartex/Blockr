@@ -1,5 +1,7 @@
 package System.BlockStructure.Blocks;
 
+import GameWorldUtility.WallInFrontPredicate;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +22,8 @@ class OperationalBlockTest {
         not3 = new NotBlock();
         not4 = new NotBlock();
 
-        wallInFront1 = new WallInFrontBlock();
-        wallInFront2 = new WallInFrontBlock();
+        wallInFront1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        wallInFront2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         cavoc3 = new IfBlock();
         cavoc2 = new IfBlock();

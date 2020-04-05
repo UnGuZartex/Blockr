@@ -1,7 +1,7 @@
 package System.BlockStructure.Blocks;
 
 
-import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 
 /**
  * A class for statement blocks. These are conditional blocks which
@@ -18,12 +18,12 @@ public class StatementBlock extends ConditionalBlock {
      *
      * @effect Calls super constructor with given functionality.
      */
-    public StatementBlock(ConditionalBlockFunctionality<StatementBlock> functionality) {
+    public StatementBlock(PredicateFunctionality functionality) {
         super(functionality);
     }
 
     @Override
     public Block clone() {
-        return new StatementBlock((ConditionalBlockFunctionality<StatementBlock>) functionality);
+        return new StatementBlock((PredicateFunctionality) functionality);
     }
 }

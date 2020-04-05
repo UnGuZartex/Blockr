@@ -70,8 +70,8 @@ public class GUIFunctionalityBlock extends GUIBlock {
         width = DEFAULT_WIDTH;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
-        mainConnector = new GUIConnector("MAIN", this, width / 2, 0, Color.blue);
-        lowerSubConnector = new GUIConnector( "SUB_1", this, width / 2, height, Color.red);
+        mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
+        lowerSubConnector = new GUIConnector( this, width / 2, height, Color.red);
         subConnectors.add(lowerSubConnector);
     }
 

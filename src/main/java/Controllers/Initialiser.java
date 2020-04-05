@@ -6,6 +6,8 @@ import GUI.Blocks.GUIConditionalBlock;
 import GUI.Blocks.GUIFunctionalityBlock;
 import GameWorldAPI.GameWorldType.*;
 import System.BlockStructure.Blocks.*;
+import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +31,12 @@ public class Initialiser {
 
         for (Action action : actions) {
             GUIPaletteBlocks.add(new GUIFunctionalityBlock(action.getName(), 0, 0));
-            systemPaletteBlocks.add(new FunctionalBlock(null)); // TODO null
+            systemPaletteBlocks.add(new FunctionalBlock(new ActionFunctionality(action)));
         }
 
         for (Predicate predicate : predicates) {
             GUIPaletteBlocks.add(new GUIConditionalBlock(predicate.getName(), 0, 0));
-            systemPaletteBlocks.add(new StatementBlock(null)); // TODO null
+            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate)));
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {

@@ -1,12 +1,15 @@
 package System.BlockStructure.Functionality;
 
+import GameWorld.Cell;
+import GameWorld.CellType;
+import GameWorld.Level;
+import GameWorldUtility.WallInFrontPredicate;
+import RobotCollection.Robot.Robot;
+import RobotCollection.Utility.Direction;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.BlockStructure.Blocks.IfBlock;
-import System.BlockStructure.Blocks.WallInFrontBlock;
-import System.GameWorld.Cell;
-import System.GameWorld.CellType;
-import System.GameWorld.Direction;
-import System.GameWorld.Level.Level;
+import System.BlockStructure.Blocks.StatementBlock;
+
 import System.Logic.ProgramArea.ConnectionHandler;
 import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
@@ -38,7 +41,7 @@ class CavityFunctionalityTest {
         ifFunc = new CavityFunctionality();
         block = new IfBlock();
 
-        cond1 = new WallInFrontBlock();
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());
@@ -74,10 +77,17 @@ class CavityFunctionalityTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
 
-        levelUpOnBlankBeforeWall = new Level(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
-        levelDownOnGoalBeforeBlank = new Level(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
-        levelLeftOnGoalBeforeGoal = new Level(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
-        levelRightOnBlankBeforeWall = new Level(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
+        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall.getX(), PositionUpOnBlankBeforeWall.getY(), directionUpOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(upRobot, cellsUpOnBlankBeforeWall);
+
+        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank.getX(), PositionDownOnGoalBeforeBlank.getY(), directionDownOnGoalBeforeBlank);
+        levelDownOnGoalBeforeBlank = new Level(downRobot, cellsDownOnGoalBeforeBlank);
+
+        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal.getX(), PositionLeftOnGoalBeforeGoal.getY(), directionLeftOnGoalBeforeGoal);
+        levelLeftOnGoalBeforeGoal = new Level(leftRobot, cellsLeftOnGoalBeforeGoal);
+
+        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall.getX(), PositionRightOnBlankBeforeWall.getY(), directionRightOnBlankBeforeWall);
+        levelRightOnBlankBeforeWall = new Level(rightRobot, cellsRightOnBlankBeforeWall);
 
     }
 

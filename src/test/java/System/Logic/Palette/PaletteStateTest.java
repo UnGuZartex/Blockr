@@ -6,6 +6,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaletteStateTest {
@@ -15,7 +19,7 @@ class PaletteStateTest {
 
     @BeforeEach
     void setUp() {
-        palette = new Palette();
+        palette = new Palette((List<Block>) new IfBlock());
     }
 
     @AfterEach

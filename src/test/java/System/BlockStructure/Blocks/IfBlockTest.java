@@ -1,9 +1,14 @@
 package System.BlockStructure.Blocks;
 
-import System.GameWorld.Cell;
-import System.GameWorld.CellType;
-import System.GameWorld.Direction;
-import System.GameWorld.Level.Level;
+import GameWorld.Cell;
+import GameWorld.CellType;
+import GameWorld.Level;
+import GameWorldUtility.MoveForwardAction;
+import GameWorldUtility.WallInFrontPredicate;
+import RobotCollection.Robot.Robot;
+import RobotCollection.Utility.Direction;
+import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
@@ -35,16 +40,16 @@ class IfBlockTest {
         if4 = new IfBlock();
         if5 = new IfBlock();
 
-        func1 = new MoveForwardBlock();
-        func11 = new MoveForwardBlock();
-        func2 = new MoveForwardBlock();
-        func3 = new MoveForwardBlock();
-        func1Under = new MoveForwardBlock();
-        func5Under = new MoveForwardBlock();
+        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func3 =new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
-        cond1 = new WallInFrontBlock();
-        cond3 = new WallInFrontBlock();
-        cond5 = new WallInFrontBlock();
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(if1, func3.getSubConnectorAt(0));
@@ -87,11 +92,17 @@ class IfBlockTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.BLANK), new Cell(CellType.BLANK) },
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
+        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall.getX(), PositionUpOnBlankBeforeWall.getY(), directionUpOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(upRobot, cellsUpOnBlankBeforeWall);
 
-        levelUpOnBlankBeforeWall = new Level(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
-        levelDownOnGoalBeforeBlank = new Level(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
-        levelLeftOnGoalBeforeGoal = new Level(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
-        levelRightOnBlankBeforeWall = new Level(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
+        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank.getX(), PositionDownOnGoalBeforeBlank.getY(), directionDownOnGoalBeforeBlank);
+        levelDownOnGoalBeforeBlank = new Level(downRobot, cellsDownOnGoalBeforeBlank);
+
+        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal.getX(), PositionLeftOnGoalBeforeGoal.getY(), directionLeftOnGoalBeforeGoal);
+        levelLeftOnGoalBeforeGoal = new Level(leftRobot, cellsLeftOnGoalBeforeGoal);
+
+        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall.getX(), PositionRightOnBlankBeforeWall.getY(), directionRightOnBlankBeforeWall);
+        levelRightOnBlankBeforeWall = new Level(rightRobot, cellsRightOnBlankBeforeWall);
 
     }
 

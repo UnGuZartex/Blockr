@@ -61,7 +61,7 @@ public class GUIConditionalBlock extends GUIBlock {
         width = DEFAULT_WIDTH;
         blockRectangles = new ArrayList<>();
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_COLOR));
-        mainConnector = new GUIConnector("MAIN", this, 0, height / 2, Color.blue);
+        mainConnector = new GUIConnector( this, 0, height / 2, Color.blue);
     }
 
     @Override

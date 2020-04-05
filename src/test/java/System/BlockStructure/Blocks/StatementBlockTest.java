@@ -1,5 +1,7 @@
 package System.BlockStructure.Blocks;
 
+import GameWorldUtility.WallInFrontPredicate;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +16,8 @@ class StatementBlockTest {
 
     @BeforeEach
     void setUp() {
-        block1 = new WallInFrontBlock();
-        block2 = new WallInFrontBlock();
+        block1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        block2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         cavoc = new IfBlock();
         ConnectionHandler handler = new ConnectionHandler();

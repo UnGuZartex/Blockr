@@ -1,7 +1,9 @@
 package System.Logic.ProgramArea;
 
+import GameWorldUtility.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.MoveForwardBlock;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Functionality.ActionFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +20,11 @@ class ConnectionHandlerTest {
     void setUp() {
         handler = new ConnectionHandler();
 
-        block1 = new MoveForwardBlock();
-        block2 = new MoveForwardBlock();
-        block3 = new MoveForwardBlock();
-        block4 = new MoveForwardBlock();
-        block5 = new MoveForwardBlock();
+        block1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        block2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        block3 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        block4 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        block5 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
     }
 
     @AfterEach

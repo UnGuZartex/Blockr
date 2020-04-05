@@ -77,8 +77,8 @@ public class GUIOperatorBlock extends GUIBlock {
         width = DEFAULT_WIDTH;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
-        mainConnector = new GUIConnector("MAIN",this, 0, height / 2, Color.blue);
-        subConnector = new GUIConnector("SUB_1", this, width, height / 2, Color.red);
+        mainConnector = new GUIConnector(this, 0, height / 2, Color.blue);
+        subConnector = new GUIConnector( this, width, height / 2, Color.red);
         subConnectors.add(subConnector);
     }
 

@@ -3,7 +3,6 @@ package System.BlockStructure.Functionality;
 import System.BlockStructure.Blocks.NotBlock;
 import System.BlockStructure.Blocks.OperationalBlock;
 import System.BlockStructure.Blocks.StatementBlock;
-import System.BlockStructure.Blocks.WallInFrontBlock;
 import System.GameWorld.Cell;
 import System.GameWorld.CellType;
 import System.GameWorld.Direction;
