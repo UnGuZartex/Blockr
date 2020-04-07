@@ -1,7 +1,7 @@
 package GUI.Panel;
 
-import Controllers.ConnectionController;
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 

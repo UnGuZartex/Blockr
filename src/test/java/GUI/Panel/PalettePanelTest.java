@@ -1,7 +1,7 @@
 package GUI.Panel;
 
 import Controllers.GUItoSystemInterface;
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 import System.GameState.GameState;

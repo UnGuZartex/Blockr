@@ -1,11 +1,10 @@
 package GUI.Panel;
 
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

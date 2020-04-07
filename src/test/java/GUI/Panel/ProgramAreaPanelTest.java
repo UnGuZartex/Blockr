@@ -1,8 +1,8 @@
 package GUI.Panel;
 
-import Controllers.ConnectionController;
+import Controllers.ControllerClasses.ConnectionController;
 import Controllers.GUItoSystemInterface;
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.Factories.GUIFactory;
 import GUI.Blocks.Factories.MoveForwardGUIFactory;
 import GUI.Blocks.GUIBlock;

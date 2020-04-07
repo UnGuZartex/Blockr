@@ -1,7 +1,7 @@
 package GUI.Panel;
 
 import Controllers.GUItoSystemInterface;
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import System.GameWorld.Level.LevelLoader;
 import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;

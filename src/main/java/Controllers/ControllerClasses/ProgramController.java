@@ -1,6 +1,8 @@
-package Controllers;
+package Controllers.ControllerClasses;
 
 
+import Controllers.GUItoSystemInterface;
+import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.GameWorld.Level.LevelLoader;

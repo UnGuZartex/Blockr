@@ -1,7 +1,6 @@
 package GUI.Blocks;
 
-import Controllers.ConnectionController;
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;

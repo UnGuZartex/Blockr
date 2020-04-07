@@ -1,6 +1,8 @@
 package GUI;
 
 import Controllers.*;
+import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImagePreLoader;
@@ -15,7 +17,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 
 public class BlockrCanvas extends CanvasWindow {
 
