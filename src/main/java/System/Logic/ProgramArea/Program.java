@@ -1,5 +1,6 @@
 package System.Logic.ProgramArea;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Connectors.SubConnector;
 import System.GameState.GameState;
@@ -61,7 +62,8 @@ public class Program {
         }
 
         if (!isFinished()) {
-            currentBlock.getFunctionality().evaluate(GameState.getCurrentLevel());
+            //TODO GAMEWORLD HIER ERGENS MEEGEVEN
+            currentBlock.getFunctionality().evaluate();
             currentBlock = currentBlock.getNext();
         }
     }

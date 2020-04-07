@@ -1,6 +1,7 @@
-package Controllers;
+package Controllers.ControllerClasses;
 
 
+import Controllers.GUItoSystemInterface;
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;

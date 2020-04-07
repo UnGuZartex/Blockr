@@ -1,6 +1,7 @@
 package System.BlockStructure.Functionality;
 
-import System.GameWorld.Level.Level;
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorld.Result;
 
 /**
  * An abstract class for functionality's which can be attached to a block.
@@ -14,10 +15,15 @@ public abstract class BlockFunctionality {
      */
     protected boolean evaluation;
 
+    protected final GameWorld gameWorld;
+
     /**
      * Initialise a new block functionality
+     * @param gameWorld the gameworld this functionality is linked to
      */
-    public BlockFunctionality() {}
+    public BlockFunctionality(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
 
     /**
      * Get the evaluation of this functionality.
@@ -29,11 +35,13 @@ public abstract class BlockFunctionality {
     }
 
     /**
-     * Evaluate this functionality with the given level.
-     *
-     * @param level The level to apply this functionality on.
+     * Evaluate this functionality with the given gameWorld.
      *
      * @effect Evaluates this functionality on the given level.
      */
-    public abstract void evaluate(Level level);
+    public abstract Result evaluate();
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

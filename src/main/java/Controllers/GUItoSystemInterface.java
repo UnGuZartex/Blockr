@@ -1,10 +1,12 @@
 package Controllers;
 
-import GUI.Blocks.Factories.*;
 import GUI.Blocks.GUIBlock;
-import GUI.Components.GUIConnector;
+import GUI.Blocks.GUICavityBlock;
+import GUI.Blocks.GUIConditionalBlock;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Blocks.CavityBlock;
+import System.BlockStructure.Blocks.ConditionalBlock;
+import System.BlockStructure.Blocks.IfBlock;
 import System.Logic.ProgramArea.PABlockHandler;
 
 import java.util.*;
@@ -12,25 +14,17 @@ import java.util.*;
 public class GUItoSystemInterface {
 
     private PABlockHandler blockHandler;
-    private final HashMap<String, GUIFactory> factories = new HashMap<>();
-    private final HashMap<GUIBlock, Block> conversionTable = new HashMap<>();
+    private final HashMap<GUIBlock, Block> currentBlocks = new HashMap<>();
 
     public GUItoSystemInterface(PABlockHandler blockHandler) {
         this.blockHandler = blockHandler;
-        factories.put("IF", new IfGUIFactory());
-        factories.put("WHILE", new WhileGUIFactory());
-        factories.put("NOT", new NotGUIFactory());
-        factories.put("WALL IN FRONT", new WallInFrontGUIFactory());
-        factories.put("MOVE FORWARD", new MoveForwardGUIFactory());
-        factories.put("TURN LEFT", new TurnLeftGUIFactory());
-        factories.put("TURN RIGHT", new TurnRightGUIFactory());
     }
 
     public GUIBlock createNewGUIBlock(String id, int x, int y) {
         if (factories.containsKey(id)) {
             GUIBlock newBlock = factories.get(id).createBlock(id, x, y);
             if (newBlock != null) {
-                conversionTable.put(newBlock, blockHandler.getFromPalette(id));
+                currentBlocks.put(newBlock, blockHandler.getFromPalette(id));
             }
             return newBlock;
         }
@@ -41,16 +35,16 @@ public class GUItoSystemInterface {
 
     public Block getBlockFromGUIBlock(GUIBlock block) throws IllegalArgumentException {
 
-        if (!conversionTable.containsKey(block)) {
+        if (!currentBlocks.containsKey(block)) {
             throw new IllegalArgumentException("The given GUI block is not present in the conversion table!");
         }
 
-        return conversionTable.get(block);
+        return currentBlocks.get(block);
     }
 
     public GUIBlock getGUIBlockFromBlock(Block block) {
 
-        for (Map.Entry<GUIBlock, Block> entry : conversionTable.entrySet()) {
+        for (Map.Entry<GUIBlock, Block> entry : currentBlocks.entrySet()) {
             if (Objects.equals(block, entry.getValue())) {
                 return entry.getKey();
             }
@@ -59,12 +53,7 @@ public class GUItoSystemInterface {
         return null;
     }
 
-    public SubConnector getSubConnectorFromGUIBlockWithID(GUIBlock block, String ID) {
-        Block searchedBlock = getBlockFromGUIBlock(block);
-        return searchedBlock.getSubConnectorWithID(ID);
-    }
-
     public void removeBlock(GUIBlock block) {
-        conversionTable.remove(block);
+        currentBlocks.remove(block);
     }
 }

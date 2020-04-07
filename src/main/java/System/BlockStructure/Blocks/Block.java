@@ -21,12 +21,12 @@ public abstract class Block {
     /**
      * Variable referring to the functionality of this block.
      */
-    private final BlockFunctionality functionality;
+    protected final BlockFunctionality functionality;
+
     /**
      * Variable referring to all the sub connectors of this block.
      */
     private final List<SubConnector> subConnector = new ArrayList<>();
-    /**
 
     /**
      * Initialise a new block with given functionality
@@ -118,7 +118,7 @@ public abstract class Block {
     }
 
     /**
-     * Check whether or not this block has proper connections.
+     * Check whether this block has proper connections.
      *
      * @return True if and only if this block has no following up blocks
      *         or its next block has valid following up blocks.
@@ -127,21 +127,7 @@ public abstract class Block {
         return !hasNext() || getNext().hasProperConnections();
 }
 
-
-    /**
-     * Finds the correct subconnector of a block given its ID.
-     * @param ID the ID to search for
-     * @return The connector in the block with this given ID.
-     */
-    public SubConnector getSubConnectorWithID(String ID) {
-        for (SubConnector connector:subConnector) {
-            if (connector.getID().equals(ID)) {
-                return connector;
-            }
-        }
-        throw new IllegalStateException("This connection ID cannot exist for this block");
-    }
-
+    public abstract Block clone();
 
     protected Block getReturnToBlock() {
         return returnToBlock;

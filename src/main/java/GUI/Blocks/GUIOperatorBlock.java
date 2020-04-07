@@ -22,17 +22,16 @@ public class GUIOperatorBlock extends GUIBlock {
     private GUIConnector subConnector;
 
     /**
-     * Initialise a new operator GUI block with given name, id and coordinates.
+     * Initialise a new operator GUI block with given name and coordinates.
      *
      * @param name The name for this GUI block.
-     * @param id The id for this GUI block.
      * @param x The x coordinate for this GUI block.
      * @param y The y coordinate for this GUI block.
      *
      * @effect calls super constructor with the given parameters.
      */
-    public GUIOperatorBlock(String name, String id, int x, int y) {
-        super(name, id, x, y);
+    public GUIOperatorBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     /**
@@ -78,8 +77,13 @@ public class GUIOperatorBlock extends GUIBlock {
         width = DEFAULT_WIDTH;
 
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
-        mainConnector = new GUIConnector("MAIN",this, 0, height / 2, Color.blue);
-        subConnector = new GUIConnector("SUB_1", this, width, height / 2, Color.red);
+        mainConnector = new GUIConnector(this, 0, height / 2, Color.blue);
+        subConnector = new GUIConnector( this, width, height / 2, Color.red);
         subConnectors.add(subConnector);
+    }
+
+    @Override
+    public GUIBlock clone() {
+        return new GUIOperatorBlock(name, x, y);
     }
 }

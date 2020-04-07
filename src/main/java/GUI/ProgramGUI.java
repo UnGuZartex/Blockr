@@ -1,13 +1,11 @@
 package GUI;
 
-import System.GameWorld.Level.LevelLoader;
 
 import java.awt.*;
 
 public class ProgramGUI {
     public static void main(String args[]) throws Exception {
-        LevelLoader loader = new LevelLoader();
-        loader.loadLevel();
+        //TODO CONNECTION AANLEGGEN
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         BlockrCanvas canvas = new BlockrCanvas("Blockr", screenSize.width, screenSize.height);
         java.awt.EventQueue.invokeLater(canvas::show);

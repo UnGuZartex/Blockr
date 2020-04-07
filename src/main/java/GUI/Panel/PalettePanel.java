@@ -1,11 +1,10 @@
 package GUI.Panel;
 
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,10 +20,6 @@ public class PalettePanel extends GamePanel {
      */
     private ProgramController controller;
     /**
-     * Variable referring to the block ID's in this panel.
-     */
-    private final List<String> IDList;
-    /**
      * Variables referring to the blocks in this panel.
      */
     public List<GUIBlock> blocks = new ArrayList<>();
@@ -39,7 +34,6 @@ public class PalettePanel extends GamePanel {
      * @param controller The controller to control this panel.
      *
      * @effect Super constructor is called with given coordinates and dimensions.
-     * @effect The ID list is set to all the different block ID's
      * @effect The palette is refilled.
      * @effect The block positions are set.
      *
@@ -48,7 +42,6 @@ public class PalettePanel extends GamePanel {
     public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
         this.controller = controller;
-        IDList = Arrays.asList("IF", "WHILE", "NOT", "WALL IN FRONT", "MOVE FORWARD", "TURN LEFT", "TURN RIGHT");
         refillPalette();
         setBlockPositions();
     }

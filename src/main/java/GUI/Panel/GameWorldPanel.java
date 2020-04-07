@@ -1,6 +1,6 @@
 package GUI.Panel;
 
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Components.GUIGrid;
 

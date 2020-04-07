@@ -1,5 +1,6 @@
 package System.BlockStructure.Blocks;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Functionality.CavityFunctionality;
 
 /**
@@ -16,8 +17,8 @@ public class IfBlock extends CavityBlock {
      *
      * @effect Calls super constructor with given functionality.
      */
-    public IfBlock() {
-        super(new CavityFunctionality());
+    public IfBlock(CavityFunctionality functionality) {
+        super(functionality);
     }
 
     @Override
@@ -26,5 +27,10 @@ public class IfBlock extends CavityBlock {
             return getSubConnectorAt(0).getConnectedBlock();
         }
         return getReturnToBlock();
+    }
+
+    @Override
+    public Block clone() {
+        return new IfBlock(new CavityFunctionality(functionality.getGameWorld()));
     }
 }
