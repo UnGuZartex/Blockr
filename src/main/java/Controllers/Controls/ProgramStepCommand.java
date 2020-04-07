@@ -1,6 +1,6 @@
 package Controllers.Controls;
 
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 
 import java.awt.*;

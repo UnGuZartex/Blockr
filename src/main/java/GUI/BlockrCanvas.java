@@ -1,12 +1,13 @@
 package GUI;
 
+import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.ProgramController;
 import Controllers.Controls.Control;
 import Controllers.Controls.ProgramStepCommand;
 import Controllers.Controls.ResetControlFunctionality;
 import Controllers.GUItoSystemInterface;
-import Controllers.*;
-import Controllers.ControllerClasses.ConnectionController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.Initialiser;
+import Controllers.JarLoader;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImagePreLoader;
@@ -67,13 +68,6 @@ public class BlockrCanvas extends CanvasWindow {
         this(title, width, height, "");
     }
 
-    private void setControllers() {
-        PABlockHandler blockHandler = new PABlockHandler();
-        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
-        connectionController = new ConnectionController(converter, blockHandler);
-        programController = new ProgramController(converter, blockHandler);
-    }
-
     private void setPanels() {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
@@ -117,7 +111,7 @@ public class BlockrCanvas extends CanvasWindow {
         }
         repaint();
     }
-}
+
     private void setControllers() {
         Initialiser initialiser = new Initialiser(gameWorldType, gameWorldType.createNewGameworld());
         PABlockHandler blockHandler = new PABlockHandler(initialiser.getSystemPaletteBlocks());

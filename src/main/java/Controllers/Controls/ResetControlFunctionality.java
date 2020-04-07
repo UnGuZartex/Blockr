@@ -1,6 +1,6 @@
 package Controllers.Controls;
 
-import Controllers.ProgramController;
+import Controllers.ControllerClasses.ProgramController;
 import GUI.Panel.GameWorldPanel;
 
 public class ResetControlFunctionality implements ControlFunctionality {
