@@ -63,7 +63,7 @@ public class Program {
 
         if (!isFinished()) {
             //TODO GAMEWORLD HIER ERGENS MEEGEVEN
-            currentBlock.getFunctionality().evaluate((GameWorld) GameState.getCurrentLevel());
+            currentBlock.getFunctionality().evaluate();
             currentBlock = currentBlock.getNext();
         }
     }

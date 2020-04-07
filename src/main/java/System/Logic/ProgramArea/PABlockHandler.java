@@ -2,7 +2,6 @@ package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
-import System.GameState.GameState;
 import System.Logic.Palette.Palette;
 
 import java.util.List;
@@ -34,6 +33,11 @@ public class PABlockHandler {
      */
     private int amountOfBlocks = 0;
 
+    /**
+     * Variable referring to the max amount of blocks that may be used.
+     */
+    private int maxBlocks = 10;
+
     public PABlockHandler(List<Block> paletteBlocks) {
         palette = new Palette(paletteBlocks);
     }
@@ -45,7 +49,7 @@ public class PABlockHandler {
      *         to the maximum number of blocks.
      */
     public boolean hasProperNbBlocks() {
-        return amountOfBlocks <= GameState.getMaxAmountOfBlocks();
+        return amountOfBlocks <= maxBlocks;
     }
 
     /**
@@ -158,6 +162,10 @@ public class PABlockHandler {
      *         equal to the maximum amount of blocks in the game state.
      */
     public boolean hasReachedMaxBlocks() {
-        return amountOfBlocks >= GameState.getMaxAmountOfBlocks();
+        return amountOfBlocks >= maxBlocks;
+    }
+
+    public void setMaxBlocks(int maxBlocks) {
+        this.maxBlocks = maxBlocks;
     }
 }

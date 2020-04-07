@@ -16,11 +16,6 @@ public class GUItoSystemInterface {
     private PABlockHandler blockHandler;
     private final HashMap<GUIBlock, Block> currentBlocks = new HashMap<>();
 
-    private final HashMap<GUIBlock, Block> conversionTable() {
-        put(new GUICavityBlock(), new IfBlock()),
-        put(new GUIConditionalBlock(), new ConditionalBlock());
-    };
-
     public GUItoSystemInterface(PABlockHandler blockHandler) {
         this.blockHandler = blockHandler;
     }

@@ -4,9 +4,12 @@ import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 import GUI.Blocks.GUIConditionalBlock;
 import GUI.Blocks.GUIFunctionalityBlock;
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.*;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
+import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 
 import java.util.ArrayList;
@@ -16,27 +19,44 @@ import java.util.Map;
 
 public class Initialiser {
 
-    private HashMap<GUIBlock, Block> defaultBlocks = new HashMap<>() {{
-        put(new GUICavityBlock("If", 0, 0), new IfBlock());
-        put(new GUICavityBlock("While", 0, 0), new WhileBlock());
-        put(new GUICavityBlock("Not", 0, 0), new NotBlock());
-    }};
+    private final List<Action> actions;
+    private final List<Predicate> predicates;
+    private final GameWorld currentGameWorld;
+    private HashMap<GUIBlock, Block> defaultBlocks = new HashMap<>();
 
-    public void initialisePalettes(GameWorldType gameWorldType) {
+    private List<Block> systemPaletteBlocks = new ArrayList<>();
 
-        List<Block> systemPaletteBlocks = new ArrayList<>();
-        List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
-        List<Action> actions = gameWorldType.getAllActions();
-        List<Predicate> predicates = gameWorldType.getAllPredicates();
+    private List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
+
+    public Initialiser(GameWorldType gameWorldType, GameWorld gameWorld) {
+        actions = gameWorldType.getAllActions();
+        predicates = gameWorldType.getAllPredicates();
+        currentGameWorld = gameWorld;
+        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock(new CavityFunctionality(currentGameWorld)));
+        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock(new CavityFunctionality(currentGameWorld)));
+        defaultBlocks.put(new GUICavityBlock("Not", 0, 0), new NotBlock(new NotFunctionality(currentGameWorld)));
+        initialisePalettes();
+    }
+
+
+    public List<Block> getSystemPaletteBlocks() {
+        return systemPaletteBlocks;
+    }
+
+    public List<GUIBlock> getGUIPaletteBlocks() {
+        return GUIPaletteBlocks;
+    }
+
+    public void initialisePalettes() {
 
         for (Action action : actions) {
             GUIPaletteBlocks.add(new GUIFunctionalityBlock(action.getName(), 0, 0));
-            systemPaletteBlocks.add(new FunctionalBlock(new ActionFunctionality(action)));
+            systemPaletteBlocks.add(new FunctionalBlock(new ActionFunctionality(action, currentGameWorld)));
         }
 
         for (Predicate predicate : predicates) {
             GUIPaletteBlocks.add(new GUIConditionalBlock(predicate.getName(), 0, 0));
-            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate)));
+            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate, currentGameWorld)));
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {

@@ -15,10 +15,15 @@ public abstract class BlockFunctionality {
      */
     protected boolean evaluation;
 
+    protected final GameWorld gameWorld;
+
     /**
      * Initialise a new block functionality
+     * @param gameWorld the gameworld this functionality is linked to
      */
-    public BlockFunctionality() {}
+    public BlockFunctionality(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
 
     /**
      * Get the evaluation of this functionality.
@@ -32,9 +37,11 @@ public abstract class BlockFunctionality {
     /**
      * Evaluate this functionality with the given gameWorld.
      *
-     * @param gameWorld The gameWorld to apply this functionality on.
-     *
      * @effect Evaluates this functionality on the given level.
      */
-    public abstract Result evaluate(GameWorld gameWorld);
+    public abstract Result evaluate();
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

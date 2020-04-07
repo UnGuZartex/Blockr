@@ -15,8 +15,8 @@ public class WhileBlock extends CavityBlock {
      *
      * @effect Calls super constructor with given functionality.
      */
-    public WhileBlock() {
-        super(new CavityFunctionality());
+    public WhileBlock(CavityFunctionality functionality) {
+        super(functionality);
     }
 
 
@@ -27,6 +27,6 @@ public class WhileBlock extends CavityBlock {
 
     @Override
     public Block clone() {
-        return new WhileBlock();
+        return new WhileBlock(new CavityFunctionality(functionality.getGameWorld()));
     }
 }

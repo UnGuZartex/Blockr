@@ -8,12 +8,13 @@ public class ActionFunctionality extends BlockFunctionality {
 
     private final Action action;
 
-    public ActionFunctionality(Action action) {
+    public ActionFunctionality(Action action, GameWorld gameWorld) {
+        super(gameWorld);
         this.action = action;
     }
 
     @Override
-    public Result evaluate(GameWorld gameWorld) {
+    public Result evaluate() {
         return gameWorld.executeAction(action);
     }
 }

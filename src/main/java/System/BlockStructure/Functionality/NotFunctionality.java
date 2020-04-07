@@ -12,12 +12,20 @@ import System.GameWorld.Level.Level;
  */
 public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
+
+    /**
+     * Initialise a new block functionality
+     *
+     * @param gameWorld the gameworld this functionality is linked to
+     */
+    public NotFunctionality(GameWorld gameWorld) {
+        super(gameWorld);
+    }
+
     /**
      * Evaluate this not functionality on the given gameWorld and set the evaluation
      * of this functionality to the inverse of the evaluation of the block connected
      * to this functionality.
-     *
-     * @param gameWorld The gameWorld to apply this functionality on.
      *
      * @post Set the evaluation of this functionality to the inverse of the evaluation
      *       of the functionality of the block of this functionality.
@@ -25,9 +33,9 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      * @return SUCCESS because a evaluation of boolean is always successful
      */
     @Override
-    public Result evaluate(GameWorld gameWorld) {
+    public Result evaluate() {
         BlockFunctionality functionality = block.getNext().getFunctionality();
-        functionality.evaluate(gameWorld);
+        functionality.evaluate();
         evaluation = !functionality.getEvaluation();
         return Result.SUCCES;
     }

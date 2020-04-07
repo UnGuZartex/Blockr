@@ -1,8 +1,6 @@
 package GUI;
 
-import Controllers.ConnectionController;
-import Controllers.GUItoSystemInterface;
-import Controllers.ProgramController;
+import Controllers.*;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
 import GUI.Images.ImagePreLoader;
@@ -10,11 +8,14 @@ import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import GameWorldAPI.GameWorldType.GameWorldType;
 import System.Logic.ProgramArea.PABlockHandler;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 
 public class BlockrCanvas extends CanvasWindow {
 
@@ -27,6 +28,7 @@ public class BlockrCanvas extends CanvasWindow {
     private PalettePanel palettePanel;
     private GUIBlockHandler blockHandler;
     private GUIBlock previousBlock;
+    private final GameWorldType gameWorldType;
 
     private ProgramController programController;
     private ConnectionController connectionController;
@@ -37,11 +39,14 @@ public class BlockrCanvas extends CanvasWindow {
      * @param title Window title
      */
     // TODO exception throw (@throws)
-    protected BlockrCanvas(String title, int width, int height, String imagePackName) throws IOException {
+    protected BlockrCanvas(String title, int width, int height, String imagePackName) throws IOException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         super(title);
 
         this.width = width;
         this.height = height;
+
+        JarLoader loader = new JarLoader();
+        gameWorldType = loader.load();
 
         GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
         setControllers();
@@ -50,7 +55,7 @@ public class BlockrCanvas extends CanvasWindow {
         blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
     }
 
-    protected BlockrCanvas(String title, int width, int height) throws IOException {
+    protected BlockrCanvas(String title, int width, int height) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         this(title, width, height, "");
     }
 
@@ -101,7 +106,9 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setControllers() {
-        PABlockHandler blockHandler = new PABlockHandler();
+        Initialiser initialiser = new Initialiser(gameWorldType, gameWorldType.createNewGameworld());
+        PABlockHandler blockHandler = new PABlockHandler(initialiser.getSystemPaletteBlocks());
+        //blockHandler.setMaxBlocks(30);
         GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
         connectionController = new ConnectionController(converter, blockHandler);
         programController = new ProgramController(converter, blockHandler);
