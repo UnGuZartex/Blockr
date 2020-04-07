@@ -1,5 +1,9 @@
 package GUI;
 
+import Controllers.Controls.Control;
+import Controllers.Controls.ProgramStepCommand;
+import Controllers.Controls.ResetControlFunctionality;
+import Controllers.GUItoSystemInterface;
 import Controllers.*;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.ProgramController;
@@ -21,13 +25,15 @@ import java.lang.reflect.InvocationTargetException;
 public class BlockrCanvas extends CanvasWindow {
 
     public static final double PALETTE_WIDTH_RATIO = 0.1;
-    public static final double PROGRAMAREA_WIDTH_RATIO = 0.5;
-    public static final double GAMEWORLD_WIDTH_RATIO = 0.4;
+    public static final double PROGRAM_AREA_WIDTH_RATIO = 0.5;
+    public static final double GAME_WORLD_WIDTH_RATIO = 0.4;
 
+    private PalettePanel palettePanel;
     private ProgramAreaPanel programAreaPanel;
     private GameWorldPanel gameWorldPanel;
-    private PalettePanel palettePanel;
     private GUIBlockHandler blockHandler;
+  
+    private Control[] controls;
     private GUIBlock previousBlock;
     private final GameWorldType gameWorldType;
 
@@ -50,14 +56,39 @@ public class BlockrCanvas extends CanvasWindow {
         gameWorldType = loader.load();
 
         GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
+
         setControllers();
         setPanels();
-
-        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
+        setControls();
+        setBlockHandler();
     }
 
     protected BlockrCanvas(String title, int width, int height) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         this(title, width, height, "");
+    }
+
+    private void setControllers() {
+        PABlockHandler blockHandler = new PABlockHandler();
+        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        connectionController = new ConnectionController(converter, blockHandler);
+        programController = new ProgramController(converter, blockHandler);
+    }
+
+    private void setPanels() {
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
+        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
+        gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height, programController);
+    }
+
+    private void setControls() {
+        controls = new Control[] {
+                new Control(KeyEvent.VK_F5, new ProgramStepCommand(programController)),
+                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController, gameWorldPanel))
+        };
+    }
+
+    private void setBlockHandler() {
+        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
     }
 
     @Override
@@ -77,35 +108,16 @@ public class BlockrCanvas extends CanvasWindow {
         repaint();
     }
 
-    private void setPanels() {
-        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
-        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAMAREA_WIDTH_RATIO), height, programController, connectionController);
-        gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAMAREA_WIDTH_RATIO),0, (int)(width * GAMEWORLD_WIDTH_RATIO), height, programController);
-    }
-
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
-
-        if (keyCode == KeyEvent.VK_F5) {
-
-            if (previousBlock != null) {
-                previousBlock.setColor(Color.white);
-            }
-
-            programController.runProgramStep();
-            previousBlock = programController.getHightlightedBlock();
-            if (previousBlock != null) {
-                previousBlock.setColor(Color.red);
+        for (Control control : controls) {
+            if (control.isClicked(keyCode)) {
+                control.onClick();
             }
         }
-        if (keyCode == KeyEvent.VK_ESCAPE) {
-            programController.resetProgram();
-            gameWorldPanel.resetGameText();
-        }
-
         repaint();
     }
-
+}
     private void setControllers() {
         Initialiser initialiser = new Initialiser(gameWorldType, gameWorldType.createNewGameworld());
         PABlockHandler blockHandler = new PABlockHandler(initialiser.getSystemPaletteBlocks());
