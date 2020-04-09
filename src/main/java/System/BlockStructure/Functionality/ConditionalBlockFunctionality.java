@@ -20,7 +20,7 @@ public abstract class ConditionalBlockFunctionality<B extends Block> extends Blo
     /**
      * Initialise a new block functionality
      *
-     * @param gameWorld the gameworld this functionality is linked to
+     * @param gameWorld the game world this functionality is linked to
      */
     public ConditionalBlockFunctionality(GameWorld gameWorld) {
         super(gameWorld);

@@ -16,13 +16,15 @@ import java.util.List;
 public class PalettePanel extends GamePanel {
 
     /**
-     * Variable referring to the controller of this panel.
-     */
-    private ProgramController controller;
-    /**
      * Variables referring to the blocks in this panel.
      */
     public List<GUIBlock> blocks = new ArrayList<>();
+
+    private boolean reachedMaxBlocks;
+
+    /**
+     * TODO COMMENTAAR
+     */
 
     /**
      * Initialise a new panel with given coordinates, dimensions and  controller.
@@ -31,18 +33,14 @@ public class PalettePanel extends GamePanel {
      * @param cornerY The y coordinate for the corner of this panel.
      * @param width The width of this panel.
      * @param height The height of this panel.
-     * @param controller The controller to control this panel.
      *
      * @effect Super constructor is called with given coordinates and dimensions.
      * @effect The palette is refilled.
      * @effect The block positions are set.
-     *
-     * @post The controller of this panel is set to the given controller.
      */
-    public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) {
         super(cornerX, cornerY, width, height);
-        this.controller = controller;
-        refillPalette();
+        this.blocks = blocks;
         setBlockPositions();
     }
 
@@ -52,20 +50,7 @@ public class PalettePanel extends GamePanel {
      * @return A copy of the blocks in this palette.
      */
     public List<GUIBlock> getBlocks() {
-        return new ArrayList<>(blocks);
-    }
-
-    /**
-     * Get a new block with the given ID and coordinates.
-     *
-     * @param ID The id for the new block.
-     * @param x The x coordinate for the new block.
-     * @param y The y coordinate for the new block.
-     *
-     * @return A new GUI block with the given id and coordinates.
-     */
-    public GUIBlock getNewBlock(String ID, int x, int y) {
-        return controller.getBlock(ID, x, y);
+        return reachedMaxBlocks ? new ArrayList<>() : new ArrayList<>(blocks);
     }
 
     /**
@@ -74,9 +59,27 @@ public class PalettePanel extends GamePanel {
      * @param g The graphics to draw the blocks with.
      */
     public void drawBlocks(Graphics g) {
-        for (GUIBlock block : blocks) {
-            block.paint(g);
+        if (!reachedMaxBlocks) {
+            for (GUIBlock block : blocks) {
+                block.paint(g);
+            }
         }
+    }
+
+    /**
+     * Return the index of the given block in the palette if possible.
+     *
+     * @param block the given block
+     *
+     * @return the index of the block in the palette. Returns -1 if the block is not present
+     *         in the palette or if the palette has reached its max blocks capacity.
+     */
+    public int getPaletteIndex(GUIBlock block) {
+        if (!reachedMaxBlocks) {
+            return blocks.indexOf(block);
+        }
+
+        return -1;
     }
 
     /**
@@ -100,34 +103,9 @@ public class PalettePanel extends GamePanel {
         panelRectangle.paintNonFill(g);
     }
 
-    /**
-     * Update this panel.
-     *
-     * @effect If the maximum number of blocks is reached, then the blocks are cleared.
-     * @effect Else f there are no blocks in the list, the palette is refilled and the blocks
-     *         are positioned properly.
-     */
-    public void update() {
-        if (controller.reachedMaxBlocks()) {
-            blocks.clear();
-        } else if (blocks.size() == 0) {
-            refillPalette();
-            setBlockPositions();
-        }
-    }
-
-    /**
-     * Refill this palette.
-     *
-     * @effect If the controller hasn't reached the maximum number of blocks, then
-     *         are all with in the ID list initialised.
-     */
-    private void refillPalette() {
-        if (!controller.reachedMaxBlocks()) {
-            for (String id : IDList) {
-                blocks.add(controller.getBlock(id, 0, 0));
-            }
-        }
+    // TODO via observer
+    private void updatePalette(boolean reachedMaxBlocks) {
+        this.reachedMaxBlocks = reachedMaxBlocks;
     }
 
     /**

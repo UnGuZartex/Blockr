@@ -14,7 +14,7 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
     /**
      * Initialise a new block functionality
      *
-     * @param gameWorld the gameworld this functionality is linked to
+     * @param gameWorld the game world this functionality is linked to
      */
     public CavityFunctionality(GameWorld gameWorld) {
         super(gameWorld);
@@ -26,7 +26,7 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
      * @post The evaluation is set to the evaluation of the condition
      *       of the block of this functionality.
      *
-     * @return SUCCESS, the cavity has no effect on the gameworld and will always be a success.
+     * @return SUCCESS, the cavity has no effect on the game world and will always be a success.
      */
     @Override
     public Result evaluate() {

@@ -3,7 +3,6 @@ package System.BlockStructure.Functionality;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.OperationalBlock;
-import System.GameWorld.Level.Level;
 
 /**
  * A class for the not functionality.
@@ -16,7 +15,7 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
     /**
      * Initialise a new block functionality
      *
-     * @param gameWorld the gameworld this functionality is linked to
+     * @param gameWorld the game world this functionality is linked to
      */
     public NotFunctionality(GameWorld gameWorld) {
         super(gameWorld);
@@ -30,7 +29,7 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      * @post Set the evaluation of this functionality to the inverse of the evaluation
      *       of the functionality of the block of this functionality.
      *
-     * @return SUCCESS because a evaluation of boolean is always successful
+     * @return SUCCESS because an evaluation of a boolean is always successful.
      */
     @Override
     public Result evaluate() {

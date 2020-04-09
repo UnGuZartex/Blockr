@@ -19,9 +19,9 @@ public class ConnectionController {
         this.blockHandler = blockHandler;
     }
 
-    public void connectBlocks(GUIBlock withMain, GUIBlock withSub, String connectionID) {
+    public void connectBlocks(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
-        SubConnector subConnector = converter.getSubConnectorFromGUIBlockWithID(withSub, connectionID);
+        SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);
         blockHandler.connectToExistingBlock(mainBlock, subConnector);
     }
 
@@ -30,10 +30,10 @@ public class ConnectionController {
         blockHandler.disconnectInPA(mainBlock);
     }
 
-    public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, String connectionID) {
-        Block mainBlock = converter.getBlockFromGUIBlock(withMain);
-        SubConnector subConnector = converter.getSubConnectorFromGUIBlockWithID(withSub, connectionID);
-        MainConnector mainConnector= mainBlock.getMainConnector();
+    // TODO wegkrijgen met observers
+    /*public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
+        MainConnector mainConnector = converter.getBlockFromGUIBlock(withMain).getMainConnector();
+        SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);
         return mainConnector.canHaveAsSubConnector(subConnector);
-    }
+    }*/
 }

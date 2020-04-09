@@ -4,6 +4,7 @@ package Controllers.ControllerClasses;
 import Controllers.GUItoSystemInterface;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
+import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.Block;
 import System.GameWorld.Level.LevelLoader;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -12,30 +13,27 @@ import System.Logic.ProgramArea.Program;
 
 public class ProgramController {
 
-    private final LevelLoader loader = new LevelLoader();
+    private final GameWorld gameWorld;
     private final GUItoSystemInterface converter;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(GUItoSystemInterface converter, PABlockHandler blockHandler) {
+    public ProgramController(GUItoSystemInterface converter, PABlockHandler blockHandler, GameWorld gameWorld) {
         this.converter = converter;
         this.blockHandler = blockHandler;
+        this.gameWorld = gameWorld;
     }
 
     public void addBlockToPA(GUIBlock block) {
         Block toAdd = converter.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
-        resetProgram();
+        resetGameWorld();
     }
 
     public void deleteFromPA(GUIBlock block) {
         Block toDelete = converter.getBlockFromGUIBlock(block);
         converter.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
-        resetProgram();
-    }
-
-    public boolean reachedMaxBlocks() {
-        return blockHandler.hasReachedMaxBlocks();
+        resetGameWorld();
     }
 
     public GUIBlock getHightlightedBlock() {
@@ -51,9 +49,8 @@ public class ProgramController {
         return converter.createNewGUIBlock(ID, x, y);
     }
 
-    public void resetProgram() {
-        blockHandler.getPA().resetProgram();
-        loader.resetLevel();
+    public void resetGameWorld() {
+        gameWorld.reset();
     }
 
     public void runProgramStep() {

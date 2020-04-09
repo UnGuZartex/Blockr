@@ -3,6 +3,8 @@ package GUI.Panel;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Components.GUIGrid;
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorld.Result;
 
 import java.awt.*;
 
@@ -13,10 +15,8 @@ import java.awt.*;
  */
 public class GameWorldPanel extends GamePanel implements ProgramListener {
 
-    /**
-     * Variable referring to the grid.
-     */
-    private GUIGrid GUIGrid;
+    private GameWorld
+
     /**
      * Variable referring to the game state.
      */
@@ -104,6 +104,11 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     @Override
     public void onGameLost() {
         gameState = "YOU LOSE!  :(";
+    }
+
+    @Override
+    public void onGameFinished(Result result) {
+
     }
 
     /**

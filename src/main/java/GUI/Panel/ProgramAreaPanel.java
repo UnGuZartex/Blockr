@@ -77,8 +77,9 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @effect The program is reset.
      */
     public void disconnectInProgramArea(GUIBlock GUIBlock) {
+        GUIBlock.disconnectMainConnector();
         connectionController.disconnectBlock(GUIBlock);
-        programController.resetProgram();
+        programController.resetGameWorld();
     }
 
     /**

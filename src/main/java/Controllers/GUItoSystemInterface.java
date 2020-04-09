@@ -1,12 +1,7 @@
 package Controllers;
 
 import GUI.Blocks.GUIBlock;
-import GUI.Blocks.GUICavityBlock;
-import GUI.Blocks.GUIConditionalBlock;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.CavityBlock;
-import System.BlockStructure.Blocks.ConditionalBlock;
-import System.BlockStructure.Blocks.IfBlock;
 import System.Logic.ProgramArea.PABlockHandler;
 
 import java.util.*;
@@ -20,12 +15,14 @@ public class GUItoSystemInterface {
         this.blockHandler = blockHandler;
     }
 
-    public GUIBlock createNewGUIBlock(String id, int x, int y) {
+    public void createNewBlock(int x, int y) {
+
         if (factories.containsKey(id)) {
             GUIBlock newBlock = factories.get(id).createBlock(id, x, y);
             if (newBlock != null) {
                 currentBlocks.put(newBlock, blockHandler.getFromPalette(id));
             }
+
             return newBlock;
         }
         else {

@@ -103,7 +103,6 @@ public class GUIBlockHandler {
                 draggedBlock.resetHeight();
             }
 
-            palette.update();
             draggedBlock = null;
             draggedBlocks = null;
         }
@@ -127,14 +126,12 @@ public class GUIBlockHandler {
      * todo
      */
     private void handleBlockFromPaletteToProgramArea() {
-
-        GUIBlock newBlock = palette.getNewBlock(draggedBlock.getId(), draggedBlock.getX(), draggedBlock.getY());
+        GUIBlock newBlock = palette.getNewBlock(draggedBlock);
         draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
         programArea.addBlockToProgramArea(newBlock);
         draggedBlock = newBlock;
 
         Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
-
         connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
@@ -142,9 +139,7 @@ public class GUIBlockHandler {
      * todo
      */
     private void handleBlockFromProgramAreaToProgramArea() {
-
         programArea.disconnectInProgramArea(draggedBlock);
-        draggedBlock.disconnectMainConnector();
         programArea.addBlockToProgramArea(draggedBlock);
 
         for (GUIBlock block : draggedBlocks) {
@@ -165,9 +160,7 @@ public class GUIBlockHandler {
      * @effect Delete the block from the program area if the dragged block came from the program area.
      */
     private void handleBlockToPalette() {
-
         programArea.disconnectInProgramArea(draggedBlock);
-        draggedBlock.disconnectMainConnector();
 
         if (blockSourcePanel == palette) {
             draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());

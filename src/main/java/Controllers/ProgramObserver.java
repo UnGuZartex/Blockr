@@ -1,7 +1,6 @@
 package Controllers;
 
-import System.GameWorld.Direction;
-
+import GameWorldAPI.GameWorld.Result;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,24 +39,14 @@ public class ProgramObserver {
     }
 
     /**
-     * Notify the listeners that the program has finished and the game is won.
+     * Notify the listeners that the game is over.
+     * @param result the result of the game
      *
      * @effect The listeners are notified about the new game state.
      */
-    public void notifyGameWon() {
+    public void notifyGameFinished(Result result) {
         for (ProgramListener listener : listeners) {
-            listener.onGameWon();
-        }
-    }
-
-    /**
-     * Notify the listeners that the player has lost the game.
-     *
-     * @effect The listeners are notified about the new game state.
-     */
-    public void notifyGameLost() {
-        for (ProgramListener listener : listeners) {
-            listener.onGameLost();
+            listener.onGameFinished(result);
         }
     }
 

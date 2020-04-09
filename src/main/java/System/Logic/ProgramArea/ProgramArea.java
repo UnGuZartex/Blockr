@@ -2,9 +2,8 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
 import Controllers.ProgramObserver;
-import Controllers.RobotListener;
+import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
-import System.GameState.GameState;
 
 import java.util.ArrayList;
 
@@ -81,15 +80,10 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                program.executeStep();
+                Result stepResult = program.executeStep();
 
                 if (program.isFinished()) {
-                    if (GameState.getCurrentLevel().hasWon()) {
-                        observer.notifyGameWon();
-                    }
-                    else {
-                        observer.notifyGameLost();
-                    }
+                    observer.notifyGameFinished(stepResult);
                 }
             }
             else {

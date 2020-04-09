@@ -137,12 +137,16 @@ public class PABlockHandler {
     }
 
     /**
-     * Update the amount of blocks used in the program area.
+     * Update the amount of blocks used in the program area and
+     * reset the current program(s) in the program area.
      *
      * @post The total number of blocks has been updated.
+     *
+     * @effect The current program(s) in the program area are reset.
      */
     private void Update() {
         amountOfBlocks = PA.getAllBlocksCount();
+        PA.resetProgram();
     }
 
     /**
@@ -161,7 +165,7 @@ public class PABlockHandler {
      * @return True if and only if the amount of blocks is greater than or
      *         equal to the maximum amount of blocks in the game state.
      */
-    public boolean hasReachedMaxBlocks() {
+    private boolean hasReachedMaxBlocks() {
         return amountOfBlocks >= maxBlocks;
     }
 
