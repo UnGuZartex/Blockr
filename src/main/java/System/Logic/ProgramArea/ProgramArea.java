@@ -156,12 +156,17 @@ public class ProgramArea {
         return sum;
     }
 
+    /**
+     * Add the highest block in the block structure of the given block as a program.
+     *
+     * @param block The given block.
+     */
     public void addHighestAsProgram(Block block) {
         addProgram(getHighestBlock(block));
     }
 
     /**
-     * Get the highest block in the connections.
+     * Get the highest block in the block structure this block is connected to.
      *
      * @return This block if no block is higher, else the highest
      *         block of the block connected to the main connector.

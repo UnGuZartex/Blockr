@@ -4,6 +4,7 @@ import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
+import GameWorldAPI.GameWorld.Result;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -151,23 +152,18 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Event to call if the game has won.
+     * Event to call if the game has finished
      *
-     * @effect The block colors are set to green.
+     * @param result the result of the game
      */
     @Override
-    public void onGameWon() {
-        changeBlockColors(Color.green);
-    }
-
-    /**
-     * Event to call if the game has been lost.
-     *
-     * @effect The block colors are set to orange.
-     */
-    @Override
-    public void onGameLost() {
-        changeBlockColors(Color.orange);
+    public void onGameFinished(Result result) {
+        if (result == Result.FAILURE) {
+            changeBlockColors(Color.orange);
+        }
+        else if (result == Result.END) {
+            changeBlockColors(Color.green);
+        }
     }
 
     /**

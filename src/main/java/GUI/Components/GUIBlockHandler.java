@@ -40,15 +40,18 @@ public class GUIBlockHandler {
      * @effect The right mouse event is handled accordingly.
      */
     public void handleMouseEvent(int id, int x, int y) {
+        switch (id) {
+            case (MouseEvent.MOUSE_PRESSED):
+                handleMousePressed(x, y);
+                break;
 
-        if (id == MouseEvent.MOUSE_PRESSED) {
-            handleMousePressed(x, y);
-        }
-        else if (id == MouseEvent.MOUSE_RELEASED) {
-            handleMouseReleased();
-        }
-        else if (id == MouseEvent.MOUSE_DRAGGED) {
-            handleMouseDragged(x, y);
+            case (MouseEvent.MOUSE_RELEASED):
+                handleMouseReleased();
+                break;
+
+            case (MouseEvent.MOUSE_DRAGGED):
+                handleMouseDragged(x, y);
+                break;
         }
     }
 
@@ -58,7 +61,6 @@ public class GUIBlockHandler {
      * @param y
      */
     private void handleMousePressed(int x, int y) {
-
         boolean paletteBlockContainsMouse = AnyContains(palette.getBlocks(), x, y);
         boolean programAreaContainsMouse = AnyContains(programArea.getBlocks(), x, y);
 
@@ -85,7 +87,6 @@ public class GUIBlockHandler {
      * todo
      */
     private void handleMouseReleased() {
-
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
@@ -140,7 +141,6 @@ public class GUIBlockHandler {
      */
     private void handleBlockFromProgramAreaToProgramArea() {
         programArea.disconnectInProgramArea(draggedBlock);
-        programArea.addBlockToProgramArea(draggedBlock);
 
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
@@ -160,8 +160,6 @@ public class GUIBlockHandler {
      * @effect Delete the block from the program area if the dragged block came from the program area.
      */
     private void handleBlockToPalette() {
-        programArea.disconnectInProgramArea(draggedBlock);
-
         if (blockSourcePanel == palette) {
             draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
         }

@@ -5,7 +5,7 @@ import Controllers.ControllerClasses.ProgramController;
 import Controllers.Controls.Control;
 import Controllers.Controls.ProgramStepCommand;
 import Controllers.Controls.ResetControlFunctionality;
-import Controllers.GUItoSystemInterface;
+import Controllers.blockLinkDatabase;
 import Controllers.Initialiser;
 import Controllers.JarLoader;
 import GUI.Blocks.GUIBlock;
@@ -116,7 +116,7 @@ public class BlockrCanvas extends CanvasWindow {
         Initialiser initialiser = new Initialiser(gameWorldType, gameWorldType.createNewGameworld());
         PABlockHandler blockHandler = new PABlockHandler(initialiser.getSystemPaletteBlocks());
         //blockHandler.setMaxBlocks(30);
-        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        blockLinkDatabase converter = new blockLinkDatabase(blockHandler);
         connectionController = new ConnectionController(converter, blockHandler);
         programController = new ProgramController(converter, blockHandler);
     }

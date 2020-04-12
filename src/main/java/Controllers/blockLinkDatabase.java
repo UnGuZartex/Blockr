@@ -2,33 +2,12 @@ package Controllers;
 
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
-import System.Logic.ProgramArea.PABlockHandler;
 
 import java.util.*;
 
-public class GUItoSystemInterface {
+public class blockLinkDatabase {
 
-    private PABlockHandler blockHandler;
     private final HashMap<GUIBlock, Block> currentBlocks = new HashMap<>();
-
-    public GUItoSystemInterface(PABlockHandler blockHandler) {
-        this.blockHandler = blockHandler;
-    }
-
-    public void createNewBlock(int x, int y) {
-
-        if (factories.containsKey(id)) {
-            GUIBlock newBlock = factories.get(id).createBlock(id, x, y);
-            if (newBlock != null) {
-                currentBlocks.put(newBlock, blockHandler.getFromPalette(id));
-            }
-
-            return newBlock;
-        }
-        else {
-            throw new IllegalArgumentException("Invalid ID, choose between: " + factories.keySet());
-        }
-    }
 
     public Block getBlockFromGUIBlock(GUIBlock block) throws IllegalArgumentException {
 
@@ -48,6 +27,10 @@ public class GUItoSystemInterface {
         }
 
         return null;
+    }
+
+    public void addBlockPair(GUIBlock GUIBlock, Block block) {
+        currentBlocks.put(GUIBlock, block);
     }
 
     public void removeBlock(GUIBlock block) {

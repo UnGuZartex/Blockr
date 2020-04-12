@@ -1,7 +1,7 @@
 package GUI.Panel;
 
 import Controllers.ControllerClasses.ConnectionController;
-import Controllers.GUItoSystemInterface;
+import Controllers.blockLinkDatabase;
 import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.Factories.GUIFactory;
 import GUI.Blocks.Factories.MoveForwardGUIFactory;
@@ -22,7 +22,7 @@ class ProgramAreaPanelTest {
     int cornerX, cornerY, width, height;
     ProgramController controller;
     GUIBlock block;
-    GUItoSystemInterface converter;
+    blockLinkDatabase converter;
 
 
     @BeforeEach
@@ -32,7 +32,7 @@ class ProgramAreaPanelTest {
         width = 500;
         height = 800;
         PABlockHandler blockHandler = new PABlockHandler();
-        converter = new GUItoSystemInterface(blockHandler);
+        converter = new blockLinkDatabase(blockHandler);
         controller = new ProgramController(converter, blockHandler);
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();

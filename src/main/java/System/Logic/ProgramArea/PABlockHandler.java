@@ -38,12 +38,19 @@ public class PABlockHandler {
      */
     private int maxBlocks = 10;
 
+    /**
+     * Create a new program area block handler with a given list of starting palette blocks.
+     *
+     * @param paletteBlocks The given list of starting palette blocks.
+     *
+     * @effect A new palette is initialized with the given list of blocks.
+     */
     public PABlockHandler(List<Block> paletteBlocks) {
         palette = new Palette(paletteBlocks);
     }
 
     /**
-     * Checks whether or not the maximum number of blocks has been reached.
+     * Checks whether the maximum number of blocks has been reached.
      *
      * @return True if and only if the amount of blocks is smaller or equal
      *         to the maximum number of blocks.
@@ -55,18 +62,18 @@ public class PABlockHandler {
     /**
      * Get the block at the given index from the palette.
      *
-     * @param index The index of the wanted block in the palette
+     * @param index The index of the wanted block in the palette.
      *
-     * @return A block from the palette with given ID if the max
+     * @return A block from the palette at the given index if the max
      *         number of blocks has not been reached yet, otherwise
-     *         return null.
+     *         null is returned.
      */
     public Block getFromPalette(int index) {
         if (!hasReachedMaxBlocks()) {
             return palette.getNewBlock(index);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -94,10 +101,10 @@ public class PABlockHandler {
      *
      * @pre The given sub connector should be from a block which is in the program area.
      *
-     * @post The two blocks are connected.
-     */
-    /**
-     * TODO EFFECT
+     * @effect The given block is deleted as a program in the program area.
+     * @effect The two blocks are connected.
+     * @effect The root block of the newly connected block structure is added as a program,
+     *         if it isn't already.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
         PA.deleteProgram(block);
@@ -112,15 +119,12 @@ public class PABlockHandler {
      *
      * @param block The block to disconnect.
      *
-     * @pre The given block should be connected to a program in the
-     *      program area of this program area block handler.
-     * @pre The given block may not be the starting block of any program
-     *      in the program area of this program area block handler.
-     *
-     * @post The given block is disconnected.
+     * @effect The given block is disconnected on its main connector.
+     * @effect The given block is added as a program.
      */
     public void disconnectInPA(Block block) {
         connectionHandler.disconnect(block);
+        PA.addProgram(block);
         Update();
     }
 
@@ -129,9 +133,11 @@ public class PABlockHandler {
      *
      * @param block The starting block of the program to delete.
      *
-     * @post The given block is deleted from the program area.
+     * @effect The given block is disconnected on its main connector.
+     * @effect The given block is deleted from the program area.
      */
     public void deleteProgram(Block block) {
+        connectionHandler.disconnect(block);
         PA.deleteProgram(block);
         Update();
     }
@@ -142,7 +148,7 @@ public class PABlockHandler {
      *
      * @post The total number of blocks has been updated.
      *
-     * @effect The current program(s) in the program area are reset.
+     * @effect The program(s) in the program area are reset.
      */
     private void Update() {
         amountOfBlocks = PA.getAllBlocksCount();
@@ -159,7 +165,7 @@ public class PABlockHandler {
     }
 
     /**
-     * Checks whether or not the max number of blocks has
+     * Checks whether the max number of blocks has
      * been reached.
      *
      * @return True if and only if the amount of blocks is greater than or
@@ -167,9 +173,5 @@ public class PABlockHandler {
      */
     private boolean hasReachedMaxBlocks() {
         return amountOfBlocks >= maxBlocks;
-    }
-
-    public void setMaxBlocks(int maxBlocks) {
-        this.maxBlocks = maxBlocks;
     }
 }

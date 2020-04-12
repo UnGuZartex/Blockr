@@ -1,7 +1,7 @@
 package Controllers.ControllerClasses;
 
 
-import Controllers.GUItoSystemInterface;
+import Controllers.blockLinkDatabase;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.GameWorld;
@@ -11,27 +11,27 @@ import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
 
 
-public class ProgramController {
+public class ProgramController implements GUIBlockListener {
 
     private final GameWorld gameWorld;
-    private final GUItoSystemInterface converter;
+    private final blockLinkDatabase blockDatabase;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(GUItoSystemInterface converter, PABlockHandler blockHandler, GameWorld gameWorld) {
-        this.converter = converter;
+    public ProgramController(blockLinkDatabase blockDatabase, PABlockHandler blockHandler, GameWorld gameWorld) {
+        this.blockDatabase = blockDatabase;
         this.blockHandler = blockHandler;
         this.gameWorld = gameWorld;
     }
 
     public void addBlockToPA(GUIBlock block) {
-        Block toAdd = converter.getBlockFromGUIBlock(block);
+        Block toAdd = blockDatabase.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
         resetGameWorld();
     }
 
     public void deleteFromPA(GUIBlock block) {
-        Block toDelete = converter.getBlockFromGUIBlock(block);
-        converter.removeBlock(block);
+        Block toDelete = blockDatabase.getBlockFromGUIBlock(block);
+        blockDatabase.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
         resetGameWorld();
     }
@@ -39,14 +39,10 @@ public class ProgramController {
     public GUIBlock getHightlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
-            return converter.getGUIBlockFromBlock(program.getCurrentBlock());
+            return blockDatabase.getGUIBlockFromBlock(program.getCurrentBlock());
         }
 
         return null;
-    }
-
-    public GUIBlock getBlock(String ID, int x, int y) {
-        return converter.createNewGUIBlock(ID, x, y);
     }
 
     public void resetGameWorld() {
@@ -63,5 +59,10 @@ public class ProgramController {
 
     public void unsubscribeListener(ProgramListener listener) {
         blockHandler.getPA().unsubscribe(listener);
+    }
+
+    @Override
+    public void onGUIBlockCreated(GUIBlock block, int index) {
+        blockDatabase.addBlockPair(block, blockHandler.getFromPalette(index));
     }
 }

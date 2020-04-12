@@ -1,6 +1,6 @@
 package GUI.Panel;
 
-import Controllers.GUItoSystemInterface;
+import Controllers.blockLinkDatabase;
 import Controllers.ControllerClasses.ProgramController;
 import System.GameWorld.Level.LevelLoader;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -23,7 +23,7 @@ class GameWorldPanelTest {
         width = 500;
         height = 800;
         PABlockHandler blockHandler = new PABlockHandler();
-        GUItoSystemInterface converter = new GUItoSystemInterface(blockHandler);
+        blockLinkDatabase converter = new blockLinkDatabase(blockHandler);
         controller = new ProgramController(converter, blockHandler);
         LevelLoader loader = new LevelLoader();
         loader.loadLevel();

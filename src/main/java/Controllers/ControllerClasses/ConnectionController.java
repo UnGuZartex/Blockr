@@ -1,20 +1,18 @@
 package Controllers.ControllerClasses;
 
 
-import Controllers.GUItoSystemInterface;
+import Controllers.blockLinkDatabase;
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
-import System.Logic.ProgramArea.ConnectionHandler;
 import System.Logic.ProgramArea.PABlockHandler;
 
 public class ConnectionController {
 
-    private final GUItoSystemInterface converter;
+    private final blockLinkDatabase converter;
     private final PABlockHandler blockHandler;
 
-    public ConnectionController(GUItoSystemInterface converter, PABlockHandler blockHandler) {
+    public ConnectionController(blockLinkDatabase converter, PABlockHandler blockHandler) {
         this.converter = converter;
         this.blockHandler = blockHandler;
     }
