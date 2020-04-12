@@ -10,7 +10,6 @@ import Controllers.Initialiser;
 import Controllers.JarLoader;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
-import GUI.Images.ImagePreLoader;
 import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
@@ -47,7 +46,7 @@ public class BlockrCanvas extends CanvasWindow {
      * @param title Window title
      */
     // TODO exception throw (@throws)
-    protected BlockrCanvas(String title, int width, int height, String imagePackName) throws IOException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    protected BlockrCanvas(String title, int width, int height) throws IOException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         super(title);
 
         this.width = width;
@@ -56,16 +55,10 @@ public class BlockrCanvas extends CanvasWindow {
         JarLoader loader = new JarLoader();
         gameWorldType = loader.load();
 
-        GamePanel.setImageLibrary(ImagePreLoader.createImageLibrary(imagePackName));
-
         setControllers();
         setPanels();
         setControls();
         setBlockHandler();
-    }
-
-    protected BlockrCanvas(String title, int width, int height) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        this(title, width, height, "");
     }
 
     private void setPanels() {
@@ -115,7 +108,6 @@ public class BlockrCanvas extends CanvasWindow {
     private void setControllers() {
         Initialiser initialiser = new Initialiser(gameWorldType, gameWorldType.createNewGameworld());
         PABlockHandler blockHandler = new PABlockHandler(initialiser.getSystemPaletteBlocks());
-        //blockHandler.setMaxBlocks(30);
         blockLinkDatabase converter = new blockLinkDatabase(blockHandler);
         connectionController = new ConnectionController(converter, blockHandler);
         programController = new ProgramController(converter, blockHandler);

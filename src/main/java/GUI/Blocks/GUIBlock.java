@@ -119,6 +119,7 @@ public abstract class GUIBlock {
     public void setPosition(int x, int y) {
         int deltaX = x - this.x;
         int deltaY = y - this.y;
+
         // Translate the sub connectors
         for (GUIConnector connector: subConnectors) {
             CollisionCircle circle = connector.getCollisionCircle();
@@ -127,30 +128,31 @@ public abstract class GUIBlock {
                 connector.getConnectedGUIBlock().translate(deltaX, deltaY);
             }
         }
+
         // Translate main connector
         CollisionCircle circle = mainConnector.getCollisionCircle();
         circle.translate(deltaX, deltaY);
+
         // Translate the rectangles
         for (CollisionRectangle blockRectangle : blockRectangles) {
             blockRectangle.translate(deltaX, deltaY);
         }
+
         // Set the coordinates.
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Change the height of this block.
+     * Return the index of the given sub connector in the sub connector list.
      *
-     * @param heightDelta The height difference.
-     * @param previousBlock The previous block.
+     * @param subConnector The given sub connector.
+     *
+     * @return the index of the given sub connector in the sub connector list.
      */
-    protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
-
-    /**
-     * Set the shapes of this block.
-     */
-    protected abstract void setShapes();
+    public int getConnectorIndex(GUIConnector subConnector) {
+        return subConnectors.indexOf(subConnector);
+    }
 
     /**
      * Translate the position of this block with the given amount
@@ -238,21 +240,24 @@ public abstract class GUIBlock {
      *
      * @throws IllegalArgumentException When the given block does not have a colliding connector
      */
-    public void connectWithStaticBlock(GUIBlock other) throws IllegalArgumentException {
+    /**
+     * TODO commentaar
+     */
+    public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
 
         GUIConnector intersectingConnectorSub;
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
-        GUIBlock main;//, sub;
+        GUIBlock main, sub;
 
         if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
             main = this;
-            //sub = other;
+            sub = other;
             draggedBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
             staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
         else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
             main = other;
-            //sub = this;
+            sub = this;
             staticBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
             draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
         }
@@ -260,7 +265,7 @@ public abstract class GUIBlock {
             throw new IllegalArgumentException("Given block does not have a colliding connector!");
         }
 
-        //if (connectionController.isValidConnection(main, sub, intersectingConnectorSub.getId())) {
+        if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
             GUIBlock toChange = other;
             int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
             int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
@@ -271,9 +276,9 @@ public abstract class GUIBlock {
             }
             toChange.setPosition(x, y);
             main.mainConnector.connect(intersectingConnectorSub);
-            //connectionController.connectBlocks(main, sub, intersectingConnectorSub.getId());
+            connectionController.connectBlocks(main, sub, sub.getConnectorIndex(intersectingConnectorSub));
             toChange.changeHeight(main.getHeight(), main);
-        //}
+        }
     }
 
     /**
@@ -328,8 +333,25 @@ public abstract class GUIBlock {
         return blockRectangles.get(0).getColor();
     }
 
-    @Override
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
     public abstract GUIBlock clone();
+
+    /**
+     * Change the height of this block.
+     *
+     * @param heightDelta The height difference.
+     * @param previousBlock The previous block.
+     */
+    protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
+
+    /**
+     * Set the shapes of this block.
+     */
+    protected abstract void setShapes();
 
     /**
      * Check whether or not the any sub connector collides with the main connector.

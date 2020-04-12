@@ -21,7 +21,8 @@ public abstract class BlockFunctionality {
     protected final GameWorld gameWorld;
 
     /**
-     * Initialise a new block functionality
+     * Initialize a new block functionality.
+     *
      * @param gameWorld the game world this functionality is linked to
      */
     public BlockFunctionality(GameWorld gameWorld) {
@@ -31,7 +32,7 @@ public abstract class BlockFunctionality {
     /**
      * Get the evaluation of this functionality.
      *
-     * @return The evaluation of this functionality.
+     * @return the evaluation of this functionality.
      */
     public boolean getEvaluation() {
         return evaluation;
@@ -43,4 +44,13 @@ public abstract class BlockFunctionality {
      * @effect Evaluates this functionality on the given game world.
      */
     public abstract Result evaluate();
+
+    /**
+     * Return the game world linked to this functionality.
+     *
+     * @return the game world linked to this functionality.
+     */
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

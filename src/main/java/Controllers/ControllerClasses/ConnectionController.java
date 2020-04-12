@@ -4,6 +4,7 @@ package Controllers.ControllerClasses;
 import Controllers.blockLinkDatabase;
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.ProgramArea.PABlockHandler;
 
@@ -29,9 +30,9 @@ public class ConnectionController {
     }
 
     // TODO wegkrijgen met observers
-    /*public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
+    public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
         MainConnector mainConnector = converter.getBlockFromGUIBlock(withMain).getMainConnector();
         SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);
         return mainConnector.canHaveAsSubConnector(subConnector);
-    }*/
+    }
 }

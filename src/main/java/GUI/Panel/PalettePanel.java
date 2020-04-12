@@ -1,10 +1,8 @@
 package GUI.Panel;
 
-import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +55,7 @@ public class PalettePanel extends GamePanel {
         }
     }
 
-    public GUIBlock getNewBlock(int index) {
+    public GUIBlock getNewBlock(int index) throws IllegalArgumentException {
 
         if (index < 0 || index >= blocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
@@ -66,6 +64,12 @@ public class PalettePanel extends GamePanel {
         return blocks.get(index).clone();
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public int getSelectedBlockIndex(int x, int y) {
          return blocks.indexOf(blocks.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
     }

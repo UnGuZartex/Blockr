@@ -2,6 +2,8 @@ package GUI.Components;
 
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
+import System.BlockStructure.Connectors.SubConnector;
+
 import java.awt.*;
 
 /**
