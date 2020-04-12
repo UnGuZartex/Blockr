@@ -6,12 +6,11 @@ import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.Block;
-import System.GameWorld.Level.LevelLoader;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
 
 
-public class ProgramController implements GUIBlockListener {
+public class ProgramController {
 
     private final GameWorld gameWorld;
     private final blockLinkDatabase blockDatabase;
@@ -23,7 +22,8 @@ public class ProgramController implements GUIBlockListener {
         this.gameWorld = gameWorld;
     }
 
-    public void addBlockToPA(GUIBlock block) {
+    public void addBlockToPA(GUIBlock block, int index) {
+        blockDatabase.addBlockPair(block, blockHandler.getFromPalette(index));
         Block toAdd = blockDatabase.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
         resetGameWorld();
@@ -59,10 +59,5 @@ public class ProgramController implements GUIBlockListener {
 
     public void unsubscribeListener(ProgramListener listener) {
         blockHandler.getPA().unsubscribe(listener);
-    }
-
-    @Override
-    public void onGUIBlockCreated(GUIBlock block, int index) {
-        blockDatabase.addBlockPair(block, blockHandler.getFromPalette(index));
     }
 }

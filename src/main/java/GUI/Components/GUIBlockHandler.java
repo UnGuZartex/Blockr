@@ -25,6 +25,7 @@ public class GUIBlockHandler {
     private GUIBlock draggedBlock;
     private List<GUIBlock> draggedBlocks;
     private Position lastValidPosition, dragDelta;
+    private int draggedBlockIndex;
 
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
@@ -61,12 +62,12 @@ public class GUIBlockHandler {
      * @param y
      */
     private void handleMousePressed(int x, int y) {
-        boolean paletteBlockContainsMouse = AnyContains(palette.getBlocks(), x, y);
-        boolean programAreaContainsMouse = AnyContains(programArea.getBlocks(), x, y);
+        draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
+        boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
 
-        if (paletteBlockContainsMouse || programAreaContainsMouse) {
-            if (paletteBlockContainsMouse) {
-                draggedBlock = palette.getBlocks().stream().filter(b -> b.contains(x, y)).findAny().get();
+        if (programAreaContainsMouse || draggedBlockIndex >= 0) {
+            if (draggedBlockIndex >= 0) {
+                draggedBlock = palette.getNewBlock(draggedBlockIndex);
                 draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                 blockSourcePanel = palette;
             }
@@ -96,8 +97,8 @@ public class GUIBlockHandler {
                     handleBlockFromProgramAreaToProgramArea();
                 }
             }
-            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
-                handleBlockToPalette();
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == programArea) {
+                programArea.deleteBlockFromProgramArea(draggedBlocks);
             }
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
@@ -127,11 +128,7 @@ public class GUIBlockHandler {
      * todo
      */
     private void handleBlockFromPaletteToProgramArea() {
-        GUIBlock newBlock = palette.getNewBlock(draggedBlock);
-        draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-        programArea.addBlockToProgramArea(newBlock);
-        draggedBlock = newBlock;
-
+        programArea.addBlockToProgramArea(draggedBlock, draggedBlockIndex);
         Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
         connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
@@ -150,36 +147,6 @@ public class GUIBlockHandler {
                 break;
             }
         }
-    }
-
-    /**
-     * Handle the event where the dragged gui bock goes from a certain position to the palette
-     *
-     * @effect Disconnect the dragged block from its previous set of blocks.
-     * @effect Reset the position of the original palette block if the dragged block came from the palette.
-     * @effect Delete the block from the program area if the dragged block came from the program area.
-     */
-    private void handleBlockToPalette() {
-        if (blockSourcePanel == palette) {
-            draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-        }
-        else if (blockSourcePanel == programArea) {
-            programArea.deleteBlockFromProgramArea(draggedBlocks);
-        }
-    }
-
-    /**
-     * Return whether any block in the given list of gui blocks contains the point defined
-     * by the given x and y coordinate.
-     *
-     * @param blocks the given list of gui blocks
-     * @param x the given x-coordinate
-     * @param y the given y-coordinate
-     *
-     * @return whether any block in the given list of gui blocks contains the point.
-     */
-    private boolean AnyContains(List<GUIBlock> blocks, int x, int y) {
-        return blocks.stream().anyMatch(b -> b.contains(x, y));
     }
 
     /**

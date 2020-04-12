@@ -64,12 +64,18 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Add a block to the program area.
      *
      * @param block The block to add to the program area.
+     * @param
+     *
+     * @effect TODO commentaar
      */
-    public void addBlockToProgramArea(GUIBlock block) {
-        programController.addBlockToPA(block);
+    public void addBlockToProgramArea(GUIBlock block, int index) {
+
         if (!blocks.contains(block)) {
-            blocks.add(block);
+            throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
+
+        programController.addBlockToPA(block, index);
+        blocks.add(block);
     }
 
     /**

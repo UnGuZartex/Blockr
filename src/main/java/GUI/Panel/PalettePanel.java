@@ -18,7 +18,7 @@ public class PalettePanel extends GamePanel {
     /**
      * Variables referring to the blocks in this panel.
      */
-    public List<GUIBlock> blocks = new ArrayList<>();
+    public List<GUIBlock> blocks;
 
     private boolean reachedMaxBlocks;
 
@@ -45,15 +45,6 @@ public class PalettePanel extends GamePanel {
     }
 
     /**
-     * Get the blocks in this palette.
-     *
-     * @return A copy of the blocks in this palette.
-     */
-    public List<GUIBlock> getBlocks() {
-        return reachedMaxBlocks ? new ArrayList<>() : new ArrayList<>(blocks);
-    }
-
-    /**
      * Draw all the blocks in the panel.
      *
      * @param g The graphics to draw the blocks with.
@@ -66,6 +57,19 @@ public class PalettePanel extends GamePanel {
         }
     }
 
+    public GUIBlock getNewBlock(int index) {
+
+        if (index < 0 || index >= blocks.size()) {
+            throw new IllegalArgumentException("The given index is invalid for this palette!");
+        }
+
+        return blocks.get(index).clone();
+    }
+
+    public int getSelectedBlockIndex(int x, int y) {
+         return blocks.indexOf(blocks.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
+    }
+
     /**
      * Return the index of the given block in the palette if possible.
      *
@@ -74,13 +78,6 @@ public class PalettePanel extends GamePanel {
      * @return the index of the block in the palette. Returns -1 if the block is not present
      *         in the palette or if the palette has reached its max blocks capacity.
      */
-    public int getPaletteIndex(GUIBlock block) {
-        if (!reachedMaxBlocks) {
-            return blocks.indexOf(block);
-        }
-
-        return -1;
-    }
 
     /**
      * Paint this palette panel.
