@@ -4,6 +4,7 @@ package Controllers.ControllerClasses;
 import Controllers.blockLinkDatabase;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
+import GUI.Blocks.IGUIBlock;
 import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -22,21 +23,21 @@ public class ProgramController {
         this.gameWorld = gameWorld;
     }
 
-    public void addBlockToPA(GUIBlock block, int index) {
+    public void addBlockToPA(IGUIBlock block, int index) {
         blockDatabase.addBlockPair(block, blockHandler.getFromPalette(index));
         Block toAdd = blockDatabase.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
         resetGameWorld();
     }
 
-    public void deleteFromPA(GUIBlock block) {
+    public void deleteFromPA(IGUIBlock block) {
         Block toDelete = blockDatabase.getBlockFromGUIBlock(block);
         blockDatabase.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
         resetGameWorld();
     }
 
-    public GUIBlock getHightlightedBlock() {
+    public IGUIBlock getHightlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
             return blockDatabase.getGUIBlockFromBlock(program.getCurrentBlock());

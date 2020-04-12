@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public abstract class GUIBlock {
+public abstract class GUIBlock implements IGUIBlock {
 
     /**
      * Variables referring to the width, height and coordinates of this GUI block.

@@ -21,7 +21,7 @@ public class ProgramStepCommand implements ControlFunctionality {
         }
 
         programController.runProgramStep();
-        previousBlock = programController.getHightlightedBlock();
+        previousBlock = (GUIBlock) programController.getHightlightedBlock();
         if (previousBlock != null) {
             previousBlock.setColor(Color.red);
         }

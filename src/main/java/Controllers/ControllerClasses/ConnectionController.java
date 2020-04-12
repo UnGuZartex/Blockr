@@ -1,8 +1,7 @@
 package Controllers.ControllerClasses;
 
-
 import Controllers.blockLinkDatabase;
-import GUI.Blocks.GUIBlock;
+import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
@@ -18,19 +17,19 @@ public class ConnectionController {
         this.blockHandler = blockHandler;
     }
 
-    public void connectBlocks(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
+    public void connectBlocks(IGUIBlock withMain, IGUIBlock withSub, int subConnectorIndex) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
         SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);
         blockHandler.connectToExistingBlock(mainBlock, subConnector);
     }
 
-    public void disconnectBlock(GUIBlock withMain) {
+    public void disconnectBlock(IGUIBlock withMain) {
         Block mainBlock = converter.getBlockFromGUIBlock(withMain);
         blockHandler.disconnectInPA(mainBlock);
     }
 
     // TODO wegkrijgen met observers
-    public boolean isValidConnection(GUIBlock withMain, GUIBlock withSub, int subConnectorIndex) {
+    public boolean isValidConnection(IGUIBlock withMain, IGUIBlock withSub, int subConnectorIndex) {
         MainConnector mainConnector = converter.getBlockFromGUIBlock(withMain).getMainConnector();
         SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);
         return mainConnector.canHaveAsSubConnector(subConnector);
