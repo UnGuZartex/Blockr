@@ -36,12 +36,11 @@ public class GUIConditionalBlock extends GUIBlock {
     }
 
     /**
-     * Change the height of this block.
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
      *
-     * @param heightDelta The height difference.
-     * @param previousBlock The previous block.
-     *
-     * @post Nothing changed.
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
      */
     @Override
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
@@ -64,6 +63,11 @@ public class GUIConditionalBlock extends GUIBlock {
         mainConnector = new GUIConnector( this, 0, height / 2, Color.blue);
     }
 
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
     @Override
     public GUIBlock clone() {
         return new GUIConditionalBlock(name, x, y);

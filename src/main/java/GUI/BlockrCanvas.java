@@ -10,7 +10,6 @@ import Controllers.Initialiser;
 import Controllers.JarLoader;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
-import GUI.Panel.GamePanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
@@ -62,7 +61,7 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void setPanels() {
-        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, programController);
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
         gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height, programController);
     }

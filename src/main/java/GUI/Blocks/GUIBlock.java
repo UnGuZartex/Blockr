@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for GUI blocks.
+ * A class for representing graphical blocks.
  *
  * @author Alpha-team
  */
@@ -75,9 +75,11 @@ public abstract class GUIBlock implements IGUIBlock {
     }
 
     /**
-     * Get the height of this block.
+     * Calculate the total height of the block structure this block is connected to, starting
+     * from this block.
      *
-     * @return The height of this block.
+     * @return the total height of the block structure this block is connected to, starting
+     * from this block.
      */
     public int getHeight() {
         return height;
@@ -341,10 +343,11 @@ public abstract class GUIBlock implements IGUIBlock {
     public abstract GUIBlock clone();
 
     /**
-     * Change the height of this block.
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
      *
-     * @param heightDelta The height difference.
-     * @param previousBlock The previous block.
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
      */
     protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
 

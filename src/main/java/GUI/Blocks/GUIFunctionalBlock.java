@@ -10,7 +10,7 @@ import java.awt.*;
  *
  * @author Alpha-team
  */
-public class GUIFunctionalityBlock extends GUIBlock {
+public class GUIFunctionalBlock extends GUIBlock {
 
     /**
      * Variables referring to the default width and height of a block.
@@ -30,11 +30,20 @@ public class GUIFunctionalityBlock extends GUIBlock {
      *
      * @effect Calls super constructor with given parameters.
      */
-    public GUIFunctionalityBlock(String name, int x, int y) {
+    public GUIFunctionalBlock(String name, int x, int y) {
         super(name, x, y);
     }
 
-    // TODO doc
+    /**
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
+     *
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
+     *
+     * @effect If the main connector is connected to a block, this method is called on that connected block to
+     *         further propagate the height change call.
+     */
     @Override
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
         if (mainConnector.isConnected()) {
@@ -42,7 +51,13 @@ public class GUIFunctionalityBlock extends GUIBlock {
         }
     }
 
-    // TODO doc
+    /**
+     * Calculate the total height of the block structure this block is connected to, starting
+     * from this block.
+     *
+     * @return the height of this block if its lower sub connector is not connected to anything,
+     *         return this height + the additional height of its connected block otherwise.
+     */
     @Override
     public int getHeight() {
 
@@ -75,8 +90,13 @@ public class GUIFunctionalityBlock extends GUIBlock {
         subConnectors.add(lowerSubConnector);
     }
 
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
     @Override
     public GUIBlock clone() {
-        return new GUIFunctionalityBlock(name, x, y);
+        return new GUIFunctionalBlock(name, x, y);
     }
 }

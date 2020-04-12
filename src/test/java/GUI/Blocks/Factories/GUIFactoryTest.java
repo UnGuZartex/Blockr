@@ -105,7 +105,7 @@ class GUIFactoryTest {
     @Test
     void createBlock_MoveForward() {
         block = mfFactory.createBlock(mfID, xMf, yMf);
-        assertTrue(block instanceof  GUIFunctionalityBlock);
+        assertTrue(block instanceof GUIFunctionalBlock);
         assertEquals(mfID, block.getId());
         assertEquals(xMf, block.getX());
         assertEquals(yMf, block.getY());
@@ -114,7 +114,7 @@ class GUIFactoryTest {
     @Test
     void createBlock_TurnLeft() {
         block = tlFactory.createBlock(tlID, xTl, yTl);
-        assertTrue(block instanceof  GUIFunctionalityBlock);
+        assertTrue(block instanceof GUIFunctionalBlock);
         assertEquals(tlID, block.getId());
         assertEquals(xTl, block.getX());
         assertEquals(yTl, block.getY());
@@ -123,7 +123,7 @@ class GUIFactoryTest {
     @Test
     void createBlock_TurnRight() {
         block = trFactory.createBlock(trID, xTr, yTr);
-        assertTrue(block instanceof  GUIFunctionalityBlock);
+        assertTrue(block instanceof GUIFunctionalBlock);
         assertEquals(trID, block.getId());
         assertEquals(xTr, block.getX());
         assertEquals(yTr, block.getY());

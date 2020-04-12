@@ -51,12 +51,11 @@ public class GUIOperatorBlock extends GUIBlock {
     }
 
     /**
-     * Change the height of this operator block.
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
      *
-     * @param heightDelta The height difference.
-     * @param previousBlock The previous block.
-     *
-     * @post Nothing changes.
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
      */
     @Override
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
@@ -82,6 +81,11 @@ public class GUIOperatorBlock extends GUIBlock {
         subConnectors.add(subConnector);
     }
 
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
     @Override
     public GUIBlock clone() {
         return new GUIOperatorBlock(name, x, y);
