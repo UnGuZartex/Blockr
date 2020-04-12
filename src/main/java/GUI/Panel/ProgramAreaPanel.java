@@ -26,6 +26,9 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     private ConnectionController connectionController;
 
     /**
+     * TODO commentaar
+     */
+    /**
      * Initialise a new program area panel with given corner, dimensions and controller.
      *
      * @param cornerX The x coordinate for the corner of this panel.
@@ -141,28 +144,24 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Draw the background of this panel.
-     *
-     * @param g The graphics to draw the background with.
-     */
-    @Override
-    protected void drawBackground(Graphics g) {
-        g.drawImage(library.getProgramAreaBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        panelRectangle.paintNonFill(g);
-    }
-
-    /**
      * Event to call if the game has finished
      *
-     * @param result the result of the game
+     * @param result The result of the game
+     *
+     * @effect The colors of the blocks are changed to green if the player reached its goal
+     *         during the game, orange otherwise.
      */
     @Override
     public void onGameFinished(Result result) {
-        if (result == Result.FAILURE) {
-            changeBlockColors(Color.orange);
-        }
-        else if (result == Result.END) {
-            changeBlockColors(Color.green);
+        switch (result) {
+            case END:
+                changeBlockColors(Color.green);
+                break;
+
+            case FAILURE:
+            case SUCCES:
+                changeBlockColors(Color.orange);
+                break;
         }
     }
 

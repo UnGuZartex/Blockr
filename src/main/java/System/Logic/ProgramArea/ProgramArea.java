@@ -75,6 +75,9 @@ public class ProgramArea {
      * @effect The observer notifies its listeners whether the game is won or not
      *         when the program is fully finished executing.
      */
+    /**
+     * TODO commentaar
+     */
     public void runProgramStep() {
         if (programs.size() == 1) {
             Program program = programs.get(0);

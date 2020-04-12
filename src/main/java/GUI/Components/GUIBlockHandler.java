@@ -41,15 +41,15 @@ public class GUIBlockHandler {
      */
     public void handleMouseEvent(int id, int x, int y) {
         switch (id) {
-            case (MouseEvent.MOUSE_PRESSED):
+            case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
                 break;
 
-            case (MouseEvent.MOUSE_RELEASED):
+            case MouseEvent.MOUSE_RELEASED:
                 handleMouseReleased();
                 break;
 
-            case (MouseEvent.MOUSE_DRAGGED):
+            case MouseEvent.MOUSE_DRAGGED:
                 handleMouseDragged(x, y);
                 break;
         }

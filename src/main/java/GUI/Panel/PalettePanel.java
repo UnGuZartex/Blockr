@@ -92,17 +92,6 @@ public class PalettePanel extends GamePanel {
         drawBackground(g);
     }
 
-    /**
-     * Draw the background of this panel.
-     *
-     * @param g The graphics to draw the background with.
-     */
-    @Override
-    protected void drawBackground(Graphics g) {
-        g.drawImage(library.getPaletteBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        panelRectangle.paintNonFill(g);
-    }
-
     // TODO via observer
     private void updatePalette(boolean reachedMaxBlocks) {
         this.reachedMaxBlocks = reachedMaxBlocks;

@@ -2,8 +2,6 @@ package GUI.Panel;
 
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
-import GUI.Components.GUIGrid;
-import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 
 import java.awt.*;
@@ -14,8 +12,6 @@ import java.awt.*;
  * @author Alpha-team
  */
 public class GameWorldPanel extends GamePanel implements ProgramListener {
-
-    private GameWorld
 
     /**
      * Variable referring to the game state.
@@ -35,10 +31,12 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
      * @effect subscribes this panel as a listener to the controller.
      * @effect The grid is initialised to a new grid with given coordinates and dimensions.
      */
+    /**
+     * TODO commentaar
+     */
     public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
         controller.subscribeListener(this);
-        GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
     }
 
     /**
@@ -62,19 +60,10 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
-        GUIGrid.paint(g, library);
+        /**
+         * TODO level tekenen?
+         */
         drawGameState(g);
-    }
-
-    /**
-     * Draw the background of this panel.
-     *
-     * @param g The graphics to draw the background with.
-     */
-    @Override
-    protected void drawBackground(Graphics g) {
-        g.drawImage(library.getGameWorldBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        panelRectangle.paintNonFill(g);
     }
 
     /**
@@ -91,24 +80,25 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Event to call when the game has been won.
+     * Event to call if the game has finished
+     *
+     * @param result The result of the game
+     *
+     * @effect The game state text is changed depending on if the player reached its goal
+     *         during the game or not.
      */
-    @Override
-    public void onGameWon() {
-        gameState = "YOU WIN!  :)";
-    }
-
-    /**
-     * Event to call when the game has been lost.
-     */
-    @Override
-    public void onGameLost() {
-        gameState = "YOU LOSE!  :(";
-    }
-
     @Override
     public void onGameFinished(Result result) {
+        switch (result) {
+            case END:
+                gameState = "YOU WIN!  :)";
+                break;
 
+            case FAILURE:
+            case SUCCES:
+                gameState = "YOU LOSE!  :(";
+                break;
+        }
     }
 
     /**
