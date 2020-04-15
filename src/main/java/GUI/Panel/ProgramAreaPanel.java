@@ -71,12 +71,24 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      */
     public void addBlockToProgramArea(GUIBlock block, int index) {
 
+        if (!blocks.contains(block)) {
+            throw new IllegalStateException("todo");
+        }
+
+        programController.addBlockToPA(block, index);
+    }
+
+    public void addVisualBlock(GUIBlock block) {
+
         if (blocks.contains(block)) {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        programController.addBlockToPA(block, index);
         blocks.add(block);
+    }
+
+    public void removeVisualBlock(GUIBlock block) {
+        blocks.remove(block);
     }
 
     /**
@@ -102,7 +114,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         blocks.removeAll(GUIBlocks);
-        for (GUIBlock block:GUIBlocks) {
+
+        for (GUIBlock block : GUIBlocks) {
             programController.deleteFromPA(block);
         }
     }

@@ -65,11 +65,12 @@ public class GUIBlockHandler {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
 
-        if (programAreaContainsMouse || draggedBlockIndex >= 0) {
-            if (draggedBlockIndex >= 0) {
+        if (programAreaContainsMouse || draggedBlockIndex != -1) {
+            if (draggedBlockIndex != -1) {
                 draggedBlock = palette.getNewBlock(draggedBlockIndex);
                 draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                 blockSourcePanel = palette;
+                programArea.addVisualBlock(draggedBlock);
             }
             else {
                 draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
@@ -97,8 +98,14 @@ public class GUIBlockHandler {
                     handleBlockFromProgramAreaToProgramArea();
                 }
             }
-            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == programArea) {
-                programArea.deleteBlockFromProgramArea(draggedBlocks);
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
+                if (blockSourcePanel == programArea) {
+                    programArea.disconnectInProgramArea(draggedBlock);
+                    programArea.deleteBlockFromProgramArea(draggedBlocks);
+                }
+                else {
+                    programArea.removeVisualBlock(draggedBlock);
+                }
             }
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
