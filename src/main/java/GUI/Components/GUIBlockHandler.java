@@ -108,6 +108,9 @@ public class GUIBlockHandler {
                 }
             }
             else {
+                if (blockSourcePanel == palette) {
+                    programArea.removeVisualBlock(draggedBlock);
+                }
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 draggedBlock.resetHeight();
             }
