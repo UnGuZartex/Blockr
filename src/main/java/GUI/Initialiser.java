@@ -4,13 +4,11 @@ import Controllers.BlockLinkDatabase;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.JarLoader;
-import GUI.BlockrCanvas;
-import GUI.Blocks.GUIBlock;
-import GUI.Blocks.GUICavityBlock;
-import GUI.Blocks.GUIConditionalBlock;
-import GUI.Blocks.GUIFunctionalBlock;
+import GUI.Blocks.*;
 import GameWorldAPI.GameWorld.GameWorld;
-import GameWorldAPI.GameWorldType.*;
+import GameWorldAPI.GameWorldType.Action;
+import GameWorldAPI.GameWorldType.GameWorldType;
+import GameWorldAPI.GameWorldType.Predicate;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
@@ -52,7 +50,7 @@ public class Initialiser {
     private void initialiseDefaultBlocks() {
         defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock(new CavityFunctionality(gameWorld)));
         defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock(new CavityFunctionality(gameWorld)));
-        defaultBlocks.put(new GUICavityBlock("Not", 0, 0), new NotBlock(new NotFunctionality(gameWorld)));
+        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock(new NotFunctionality(gameWorld)));
     }
 
     private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {

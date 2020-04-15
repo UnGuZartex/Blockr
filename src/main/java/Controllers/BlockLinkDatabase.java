@@ -51,8 +51,7 @@ public class BlockLinkDatabase {
                 return entry.getKey();
             }
         }
-
-        throw new IllegalArgumentException("The given graphical block is linked to any graphical block.");
+        throw new IllegalArgumentException("The given system block is not linked to any graphical block.");
     }
 
     /**

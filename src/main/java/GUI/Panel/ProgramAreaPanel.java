@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * TODO FIX DRAW VAN PALETTE NAAR PA
  * A class for the panel of the program area. This panel can listen
  * to the program.
  *
@@ -70,7 +71,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      */
     public void addBlockToProgramArea(GUIBlock block, int index) {
 
-        if (!blocks.contains(block)) {
+        if (blocks.contains(block)) {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 

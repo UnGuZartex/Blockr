@@ -38,7 +38,10 @@ public class ProgramController {
     public IGUIBlock getHightlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
-            return blockDatabase.getGUIBlockFromBlock(program.getCurrentBlock());
+            Block hightlightedBlock = program.getCurrentBlock();
+            if (hightlightedBlock != null) {
+                return blockDatabase.getGUIBlockFromBlock(hightlightedBlock);
+            }
         }
 
         return null;
