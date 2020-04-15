@@ -23,7 +23,21 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Variable referring to the blocks in the program area panel.
      */
     private List<GUIBlock> blocks = new ArrayList<>();
+
+    /**
+     * Variable referring to the block that is currently being dragged from the palette
+     * and may or may not end up inside the program area.
+     */
+    private GUIBlock temporaryBlock;
+
+    /**
+     * Variable referring to the program controller.
+     */
     private ProgramController programController;
+
+    /**
+     * Variable referring to the connection controller.
+     */
     private ConnectionController connectionController;
 
     /**
@@ -53,10 +67,10 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         programController.subscribeListener(this);
     }
 
-    public ProgramController getProgramController() {
-        return programController;
-    }
-
+    /**
+     * TODO wegkrijgen?
+     * @return
+     */
     public ConnectionController getConnectionController() {
         return connectionController;
     }
@@ -69,26 +83,22 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @effect TODO commentaar
      */
-    public void addBlockToProgramArea(GUIBlock block, int index) {
+    public void addTemporaryBlockToProgramArea(int index) {
 
-        if (!blocks.contains(block)) {
-            throw new IllegalStateException("todo");
+        if (temporaryBlock == null) {
+            throw new IllegalStateException("");
         }
 
-        programController.addBlockToPA(block, index);
-    }
-
-    public void addVisualBlock(GUIBlock block) {
-
-        if (blocks.contains(block)) {
+        if (blocks.contains(temporaryBlock)) {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        blocks.add(block);
+        blocks.add(temporaryBlock);
+        programController.addBlockToPA(temporaryBlock, index);
     }
 
-    public void removeVisualBlock(GUIBlock block) {
-        blocks.remove(block);
+    public void setTemporaryBlock(GUIBlock block) {
+        temporaryBlock = block;
     }
 
     /**
@@ -143,17 +153,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Draw all the blocks in the program area.
-     *
-     * @param g The graphics to draw the blocks with.
-     */
-    public void drawBlocks(Graphics g) {
-        for (GUIBlock block : blocks) {
-            block.paint(g);
-        }
-    }
-
-    /**
      * Paint this panel.
      *
      * @param g The graphics to paint this panel with.
@@ -161,6 +160,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
+        drawBlocks(g);
     }
 
     /**
@@ -223,6 +223,21 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     private void changeBlockColors(Color color) {
         for (GUIBlock block : blocks) {
             block.setColor(color);
+        }
+    }
+
+    /**
+     * Draw all the blocks in the program area + the temporary block if it isn't null.
+     *
+     * @param g The graphics to draw the blocks with.
+     */
+    private void drawBlocks(Graphics g) {
+        for (GUIBlock block : blocks) {
+            block.paint(g);
+        }
+
+        if (temporaryBlock != null) {
+            temporaryBlock.paint(g);
         }
     }
 }

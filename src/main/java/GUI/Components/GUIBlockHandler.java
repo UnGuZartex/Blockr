@@ -13,20 +13,62 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A class used to handle GUI blocks.
+ * A class used to handle the movement of GUI blocks between the
+ * palette and program area panels.
  *
  * @author Alpha-team
  */
 public class GUIBlockHandler {
 
+    /**
+     * Variable referring to the palette panel.
+     */
     private final PalettePanel palette;
+
+    /**
+     * Variable referring to the program area panel.
+     */
     private final ProgramAreaPanel programArea;
+
+    /**
+     * Variable referring to the panel where the current dragged block was first moved from.
+     */
     private GamePanel blockSourcePanel;
+
+    /**
+     * Variable referring to the current dragged block.
+     */
     private GUIBlock draggedBlock;
+
+    /**
+     * Variable referring to the blocks connected to the current dragged block.
+     */
     private List<GUIBlock> draggedBlocks;
-    private Position lastValidPosition, dragDelta;
+
+    /**
+     * Variable referring to the last valid position of the current dragged block.
+     */
+    private Position lastValidPosition;
+
+    /**
+     * Variable referring to the relation between the mouse and the current dragged block.
+     */
+    private Position dragDelta;
+
+    /**
+     * Variable referring to the index of the current dragged block inside the palette.
+     */
     private int draggedBlockIndex;
 
+    /**
+     * Create a new gui block handler with a given palette and program area panel.
+     *
+     * @param palette The given palette panel.
+     * @param programArea The given program area panel.
+     *
+     * @post The current palette panel is set to the given palette panel.
+     * @post The current program area panel is set to the given program area panel.
+     */
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
         this.programArea = programArea;
@@ -34,11 +76,12 @@ public class GUIBlockHandler {
 
     /**
      * Handle the current mouse event with the given id, x and y coordinate.
+     *
      * @param id the given mouse event id
      * @param x the given mouse x-coordinate
      * @param y the given mouse y-coordinate
      *
-     * @effect The right mouse event is handled accordingly.
+     * @effect The mouse event is handled accordingly depending on the given id.
      */
     public void handleMouseEvent(int id, int x, int y) {
         switch (id) {
@@ -57,9 +100,22 @@ public class GUIBlockHandler {
     }
 
     /**
-     * todo
-     * @param x
-     * @param y
+     * Handle the event where the mouse is pressed depending on
+     * where the mouse was pressed.
+     *
+     * @param x the given mouse x-coordinate
+     * @param y the given mouse y-coordinate
+     *
+     * @post If the mouse collides with a block, the dragged block is set to
+     *       the block the mouse collides with.
+     * @post The list of dragged blocks is set to the blocks connected to the current dragged block.
+     * @post The palette index is set to the index of the dragged block inside the palette, if possible.
+     * @post The drag delta of the dragged block is set accordingly.
+     * @post The last valid position of the dragged block is set accordingly.
+     * @post The source panel where the dragged block came from is set accordingly.
+     *
+     * @effect If the mouse was pressed in the program area on a block, a temporary block is set
+     *         in the program area.
      */
     private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
@@ -70,7 +126,7 @@ public class GUIBlockHandler {
                 draggedBlock = palette.getNewBlock(draggedBlockIndex);
                 draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                 blockSourcePanel = palette;
-                programArea.addVisualBlock(draggedBlock);
+                programArea.setTemporaryBlock(draggedBlock);
             }
             else {
                 draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
@@ -86,7 +142,19 @@ public class GUIBlockHandler {
     }
 
     /**
-     * todo
+     * Handle the event where the mouse is released depending on
+     * where the mouse was pressed the first time and where it was released.
+     *
+     * @post The dragged block is set to null.
+     * @post The list of dragged blocks is set to null.
+     *
+     * @effect The temporary block in the program area is set to null.
+     * @effect If the dragged block is placed on an illegal position, the block is set to its
+     *         last known location and the height of the structure containing the block is reset
+     *         to before the block was disconnected.
+     * @effect If the dragged block is dragged to the program area, the event is handled accordingly.
+     * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
+     *         and deletes the block from the program area.
      */
     private void handleMouseReleased() {
         if (draggedBlock != null) {
@@ -98,23 +166,16 @@ public class GUIBlockHandler {
                     handleBlockFromProgramAreaToProgramArea();
                 }
             }
-            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks)) {
-                if (blockSourcePanel == programArea) {
-                    programArea.disconnectInProgramArea(draggedBlock);
-                    programArea.deleteBlockFromProgramArea(draggedBlocks);
-                }
-                else {
-                    programArea.removeVisualBlock(draggedBlock);
-                }
+            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == programArea) {
+                programArea.disconnectInProgramArea(draggedBlock);
+                programArea.deleteBlockFromProgramArea(draggedBlocks);
             }
             else {
-                if (blockSourcePanel == palette) {
-                    programArea.removeVisualBlock(draggedBlock);
-                }
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 draggedBlock.resetHeight();
             }
 
+            programArea.setTemporaryBlock(null);
             draggedBlock = null;
             draggedBlocks = null;
         }
@@ -135,16 +196,23 @@ public class GUIBlockHandler {
     }
 
     /**
-     * todo
+     * Handle the event where the mouse is dragged from the palette to the program area.
+     *
+     * @effect The dragged block that came from the palette is added to the program area.
+     * @effect The dragged block is connected with other blocks if possible.
      */
     private void handleBlockFromPaletteToProgramArea() {
-        programArea.addBlockToProgramArea(draggedBlock, draggedBlockIndex);
+        programArea.addTemporaryBlockToProgramArea(draggedBlockIndex);
         Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
         connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
     /**
-     * todo
+     * Handle the event where the mouse is dragged from the program area to the program area.
+     *
+     * @effect The dragged block is disconnected in the program area.
+     * @effect The dragged block and each of the blocks connected to that block are connected with other
+     *         blocks if possible.
      */
     private void handleBlockFromProgramAreaToProgramArea() {
         programArea.disconnectInProgramArea(draggedBlock);

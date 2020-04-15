@@ -3,7 +3,7 @@ package Controllers;
 import GameWorldAPI.GameWorld.Result;
 
 /**
- * A class used as a listener for receiving events about the program state.
+ * An interface used as a listener for receiving events about the program state.
  *
  * @author Alpha-team
  */
@@ -11,6 +11,7 @@ public interface ProgramListener {
 
     /**
      * This event is called when the game run by the program has finished.
+     *
      * @param result the result of the game
      */
     void onGameFinished(Result result);
