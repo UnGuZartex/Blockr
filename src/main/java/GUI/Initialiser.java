@@ -9,6 +9,8 @@ import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.Action;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldAPI.GameWorldType.Predicate;
+import Images.ImageLibrary;
+import Images.ImageLoader;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
@@ -16,8 +18,8 @@ import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.PABlockHandler;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +32,14 @@ public class Initialiser {
     private List<Block> systemPaletteBlocks = new ArrayList<>();
     private List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
 
-    public Initialiser() throws NoSuchMethodException, IllegalAccessException, InstantiationException, MalformedURLException, InvocationTargetException, ClassNotFoundException {
+    public Initialiser() throws NoSuchMethodException, IllegalAccessException, InstantiationException, IOException, InvocationTargetException, ClassNotFoundException {
         JarLoader loader = new JarLoader();
         GameWorldType gameWorldType = loader.load();
         initialiseDefaultBlocks();
         initialisePalettesAndGameWorld(gameWorldType);
+        //TODO kijken waar dit gebruiken
+        ImageLoader imageLoader = new ImageLoader();
+        ImageLibrary images = imageLoader.createImageLibrary();
     }
 
     public BlockrCanvas createNewCanvas() {
