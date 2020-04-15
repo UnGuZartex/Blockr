@@ -84,6 +84,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     @Override
     public boolean hasNext() {
         if (getFunctionality().getEvaluation()) {
+            System.out.println("CONNECTED?: " + getCavitySubConnector().isConnected());
             return getCavitySubConnector().isConnected();
         }
         else {
@@ -139,9 +140,6 @@ public abstract class CavityBlock extends FunctionalBlock {
             }
             return getNewReturnBlock();
         }
-//        else if (getCavitySubConnector().isConnected()) {
-//            getCavitySubConnector().getConnectedBlock().reset();
-//        }
 
         return super.getNext();
     }

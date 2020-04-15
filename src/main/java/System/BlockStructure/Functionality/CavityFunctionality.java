@@ -34,7 +34,9 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
             BlockFunctionality functionality = block.getCondition().getFunctionality();
             functionality.evaluate();
             evaluation = functionality.getEvaluation();
+            System.out.println("FUNC EVAL: " + evaluation);
         } catch (NullPointerException e) {
+            System.out.println("oeie error");
             evaluation = false;
         }
 

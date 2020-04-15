@@ -129,8 +129,8 @@ public class GUICavityBlock extends GUIBlock {
         cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
         lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
         conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, Color.red);
-        subConnectors.add(cavityConnector);
         subConnectors.add(lowerSubConnector);
+        subConnectors.add(cavityConnector);
         subConnectors.add(conditionalConnector);
     }
 

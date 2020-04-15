@@ -19,7 +19,6 @@ public class WhileBlock extends CavityBlock {
         super(functionality);
     }
 
-
     @Override
     protected Block getNewReturnBlock() {
         return this;
