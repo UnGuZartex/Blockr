@@ -1,6 +1,8 @@
 package System.Logic.ProgramArea;
 
-import GameWorldUtility.MoveForwardAction;
+import GameWorld.Level;
+import GameWorldUtility.LevelInitializer;
+import GameWorldUtility.Actions.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
@@ -14,16 +16,21 @@ class ProgramAreaTest {
 
     ProgramArea pa0, pa1, pa2;
     Block start1, start2a, start2b;
+    Level level;
 
     @BeforeEach
     void setUp() {
+
+        LevelInitializer init = new LevelInitializer();
+        level = (Level) init.createNewGameWorld();
+
         pa0 = new ProgramArea();
         pa1 = new ProgramArea();
         pa2 = new ProgramArea();
 
-        start1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        start2a = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        start2b = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        start1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        start2a = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        start2b = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
 
         pa1.addProgram(start1);
         pa2.addProgram(start2a);
@@ -51,7 +58,7 @@ class ProgramAreaTest {
 
     @Test
     void addProgram_ValidProgram() {
-        Block block = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        Block block = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
         pa0.addProgram(block); // No error may be thrown
         assertEquals(block, pa0.getProgram().getStartBlock());
     }

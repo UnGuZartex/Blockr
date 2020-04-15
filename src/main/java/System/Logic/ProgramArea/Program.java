@@ -25,7 +25,7 @@ public class Program {
     /**
      * Variable referring to the result of the last executed step in the program.
      */
-    private Result lastResult = Result.SUCCES;
+    private Result lastResult = Result.SUCCESS;
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -75,7 +75,7 @@ public class Program {
      *         or if the last result of executing the program is not a SUCCESS.
      */
     public boolean isFinished() {
-        return currentBlock == null || lastResult != Result.SUCCES;
+        return currentBlock == null || lastResult != Result.SUCCESS;
     }
 
     /**

@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.blockLinkDatabase;
+import Controllers.BlockLinkDatabase;
 import Controllers.ProgramListener;
 import GUI.Blocks.IGUIBlock;
 import GameWorldAPI.GameWorld.GameWorld;
@@ -12,10 +12,10 @@ import System.Logic.ProgramArea.Program;
 public class ProgramController {
 
     private final GameWorld gameWorld;
-    private final blockLinkDatabase blockDatabase;
+    private final BlockLinkDatabase blockDatabase;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(blockLinkDatabase blockDatabase, PABlockHandler blockHandler, GameWorld gameWorld) {
+    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler, GameWorld gameWorld) {
         this.blockDatabase = blockDatabase;
         this.blockHandler = blockHandler;
         this.gameWorld = gameWorld;
@@ -45,7 +45,7 @@ public class ProgramController {
     }
 
     public void resetGameWorld() {
-        gameWorld.reset();
+        //TODO
     }
 
     public void runProgramStep() {

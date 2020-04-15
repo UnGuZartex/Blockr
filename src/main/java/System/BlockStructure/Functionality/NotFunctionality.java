@@ -36,6 +36,6 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
         BlockFunctionality functionality = block.getNext().getFunctionality();
         functionality.evaluate();
         evaluation = !functionality.getEvaluation();
-        return Result.SUCCES;
+        return Result.SUCCESS;
     }
 }

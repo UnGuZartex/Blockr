@@ -174,4 +174,12 @@ public class PABlockHandler {
     private boolean hasReachedMaxBlocks() {
         return amountOfBlocks >= maxBlocks;
     }
+
+    /**
+     * Sets the max number of blocks of this PAHandler
+     * @param maxBlocks the amount of blocks to set
+     */
+    protected void setMaxBlocks(int maxBlocks) {
+        this.maxBlocks = maxBlocks;
+    }
 }

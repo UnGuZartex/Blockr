@@ -123,8 +123,6 @@
             <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>be.kuleuven.cs.som</groupId>
             <artifactId>annotate</artifactId>

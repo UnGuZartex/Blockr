@@ -1,8 +1,5 @@
 package GUI.Blocks;
 
-import GUI.Blocks.Factories.MoveForwardGUIFactory;
-import GUI.Blocks.Factories.NotGUIFactory;
-import GUI.Blocks.Factories.WallInFrontGUIFactory;
 import GUI.CollisionShapes.CollisionRectangle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +27,7 @@ class GUIConditionalBlockTest {
         y1 = random.nextInt(MAX_Y) + 1;
 
         id1 = "Cond1";
-
-        WallInFrontGUIFactory factory = new WallInFrontGUIFactory();
-        cond1 = factory.createBlock(id1, x1, y1);
+        cond1 = new GUIConditionalBlock(id1, x1, y1);
     }
 
     @AfterEach
@@ -54,7 +49,7 @@ class GUIConditionalBlockTest {
 
     @Test
     void getId() {
-        assertEquals(id1, cond1.getId());
+        assertEquals(id1, cond1.name);
     }
 
     @Test
@@ -125,16 +120,15 @@ class GUIConditionalBlockTest {
 
     @Test
     void intersectsWithConnector() {
-        MoveForwardGUIFactory f = new MoveForwardGUIFactory();
-        block = f.createBlock("id", x1, y1);
+
+        block = new GUIFunctionalBlock("id", x1, y1);
         assertFalse(cond1.intersectsWithConnector(block));
     }
 
 
     @Test
     void disconnectMainConnector() {
-        NotGUIFactory nf = new NotGUIFactory();
-        GUIOperatorBlock not = nf.createBlock("0", 0,0);
+        GUIOperatorBlock not = new GUIOperatorBlock("0", 0,0);
         not.subConnectors.get(0).connect(cond1.mainConnector);
         assertTrue(cond1.mainConnector.isConnected());
         assertTrue(not.subConnectors.get(0).isConnected());

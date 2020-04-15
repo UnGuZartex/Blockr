@@ -1,6 +1,9 @@
 package System.BlockStructure.Blocks;
 
-import GameWorldUtility.WallInFrontPredicate;
+import GameWorld.Level;
+import GameWorldUtility.LevelInitializer;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
+import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -16,10 +19,13 @@ class StatementBlockTest {
 
     @BeforeEach
     void setUp() {
-        block1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        block2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        LevelInitializer init = new LevelInitializer();
+        Level level = (Level) init.createNewGameWorld();
 
-        cavoc = new IfBlock();
+        block1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+        block2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+
+        cavoc = new IfBlock(new CavityFunctionality(level));
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(block1, cavoc.getConditionalSubConnector());
     }

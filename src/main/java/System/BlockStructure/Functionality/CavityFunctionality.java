@@ -38,7 +38,7 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
             evaluation = false;
         }
 
-        return Result.SUCCES;
+        return Result.SUCCESS;
     }
 
 }

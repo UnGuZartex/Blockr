@@ -16,6 +16,6 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
     @Override
     public Result evaluate() {
         evaluation = gameWorld.evaluatePredicate(predicate);
-        return Result.SUCCES;
+        return Result.SUCCESS;
     }
 }

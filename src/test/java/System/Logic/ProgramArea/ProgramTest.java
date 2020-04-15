@@ -1,12 +1,21 @@
 package System.Logic.ProgramArea;
 
-import System.BlockStructure.Blocks.*;
-import System.GameState.GameState;
-import System.GameWorld.Cell;
-import System.GameWorld.CellType;
-import System.GameWorld.Direction;
-import System.GameWorld.Level.Level;
-import Utility.Position;
+import GameWorld.Cell;
+import GameWorld.CellType;
+import GameWorld.Grid;
+import GameWorld.Level;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Actions.TurnLeftAction;
+import RobotCollection.Robot.Robot;
+import RobotCollection.Utility.Direction;
+import RobotCollection.Utility.GridPosition;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Blocks.IfBlock;
+import System.BlockStructure.Blocks.NotBlock;
+import System.BlockStructure.Blocks.OperationalBlock;
+import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
+import System.BlockStructure.Functionality.NotFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,11 +30,12 @@ class ProgramTest {
     FunctionalBlock moveForwardComplete, moveForward1, turnLeftComplete;
     IfBlock incompleteBlock;
     OperationalBlock not;
+    Level level;
 
     @BeforeEach
     void setUp() {
-        GameState.setCurrentLevel(new Level(new Position(1,1), Direction.LEFT,
-                new Cell[][] {
+        level = new Level(new Robot(new GridPosition(1,1), Direction.LEFT),
+                new Grid(new Cell[][] {
                         {new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)},
                         {new Cell(CellType.WALL), new Cell(CellType.BLANK), new Cell(CellType.GOAL)},
                         {new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)},
@@ -33,11 +43,11 @@ class ProgramTest {
 
         handler = new ConnectionHandler();
 
-        moveForwardComplete = new MoveForwardBlock();
-        moveForward1 = new MoveForwardBlock();
-        incompleteBlock = new IfBlock();
-        not = new NotBlock();
-        turnLeftComplete = new TurnLeftBlock();
+        moveForwardComplete = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        moveForward1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        incompleteBlock = new IfBlock(new CavityFunctionality(level));
+        not = new NotBlock(new NotFunctionality(level));
+        turnLeftComplete = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction(), level));
 
         handler.connect(moveForwardComplete, turnLeftComplete.getSubConnectorAt(0));
         handler.connect(not, incompleteBlock.getConditionalSubConnector());
@@ -49,8 +59,6 @@ class ProgramTest {
 
     @AfterEach
     void tearDown() {
-        GameState.setCurrentLevel(null);
-
         handler = null;
         moveForwardComplete = null;
         incompleteBlock = null;
@@ -64,12 +72,6 @@ class ProgramTest {
     @Test
     void executeStep_InvalidProgram() {
         assertThrows(IllegalStateException.class, () -> { invalidProgram.executeStep(); });
-    }
-
-    @Test
-    void executeStep_NoLevelLoaded() {
-        GameState.setCurrentLevel(null);
-        assertThrows(IllegalStateException.class, () -> { validProgram.executeStep(); });
     }
 
     @Test
@@ -106,23 +108,6 @@ class ProgramTest {
         validProgram.executeStep();
         assertNull(validProgram.getCurrentBlock());
     }
-
-//    @Test
-//    void resetProgram() {
-//        validProgram.executeStep();
-//        assertTrue(turnLeftComplete.hasAlreadyRan());
-//        assertFalse(moveForwardComplete.hasAlreadyRan());
-//        assertFalse(validProgram.isFinished());
-//        validProgram.executeStep();
-//        assertTrue(validProgram.getStartBlock().hasAlreadyRan());
-//        assertTrue(moveForwardComplete.hasAlreadyRan());
-//        assertTrue(validProgram.isFinished());
-//
-//        validProgram.resetProgram();
-//        assertFalse(validProgram.getStartBlock().hasAlreadyRan());
-//        assertFalse(moveForwardComplete.hasAlreadyRan());
-//        assertFalse(validProgram.isFinished());
-//    }
 
     @Test
     void isValidProgram() {

@@ -2,15 +2,17 @@ package System.BlockStructure.Blocks;
 
 import GameWorld.Cell;
 import GameWorld.CellType;
+import GameWorld.Grid;
 import GameWorld.Level;
-import GameWorldUtility.MoveForwardAction;
-import GameWorldUtility.WallInFrontPredicate;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
 import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.Direction;
+import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
-import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ class WhileBlockTest {
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Position PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
+    private GridPosition PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
             PositionLeftOnGoalBeforeGoal, PositionRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
@@ -37,48 +39,12 @@ class WhileBlockTest {
 
     @BeforeEach
     void setUp() {
-        while1 = new WhileBlock();
-        while2 = new WhileBlock();
-        while3 = new WhileBlock();
-        while4 = new WhileBlock();
-        while5 = new WhileBlock();
-        whileBlock1 = new WhileBlock();
-        innerWhileBlock1 = new WhileBlock();
-        whileBlock2 =new WhileBlock();
-        outerWhileBlock2 = new WhileBlock();
 
-        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func3 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        condBlock1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        condBlock2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-
-        ConnectionHandler handler = new ConnectionHandler();
-        handler.connect(while1, func3.getSubConnectorAt(0));
-        handler.connect(func11, func1.getSubConnectorAt(0));
-        handler.connect(func1, while1.getCavitySubConnector());
-        handler.connect(cond1, while1.getConditionalSubConnector());
-        handler.connect(func1Under, while1.getSubConnectorAt(0));
-        handler.connect(func2, while2.getCavitySubConnector());
-        handler.connect(cond3, while3.getConditionalSubConnector());
-        handler.connect(cond5, while5.getConditionalSubConnector());
-        handler.connect(func5Under, while5.getSubConnectorAt(0));
-        handler.connect(innerWhileBlock1, whileBlock1.getCavitySubConnector());
-        handler.connect(condBlock1, whileBlock1.getConditionalSubConnector());
-        handler.connect(outerWhileBlock2, whileBlock2.getSubConnectorAt(0));
-        handler.connect(condBlock2, whileBlock2.getConditionalSubConnector());
-
-        PositionUpOnBlankBeforeWall = new Position(1,1);
-        PositionDownOnGoalBeforeBlank = new Position(1,1);
-        PositionLeftOnGoalBeforeGoal = new Position(1,1);
-        PositionRightOnBlankBeforeWall = new Position(1,1);
+        PositionUpOnBlankBeforeWall = new GridPosition(1,1);
+        PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
+        PositionLeftOnGoalBeforeGoal = new GridPosition(1,1);
+        PositionRightOnBlankBeforeWall = new GridPosition(1,1);
 
         directionUpOnBlankBeforeWall = Direction.UP;
         directionDownOnGoalBeforeBlank = Direction.DOWN;
@@ -105,19 +71,55 @@ class WhileBlockTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.BLANK), new Cell(CellType.BLANK) },
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
+        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(upRobot, new Grid(cellsUpOnBlankBeforeWall));
 
-        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall.getX(), PositionUpOnBlankBeforeWall.getY(), directionUpOnBlankBeforeWall);
-        levelUpOnBlankBeforeWall = new Level(upRobot, cellsUpOnBlankBeforeWall);
+        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank);
+        levelDownOnGoalBeforeBlank = new Level(downRobot, new Grid(cellsDownOnGoalBeforeBlank));
 
-        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank.getX(), PositionDownOnGoalBeforeBlank.getY(), directionDownOnGoalBeforeBlank);
-        levelDownOnGoalBeforeBlank = new Level(downRobot, cellsDownOnGoalBeforeBlank);
+        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal);
+        levelLeftOnGoalBeforeGoal = new Level(leftRobot, new Grid(cellsLeftOnGoalBeforeGoal));
 
-        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal.getX(), PositionLeftOnGoalBeforeGoal.getY(), directionLeftOnGoalBeforeGoal);
-        levelLeftOnGoalBeforeGoal = new Level(leftRobot, cellsLeftOnGoalBeforeGoal);
+        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall);
+        levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
 
-        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall.getX(), PositionRightOnBlankBeforeWall.getY(), directionRightOnBlankBeforeWall);
-        levelRightOnBlankBeforeWall = new Level(rightRobot, cellsRightOnBlankBeforeWall);
+        while1 = new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        while2 = new WhileBlock(new CavityFunctionality(levelDownOnGoalBeforeBlank));
+        while3 = new WhileBlock(new CavityFunctionality(levelRightOnBlankBeforeWall));
+        while4 = new WhileBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
+        while5 = new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        whileBlock1 = new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        innerWhileBlock1 = new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        whileBlock2 =new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        outerWhileBlock2 = new WhileBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
 
+        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelUpOnBlankBeforeWall));
+        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelUpOnBlankBeforeWall));
+        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelDownOnGoalBeforeBlank));
+        func3 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelRightOnBlankBeforeWall));
+        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelUpOnBlankBeforeWall));
+        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),levelUpOnBlankBeforeWall));
+
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelUpOnBlankBeforeWall));
+        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelRightOnBlankBeforeWall));
+        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelUpOnBlankBeforeWall));
+        condBlock1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelUpOnBlankBeforeWall));
+        condBlock2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelUpOnBlankBeforeWall));
+
+        ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(while1, func3.getSubConnectorAt(0));
+        handler.connect(func11, func1.getSubConnectorAt(0));
+        handler.connect(func1, while1.getCavitySubConnector());
+        handler.connect(cond1, while1.getConditionalSubConnector());
+        handler.connect(func1Under, while1.getSubConnectorAt(0));
+        handler.connect(func2, while2.getCavitySubConnector());
+        handler.connect(cond3, while3.getConditionalSubConnector());
+        handler.connect(cond5, while5.getConditionalSubConnector());
+        handler.connect(func5Under, while5.getSubConnectorAt(0));
+        handler.connect(innerWhileBlock1, whileBlock1.getCavitySubConnector());
+        handler.connect(condBlock1, whileBlock1.getConditionalSubConnector());
+        handler.connect(outerWhileBlock2, whileBlock2.getSubConnectorAt(0));
+        handler.connect(condBlock2, whileBlock2.getConditionalSubConnector());
     }
 
     @AfterEach
@@ -191,19 +193,19 @@ class WhileBlockTest {
         assertFalse(while4.hasNext());
         assertTrue(while5.hasNext());
 
-        while1.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        while1.getFunctionality().evaluate();
         assertTrue(while1.hasNext());
 
-        while2.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        while2.getFunctionality().evaluate();
         assertFalse(while2.hasNext());
 
-        while3.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        while3.getFunctionality().evaluate();
         assertFalse(while3.hasNext());
 
-        while4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        while4.getFunctionality().evaluate();
         assertFalse(while4.hasNext());
 
-        while5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        while5.getFunctionality().evaluate();
         assertFalse(while5.hasNext());
     }
 
@@ -215,19 +217,19 @@ class WhileBlockTest {
         assertNull(while4.getNext());
         assertEquals(func5Under, while5.getNext());
 
-        while1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
-        assertEquals(func1Under, while1.getNext());
+        while1.getFunctionality().evaluate();
+        assertEquals(func1, while1.getNext());
 
-        while2.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        while2.getFunctionality().evaluate();
         assertNull(while2.getNext());
 
-        while3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        while3.getFunctionality().evaluate();
         assertEquals(while3, while3.getNext());
 
-        while4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        while4.getFunctionality().evaluate();
         assertNull(while4.getNext());
 
-        while5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        while5.getFunctionality().evaluate();
         assertEquals(while5, while5.getNext());
     }
 
@@ -241,13 +243,7 @@ class WhileBlockTest {
         assertFalse(whileBlock1.hasProperConnections());
         assertFalse(whileBlock2.hasProperConnections());
     }
-
-//    @Test
-//    void getNextIfNone() {
-//        assertEquals(while1, while1.getNextIfNone());
-//        while1.setAlreadyRan(true);
-//        assertEquals(func3, while1.getNextIfNone());
-//    }
+    
 
     @Test
     void getNbSubConnectors() {
@@ -257,55 +253,4 @@ class WhileBlockTest {
         assertEquals(3, while4.getNbSubConnectors());
         assertEquals(3, while5.getNbSubConnectors());
     }
-
-//    @Test
-//    void hasAlreadyRan() {
-//        assertFalse(while1.hasAlreadyRan());
-//        assertFalse(while2.hasAlreadyRan());
-//        assertFalse(while3.hasAlreadyRan());
-//        assertFalse(while4.hasAlreadyRan());
-//        assertFalse(while5.hasAlreadyRan());
-//        while1.setAlreadyRan(true);
-//        while2.setAlreadyRan(true);
-//        while3.setAlreadyRan(false);
-//        while4.setAlreadyRan(false);
-//        while5.setAlreadyRan(true);
-//        assertTrue(while1.hasAlreadyRan());
-//        assertTrue(while2.hasAlreadyRan());
-//        assertFalse(while3.hasAlreadyRan());
-//        assertFalse(while4.hasAlreadyRan());
-//        assertTrue(while5.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(while1.hasAlreadyRan());
-//        while1.setAlreadyRan(true); // false -> true
-//        assertTrue(while1.hasAlreadyRan());
-//        while1.setAlreadyRan(true); // true -> true
-//        assertTrue(while1.hasAlreadyRan());
-//        while1.setAlreadyRan(false); // true -> false
-//        assertFalse(while1.hasAlreadyRan());
-//        while1.setAlreadyRan(false); // false -> false
-//        assertFalse(while1.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void reset() {
-//        while1.setAlreadyRan(true);
-//        func1.setAlreadyRan(true);
-//        func11.setAlreadyRan(true);
-//        func1Under.setAlreadyRan(true);
-//        cond1.setAlreadyRan(true);
-//        while1.reset();
-//        assertFalse(while1.hasAlreadyRan());
-//        assertFalse(func1.hasAlreadyRan());
-//        assertFalse(func11.hasAlreadyRan());
-//        assertFalse(func1Under.hasAlreadyRan());
-//        assertFalse(cond1.hasAlreadyRan());
-//
-//        while4.setAlreadyRan(true);
-//        while4.reset();
-//        assertFalse(while4.hasAlreadyRan());
-//    }
 }

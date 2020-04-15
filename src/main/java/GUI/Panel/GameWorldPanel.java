@@ -95,7 +95,7 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
                 break;
 
             case FAILURE:
-            case SUCCES:
+            case SUCCESS:
                 gameState = "YOU LOSE!  :(";
                 break;
         }

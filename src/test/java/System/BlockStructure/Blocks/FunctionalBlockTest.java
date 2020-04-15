@@ -1,8 +1,11 @@
 package System.BlockStructure.Blocks;
 
-import GameWorldUtility.MoveForwardAction;
-import GameWorldUtility.TurnLeftAction;
-import GameWorldUtility.TurnRightAction;
+
+import GameWorld.Level;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Actions.TurnLeftAction;
+import GameWorldUtility.Actions.TurnRightAction;
+import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -17,9 +20,11 @@ class FunctionalBlockTest {
 
     @BeforeEach
     void setUp() {
-        turnLeft = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction()));
-        turnRight = new FunctionalBlock(new ActionFunctionality(new TurnRightAction()));
-        moveForward = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        LevelInitializer init = new LevelInitializer();
+        Level level = (Level) init.createNewGameWorld();
+        turnLeft = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction(), level));
+        turnRight = new FunctionalBlock(new ActionFunctionality(new TurnRightAction(), level));
+        moveForward = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(turnRight, turnLeft.getSubConnectorAt(0));

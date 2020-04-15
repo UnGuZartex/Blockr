@@ -2,15 +2,17 @@ package System.BlockStructure.Blocks;
 
 import GameWorld.Cell;
 import GameWorld.CellType;
+import GameWorld.Grid;
 import GameWorld.Level;
-import GameWorldUtility.MoveForwardAction;
-import GameWorldUtility.WallInFrontPredicate;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
 import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.Direction;
+import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
-import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,7 @@ class IfBlockTest {
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Position PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
+    private GridPosition PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
             PositionLeftOnGoalBeforeGoal, PositionRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
@@ -34,38 +36,11 @@ class IfBlockTest {
 
     @BeforeEach
     void setUp() {
-        if1 = new IfBlock();
-        if2 = new IfBlock();
-        if3 = new IfBlock();
-        if4 = new IfBlock();
-        if5 = new IfBlock();
 
-        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func3 =new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
-
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-
-        ConnectionHandler handler = new ConnectionHandler();
-        handler.connect(if1, func3.getSubConnectorAt(0));
-        handler.connect(func11, func1.getSubConnectorAt(0));
-        handler.connect(func1, if1.getCavitySubConnector());
-        handler.connect(cond1, if1.getConditionalSubConnector());
-        handler.connect(func1Under, if1.getSubConnectorAt(0));
-        handler.connect(func2, if2.getCavitySubConnector());
-        handler.connect(cond3, if3.getConditionalSubConnector());
-        handler.connect(cond5, if5.getConditionalSubConnector());
-        handler.connect(func5Under, if5.getSubConnectorAt(0));
-
-        PositionUpOnBlankBeforeWall = new Position(1,1);
-        PositionDownOnGoalBeforeBlank = new Position(1,1);
-        PositionLeftOnGoalBeforeGoal = new Position(1,1);
-        PositionRightOnBlankBeforeWall = new Position(1,1);
+        PositionUpOnBlankBeforeWall = new GridPosition(1,1);
+        PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
+        PositionLeftOnGoalBeforeGoal = new GridPosition(1,1);
+        PositionRightOnBlankBeforeWall = new GridPosition(1,1);
 
         directionUpOnBlankBeforeWall = Direction.UP;
         directionDownOnGoalBeforeBlank = Direction.DOWN;
@@ -92,18 +67,45 @@ class IfBlockTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.BLANK), new Cell(CellType.BLANK) },
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
-        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall.getX(), PositionUpOnBlankBeforeWall.getY(), directionUpOnBlankBeforeWall);
-        levelUpOnBlankBeforeWall = new Level(upRobot, cellsUpOnBlankBeforeWall);
+        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(upRobot, new Grid(cellsUpOnBlankBeforeWall));
 
-        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank.getX(), PositionDownOnGoalBeforeBlank.getY(), directionDownOnGoalBeforeBlank);
-        levelDownOnGoalBeforeBlank = new Level(downRobot, cellsDownOnGoalBeforeBlank);
+        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank);
+        levelDownOnGoalBeforeBlank = new Level(downRobot, new Grid(cellsDownOnGoalBeforeBlank));
 
-        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal.getX(), PositionLeftOnGoalBeforeGoal.getY(), directionLeftOnGoalBeforeGoal);
-        levelLeftOnGoalBeforeGoal = new Level(leftRobot, cellsLeftOnGoalBeforeGoal);
+        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal);
+        levelLeftOnGoalBeforeGoal = new Level(leftRobot, new Grid(cellsLeftOnGoalBeforeGoal));
 
-        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall.getX(), PositionRightOnBlankBeforeWall.getY(), directionRightOnBlankBeforeWall);
-        levelRightOnBlankBeforeWall = new Level(rightRobot, cellsRightOnBlankBeforeWall);
+        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall);
+        levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
 
+        if1 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
+        if2 = new IfBlock(new CavityFunctionality(levelRightOnBlankBeforeWall));
+        if3 = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        if4 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
+        if5 = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+
+        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
+        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
+        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelRightOnBlankBeforeWall));
+        func3 =new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelUpOnBlankBeforeWall));
+        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
+        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelUpOnBlankBeforeWall));
+
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelLeftOnGoalBeforeGoal));
+        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelUpOnBlankBeforeWall));
+        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelUpOnBlankBeforeWall));
+
+        ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(if1, func3.getSubConnectorAt(0));
+        handler.connect(func11, func1.getSubConnectorAt(0));
+        handler.connect(func1, if1.getCavitySubConnector());
+        handler.connect(cond1, if1.getConditionalSubConnector());
+        handler.connect(func1Under, if1.getSubConnectorAt(0));
+        handler.connect(func2, if2.getCavitySubConnector());
+        handler.connect(cond3, if3.getConditionalSubConnector());
+        handler.connect(cond5, if5.getConditionalSubConnector());
+        handler.connect(func5Under, if5.getSubConnectorAt(0));
     }
 
     @AfterEach
@@ -174,19 +176,19 @@ class IfBlockTest {
         assertFalse(if4.hasNext());
         assertTrue(if5.hasNext());
 
-        if1.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        if1.getFunctionality().evaluate();
         assertTrue(if1.hasNext());
 
-        if2.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        if2.getFunctionality().evaluate();
         assertFalse(if2.hasNext());
 
-        if3.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        if3.getFunctionality().evaluate();
         assertFalse(if3.hasNext());
 
-        if4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        if4.getFunctionality().evaluate();
         assertFalse(if4.hasNext());
 
-        if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        if5.getFunctionality().evaluate();
         assertFalse(if5.hasNext());
     }
 
@@ -198,19 +200,19 @@ class IfBlockTest {
         assertNull(if4.getNext());
         assertEquals(func5Under, if5.getNext());
 
-        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        if1.getFunctionality().evaluate();
         assertEquals(func1Under, if1.getNext());
 
-        if2.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        if2.getFunctionality().evaluate();
         assertNull(if2.getNext());
 
-        if3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        if3.getFunctionality().evaluate();
         assertNull(if3.getNext());
 
-        if4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        if4.getFunctionality().evaluate();
         assertNull(if4.getNext());
 
-        if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        if5.getFunctionality().evaluate();
         assertEquals(func5Under, if5.getNext());
     }
 

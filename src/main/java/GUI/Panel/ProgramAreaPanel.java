@@ -165,7 +165,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
                 break;
 
             case FAILURE:
-            case SUCCES:
+            case SUCCESS:
                 changeBlockColors(Color.orange);
                 break;
         }

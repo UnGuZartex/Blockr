@@ -1,5 +1,10 @@
-package Controllers;
+package GUI;
 
+import Controllers.BlockLinkDatabase;
+import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.ProgramController;
+import Controllers.JarLoader;
+import GUI.BlockrCanvas;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICavityBlock;
 import GUI.Blocks.GUIConditionalBlock;
@@ -11,6 +16,7 @@ import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
+import System.Logic.ProgramArea.PABlockHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -33,16 +39,14 @@ public class Initialiser {
         initialisePalettesAndGameWorld(gameWorldType);
     }
 
-    public List<Block> getSystemPaletteBlocks() {
-        return systemPaletteBlocks;
-    }
-
-    public List<GUIBlock> getGUIPaletteBlocks() {
-        return GUIPaletteBlocks;
-    }
-
-    public GameWorld getGameWorld() {
-        return gameWorld;
+    public BlockrCanvas createNewCanvas() {
+        PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks);
+        BlockLinkDatabase converter = new BlockLinkDatabase();
+        ConnectionController connectionController = new ConnectionController(converter, blockHandler);
+        ProgramController programController = new ProgramController(converter, blockHandler, gameWorld);
+        return new BlockrCanvas(GUIPaletteBlocks,
+                programController,
+                connectionController);
     }
 
     private void initialiseDefaultBlocks() {
@@ -53,7 +57,7 @@ public class Initialiser {
 
     private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {
 
-        gameWorld = gameWorldType.createNewGameworld();
+        gameWorld = gameWorldType.createNewGameWorld();
 
         for (Action action : gameWorldType.getAllActions()) {
             GUIPaletteBlocks.add(new GUIFunctionalBlock(action.getName(), 0, 0));
@@ -70,4 +74,6 @@ public class Initialiser {
             systemPaletteBlocks.add(entry.getValue().clone());
         }
     }
+
+
 }

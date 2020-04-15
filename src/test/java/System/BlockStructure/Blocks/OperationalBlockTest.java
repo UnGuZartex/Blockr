@@ -1,6 +1,10 @@
 package System.BlockStructure.Blocks;
 
-import GameWorldUtility.WallInFrontPredicate;
+import GameWorld.Level;
+import GameWorldUtility.LevelInitializer;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
+import System.BlockStructure.Functionality.CavityFunctionality;
+import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -17,16 +21,19 @@ class OperationalBlockTest {
 
     @BeforeEach
     void setUp() {
-        not1 = new NotBlock();
-        not2 = new NotBlock();
-        not3 = new NotBlock();
-        not4 = new NotBlock();
 
-        wallInFront1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        wallInFront2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        LevelInitializer init = new LevelInitializer();
+        Level level = (Level) init.createNewGameWorld();
+        not1 = new NotBlock(new NotFunctionality(level));
+        not2 = new NotBlock(new NotFunctionality(level));
+        not3 = new NotBlock(new NotFunctionality(level));
+        not4 = new NotBlock(new NotFunctionality(level));
 
-        cavoc3 = new IfBlock();
-        cavoc2 = new IfBlock();
+        wallInFront1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+        wallInFront2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+
+        cavoc3 = new IfBlock(new CavityFunctionality(level));
+        cavoc2 = new IfBlock(new CavityFunctionality(level));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(wallInFront1, not1.getSubConnectorAt(0));

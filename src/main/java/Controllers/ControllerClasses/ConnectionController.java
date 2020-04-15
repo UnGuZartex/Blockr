@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.blockLinkDatabase;
+import Controllers.BlockLinkDatabase;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
@@ -9,10 +9,10 @@ import System.Logic.ProgramArea.PABlockHandler;
 
 public class ConnectionController {
 
-    private final blockLinkDatabase converter;
+    private final BlockLinkDatabase converter;
     private final PABlockHandler blockHandler;
 
-    public ConnectionController(blockLinkDatabase converter, PABlockHandler blockHandler) {
+    public ConnectionController(BlockLinkDatabase converter, PABlockHandler blockHandler) {
         this.converter = converter;
         this.blockHandler = blockHandler;
     }

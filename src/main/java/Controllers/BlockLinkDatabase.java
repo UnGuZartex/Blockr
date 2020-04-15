@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author Alpha-team
  */
-public class blockLinkDatabase {
+public class BlockLinkDatabase {
 
     /**
      * Variable representing the map of paired graphical and system blocks.

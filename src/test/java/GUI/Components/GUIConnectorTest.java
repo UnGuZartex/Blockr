@@ -1,8 +1,7 @@
 package GUI.Components;
 
-import GUI.Blocks.Factories.GUIFactory;
-import GUI.Blocks.Factories.MoveForwardGUIFactory;
 import GUI.Blocks.GUIBlock;
+import GUI.Blocks.GUIFunctionalBlock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,11 +23,10 @@ class GUIConnectorTest {
 
     @BeforeEach
     void setUp() {
-        GUIFactory factory = new MoveForwardGUIFactory();
-        block1 = factory.createBlock("id1",3,3);
-        block2 = factory.createBlock("id2",3,3);
-        block3 = factory.createBlock("id3",3,3);
-        block4 = factory.createBlock("id4",3,3);
+        block1 = new GUIFunctionalBlock( "id1",3,3);
+        block2 =new GUIFunctionalBlock("id2",3,3);
+        block3 =new GUIFunctionalBlock("id3",3,3);
+        block4 = new GUIFunctionalBlock("id4",3,3);
 
         id1 = "1";
         id2 = "2";
@@ -50,12 +48,12 @@ class GUIConnectorTest {
         color3 = Color.BLUE;
         color4 = Color.YELLOW;
 
-        connector1 = new GUIConnector(id1, block1, x1, y1, color1);
-        connector2 = new GUIConnector(id2, block2, x2, y2, color2);
+        connector1 = new GUIConnector(block1, x1, y1, color1);
+        connector2 = new GUIConnector(block2, x2, y2, color2);
         connector1.connect(connector2);
 
-        connector3 = new GUIConnector(id3, block3, x3, y3, color3);
-        connector4 = new GUIConnector(id4, block4, x4, y4, color4);
+        connector3 = new GUIConnector(block3, x3, y3, color3);
+        connector4 = new GUIConnector(block4, x4, y4, color4);
 
     }
 
@@ -96,14 +94,6 @@ class GUIConnectorTest {
         assertEquals(x4, connector4.getCollisionCircle().getX());
         assertEquals(y4, connector4.getCollisionCircle().getY());
         assertEquals(color4, connector4.getCollisionCircle().getColor());
-    }
-
-    @Test
-    void getId() {
-        assertEquals(id1, connector1.getId());
-        assertEquals(id2, connector2.getId());
-        assertEquals(id3, connector3.getId());
-        assertEquals(id4, connector4.getId());
     }
 
     @Test
