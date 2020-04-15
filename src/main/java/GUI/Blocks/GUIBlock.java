@@ -267,7 +267,6 @@ public abstract class GUIBlock implements IGUIBlock {
             throw new IllegalArgumentException("Given block does not have a colliding connector!");
         }
 
-        System.out.println("CONNECTION? " + connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub)));
         if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
             GUIBlock toChange = other;
             int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
