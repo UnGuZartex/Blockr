@@ -36,6 +36,7 @@ public class Initialiser {
     public Initialiser() throws NoSuchMethodException, IllegalAccessException, InstantiationException, IOException, InvocationTargetException, ClassNotFoundException {
         JarLoader loader = new JarLoader();
         GameWorldType gameWorldType = loader.load();
+        gameWorld = gameWorldType.createNewGameWorld();
         initialiseDefaultBlocks();
         initialisePalettesAndGameWorld(gameWorldType);
     }
@@ -62,8 +63,6 @@ public class Initialiser {
     }
 
     private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {
-
-        gameWorld = gameWorldType.createNewGameWorld();
 
         for (Action action : gameWorldType.getAllActions()) {
             GUIPaletteBlocks.add(new GUIFunctionalBlock(action.getName(), 0, 0));

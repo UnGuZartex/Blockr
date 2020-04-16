@@ -112,6 +112,48 @@ public class ProgramArea {
         observer.notifyProgramReset();
     }
 
+    public void undoProgram() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                Result stepResult = program.undoProgram();
+
+                if (program.isFinished()) {
+                    observer.notifyGameFinished(stepResult);
+                }
+            }
+            else {
+                observer.notifyProgramInvalid();
+            }
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
+
+        observer.notifyProgramReset();
+    }
+
+    public void redoProgram() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                Result stepResult = program.redoProgram();
+
+                if (program.isFinished()) {
+                    observer.notifyGameFinished(stepResult);
+                }
+            }
+            else {
+                observer.notifyProgramInvalid();
+            }
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
+    }
+
     /**
      * Add a new program to this program area with given start block.
      *

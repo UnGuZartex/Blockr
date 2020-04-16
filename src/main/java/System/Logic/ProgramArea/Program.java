@@ -1,8 +1,11 @@
 package System.Logic.ProgramArea;
 
 import GameWorldAPI.GameWorld.Result;
-import System.BlockStructure.Blocks.*;
+import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
+
+import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -27,6 +30,10 @@ public class Program {
      */
     private Result lastResult = Result.SUCCESS;
 
+
+
+    private CommandHistory history = new CommandHistory();
+
     /**
      * Initialise a new program with given start block and reset the program.
      *
@@ -38,7 +45,7 @@ public class Program {
      */
     public Program(Block start) {
         startBlock = start;
-        resetProgram();
+        currentBlock = startBlock;
     }
 
     /**
@@ -61,7 +68,7 @@ public class Program {
         }
 
         if (!isFinished()) {
-            lastResult = currentBlock.getFunctionality().evaluate();
+            lastResult = history.execute(currentBlock);
             currentBlock = currentBlock.getNext();
         }
 
@@ -104,8 +111,27 @@ public class Program {
      * @post the start block is reset.
      */
     public void resetProgram() {
-        currentBlock = startBlock;
-        startBlock.reset();
+        Map.Entry<Result, Block> reset = history.reset();
+        this.currentBlock = startBlock;
+        this.lastResult = reset.getKey();
+    }
+
+    public Result undoProgram() {
+        Map.Entry<Result, Block> undo = history.undo();
+        if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = undo.getValue();
+            this.lastResult = undo.getKey();
+        }
+        return this.lastResult;
+    }
+
+    public Result redoProgram() {
+        Map.Entry<Result, Block> redo = history.redo();
+        if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = redo.getValue();
+            this.lastResult = redo.getKey();
+        }
+        return this.lastResult;
     }
 
     /**

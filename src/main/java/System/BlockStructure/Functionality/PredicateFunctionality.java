@@ -18,4 +18,11 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
         evaluation = gameWorld.evaluatePredicate(predicate);
         return Result.SUCCESS;
     }
+
+    @Override
+    public BlockFunctionality copy() {
+        PredicateFunctionality func = new PredicateFunctionality(predicate, gameWorld);
+        func.setBlock(this.block);
+        return func;
+    }
 }

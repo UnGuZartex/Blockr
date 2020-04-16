@@ -113,7 +113,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     public void disconnectInProgramArea(GUIBlock GUIBlock) {
         GUIBlock.disconnectMainConnector();
         connectionController.disconnectBlock(GUIBlock);
-        programController.resetGameWorld();
     }
 
     /**

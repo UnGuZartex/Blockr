@@ -21,7 +21,7 @@ public abstract class Block {
     /**
      * Variable referring to the functionality of this block.
      */
-    protected final BlockFunctionality functionality;
+    protected BlockFunctionality functionality;
 
     /**
      * Variable referring to all the sub connectors of this block.
@@ -46,6 +46,10 @@ public abstract class Block {
      */
     public BlockFunctionality getFunctionality() {
         return functionality;
+    }
+
+    public void setFunctionality(BlockFunctionality functionality) {
+        this.functionality = functionality;
     }
 
     /**

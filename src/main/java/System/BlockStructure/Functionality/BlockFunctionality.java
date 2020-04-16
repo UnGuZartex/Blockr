@@ -2,6 +2,7 @@ package System.BlockStructure.Functionality;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 
 /**
  * An abstract class for functionality's which can be attached to a block.
@@ -19,6 +20,8 @@ public abstract class BlockFunctionality {
      * Variable referring to the game world this functionality acts upon.
      */
     protected final GameWorld gameWorld;
+
+    protected Snapshot snapshot;
 
     /**
      * Initialize a new block functionality.
@@ -53,4 +56,24 @@ public abstract class BlockFunctionality {
     public GameWorld getGameWorld() {
         return gameWorld;
     }
+
+
+    public Result execute() {
+        this.snapshot = gameWorld.createSnapshot();
+        return evaluate();
+    }
+
+    public void undo() {
+        Snapshot redosnapshot = gameWorld.createSnapshot();
+        gameWorld.loadSnapshot(snapshot);
+        snapshot = redosnapshot;
+    }
+
+    public void redo() {
+        Snapshot undosnapshot = gameWorld.createSnapshot();
+        gameWorld.loadSnapshot(snapshot);
+        snapshot = undosnapshot;
+    }
+
+    public abstract BlockFunctionality copy();
 }

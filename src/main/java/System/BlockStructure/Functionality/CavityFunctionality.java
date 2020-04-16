@@ -41,4 +41,11 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
         return Result.SUCCESS;
     }
 
+    @Override
+    public BlockFunctionality copy() {
+        CavityFunctionality func = new CavityFunctionality(gameWorld);
+        func.setBlock(this.block);
+        return func;
+    }
+
 }

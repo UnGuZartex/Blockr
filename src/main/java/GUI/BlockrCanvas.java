@@ -2,22 +2,17 @@ package GUI;
 
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.ProgramController;
-import Controllers.Controls.Control;
-import Controllers.Controls.ProgramStepCommand;
-import Controllers.Controls.ResetControlFunctionality;
-
+import Controllers.Controls.*;
+import GUI.Blocks.GUIBlock;
 import GUI.Components.GUIBlockHandler;
+import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
-import GUI.Panel.GameWorldPanel;
-import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.GameWorld;
 import Images.ImageLibrary;
 
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
 import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
@@ -63,8 +58,11 @@ public class BlockrCanvas extends CanvasWindow {
     private void setControls() {
         controls = new Control[] {
                 new Control(KeyEvent.VK_F5, new ProgramStepCommand(programController)),
-                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController, gameWorldPanel))
+                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController, gameWorldPanel)),
+                new Control(KeyEvent.VK_NUMPAD4, new UndoFunctionality(programController, gameWorldPanel)),
+                new Control(KeyEvent.VK_NUMPAD6, new RedoFunctionality(programController, gameWorldPanel))
         };
+
     }
 
     private void setBlockHandler() {

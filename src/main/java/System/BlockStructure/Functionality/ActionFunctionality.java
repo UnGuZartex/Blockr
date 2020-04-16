@@ -17,4 +17,9 @@ public class ActionFunctionality extends BlockFunctionality {
     public Result evaluate() {
         return gameWorld.executeAction(action);
     }
+
+    @Override
+    public BlockFunctionality copy() {
+        return new ActionFunctionality(action, gameWorld);
+    }
 }

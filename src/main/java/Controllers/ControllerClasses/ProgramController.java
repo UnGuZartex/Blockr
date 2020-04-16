@@ -25,14 +25,12 @@ public class ProgramController {
         blockDatabase.addBlockPair(block, blockHandler.getFromPalette(index));
         Block toAdd = blockDatabase.getBlockFromGUIBlock(block);
         blockHandler.addToPA(toAdd);
-        resetGameWorld();
     }
 
     public void deleteFromPA(IGUIBlock block) {
         Block toDelete = blockDatabase.getBlockFromGUIBlock(block);
         blockDatabase.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
-        resetGameWorld();
     }
 
     public IGUIBlock getHightlightedBlock() {
@@ -47,8 +45,12 @@ public class ProgramController {
         return null;
     }
 
-    public void resetGameWorld() {
-        //TODO
+    public void undoProgramStep() {
+        blockHandler.getPA().undoProgram();
+    }
+
+    public void redoProgramStep() {
+        blockHandler.getPA().redoProgram();
     }
 
     public void runProgramStep() {
@@ -61,5 +63,9 @@ public class ProgramController {
 
     public void unsubscribeListener(ProgramListener listener) {
         blockHandler.getPA().unsubscribe(listener);
+    }
+
+    public void resetProgram() {
+        blockHandler.getPA().resetProgram();
     }
 }

@@ -15,7 +15,7 @@ public class ResetControlFunctionality implements ControlFunctionality {
 
     @Override
     public void execute() {
-        programController.resetGameWorld();
+        programController.resetProgram();
         gameWorldPanel.resetGameText();
     }
 }

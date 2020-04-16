@@ -38,4 +38,11 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
         evaluation = !functionality.getEvaluation();
         return Result.SUCCESS;
     }
+
+    @Override
+    public BlockFunctionality copy() {
+        NotFunctionality func = new NotFunctionality(gameWorld);
+        func.setBlock(this.block);
+        return func;
+    }
 }
