@@ -32,24 +32,27 @@ public class Initialiser {
     private List<Block> systemPaletteBlocks = new ArrayList<>();
     private List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
 
+
     public Initialiser() throws NoSuchMethodException, IllegalAccessException, InstantiationException, IOException, InvocationTargetException, ClassNotFoundException {
         JarLoader loader = new JarLoader();
         GameWorldType gameWorldType = loader.load();
         initialiseDefaultBlocks();
         initialisePalettesAndGameWorld(gameWorldType);
-        //TODO kijken waar dit gebruiken
-        ImageLoader imageLoader = new ImageLoader();
-        ImageLibrary images = imageLoader.createImageLibrary();
     }
 
-    public BlockrCanvas createNewCanvas() {
+
+    public BlockrCanvas createNewCanvas() throws IOException {
+        ImageLoader imageLoader = new ImageLoader();
+        ImageLibrary images = imageLoader.createImageLibrary();
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         ProgramController programController = new ProgramController(converter, blockHandler, gameWorld);
-        return new BlockrCanvas(GUIPaletteBlocks,
+        BlockrCanvas canvas = new BlockrCanvas(images,
                 programController,
                 connectionController);
+        canvas.setPanels(GUIPaletteBlocks, gameWorld);
+        return canvas;
     }
 
     private void initialiseDefaultBlocks() {

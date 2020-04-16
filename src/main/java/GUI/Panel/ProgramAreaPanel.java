@@ -5,6 +5,7 @@ import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.Result;
+import Images.ImageLibrary;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -158,7 +159,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param g The graphics to paint this panel with.
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g, ImageLibrary images) {
         drawBackground(g);
         drawBlocks(g);
     }

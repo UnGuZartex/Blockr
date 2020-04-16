@@ -2,7 +2,9 @@ package GUI.Panel;
 
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import Images.ImageLibrary;
 
 import java.awt.*;
 
@@ -17,6 +19,7 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
      * Variable referring to the game state.
      */
     protected String gameState = "";
+    private GameWorld gw;
 
     /**
      * Initialise a new game world panel with given corner, dimension and controller.
@@ -34,9 +37,10 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     /**
      * TODO commentaar
      */
-    public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public GameWorldPanel(GameWorld gw, int cornerX, int cornerY, int width, int height, ProgramController controller) {
         super(cornerX, cornerY, width, height);
         controller.subscribeListener(this);
+        this.gw = gw;
     }
 
     /**
@@ -58,11 +62,11 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
      * @effect draws the game state.
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g, ImageLibrary images) {
+
         drawBackground(g);
-        /**
-         * TODO level tekenen?
-         */
+        Graphics g2 = g.create(getPanelRectangle().getX(), getPanelRectangle().getY(), getPanelRectangle().getWidth(), getPanelRectangle().getHeight());
+        gw.paint(g2, images);
         drawGameState(g);
     }
 

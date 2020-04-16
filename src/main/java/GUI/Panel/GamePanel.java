@@ -1,6 +1,7 @@
 package GUI.Panel;
 
 import GUI.CollisionShapes.CollisionRectangle;
+import Images.ImageLibrary;
 
 import java.awt.*;
 
@@ -63,7 +64,7 @@ public abstract class GamePanel {
      *
      * @param g The graphics to paint this panel with.
      */
-    public abstract void paint(Graphics g);
+    public abstract void paint(Graphics g, ImageLibrary images);
 
     /**
      * Draw the background of this panel.

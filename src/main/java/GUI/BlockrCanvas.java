@@ -11,6 +11,8 @@ import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import GUI.Panel.GameWorldPanel;
 import GUI.Blocks.GUIBlock;
+import GameWorldAPI.GameWorld.GameWorld;
+import Images.ImageLibrary;
 
 
 import java.awt.*;
@@ -33,28 +35,29 @@ public class BlockrCanvas extends CanvasWindow {
     private GUIBlock previousBlock;
     private ProgramController programController;
     private ConnectionController connectionController;
+    private ImageLibrary images;
 
     /**
      * Initializes a CanvasWindow object. 
      *
      */
     // TODO exception throw (@throws)
-    protected BlockrCanvas(List<GUIBlock> panelBlocks, ProgramController programController, ConnectionController connectionController) {
+    protected BlockrCanvas(ImageLibrary images, ProgramController programController, ConnectionController connectionController) {
         super("Blockr");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.width = screenSize.width;
         this.height = screenSize.height;
         this.programController = programController;
         this.connectionController = connectionController;
-        setPanels(panelBlocks);
-        setControls();
-        setBlockHandler();
+        this.images = images;
     }
 
-    private void setPanels(List<GUIBlock> panelBlocks) {
+    public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
-        gameWorldPanel = new GameWorldPanel((int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height, programController);
+        gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height, programController);
+        setControls();
+        setBlockHandler();
     }
 
     private void setControls() {
@@ -71,9 +74,9 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void paint(Graphics g) {
         g.setColor(Color.black);
-        gameWorldPanel.paint(g);
-        palettePanel.paint(g);
-        programAreaPanel.paint(g);
+        gameWorldPanel.paint(g, images);
+        palettePanel.paint(g, images);
+        programAreaPanel.paint(g, images);
     }
 
     @Override
