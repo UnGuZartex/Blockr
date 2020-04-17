@@ -32,6 +32,8 @@ public class BlockrCanvas extends CanvasWindow {
     private ConnectionController connectionController;
     private ImageLibrary images;
 
+    private ControlHandler controlHandler;
+
     /**
      * Initializes a CanvasWindow object. 
      *
@@ -45,6 +47,7 @@ public class BlockrCanvas extends CanvasWindow {
         this.programController = programController;
         this.connectionController = connectionController;
         this.images = images;
+        this.controlHandler = new ControlHandler(programController);
     }
 
     public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
@@ -86,11 +89,19 @@ public class BlockrCanvas extends CanvasWindow {
 
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar) {
-        for (Control control : controls) {
-            if (control.isClicked(keyCode)) {
-                control.onClick();
-            }
+        if (previousBlock != null) {
+            previousBlock.setColor(Color.white);
         }
+        controlHandler.handleKeyEvent(id,keyCode,keyChar);
+        previousBlock = (GUIBlock) programController.getHightlightedBlock();
+        if (previousBlock != null) {
+            previousBlock.setColor(Color.red);
+        }
+//        for (Control control : controls) {
+//            if (control.isClicked(keyCode)) {
+//                control.onClick();
+//            }
+//        }
         repaint();
     }
 
