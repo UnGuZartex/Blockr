@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO FIX DRAW VAN PALETTE NAAR PA
  * A class for the panel of the program area. This panel can listen
  * to the program.
  *
@@ -42,6 +41,11 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     private ConnectionController connectionController;
 
     /**
+     * Variable referring to the game state.
+     */
+    protected String gameState = "";
+
+    /**
      * TODO commentaar
      */
     /**
@@ -66,6 +70,15 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         this.programController = programController;
         this.connectionController = connectionController;
         programController.subscribeListener(this);
+    }
+
+    /**
+     * Reset the game state.
+     *
+     * @post The game state is set to an empty string.
+     */
+    public void resetGameText() {
+        gameState = "";
     }
 
     /**
@@ -161,6 +174,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     public void paint(Graphics g, ImageLibrary images) {
         drawBackground(g);
         drawBlocks(g);
+        drawGameState(g);
     }
 
     /**
@@ -176,11 +190,14 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         switch (result) {
             case END:
                 changeBlockColors(Color.green);
+                gameState = "YOU WIN!  :)";
                 break;
 
             case FAILURE:
             case SUCCESS:
                 changeBlockColors(Color.orange);
+                gameState = "YOU LOSE!  :(";
+
                 break;
         }
     }
@@ -193,6 +210,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void onProgramReset() {
         changeBlockColors(Color.white);
+        gameState = "";
     }
 
     /**
@@ -203,6 +221,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void onTooManyPrograms() {
         changeBlockColors(Color.red);
+        gameState = "TOO MANY PROGRAMS!";
     }
 
     /**
@@ -213,6 +232,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void onProgramInvalid() {
         changeBlockColors(Color.red);
+        gameState = "INVALID PROGRAM";
+
     }
 
     /**
@@ -239,5 +260,18 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         if (temporaryBlock != null) {
             temporaryBlock.paint(g);
         }
+    }
+
+    /**
+     * Draw the gamestate of this panel.
+     *
+     * @param g The graphics to draw the game state with.
+     */
+    private void drawGameState(Graphics g) {
+        Font currentFont = g.getFont();
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
+        g.setFont(newFont);
+        g.setFont(currentFont);
+        g.drawString(gameState, panelRectangle.getX(), 100);
     }
 }

@@ -50,7 +50,7 @@ public class BlockrCanvas extends CanvasWindow {
     public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
-        gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height, programController);
+        gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
         setControls();
         setBlockHandler();
     }
@@ -58,9 +58,9 @@ public class BlockrCanvas extends CanvasWindow {
     private void setControls() {
         controls = new Control[] {
                 new Control(KeyEvent.VK_F5, new ProgramStepCommand(programController)),
-                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController, gameWorldPanel)),
-                new Control(KeyEvent.VK_NUMPAD4, new UndoFunctionality(programController, gameWorldPanel)),
-                new Control(KeyEvent.VK_NUMPAD6, new RedoFunctionality(programController, gameWorldPanel))
+                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController)),
+                new Control(KeyEvent.VK_NUMPAD4, new UndoFunctionality(programController)),
+                new Control(KeyEvent.VK_NUMPAD6, new RedoFunctionality(programController))
         };
 
     }

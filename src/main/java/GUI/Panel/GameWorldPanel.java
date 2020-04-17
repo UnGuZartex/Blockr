@@ -1,9 +1,6 @@
 package GUI.Panel;
 
-import Controllers.ControllerClasses.ProgramController;
-import Controllers.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
-import GameWorldAPI.GameWorld.Result;
 import Images.ImageLibrary;
 
 import java.awt.*;
@@ -13,12 +10,9 @@ import java.awt.*;
  *
  * @author Alpha-team
  */
-public class GameWorldPanel extends GamePanel implements ProgramListener {
+public class GameWorldPanel extends GamePanel {
 
-    /**
-     * Variable referring to the game state.
-     */
-    protected String gameState = "";
+
     private GameWorld gw;
 
     /**
@@ -37,19 +31,9 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
     /**
      * TODO commentaar
      */
-    public GameWorldPanel(GameWorld gw, int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public GameWorldPanel(GameWorld gw, int cornerX, int cornerY, int width, int height) {
         super(cornerX, cornerY, width, height);
-        controller.subscribeListener(this);
         this.gw = gw;
-    }
-
-    /**
-     * Reset the game state.
-     *
-     * @post The game state is set to an empty string.
-     */
-    public void resetGameText() {
-        gameState = "";
     }
 
     /**
@@ -67,65 +51,9 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
         drawBackground(g);
         Graphics g2 = g.create(getPanelRectangle().getX(), getPanelRectangle().getY(), getPanelRectangle().getWidth(), getPanelRectangle().getHeight());
         gw.paint(g2, images);
-        drawGameState(g);
     }
 
-    /**
-     * Draw the gamestate of this panel.
-     *
-     * @param g The graphics to draw the game state with.
-     */
-    private void drawGameState(Graphics g) {
-        Font currentFont = g.getFont();
-        Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
-        g.setFont(newFont);
-        g.drawString(gameState, panelRectangle.getX(), 100);
-        g.setFont(currentFont);
-    }
 
-    /**
-     * Event to call if the game has finished
-     *
-     * @param result The result of the game
-     *
-     * @effect The game state text is changed depending on if the player reached its goal
-     *         during the game or not.
-     */
-    @Override
-    public void onGameFinished(Result result) {
-        switch (result) {
-            case END:
-                gameState = "YOU WIN!  :)";
-                break;
 
-            case FAILURE:
-            case SUCCESS:
-                gameState = "YOU LOSE!  :(";
-                break;
-        }
-    }
 
-    /**
-     * Event to call when the program has been reset.
-     */
-    @Override
-    public void onProgramReset() {
-        gameState = "";
-    }
-
-    /**
-     * Event to call when there are too many programs.
-     */
-    @Override
-    public void onTooManyPrograms() {
-        gameState = "TOO MANY PROGRAMS!";
-    }
-
-    /**
-     * Event to call when there is an invalid program.
-     */
-    @Override
-    public void onProgramInvalid() {
-        gameState = "INVALID PROGRAM";
-    }
 }
