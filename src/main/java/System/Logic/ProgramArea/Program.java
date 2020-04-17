@@ -173,4 +173,8 @@ public class Program {
         }
         return sum;
     }
+
+    public boolean isExecuting() {
+        return !(startBlock == currentBlock);
+    }
 }

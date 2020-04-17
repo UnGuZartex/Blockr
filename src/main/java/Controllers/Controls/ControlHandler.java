@@ -13,7 +13,6 @@ public class ControlHandler {
     }
 
     public void handleKeyEvent(int id, int keyCode, char keyChar) {
-        System.out.println(id);
         if (keyCode == KeyEvent.VK_F5) {
             controller.runProgramStep();
         }
@@ -21,10 +20,20 @@ public class ControlHandler {
             controller.resetProgram();
         }
         if (keyCode == KeyEvent.VK_NUMPAD4) {
-            controller.undoProgramStep();
+            if (controller.isExecuted()) {
+                controller.undoProgramStep();
+            }
+            else{
+                //Insert move history
+            }
         }
         if (keyCode == KeyEvent.VK_NUMPAD6) {
-            controller.redoProgramStep();
+            if (controller.isExecuted()) {
+                controller.redoProgramStep();
+            }
+            else {
+                //Insert move history
+            }
         }
     }
 }

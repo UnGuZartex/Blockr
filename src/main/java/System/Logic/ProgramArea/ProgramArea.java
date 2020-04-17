@@ -225,4 +225,11 @@ public class ProgramArea {
         }
     }
 
+    public boolean isExecuted() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+            return program.isExecuting();
+        }
+        return false;
+    }
 }

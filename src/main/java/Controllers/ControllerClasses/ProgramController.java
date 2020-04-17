@@ -57,6 +57,10 @@ public class ProgramController {
         blockHandler.getPA().runProgramStep();
     }
 
+    public boolean isExecuted() {
+        return blockHandler.getPA().isExecuted();
+    }
+
     public void subscribeListener(ProgramListener listener) {
         blockHandler.getPA().subscribe(listener);
     }
