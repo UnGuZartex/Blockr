@@ -68,10 +68,9 @@ public class Program {
         }
 
         if (!isFinished()) {
-            lastResult = history.execute(currentBlock);
+            lastResult = history.execute(currentBlock, lastResult);
             currentBlock = currentBlock.getNext();
         }
-
         return lastResult;
     }
 
@@ -117,7 +116,7 @@ public class Program {
     }
 
     public Result undoProgram() {
-        Map.Entry<Result, Block> undo = history.undo();
+        Map.Entry<Result, Block> undo = history.undo(lastResult);
         if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = undo.getValue();
             this.lastResult = undo.getKey();
@@ -126,7 +125,7 @@ public class Program {
     }
 
     public Result redoProgram() {
-        Map.Entry<Result, Block> redo = history.redo();
+        Map.Entry<Result, Block> redo = history.redo(lastResult);
         if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = redo.getValue();
             this.lastResult = redo.getKey();

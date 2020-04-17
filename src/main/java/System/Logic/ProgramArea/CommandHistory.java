@@ -27,18 +27,17 @@ public class CommandHistory {
      */
     private final Stack<Map.Entry<Result, Block>> redoStackResult  = new Stack<>();
 
-    public Result execute(Block currentBlock) {
+    public Result execute(Block currentBlock, Result currentResult) {
         BlockFunctionality command = currentBlock.getFunctionality().copy();
         currentBlock.setFunctionality(command);
         redoStackFunc.clear();
         redoStackResult.clear();
-        Result endresult = command.execute();
         undoStackFunc.push(command);
-        undoStackResult.push(new AbstractMap.SimpleEntry<>(endresult,currentBlock));
-        return endresult;
+        undoStackResult.push(new AbstractMap.SimpleEntry<>(currentResult,currentBlock));
+        return command.execute();
     }
 
-    public Map.Entry<Result, Block> undo() {
+    public Map.Entry<Result, Block> undo(Result currentResult) {
         if (undoStackFunc.isEmpty() || undoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = undoStackFunc.pop();
@@ -46,12 +45,12 @@ public class CommandHistory {
         redoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = undoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
-
-        redoStackResult.push(resultBlockEntry);
+        Map.Entry newEntry = new AbstractMap.SimpleEntry(currentResult,resultBlockEntry.getValue());
+        redoStackResult.push(newEntry);
         return resultBlockEntry;
     }
 
-    public Map.Entry<Result, Block> redo() {
+    public Map.Entry<Result, Block> redo(Result currentResult) {
         if (redoStackFunc .isEmpty() || redoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = redoStackFunc.pop();
@@ -59,8 +58,8 @@ public class CommandHistory {
         undoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = redoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
-
-        undoStackResult.push(resultBlockEntry);
+        Map.Entry newEntry = new AbstractMap.SimpleEntry(currentResult,resultBlockEntry.getValue());
+        undoStackResult.push(newEntry);
         return resultBlockEntry;
     }
 
