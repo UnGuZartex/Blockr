@@ -79,6 +79,4 @@ public class Initialiser {
             systemPaletteBlocks.add(entry.getValue().clone());
         }
     }
-
-
 }
