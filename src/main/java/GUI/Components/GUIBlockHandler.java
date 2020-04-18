@@ -98,8 +98,10 @@ public class GUIBlockHandler {
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
+                if (draggedBlock != null) {
+                    history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(x, y)));
+                }
                 handleMouseReleased();
-                history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(x,y)));
                 break;
 
             case MouseEvent.MOUSE_DRAGGED:
