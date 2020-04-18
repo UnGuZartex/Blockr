@@ -38,9 +38,9 @@ public class GUIHistory {
         Map.Entry<Position, Position> entry = FunctionalStack.pop();
         Position toRelease = entry.getKey();
         Position toPress = entry.getValue();
-        AddingStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
         handler.handleMousePressed(toPress.getX(), toPress.getY());
         handler.handleMouseDragged(toRelease.getX(), toRelease.getY());
         handler.handleMouseReleased();
+        AddingStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
     }
 }
