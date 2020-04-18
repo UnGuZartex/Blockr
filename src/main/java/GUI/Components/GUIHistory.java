@@ -25,22 +25,20 @@ public class GUIHistory {
     }
 
     public void undo() {
-        if (undoMovementStack .isEmpty()) return;
-        Map.Entry<Position, Position> entry = undoMovementStack.pop();
-        Position toRelease = entry.getKey();
-        Position toPress = entry.getValue();
-        redoMovementStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
-        handler.handleMousePressed(toPress.getX(), toPress.getY());
-        handler.handleMouseDragged(toRelease.getX(), toRelease.getY());
-        handler.handleMouseReleased();
+        handleUndoRedo(undoMovementStack, redoMovementStack);
     }
 
+
     public void redo() {
-        if (redoMovementStack .isEmpty()) return;
-        Map.Entry<Position, Position> entry = redoMovementStack.pop();
+        handleUndoRedo(redoMovementStack, undoMovementStack);
+    }
+
+    private void handleUndoRedo(Stack<Map.Entry<Position, Position>> FunctionalStack, Stack<Map.Entry<Position, Position>> AddingStack) {
+        if (FunctionalStack.isEmpty()) return;
+        Map.Entry<Position, Position> entry = FunctionalStack.pop();
         Position toRelease = entry.getKey();
         Position toPress = entry.getValue();
-        undoMovementStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
+        AddingStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
         handler.handleMousePressed(toPress.getX(), toPress.getY());
         handler.handleMouseDragged(toRelease.getX(), toRelease.getY());
         handler.handleMouseReleased();

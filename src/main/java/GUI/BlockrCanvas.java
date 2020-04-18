@@ -83,7 +83,14 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
+        if (previousBlock != null) {
+            previousBlock.setColor(Color.white);
+        }
         blockHandler.handleMouseEvent(id, x, y);
+        previousBlock = (GUIBlock) programController.getHightlightedBlock();
+        if (previousBlock != null) {
+            previousBlock.setColor(Color.red);
+        }
         repaint();
     }
 
