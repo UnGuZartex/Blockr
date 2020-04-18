@@ -8,6 +8,7 @@ import GUI.Panel.ProgramAreaPanel;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,11 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
+
+    private final GUIHistory history;
+
+    private Position pressedPosition;
+
     /**
      * Create a new gui block handler with a given palette and program area panel.
      *
@@ -72,6 +78,7 @@ public class GUIBlockHandler {
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
         this.programArea = programArea;
+        this.history = new GUIHistory(this);
     }
 
     /**
@@ -87,10 +94,12 @@ public class GUIBlockHandler {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
+                pressedPosition = new Position(x,y);
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
                 handleMouseReleased();
+                history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(x,y)));
                 break;
 
             case MouseEvent.MOUSE_DRAGGED:
@@ -117,7 +126,7 @@ public class GUIBlockHandler {
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
      */
-    private void handleMousePressed(int x, int y) {
+    protected void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
 
@@ -156,7 +165,7 @@ public class GUIBlockHandler {
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
      *         and deletes the block from the program area.
      */
-    private void handleMouseReleased() {
+    protected void handleMouseReleased() {
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
@@ -189,7 +198,7 @@ public class GUIBlockHandler {
      *
      * @effect The position of the dragged block is updated accordingly.
      */
-    private void handleMouseDragged(int x, int y) {
+    protected void handleMouseDragged(int x, int y) {
         if (draggedBlock != null) {
             draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
@@ -249,5 +258,9 @@ public class GUIBlockHandler {
      */
     private boolean isInPanelAny(CollisionRectangle panel, List<GUIBlock> blocks) {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
+    }
+
+    public GUIHistory getHistory() {
+        return history;
     }
 }

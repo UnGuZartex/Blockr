@@ -47,7 +47,6 @@ public class BlockrCanvas extends CanvasWindow {
         this.programController = programController;
         this.connectionController = connectionController;
         this.images = images;
-        this.controlHandler = new ControlHandler(programController);
     }
 
     public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
@@ -56,6 +55,7 @@ public class BlockrCanvas extends CanvasWindow {
         gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
         setControls();
         setBlockHandler();
+        this.controlHandler = new ControlHandler(programController, blockHandler.getHistory());
     }
 
     private void setControls() {
