@@ -82,4 +82,10 @@ public class ProgramObserver {
             listener.onTooManyPrograms();
         }
     }
+
+    public void notifyExecuting(boolean b) {
+        for (ProgramListener listener : listeners) {
+            listener.onExecuting(b);
+        }
+    }
 }

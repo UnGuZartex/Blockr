@@ -92,6 +92,7 @@ public class ProgramArea {
             else {
                 observer.notifyProgramInvalid();
             }
+            observer.notifyExecuting(program.isExecuting());
         }
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
@@ -126,12 +127,14 @@ public class ProgramArea {
             else {
                 observer.notifyProgramInvalid();
             }
+            observer.notifyProgramReset();
+            observer.notifyExecuting(program.isExecuting());
         }
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
         }
 
-        observer.notifyProgramReset();
+
     }
 
     public void redoProgram() {
@@ -144,6 +147,7 @@ public class ProgramArea {
                 if (program.isFinished()) {
                     observer.notifyGameFinished(stepResult);
                 }
+                observer.notifyExecuting(program.isExecuting());
             }
             else {
                 observer.notifyProgramInvalid();

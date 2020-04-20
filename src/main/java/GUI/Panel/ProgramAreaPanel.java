@@ -236,6 +236,10 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
 
     }
 
+    @Override
+    public void onExecuting(boolean b) {
+    }
+
     /**
      * Change the color of the blocks to the given color.
      *

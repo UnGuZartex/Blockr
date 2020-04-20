@@ -175,6 +175,6 @@ public class Program {
     }
 
     public boolean isExecuting() {
-        return !(startBlock == currentBlock);
+        return !history.atStart();
     }
 }

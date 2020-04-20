@@ -77,4 +77,8 @@ public class CommandHistory {
         undoStackResult.clear();
         return resultBlockEntry;
     }
+
+    public boolean atStart() {
+        return undoStackResult.size() == 0 && undoStackFunc.size() == 0;
+    }
 }
