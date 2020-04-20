@@ -95,11 +95,11 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     @Override
-    protected void handleKeyEvent(int id, int keyCode, char keyChar) {
+    protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
         if (previousBlock != null) {
             previousBlock.setColor(Color.white);
         }
-        controlHandler.handleKeyEvent(id,keyCode,keyChar);
+        controlHandler.handleKeyEvent(id,keyCode,keyChar, modifiers);
         previousBlock = (GUIBlock) programController.getHightlightedBlock();
         if (previousBlock != null) {
             previousBlock.setColor(Color.red);

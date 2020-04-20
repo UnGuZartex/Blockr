@@ -21,8 +21,10 @@ public class ControlHandler implements ProgramListener {
         controller.subscribeListener(this);
     }
 
-    public void handleKeyEvent(int id, int keyCode, char keyChar) {
+    public void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
 
+        int shiftdown = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;
+        int ctrldown = KeyEvent.CTRL_DOWN_MASK;
         if (keyCode == KeyEvent.VK_F5) {
             controller.runProgramStep();
         }
@@ -30,22 +32,24 @@ public class ControlHandler implements ProgramListener {
             controller.resetProgram();
         }
 
-        if (keyCode == KeyEvent.VK_NUMPAD4) {
-            if (executing) {
-                controller.undoProgramStep();
-            }
-            else{
-                guiHistory.undo();
-            }
-        }
-        if (keyCode == KeyEvent.VK_NUMPAD6) {
-            if (executing) {
-                controller.redoProgramStep();
+        if (keyCode == KeyEvent.VK_Z && ((modifiers & ctrldown) != 0)) {
+            if ((modifiers & shiftdown) == shiftdown) {
+                if (executing) {
+                    controller.redoProgramStep();
+                }
+                else {
+                    guiHistory.redo();
+                }
             }
             else {
-                guiHistory.redo();
+                if (executing) {
+                    controller.undoProgramStep();
+                } else {
+                    guiHistory.undo();
+                }
             }
         }
+
     }
 
     @Override
