@@ -11,7 +11,6 @@ import System.BlockStructure.Blocks.OperationalBlock;
  */
 public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
-
     /**
      * Initialise a new block functionality
      *
@@ -39,6 +38,11 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
         return Result.SUCCESS;
     }
 
+    /**
+     * Get a copy of this functionality.
+     *
+     * @return A new not functionality which has the same block and game world as this functionality.
+     */
     @Override
     public BlockFunctionality copy() {
         NotFunctionality func = new NotFunctionality(gameWorld);

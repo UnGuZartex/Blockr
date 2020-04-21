@@ -136,8 +136,12 @@ class CavityFunctionalityTest {
     }
 
     @Test
-    void evaluate() {
+    void getGameWorld() {
+        assertEquals(levelDownOnGoalBeforeBlank, ifFunc.getGameWorld());
+    }
 
+    @Test
+    void evaluate() {
         ifFunc.evaluate();
         assertFalse(ifFunc.getEvaluation());
 
@@ -154,5 +158,15 @@ class CavityFunctionalityTest {
 
         if1.getFunctionality().evaluate();
         assertFalse(if1.getFunctionality().getEvaluation());
+    }
+
+    @Test
+    void copy() {
+        BlockFunctionality func = ifFunc.copy();
+        assertNotEquals(func, ifFunc);
+        assertFalse(func.getEvaluation());
+        assertEquals(func.getGameWorld(), ifFunc.getGameWorld());
+        assertTrue(func instanceof  CavityFunctionality);
+        assertEquals(((CavityFunctionality)func).block, ifFunc.block);
     }
 }

@@ -41,7 +41,7 @@ public class CommandHistory {
         if (undoStackFunc.isEmpty() || undoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = undoStackFunc.pop();
-        func.undo();
+        func.loadCurrentSnapshot();
         redoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = undoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
@@ -54,7 +54,7 @@ public class CommandHistory {
         if (redoStackFunc .isEmpty() || redoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = redoStackFunc.pop();
-        func.redo();
+        func.loadCurrentSnapshot();
         undoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = redoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
@@ -68,7 +68,7 @@ public class CommandHistory {
             return new AbstractMap.SimpleEntry<>(Result.SUCCESS, null);
         }
         BlockFunctionality func = undoStackFunc.firstElement();
-        func.undo();
+        func.loadCurrentSnapshot();
         Map.Entry<Result,Block> resultBlockEntry = undoStackResult.firstElement();
 
         redoStackFunc.clear();

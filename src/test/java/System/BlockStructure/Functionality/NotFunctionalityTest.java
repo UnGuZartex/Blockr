@@ -276,4 +276,14 @@ class NotFunctionalityTest {
         notBlock.getFunctionality().evaluate();
         assertFalse(notBlock.getFunctionality().evaluation);
     }
+
+    @Test
+    void copy() {
+        BlockFunctionality func = functionality.copy();
+        assertNotEquals(func, functionality);
+        assertFalse(func.getEvaluation());
+        assertEquals(func.getGameWorld(), functionality.getGameWorld());
+        assertTrue(func instanceof  NotFunctionality);
+        assertEquals(((NotFunctionality)func).block, functionality.block);
+    }
 }

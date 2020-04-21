@@ -15,12 +15,13 @@ public abstract class BlockFunctionality {
      * Variable referring to evaluation of this functionality.
      */
     protected boolean evaluation;
-
     /**
      * Variable referring to the game world this functionality acts upon.
      */
     protected final GameWorld gameWorld;
-
+    /**
+     * Variable referring to the latest snapshot of this functionality.
+     */
     protected Snapshot snapshot;
 
     /**
@@ -42,13 +43,6 @@ public abstract class BlockFunctionality {
     }
 
     /**
-     * Evaluate this functionality with the given game world.
-     *
-     * @effect Evaluates this functionality on the given game world.
-     */
-    public abstract Result evaluate();
-
-    /**
      * Return the game world linked to this functionality.
      *
      * @return the game world linked to this functionality.
@@ -57,23 +51,43 @@ public abstract class BlockFunctionality {
         return gameWorld;
     }
 
+    /**
+     * Evaluate this functionality with the game world of this functionality.
+     *
+     * @effect Evaluates this functionality on the game world of this functionality.
+     */
+    public abstract Result evaluate();
 
+    /**
+     * Copy this functionality
+     *
+     * @return A new functionality.
+     */
+    public abstract BlockFunctionality copy();
+
+    /**
+     * Execute this functionality.
+     *
+     * @effect A back up has been taken.
+     *
+     * @return The result this functionality evaluates to.
+     */
     public Result execute() {
         this.snapshot = gameWorld.createSnapshot();
         return evaluate();
     }
 
-    public void undo() {
-        Snapshot redosnapshot = gameWorld.createSnapshot();
+    /**
+     * Load the current snapshot
+     *
+     * @post The snapshot of this functionality is set to the state of the game world
+     *       before the method call.
+     *
+     * @effect The current snapshot is loaded into the game world of this functionality.
+     */
+    public void loadCurrentSnapshot() {
+        Snapshot newSnapshot = gameWorld.createSnapshot();
         gameWorld.loadSnapshot(snapshot);
-        snapshot = redosnapshot;
+        snapshot = newSnapshot;
     }
-
-    public void redo() {
-        Snapshot undosnapshot = gameWorld.createSnapshot();
-        gameWorld.loadSnapshot(snapshot);
-        snapshot = undosnapshot;
-    }
-
-    public abstract BlockFunctionality copy();
 }
