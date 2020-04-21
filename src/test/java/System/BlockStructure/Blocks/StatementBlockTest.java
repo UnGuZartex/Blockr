@@ -55,12 +55,6 @@ class StatementBlockTest {
         assertEquals(block2.getMainConnector(), block2.mainConnector);
     }
 
-//    @Test
-//    void returnToClosestCavity() {
-//        assertNull(block1.getNextIfNone());
-//        assertNull(block2.getNextIfNone());
-//    }
-
     @Test
     void getSubConnectorAt() {
         assertThrows(IndexOutOfBoundsException.class, () -> { block1.getSubConnectorAt(0); });
@@ -73,30 +67,21 @@ class StatementBlockTest {
         assertEquals(0, block2.getNbSubConnectors());
     }
 
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(block1.hasAlreadyRan());
-//        block1.setAlreadyRan(true); // false -> true
-//        assertTrue(block1.hasAlreadyRan());
-//        block1.setAlreadyRan(true); // true -> true
-//        assertTrue(block1.hasAlreadyRan());
-//        block1.setAlreadyRan(false); // true -> false
-//        assertFalse(block1.hasAlreadyRan());
-//        block1.setAlreadyRan(false); // false -> false
-//        assertFalse(block1.hasAlreadyRan());
-//    }
-
-//    @Test
-//    void reset() {
-//        block1.setAlreadyRan(true);
-//        assertTrue(block1.hasAlreadyRan());
-//        block1.reset();
-//        assertFalse(block1.hasAlreadyRan());
-//    }
 
     @Test
     void hasProperConnections() {
         assertTrue(block1.hasProperConnections());
         assertFalse(block2.hasProperConnections());
+    }
+
+    @Test
+    void cloneTest() {
+        Block block = block1.clone();
+        assertNotEquals(block, block1);
+        assertNotEquals(block.getFunctionality(), block1.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), block1.getFunctionality().getGameWorld());
+        assertTrue(block instanceof StatementBlock);
+        assertTrue(block.getFunctionality() instanceof PredicateFunctionality);
+        assertFalse(block.getMainConnector().isConnected());
     }
 }

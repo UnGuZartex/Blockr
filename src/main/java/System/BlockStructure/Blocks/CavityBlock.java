@@ -143,5 +143,10 @@ public abstract class CavityBlock extends FunctionalBlock {
         return super.getNext();
     }
 
+    /**
+     * Get the new return to block.
+     *
+     * @return The new block to return to. 
+     */
     protected abstract Block getNewReturnBlock();
 }

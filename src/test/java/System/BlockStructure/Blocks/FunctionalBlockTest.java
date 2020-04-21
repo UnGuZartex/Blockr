@@ -64,4 +64,16 @@ class FunctionalBlockTest {
         assertNull(moveForward.getNext());
         assertEquals(turnLeft.getNext(), turnRight);
     }
+
+    @Test
+    void cloneTest() {
+        Block block = turnLeft.clone();
+        assertNotEquals(block, turnLeft);
+        assertNotEquals(block.getFunctionality(), turnLeft.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), turnLeft.getFunctionality().getGameWorld());
+        assertTrue(block instanceof FunctionalBlock);
+        assertTrue(block.getFunctionality() instanceof ActionFunctionality);
+        assertFalse(block.getSubConnectorAt(0).isConnected());
+        assertFalse(block.getMainConnector().isConnected());
+    }
 }

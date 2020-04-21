@@ -19,13 +19,24 @@ public class WhileBlock extends CavityBlock {
         super(functionality);
     }
 
+    /**
+     * Get the new return to block for this block.
+     *
+     * @return This block.
+     */
     @Override
     protected Block getNewReturnBlock() {
         return this;
     }
 
+    /**
+     * Get a clone of this block.
+     *
+     * @return A new while block with a copy of the current functionality and which is not
+     *         connected to any block.
+     */
     @Override
     public Block clone() {
-        return new WhileBlock(new CavityFunctionality(functionality.getGameWorld()));
+        return new WhileBlock((CavityFunctionality) functionality.copy());
     }
 }

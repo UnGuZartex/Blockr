@@ -111,10 +111,10 @@ class IfBlockTest {
     @AfterEach
     void tearDown() {
         if1 = null;
-        if1 = null;
-        if1 = null;
-        if1 = null;
-        if1 = null;
+        if2 = null;
+        if3 = null;
+        if4 = null;
+        if5 = null;
 
         func1 = null;
         func11 = null;
@@ -225,12 +225,6 @@ class IfBlockTest {
         assertTrue(if5.hasProperConnections());
     }
 
-//    @Test
-//    void getNextIfNone() {
-//        assertEquals(func1Under, if1.getNextIfNone());
-//        if1.setAlreadyRan(true);
-//        assertEquals(func3, if1.getNextIfNone());
-//    }
 
     @Test
     void getNbSubConnectors() {
@@ -241,54 +235,35 @@ class IfBlockTest {
         assertEquals(3, if5.getNbSubConnectors());
     }
 
-//    @Test
-//    void hasAlreadyRan() {
-//        assertFalse(if1.hasAlreadyRan());
-//        assertFalse(if2.hasAlreadyRan());
-//        assertFalse(if3.hasAlreadyRan());
-//        assertFalse(if4.hasAlreadyRan());
-//        assertFalse(if5.hasAlreadyRan());
-//        if1.setAlreadyRan(true);
-//        if2.setAlreadyRan(true);
-//        if3.setAlreadyRan(false);
-//        if4.setAlreadyRan(false);
-//        if5.setAlreadyRan(true);
-//        assertTrue(if1.hasAlreadyRan());
-//        assertTrue(if2.hasAlreadyRan());
-//        assertFalse(if3.hasAlreadyRan());
-//        assertFalse(if4.hasAlreadyRan());
-//        assertTrue(if5.hasAlreadyRan());
-//    }
+    @Test
+    void getNewReturnBlock() {
+        assertTrue(if1.getSubConnectorAt(0).isConnected());
+        assertEquals(func1Under, if1.getNewReturnBlock());
+        assertFalse(if3.getSubConnectorAt(0).isConnected());
+        assertEquals(if3.getReturnToBlock(), if3.getNewReturnBlock());
+    }
 
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(true); // false -> true
-//        assertTrue(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(true); // true -> true
-//        assertTrue(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(false); // true -> false
-//        assertFalse(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(false); // false -> false
-//        assertFalse(if1.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void reset() {
-//        if1.setAlreadyRan(true);
-//        func1.setAlreadyRan(true);
-//        func11.setAlreadyRan(true);
-//        func1Under.setAlreadyRan(true);
-//        cond1.setAlreadyRan(true);
-//        if1.reset();
-//        assertFalse(if1.hasAlreadyRan());
-//        assertFalse(func1.hasAlreadyRan());
-//        assertFalse(func11.hasAlreadyRan());
-//        assertFalse(func1Under.hasAlreadyRan());
-//        assertFalse(cond1.hasAlreadyRan());
-//
-//        if4.setAlreadyRan(true);
-//        if4.reset();
-//        assertFalse(if4.hasAlreadyRan());
-//    }
+    @Test
+    void cloneTest() {
+        Block block = if1.clone();
+        assertNotEquals(block, if1);
+        assertNotEquals(block.getFunctionality(), if1.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), if1.getFunctionality().getGameWorld());
+        assertTrue(block instanceof IfBlock);
+        assertTrue(block.getFunctionality() instanceof CavityFunctionality);
+        assertFalse(block.getSubConnectorAt(0).isConnected());
+        assertFalse(block.getSubConnectorAt(1).isConnected());
+        assertFalse(block.getSubConnectorAt(2).isConnected());
+        assertFalse(block.getMainConnector().isConnected());
+    }
+
+    @Test
+    void reset() {
+        if1.reset();
+        assertNull(if1.getReturnToBlock());
+        assertNull(func1.getReturnToBlock());
+        assertNull(func11.getReturnToBlock());
+        assertNull(func1Under.getReturnToBlock());
+        assertNull(cond1.getReturnToBlock());
+    }
 }

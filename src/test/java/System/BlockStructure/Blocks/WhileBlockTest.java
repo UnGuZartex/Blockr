@@ -253,4 +253,27 @@ class WhileBlockTest {
         assertEquals(3, while4.getNbSubConnectors());
         assertEquals(3, while5.getNbSubConnectors());
     }
+
+    @Test
+    void getNewReturnBlock() {
+        assertEquals(while1, while1.getNewReturnBlock());
+        assertEquals(while2, while2.getNewReturnBlock());
+        assertEquals(while3, while3.getNewReturnBlock());
+        assertEquals(while4, while4.getNewReturnBlock());
+        assertEquals(while5, while5.getNewReturnBlock());
+    }
+
+    @Test
+    void cloneTest() {
+        Block block = whileBlock1.clone();
+        assertNotEquals(block, whileBlock1);
+        assertNotEquals(block.getFunctionality(), whileBlock1.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), whileBlock1.getFunctionality().getGameWorld());
+        assertTrue(block instanceof WhileBlock);
+        assertTrue(block.getFunctionality() instanceof CavityFunctionality);
+        assertFalse(block.getSubConnectorAt(0).isConnected());
+        assertFalse(block.getSubConnectorAt(1).isConnected());
+        assertFalse(block.getSubConnectorAt(2).isConnected());
+        assertFalse(block.getMainConnector().isConnected());
+    }
 }

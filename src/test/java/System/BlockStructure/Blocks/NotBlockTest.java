@@ -13,15 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OperationalBlockTest {
+class NotBlockTest {
 
-    OperationalBlock not1, not2, not3, not4;
+    NotBlock not1, not2, not3, not4;
     StatementBlock wallInFront1, wallInFront2;
     CavityBlock cavoc3, cavoc2;
 
     @BeforeEach
     void setUp() {
-
         LevelInitializer init = new LevelInitializer();
         Level level = (Level) init.createNewGameWorld();
         not1 = new NotBlock(new NotFunctionality(level));
@@ -40,8 +39,6 @@ class OperationalBlockTest {
         handler.connect(wallInFront2, not2.getSubConnectorAt(0));
         handler.connect(not2, cavoc2.getConditionalSubConnector());
         handler.connect(not3, cavoc3.getConditionalSubConnector());
-
-        
     }
 
     @AfterEach
@@ -82,14 +79,6 @@ class OperationalBlockTest {
         assertEquals(not4.getMainConnector(), not4.mainConnector);
     }
 
-//    @Test
-//    void returnToClosestCavity() {
-//        assertNull(not1.getNextIfNone());
-//        assertNull(not2.getNextIfNone());
-//        assertNull(not3.getNextIfNone());
-//        assertNull(not4.getNextIfNone());
-//    }
-
     @Test
     void hasProperConnections() {
         assertFalse(not1.hasProperConnections()); // Not connected to main
@@ -106,24 +95,15 @@ class OperationalBlockTest {
         assertEquals(1, not4.getNbSubConnectors());
     }
 
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(true); // false -> true
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(true); // true -> true
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(false); // true -> false
-//        assertFalse(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(false); // false -> false
-//        assertFalse(not1.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void reset() {
-//        not1.setAlreadyRan(true);
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.reset();
-//        assertFalse(not1.hasAlreadyRan());
-//    }
+    @Test
+    void cloneTest() {
+        Block block = not1.clone();
+        assertNotEquals(block, not1);
+        assertNotEquals(block.getFunctionality(), not1.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), not1.getFunctionality().getGameWorld());
+        assertTrue(block instanceof NotBlock);
+        assertTrue(block.getFunctionality() instanceof NotFunctionality);
+        assertFalse(block.getSubConnectorAt(0).isConnected());
+        assertFalse(block.getMainConnector().isConnected());
+    }
 }

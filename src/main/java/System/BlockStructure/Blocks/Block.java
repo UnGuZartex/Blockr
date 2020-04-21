@@ -48,8 +48,25 @@ public abstract class Block {
         return functionality;
     }
 
+    /**
+     * Set the functionality of this bloc to the given functionality.
+     *
+     * @param functionality The new functionality for this block.
+     *
+     * @post The functionality of this block is set to the givne functionality.
+     */
     public void setFunctionality(BlockFunctionality functionality) {
         this.functionality = functionality;
+    }
+
+    /**
+     * Check whether this block has proper connections.
+     *
+     * @return True if and only if this block has no following up blocks
+     *         or its next block has valid following up blocks.
+     */
+    public boolean hasProperConnections() {
+        return !hasNext() || getNext().hasProperConnections();
     }
 
     /**
@@ -81,6 +98,41 @@ public abstract class Block {
         return subConnector.size();
     }
 
+    /**
+     * Reset this block and all its connected blocks.
+     *
+     * @effect The already ran variable is set to null.
+     * @effect The connected blocks are reset.
+     */
+    public void reset() {
+        setReturnToBlock(null);
+        for(int i = 0; i < getSubConnectors().size(); i++) {
+            if (getSubConnectors().get(i).isConnected()) {
+                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
+                connectBlock.reset();
+            }
+        }
+    }
+
+    /**
+     * Get the return to block.
+     *
+     * @return The block to return to.
+     */
+    protected Block getReturnToBlock() {
+        return returnToBlock;
+    }
+
+    /**
+     * Set the return to block.
+     *
+     * @param returnToBlock The new return to block.
+     *
+     * @post The return to block is set to the given block.
+     */
+    protected void setReturnToBlock(Block returnToBlock) {
+        this.returnToBlock = returnToBlock;
+    }
 
     /**
      * Get the main connector of this block.
@@ -88,7 +140,6 @@ public abstract class Block {
      * @return The main connector of this block.
      */
     public abstract MainConnector getMainConnector();
-
 
     /**
      * Check whether or not this block has a next block.
@@ -105,39 +156,9 @@ public abstract class Block {
     public abstract Block getNext();
 
     /**
-     * Reset this block and all its connected blocks.
+     * Clone this block.
      *
-     * @post The already ran variable of this block is set to false
-     *       and all connected blocks through sub connectors are
-     *       reset.
+     * @return A new block with the with the same properties as this block.
      */
-    public void reset() {
-        setReturnToBlock(null);
-        for(int i = 0; i < getSubConnectors().size(); i++) {
-            if (getSubConnectors().get(i).isConnected()) {
-                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
-                connectBlock.reset();
-            }
-        }
-    }
-
-    /**
-     * Check whether this block has proper connections.
-     *
-     * @return True if and only if this block has no following up blocks
-     *         or its next block has valid following up blocks.
-     */
-    public boolean hasProperConnections() {
-        return !hasNext() || getNext().hasProperConnections();
-}
-
     public abstract Block clone();
-
-    protected Block getReturnToBlock() {
-        return returnToBlock;
-    }
-
-    protected void setReturnToBlock(Block returnToBlock) {
-        this.returnToBlock = returnToBlock;
-    }
 }
