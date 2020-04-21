@@ -73,15 +73,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Reset the game state.
-     *
-     * @post The game state is set to an empty string.
-     */
-    public void resetGameText() {
-        gameState = "";
-    }
-
-    /**
      * TODO wegkrijgen?
      * @return
      */
@@ -166,18 +157,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Paint this panel.
-     *
-     * @param g The graphics to paint this panel with.
-     */
-    @Override
-    public void paint(Graphics g, ImageLibrary images) {
-        drawBackground(g);
-        drawBlocks(g);
-        drawGameState(g);
-    }
-
-    /**
      * Event to call if the game has finished
      *
      * @param result The result of the game
@@ -252,6 +231,23 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
+     * Paint this panel.
+     *
+     * @param g The given graphics.
+     * @library library The image library.
+     *
+     * @effect The program area background is drawn.
+     * @effect The program area blocks are drawn.
+     * @effect The game state is drawn.
+     */
+    @Override
+    public void paint(Graphics g, ImageLibrary library) {
+        drawBackGround(g, library, "programAreaBackground");
+        drawBlocks(g);
+        drawGameState(g);
+    }
+
+    /**
      * Draw all the blocks in the program area + the temporary block if it isn't null.
      *
      * @param g The graphics to draw the blocks with.
@@ -275,7 +271,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
         g.setFont(newFont);
-        g.setFont(currentFont);
         g.drawString(gameState, panelRectangle.getX(), 100);
+        g.setFont(currentFont);
     }
 }

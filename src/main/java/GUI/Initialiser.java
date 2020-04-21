@@ -48,7 +48,7 @@ public class Initialiser {
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
-        ProgramController programController = new ProgramController(converter, blockHandler, gameWorld);
+        ProgramController programController = new ProgramController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(images,
                 programController,
                 connectionController);

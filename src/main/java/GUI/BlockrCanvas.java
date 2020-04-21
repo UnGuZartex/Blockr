@@ -12,7 +12,6 @@ import GameWorldAPI.GameWorld.GameWorld;
 import Images.ImageLibrary;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
@@ -25,14 +24,12 @@ public class BlockrCanvas extends CanvasWindow {
     private ProgramAreaPanel programAreaPanel;
     private GameWorldPanel gameWorldPanel;
     private GUIBlockHandler blockHandler;
-  
-    private Control[] controls;
-    private GUIBlock previousBlock;
+    private ControlHandler controlHandler;
+
+    private GUIBlock highlightedBlock;
     private ProgramController programController;
     private ConnectionController connectionController;
     private ImageLibrary images;
-
-    private ControlHandler controlHandler;
 
     /**
      * Initializes a CanvasWindow object. 
@@ -53,23 +50,8 @@ public class BlockrCanvas extends CanvasWindow {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
         gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
-        setControls();
-        setBlockHandler();
-        this.controlHandler = new ControlHandler(programController, blockHandler.getHistory());
-    }
-
-    private void setControls() {
-        controls = new Control[] {
-                new Control(KeyEvent.VK_F5, new ProgramStepCommand(programController)),
-                new Control(KeyEvent.VK_ESCAPE, new ResetControlFunctionality(programController)),
-                new Control(KeyEvent.VK_NUMPAD4, new UndoFunctionality(programController)),
-                new Control(KeyEvent.VK_NUMPAD6, new RedoFunctionality(programController))
-        };
-
-    }
-
-    private void setBlockHandler() {
         blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
+        controlHandler = new ControlHandler(programController, blockHandler.getHistory());
     }
 
     @Override
@@ -83,33 +65,26 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
-        if (previousBlock != null) {
-            previousBlock.setColor(Color.white);
-        }
+        resetHighlightedBlock();
         blockHandler.handleMouseEvent(id, x, y);
-        previousBlock = (GUIBlock) programController.getHightlightedBlock();
-        if (previousBlock != null) {
-            previousBlock.setColor(Color.red);
-        }
+        updateHighLightedBlock();
         repaint();
     }
 
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
-        if (previousBlock != null) {
-            previousBlock.setColor(Color.white);
-        }
+        resetHighlightedBlock();
         controlHandler.handleKeyEvent(id,keyCode,keyChar, modifiers);
-        previousBlock = (GUIBlock) programController.getHightlightedBlock();
-        if (previousBlock != null) {
-            previousBlock.setColor(Color.red);
-        }
-//        for (Control control : controls) {
-//            if (control.isClicked(keyCode)) {
-//                control.onClick();
-//            }
-//        }
+        updateHighLightedBlock();
         repaint();
     }
 
+    private void updateHighLightedBlock() {
+        highlightedBlock = (GUIBlock) programController.getHightlightedBlock();
+        if (highlightedBlock != null) highlightedBlock.setColor(Color.gray);
+    }
+
+    private void resetHighlightedBlock() {
+        if (highlightedBlock != null) highlightedBlock.setColor(Color.white);
+    }
 }

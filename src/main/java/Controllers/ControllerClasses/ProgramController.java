@@ -11,14 +11,12 @@ import System.Logic.ProgramArea.Program;
 
 public class ProgramController {
 
-    private final GameWorld gameWorld;
     private final BlockLinkDatabase blockDatabase;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler, GameWorld gameWorld) {
+    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler) {
         this.blockDatabase = blockDatabase;
         this.blockHandler = blockHandler;
-        this.gameWorld = gameWorld;
     }
 
     public void addBlockToPA(IGUIBlock block, int index) {
