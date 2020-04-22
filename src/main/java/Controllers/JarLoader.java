@@ -12,7 +12,7 @@ public class JarLoader {
         Class c = Class.forName(System.getProperty("GameWorldRootClass"));
         URL location = c.getResource('/' + c.getName().replace('.', '/') + ".class");
         String[] url = location.toString().split("/");
-        String jar = url[url.length-3].split("-")[0];
+        String jar = url[url.length-3].split("-")[0].replace(".jar", "");
         System.setProperty("GameWorldJar", jar);
         return (GameWorldType) c.getConstructor().newInstance();
     }
