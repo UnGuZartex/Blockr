@@ -127,28 +127,28 @@
             <groupId>be.kuleuven.cs.som</groupId>
             <artifactId>annotate</artifactId>
             <version>1.0</version>
-            <systemPath>${project.basedir}/lib/AnnotationsDoclets.jar</systemPath>
+            <systemPath>${project.basedir}/UtilityLibraries/AnnotationsDoclets.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>GameWorldAPI</artifactId>
             <version>latest</version>
-            <systemPath>${project.basedir}/lib/GameWorldAPI-latest.jar</systemPath>
+            <systemPath>${project.basedir}/UtilityLibraries/GameWorldAPI-latest.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>RobotGameWorld</artifactId>
             <version>latest</version>
-            <systemPath>${project.basedir}/lib/RobotGameWorld-latest.jar</systemPath>
+            <systemPath>${project.basedir}/Games/RobotGameWorld-latest.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>ImageLibrary</artifactId>
             <version>latest</version>
-            <systemPath>${project.basedir}/lib/ImageLibrary-latest.jar</systemPath>
+            <systemPath>${project.basedir}/UtilityLibraries/ImageLibrary-latest.jar</systemPath>
         <scope>system</scope>
 
     </dependency>

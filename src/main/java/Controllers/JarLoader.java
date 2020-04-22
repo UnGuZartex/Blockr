@@ -5,16 +5,15 @@ import GameWorldAPI.GameWorldType.GameWorldType;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 public class JarLoader {
 
     public GameWorldType load() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, MalformedURLException {
-        URL[] urls = {new URL("jar:file:" + System.getenv("GameWorldFileLocation") + "!/")};
-        URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-        Class c = Class.forName(System.getenv("GameWorldRootClass"), true, cl);
-
+        Class c = Class.forName(System.getProperty("GameWorldRootClass"));
+        URL location = c.getResource('/' + c.getName().replace('.', '/') + ".class");
+        String[] url = location.toString().split("/");
+        String jar = url[url.length-3].split("-")[0];
+        System.setProperty("GameWorldJar", jar);
         return (GameWorldType) c.getConstructor().newInstance();
     }
 }
