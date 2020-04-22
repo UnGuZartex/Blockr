@@ -17,13 +17,13 @@ public class ProgramArea {
     /**
      * Variable referring to the programs in this program area.
      */
-    private ArrayList<Program> programs = new ArrayList<>();
+    private final ArrayList<Program> programs = new ArrayList<>();
 
     /**
      * Variabele referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
-    private ProgramObserver observer = new ProgramObserver();
+    private final ProgramObserver observer = new ProgramObserver();
 
     /**
      * Unsubscribe a given program listener from the program observer

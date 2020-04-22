@@ -150,3 +150,38 @@ The user is aware that the program is running. The Game World gets updated based
 
 5a. When the robot did not reach the goal
  1. The system shows a failure message to the user.
+
+
+## Use case 5: undo
+
+### Preconditions
+The user has already made any action to the system such that an undo-operation makes sense.
+
+### Success Guarantee (Postcondition)
+The user is aware that the system returns to its previous state.
+
+### Main Success Scenario
+1. The user presses ctrl + z.
+2. The system makes a snapshot of the current state.
+3. The system saves the snapshot to redo it.
+4. The system loads the snapshot made before the last none-undo action.
+
+
+## Use case 6: redo
+
+### Preconditions
+The user should have undone the system, a snapshot which can be redone is saved in the system. 
+
+### Success Guarantee (Postcondition)
+The user is aware that the system will return to a previous state.
+
+### Main Success Scenario
+1. The user presses ctrl + shift + z.
+2. The system makes a snapshot of the current state.
+3. The system saves the snapshot to undo it again.
+4. The system loads the snapshot.
+
+### Extensions
+
+2a. When no snapshot to redo is in the system.
+1. Nothing happens.
