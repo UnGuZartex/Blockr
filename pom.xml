@@ -127,28 +127,35 @@
             <groupId>be.kuleuven.cs.som</groupId>
             <artifactId>annotate</artifactId>
             <version>1.0</version>
-            <systemPath>gameJars/AnnotationsDoclets.jar</systemPath>
+            <systemPath>${project.basedir}/utilityLibraries/AnnotationsDoclets.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>GameWorldAPI</artifactId>
             <version>latest</version>
-            <systemPath>gameJars/GameWorldAPI-latest.jar</systemPath>
+            <systemPath>${project.basedir}/utilityLibraries/GameWorldAPI-latest.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>RobotGameWorld</artifactId>
             <version>latest</version>
-            <systemPath>utilityLibraries/RobotGameWorld-latest.jar</systemPath>
+            <systemPath>${project.basedir}/gameJars/RobotGameWorld-latest.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>SWOP</groupId>
+            <artifactId>LineJumper</artifactId>
+            <version>latest</version>
+            <systemPath>${project.basedir}/gameJars/mygame-latest.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>SWOP</groupId>
             <artifactId>ImageLibrary</artifactId>
             <version>latest</version>
-            <systemPath>gameJars/ImageLibrary-latest.jar</systemPath>
+            <systemPath>${project.basedir}/utilityLibraries/ImageLibrary-latest.jar</systemPath>
         <scope>system</scope>
 
     </dependency>
