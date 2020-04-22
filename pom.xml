@@ -141,7 +141,7 @@
             <groupId>SWOP</groupId>
             <artifactId>RobotGameWorld</artifactId>
             <version>latest</version>
-            <systemPath>${project.basedir}/GameJars/RobotGameWorld-latest.jar</systemPath>
+            <systemPath>utilityLibraries/RobotGameWorld-latest.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
