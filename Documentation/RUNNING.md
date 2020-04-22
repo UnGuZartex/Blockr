@@ -1,6 +1,5 @@
 To run the application, another jar dependency is needed.
-This is the ImageLibrary. This is necessary for using Images.
-This library preloads the images instead of loading them at each paint.
+This is the ImageLibrary. This gives the possibility to preload the needed images at the start of the project and creating an image library out of it. This allows not having to think about image loading in each separate gameworld and flexible, custom image changes at runtime (if needed).
 
 Use following command to run:
 
