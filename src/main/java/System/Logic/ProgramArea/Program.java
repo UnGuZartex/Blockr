@@ -198,6 +198,7 @@ public class Program {
         @Override
         public void redo() {
             command.redo();
+            currentBlock = currentMementoBlock.getNext();
         }
     }
 }
