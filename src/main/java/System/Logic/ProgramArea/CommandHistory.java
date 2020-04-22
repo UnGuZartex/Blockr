@@ -44,7 +44,7 @@ public class CommandHistory {
         func.undo();
         redoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = undoStackResult.pop();
-        resultBlockEntry.getValue().setFunctionality(func);
+        //resultBlockEntry.getValue().setFunctionality(func);
         Map.Entry<Result, Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
         redoStackResult.push(newEntry);
         return resultBlockEntry;
@@ -58,7 +58,7 @@ public class CommandHistory {
         undoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = redoStackResult.pop();
         if (resultBlockEntry.getValue() != null) {
-            resultBlockEntry.getValue().setFunctionality(func);
+           // resultBlockEntry.getValue().setFunctionality(func);
         }
         Map.Entry<Result,Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
         undoStackResult.push(newEntry);
