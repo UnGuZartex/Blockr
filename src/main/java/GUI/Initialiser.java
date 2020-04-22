@@ -41,15 +41,13 @@ public class Initialiser {
         initialisePalettesAndGameWorld(gameWorldType);
     }
 
-
     public BlockrCanvas createNewCanvas() throws IOException {
-        ImageLoader imageLoader = new ImageLoader();
-        ImageLibrary images = imageLoader.createImageLibrary();
+
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         ProgramController programController = new ProgramController(converter, blockHandler);
-        BlockrCanvas canvas = new BlockrCanvas(images,
+        BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
                 programController,
                 connectionController);
         canvas.setPanels(GUIPaletteBlocks, gameWorld);
@@ -78,5 +76,12 @@ public class Initialiser {
             GUIPaletteBlocks.add(entry.getKey().clone());
             systemPaletteBlocks.add(entry.getValue().clone());
         }
+    }
+
+    private ImageLibrary initialiseImageLibrary() throws IOException {
+        ImageLoader imageLoader = new ImageLoader();
+        imageLoader.loadDirectoryImages("Blockr");
+        imageLoader.loadDirectoryImages(System.getProperty("GameWorldJar"));
+        return imageLoader.createImageLibrary();
     }
 }
