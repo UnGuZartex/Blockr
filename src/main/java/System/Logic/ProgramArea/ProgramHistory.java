@@ -4,7 +4,7 @@ import GameWorldAPI.GameWorld.Result;
 
 import java.util.Stack;
 
-public class CommandHistory {
+public class ProgramHistory {
     /**
      * Variable referring to the undo stack.
      */
@@ -14,15 +14,9 @@ public class CommandHistory {
      */
     private final Stack<Memento> redoStackFunc = new Stack<>();
 
-    private final Program originator;
 
 
-    public CommandHistory(Program originator) {
-        this.originator = originator;
-    }
-
-    public Result execute() {
-        Memento memento = originator.createMemento();
+    public Result execute(Memento memento) {
         redoStackFunc.clear();
         undoStackFunc.push(memento);
         return memento.execute();

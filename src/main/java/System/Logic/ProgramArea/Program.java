@@ -30,7 +30,7 @@ public class Program {
 
 
 
-    private CommandHistory history = new CommandHistory(this);
+    private ProgramHistory history = new ProgramHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -66,7 +66,7 @@ public class Program {
         }
 
         if (!isFinished()) {
-            lastResult = history.execute();
+            lastResult = history.execute(createMemento());
             currentBlock = currentBlock.getNext();
         }
         return lastResult;
@@ -192,9 +192,8 @@ public class Program {
 
         @Override
         public void redo() {
-            command.redo();
+            lastResult = command.execute();
             currentBlock = currentMementoBlock.getNext();
-            lastResult = currentResult;
         }
     }
 }
