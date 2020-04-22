@@ -187,7 +187,6 @@ public class Program {
         public Result execute() {
             currentMementoBlock.setFunctionality(command);
             currentResult = command.execute();
-            currentMementoBlock = currentBlock;
             return currentResult;
         }
 
@@ -195,14 +194,12 @@ public class Program {
         public void undo() {
             currentMementoBlock.setFunctionality(command);
             command.undo();
-            currentMementoBlock = currentBlock;
         }
 
         @Override
         public void redo() {
             currentMementoBlock.setFunctionality(command);
             command.redo();
-            currentMementoBlock = currentBlock;
         }
     }
 }
