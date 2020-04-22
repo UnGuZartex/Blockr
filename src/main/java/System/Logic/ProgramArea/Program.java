@@ -192,13 +192,13 @@ public class Program {
 
         @Override
         public void undo() {
-            currentMementoBlock.setFunctionality(command);
+            //currentMementoBlock.setFunctionality(command);
             command.undo();
         }
 
         @Override
         public void redo() {
-            currentMementoBlock.setFunctionality(command);
+            //currentMementoBlock.setFunctionality(command);
             command.redo();
         }
     }
