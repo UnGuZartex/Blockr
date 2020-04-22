@@ -18,7 +18,6 @@ public class ProgramArea {
      * Variable referring to the programs in this program area.
      */
     private final ArrayList<Program> programs = new ArrayList<>();
-
     /**
      * Variabele referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
@@ -64,6 +63,70 @@ public class ProgramArea {
     }
 
     /**
+     * Add a new program to this program area with given start block.
+     *
+     * @param startBlock The start block for the new program.
+     *
+     * @post A new program with given start block is added to this program area.
+     *
+     * @throws IllegalArgumentException
+     *         If the given start block is not effective.
+     */
+    public void addProgram(Block startBlock) throws IllegalArgumentException {
+        if (startBlock == null) {
+            throw new IllegalArgumentException("The start block can't be null");
+        }
+        if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
+            programs.add(new Program(startBlock));
+        }
+    }
+
+    /**
+     * Add the highest block in the block structure of the given block as a program.
+     *
+     * @param block The given block.
+     *
+     * @throws IllegalArgumentException
+     *         If the given block is not effective.
+     */
+    public void addHighestAsProgram(Block block) throws IllegalArgumentException {
+        if (block == null) {
+            throw new IllegalArgumentException("The block can't be null");
+        }
+        addProgram(getHighestBlock(block));
+    }
+
+    /**
+     * Delete the program from this program area which has the given block
+     * as starting block. If no such program exists, nothing happens.
+     *
+     * @param blockToDelete The starting block for the program to delete.
+     *
+     * @post The program with the given startblock is deleted from this program area.
+     */
+    public void deleteProgram(Block blockToDelete) {
+        programs.stream()
+                .filter(p -> p.getStartBlock() == blockToDelete)
+                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
+    }
+
+    /**
+     * Get the total number of blocks in this program area.
+     *
+     * @return The sum of the total number of blocks in each program
+     *         in this program area.
+     */
+    public int getAllBlocksCount() {
+        int sum = 0;
+        for (Program program : programs) {
+            sum += program.getSize();
+        }
+        return sum;
+    }
+
+
+
+    /**
      * Execute a program step if possible.
      *
      * @effect If there is only one program in this program area and that program is valid,
@@ -99,29 +162,15 @@ public class ProgramArea {
         }
     }
 
-    /**
-     * Reset all programs to their initial state.
-     *
-     * @effect Each program in the programs list is reset.
-     * @effect The observer notifies its listeners that the program has been reset.
-     */
-    public void resetProgram() {
-        for (Program program : programs) {
-            program.resetProgram();
-        }
-
-        observer.notifyProgramReset();
-    }
-
     public void undoProgram() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                Result stepResult = program.undoProgram();
+                program.undoProgram();
 
                 if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
+                    observer.notifyGameFinished(program.getLastResult());
                 }
             }
             else {
@@ -142,10 +191,10 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                Result stepResult = program.redoProgram();
+                program.redoProgram();
 
                 if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
+                    observer.notifyGameFinished(program.getLastResult());
                 }
                 observer.notifyExecuting(program.isExecuting());
             }
@@ -159,60 +208,27 @@ public class ProgramArea {
     }
 
     /**
-     * Add a new program to this program area with given start block.
+     * Reset all programs to their initial state.
      *
-     * @param startBlock The start block for the new program.
-     *
-     * @post A new program with given start block is added to this program area.
-     *
-     * @throws IllegalArgumentException
-     *         If the given start block is not effective.
+     * @effect Each program in the programs list is reset.
+     * @effect The observer notifies its listeners that the program has been reset.
      */
-    public void addProgram(Block startBlock) {
-        if (startBlock == null) {
-            throw new IllegalArgumentException("Block can't be null");
-        }
-        if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
-            programs.add(new Program(startBlock));
-        }
-    }
-
-    /**
-     * Delete the program from this program area which has the given block
-     * as starting block. If no such program exists, nothing happens.
-     *
-     * @param blockToDelete The starting block for the program to delete.
-     *
-     * @post The program with the given startblock is deleted from this program area.
-     */
-    public void deleteProgram(Block blockToDelete) {
-        programs.stream()
-                .filter(p -> p.getStartBlock() == blockToDelete)
-                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
-    }
-
-    /**
-     * Get the total number of blocks in this program area.
-     *
-     * @return The sum of the total number of blocks in each program
-     *         in this program area.
-     */
-    public int getAllBlocksCount() {
-        int sum = 0;
+    public void resetProgram() {
         for (Program program : programs) {
-            sum += program.getSize();
+            program.resetProgram();
         }
-        return sum;
+
+        observer.notifyProgramReset();
     }
 
-    /**
-     * Add the highest block in the block structure of the given block as a program.
-     *
-     * @param block The given block.
-     */
-    public void addHighestAsProgram(Block block) {
-        addProgram(getHighestBlock(block));
-    }
+// TODO blijven?
+//    public boolean isExecuted() {
+//        if (programs.size() == 1) {
+//            Program program = programs.get(0);
+//            return program.isExecuting();
+//        }
+//        return false;
+//    }
 
     /**
      * Get the highest block in the block structure this block is connected to.
@@ -227,13 +243,5 @@ public class ProgramArea {
         else {
             return block;
         }
-    }
-
-    public boolean isExecuted() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-            return program.isExecuting();
-        }
-        return false;
     }
 }

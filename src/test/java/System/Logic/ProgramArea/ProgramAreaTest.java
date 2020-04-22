@@ -15,14 +15,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProgramAreaTest {
 
     ProgramArea pa0, pa1, pa2;
-    Block start1, start2a, start2b;
+    Block start1, start2a, start2b, block1, block2;
     Level level;
+    ConnectionHandler handler;
 
     @BeforeEach
     void setUp() {
 
         LevelInitializer init = new LevelInitializer();
         level = (Level) init.createNewGameWorld();
+
+        handler = new ConnectionHandler();
+        block1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        block2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        handler.connect(block2, block1.getSubConnectorAt(0));
 
         pa0 = new ProgramArea();
         pa1 = new ProgramArea();
@@ -35,6 +41,7 @@ class ProgramAreaTest {
         pa1.addProgram(start1);
         pa2.addProgram(start2a);
         pa2.addProgram(start2b);
+
     }
 
     @AfterEach
@@ -64,6 +71,23 @@ class ProgramAreaTest {
     }
 
     @Test
+    void addProgram_alreadyIn() {
+        pa2.addProgram(start2a);
+        assertEquals(2, pa2.getAllBlocksCount());
+    }
+
+    @Test
+    void addHighestAsProgram_invalid() {
+        assertThrows(IllegalArgumentException.class, () -> { pa1.addHighestAsProgram(null); });
+    }
+
+    @Test
+    void addHighestAsProgram_valid() {
+        pa0.addHighestAsProgram(block2);
+        assertEquals(2, pa0.getAllBlocksCount());
+    }
+
+    @Test
     void deleteProgram() {
         assertEquals(2, pa2.getAllBlocksCount());
         pa2.deleteProgram(start1);
@@ -79,5 +103,25 @@ class ProgramAreaTest {
         assertEquals(0, pa0.getAllBlocksCount());
         assertEquals(1, pa1.getAllBlocksCount());
         assertEquals(2, pa2.getAllBlocksCount());
+    }
+
+    @Test
+    void runProgramStep() {
+
+    }
+
+    @Test
+    void undoProgram() {
+
+    }
+
+    @Test
+    void redoProgram() {
+
+    }
+
+    @Test
+    void resetProgram() {
+
     }
 }

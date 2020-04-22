@@ -98,6 +98,17 @@ class ProgramTest {
     }
 
     @Test
+    void getLastResult() {
+        assertEquals(Program.DEFAULT_RESULT, validProgram.getLastResult());
+        Result result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+        result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+        result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
     void executeStep_InvalidProgram() {
         assertThrows(IllegalStateException.class, () -> invalidProgram.executeStep());
     }
@@ -138,5 +149,69 @@ class ProgramTest {
     void getSize() {
         assertEquals(2, validProgram.getSize());
         assertEquals(3, invalidProgram.getSize());
+    }
+
+    @Test
+    void isExecuting() {
+        assertFalse(validProgram.isExecuting());
+        validProgram.executeStep();
+        assertTrue(validProgram.isExecuting());
+        validProgram.executeStep();
+        assertTrue(validProgram.isExecuting());
+    }
+
+    @Test
+    void undoProgram_actionDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.undoProgram();
+        assertEquals(block.getClass(), validProgram.getCurrentBlock().getClass());
+        assertEquals(block.getFunctionality().getClass(), validProgram.getCurrentBlock().getFunctionality().getClass());
+        assertEquals(block.getFunctionality().getGameWorld(), validProgram.getCurrentBlock().getFunctionality().getGameWorld());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void undoProgram_noActionDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.executeStep();
+        validProgram.undoProgram();
+        assertEquals(block, validProgram.getCurrentBlock());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void redoProgram_noUndoDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.redoProgram();
+        assertEquals(block, validProgram.getCurrentBlock());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void redoProgram_undoDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.undoProgram();
+        validProgram.redoProgram();
+        assertEquals(block.getClass(), validProgram.getCurrentBlock().getClass());
+        assertEquals(block.getFunctionality().getClass(), validProgram.getCurrentBlock().getFunctionality().getClass());
+        assertEquals(block.getFunctionality().getGameWorld(), validProgram.getCurrentBlock().getFunctionality().getGameWorld());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void resetProgram() {
+        validProgram.executeStep();
+        validProgram.executeStep();
+        validProgram.resetProgram();
+        assertEquals(validProgram.getStartBlock(), validProgram.getCurrentBlock());
+        assertEquals(Program.DEFAULT_RESULT, validProgram.getLastResult());
     }
 }

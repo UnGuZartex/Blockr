@@ -13,6 +13,9 @@ import java.util.Map;
  * block and execution goes through the program as a linked list
  * using the connectors of the blocks in this program.
  *
+ * @invar Each program must have a valid start block.
+ *        | isValidStartBlock(startBlock)
+ *
  * @author Alpha-team
  */
 public class Program {
@@ -27,9 +30,13 @@ public class Program {
      */
     private Block currentBlock;
     /**
+     * Variable referring to the default result of a program.
+     */
+    public final static Result DEFAULT_RESULT = Result.SUCCESS;
+    /**
      * Variable referring to the result of the last executed step in the program.
      */
-    private Result lastResult = Result.SUCCESS;
+    private Result lastResult = DEFAULT_RESULT;
     /**
      * Variable referring to the history of a program.
      */
@@ -81,6 +88,15 @@ public class Program {
      */
     public Block getCurrentBlock() {
         return currentBlock;
+    }
+
+    /**
+     * Get the last result of this program.
+     *
+     * @return The last result.
+     */
+    public Result getLastResult() {
+        return lastResult;
     }
 
     /**
@@ -148,35 +164,43 @@ public class Program {
         return !history.atStart();
     }
 
-    public Result undoProgram() {
+    /**
+     * Redo the history and set the current block and last result correct again.
+     *
+     * @post The current block is set to a redo block if  a redo is not null.
+     * @post The last result is set to a redo result if a redo is not null.
+     */
+    public void undoProgram() {
         Map.Entry<Result, Block> undo = history.undo(lastResult);
         if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = undo.getValue();
             this.lastResult = undo.getKey();
         }
-        return this.lastResult;
     }
 
-    public Result redoProgram() {
+    /**
+     * Redo the history and set the current block and last result correct again.
+     *
+     * @post The current block is set to a redo block if  a redo is not null.
+     * @post The last result is set to a redo result if a redo is not null.
+     */
+    public void redoProgram() {
         Map.Entry<Result, Block> redo = history.redo(lastResult);
         if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = redo.getValue();
             this.lastResult = redo.getKey();
         }
-        return this.lastResult;
     }
 
     /**
-     * Reset this program. The blocks in this program are reset,
-     * and the current block is set to the start block.
+     * Reset this program.
      *
      * @post The current block is set to the start block.
-     * @post the start block is reset.
+     * @post The last result is set to the default result.
      */
     public void resetProgram() {
-        Map.Entry<Result, Block> reset = history.reset();
         this.currentBlock = startBlock;
-        this.lastResult = reset.getKey();
+        this.lastResult = DEFAULT_RESULT;
     }
 
     /**
