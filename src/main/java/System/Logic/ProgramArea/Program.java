@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Connectors.SubConnector;
 
 import java.util.AbstractMap;
@@ -20,7 +21,7 @@ public class Program {
      * Variable referring to the start block of this program. This is
      * the first block of the program.
      */
-    private Block startBlock;
+    private final Block startBlock;
     /**
      * Variable referring to the block which should be executed next.
      */
@@ -29,59 +30,39 @@ public class Program {
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = Result.SUCCESS;
-
-
-
-    private CommandHistory history = new CommandHistory();
+    /**
+     * Variable referring to the history of a program.
+     */
+    private final CommandHistory history = new CommandHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
      *
      * @param start The start block for this program.
      *
-     * @effect The program is reset and thus ready for execution.
-     *
      * @post The start block of this program is set to the given block.
+     * @post The current block of this program is set to the given block.
+     *
+     * @throws IllegalArgumentException
+     *         If the given block is no valid start block.
      */
-    public Program(Block start) {
+    public Program(Block start) throws IllegalArgumentException{
+        if (!isValidStartBlock(start)) {
+            throw new IllegalArgumentException("The given start block is not valid!");
+        }
         startBlock = start;
-        currentBlock = startBlock;
+        currentBlock = start;
     }
 
     /**
-     * Execute a step of this program, set the current block
-     * to the next block to execute if it is not finished yet and
-     * return the current result of the executed program step.
+     * Checks if the given block is a valid starting block.
      *
-     * @effect The functionality of the current block is evaluated.
+     * @param block The block to check.
      *
-     * @post The current block of this program is set to the next block.
-     *
-     * @return The current result of the program
-     *
-     * @throws IllegalStateException
-     *         If this program is not valid.
+     * @return True if and only if the given block is effective and a functional block.
      */
-    public Result executeStep() {
-        if (!isValidProgram()) {
-            throw new IllegalStateException("This program is invalid!");
-        }
-
-        if (!isFinished()) {
-            lastResult = history.execute(currentBlock, lastResult);
-            currentBlock = currentBlock.getNext();
-        }
-        return lastResult;
-    }
-
-    /**
-     * Checks whether this program is finished or not.
-     *
-     * @return True if and only if the program has finished executing all the blocks
-     *         or if the last result of executing the program is not a SUCCESS.
-     */
-    public boolean isFinished() {
-        return currentBlock == null || lastResult != Result.SUCCESS;
+    public static boolean isValidStartBlock(Block block) {
+        return block instanceof FunctionalBlock;
     }
 
     /**
@@ -103,16 +84,68 @@ public class Program {
     }
 
     /**
-     * Reset this program. The blocks in this program are reset,
-     * and the current block is set to the start block.
+     * Execute a step of this program, set the current block
+     * to the next block to execute if it is not finished yet and
+     * return the current result of the executed program step.
      *
-     * @post The current block is set to the start block.
-     * @post the start block is reset.
+     * @effect The functionality of the current block is evaluated.
+     *
+     * @post The current block of this program is set to the next block
+     *       if the program is not finished yet.
+     *
+     * @return The result of an execution if the program is not finished,
+     *         otherwise is the last result returned
+     *
+     * @throws IllegalStateException
+     *         If this program is not valid.
      */
-    public void resetProgram() {
-        Map.Entry<Result, Block> reset = history.reset();
-        this.currentBlock = startBlock;
-        this.lastResult = reset.getKey();
+    public Result executeStep() throws IllegalStateException{
+        if (!isValidProgram()) {
+            throw new IllegalStateException("This program is not a valid program to execute!");
+        }
+        if (!isFinished()) {
+            lastResult = history.execute(currentBlock, lastResult);
+            currentBlock = currentBlock.getNext();
+        }
+        return lastResult;
+    }
+
+    /**
+     * Checks whether this is a valid program.
+     *
+     * @return True if and only if the start block of this program
+     *         has proper connections.
+     */
+    public boolean isValidProgram() {
+        return startBlock.hasProperConnections();
+    }
+
+    /**
+     * Checks whether this program is finished or not.
+     *
+     * @return True if and only if the program has finished executing all the blocks
+     *         or if the last result of executing the program is not a SUCCESS.
+     */
+    public boolean isFinished() {
+        return currentBlock == null || lastResult != Result.SUCCESS;
+    }
+
+    /**
+     * Get the size of this program.
+     *
+     * @return The size of this program, which is the size of the start
+     *         block of this program
+     *         | getSizeOfBlock(startBlock)
+     */
+    public int getSize() {
+        return getSizeOfBlock(startBlock);
+    }
+
+
+
+    // TODO testing + doc
+    public boolean isExecuting() {
+        return !history.atStart();
     }
 
     public Result undoProgram() {
@@ -134,24 +167,16 @@ public class Program {
     }
 
     /**
-     * Checks whether this is a valid program.
+     * Reset this program. The blocks in this program are reset,
+     * and the current block is set to the start block.
      *
-     * @return True if and only if the start block of this program
-     *         has proper connections.
+     * @post The current block is set to the start block.
+     * @post the start block is reset.
      */
-    public boolean isValidProgram() {
-        return startBlock.hasProperConnections();
-    }
-
-    /**
-     * Get the size of this program.
-     *
-     * @return The size of this program, which is the size of the start
-     *         block of this program
-     *         | getSizeOfBlock(startBlock)
-     */
-    public int getSize() {
-        return getSizeOfBlock(startBlock);
+    public void resetProgram() {
+        Map.Entry<Result, Block> reset = history.reset();
+        this.currentBlock = startBlock;
+        this.lastResult = reset.getKey();
     }
 
     /**
@@ -162,7 +187,7 @@ public class Program {
      * @return The size of the given block. This is the number of blocks
      *         which are connected through a sub connector on this block.
      */
-    protected static int getSizeOfBlock(Block block) {
+    private static int getSizeOfBlock(Block block) {
         int sizeOfSubConnectList = block.getNbSubConnectors();
         int sum = 1;
         for (int i = 0; i < sizeOfSubConnectList; i++) {
@@ -172,9 +197,5 @@ public class Program {
             }
         }
         return sum;
-    }
-
-    public boolean isExecuting() {
-        return !history.atStart();
     }
 }
