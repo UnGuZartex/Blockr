@@ -37,7 +37,7 @@ public class CommandHistory {
         return command.execute();
     }
 
-    public Map.Entry<Result, Block> undo(Result currentResult) {
+    public Map.Entry<Result, Block> undo(Result currentResult, Block currentblock) {
         if (undoStackFunc.isEmpty() || undoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = undoStackFunc.pop();
@@ -45,12 +45,12 @@ public class CommandHistory {
         redoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = undoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
-        Map.Entry<Result, Block> newEntry = new AbstractMap.SimpleEntry(currentResult,resultBlockEntry.getValue());
+        Map.Entry<Result, Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
         redoStackResult.push(newEntry);
         return resultBlockEntry;
     }
 
-    public Map.Entry<Result, Block> redo(Result currentResult) {
+    public Map.Entry<Result, Block> redo(Result currentResult, Block currentblock) {
         if (redoStackFunc .isEmpty() || redoStackResult.isEmpty())
             return new AbstractMap.SimpleEntry<>(null,null);
         BlockFunctionality func = redoStackFunc.pop();
@@ -58,7 +58,7 @@ public class CommandHistory {
         undoStackFunc.push(func);
         Map.Entry<Result,Block> resultBlockEntry = redoStackResult.pop();
         resultBlockEntry.getValue().setFunctionality(func);
-        Map.Entry<Result,Block> newEntry = new AbstractMap.SimpleEntry(currentResult,resultBlockEntry.getValue());
+        Map.Entry<Result,Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
         undoStackResult.push(newEntry);
         return resultBlockEntry;
     }

@@ -116,7 +116,7 @@ public class Program {
     }
 
     public Result undoProgram() {
-        Map.Entry<Result, Block> undo = history.undo(lastResult);
+        Map.Entry<Result, Block> undo = history.undo(lastResult, currentBlock);
         if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = undo.getValue();
             this.lastResult = undo.getKey();
@@ -125,7 +125,7 @@ public class Program {
     }
 
     public Result redoProgram() {
-        Map.Entry<Result, Block> redo = history.redo(lastResult);
+        Map.Entry<Result, Block> redo = history.redo(lastResult, currentBlock);
         if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
             this.currentBlock = redo.getValue();
             this.lastResult = redo.getKey();
