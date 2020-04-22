@@ -1,84 +1,61 @@
 package System.Logic.ProgramArea;
 
 import GameWorldAPI.GameWorld.Result;
-import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Functionality.BlockFunctionality;
 
-import java.util.AbstractMap;
-import java.util.Map;
 import java.util.Stack;
 
 public class CommandHistory {
     /**
      * Variable referring to the undo stack.
      */
-    private final Stack<BlockFunctionality> undoStackFunc = new Stack<>();
+    private final Stack<Memento> undoStackFunc = new Stack<>();
     /**
      * Variable referring to the redo stack.
      */
-    private final Stack<BlockFunctionality> redoStackFunc = new Stack<>();
+    private final Stack<Memento> redoStackFunc = new Stack<>();
 
-    /**
-     * Variable referring to the undo stack.
-     */
-    private final Stack<Map.Entry<Result, Block>> undoStackResult = new Stack<>();
-    /**
-     * Variable referring to the redo stack.
-     */
-    private final Stack<Map.Entry<Result, Block>> redoStackResult  = new Stack<>();
+    private final Program originator;
 
-    public Result execute(Block currentBlock, Result currentResult) {
-        BlockFunctionality command = currentBlock.getFunctionality().copy();
-        currentBlock.setFunctionality(command);
+
+    public CommandHistory(Program originator) {
+        this.originator = originator;
+    }
+
+    public Result execute() {
+        Memento memento = originator.createMemento();
         redoStackFunc.clear();
-        redoStackResult.clear();
-        undoStackFunc.push(command);
-        undoStackResult.push(new AbstractMap.SimpleEntry<>(currentResult,currentBlock));
-        return command.execute();
+        undoStackFunc.push(memento);
+        return memento.execute();
     }
 
-    public Map.Entry<Result, Block> undo(Result currentResult, Block currentblock) {
-        if (undoStackFunc.isEmpty() || undoStackResult.isEmpty())
-            return new AbstractMap.SimpleEntry<>(null,null);
-        BlockFunctionality func = undoStackFunc.pop();
-        func.undo();
-        redoStackFunc.push(func);
-        Map.Entry<Result,Block> resultBlockEntry = undoStackResult.pop();
-        resultBlockEntry.getValue().setFunctionality(func);
-        Map.Entry<Result, Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
-        redoStackResult.push(newEntry);
-        return resultBlockEntry;
+    public void undo() {
+        if (undoStackFunc.isEmpty()) return;
+        Memento mem = undoStackFunc.pop();
+        mem.undo();
+        originator.loadMemento(mem);
+        redoStackFunc.push(mem);
     }
 
-    public Map.Entry<Result, Block> redo(Result currentResult, Block currentblock) {
-        if (redoStackFunc .isEmpty() || redoStackResult.isEmpty())
-            return new AbstractMap.SimpleEntry<>(null,null);
-        BlockFunctionality func = redoStackFunc.pop();
-        func.redo();
-        undoStackFunc.push(func);
-        Map.Entry<Result,Block> resultBlockEntry = redoStackResult.pop();
-        resultBlockEntry.getValue().setFunctionality(func);
-        Map.Entry<Result,Block> newEntry = new AbstractMap.SimpleEntry(currentResult,currentblock);
-        undoStackResult.push(newEntry);
-        return resultBlockEntry;
+    public void redo() {
+        if (redoStackFunc.isEmpty()) return;
+        Memento mem = redoStackFunc.pop();
+        undoStackFunc.push(mem);
+        mem.redo();
+        originator.loadMemento(mem);
     }
 
-    public Map.Entry<Result, Block> reset() {
-        if (undoStackFunc.isEmpty() || undoStackResult.isEmpty()) {
-            return new AbstractMap.SimpleEntry<>(Result.SUCCESS, null);
-        }
-        BlockFunctionality func = undoStackFunc.firstElement();
-        func.undo();
-        Map.Entry<Result,Block> resultBlockEntry = undoStackResult.firstElement();
+    public void reset() {
+        if (undoStackFunc.isEmpty())
+            return;
 
+        Memento mem = undoStackFunc.firstElement();
+        mem.undo();
+        originator.loadMemento(mem);
         redoStackFunc.clear();
         undoStackFunc.clear();
-        redoStackResult.clear();
-        undoStackResult.clear();
-        return resultBlockEntry;
     }
 
     public boolean atStart() {
-        return undoStackResult.size() == 0 && undoStackFunc.size() == 0;
+        return undoStackFunc.size() == 0;
     }
 }
