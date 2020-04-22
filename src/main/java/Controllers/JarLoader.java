@@ -8,7 +8,7 @@ import java.net.URL;
 
 public class JarLoader {
 
-    public GameWorldType load() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, MalformedURLException {
+    public GameWorldType load() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Class c = Class.forName(System.getProperty("GameWorldRootClass"));
         URL location = c.getResource('/' + c.getName().replace('.', '/') + ".class");
         String[] url = location.toString().split("/");

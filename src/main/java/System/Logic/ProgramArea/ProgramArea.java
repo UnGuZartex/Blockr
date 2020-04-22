@@ -1,7 +1,7 @@
 package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
-import Controllers.ProgramObserver;
+import Controllers.ProgramEventManager;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
 
@@ -23,7 +23,7 @@ public class ProgramArea {
      * Variabele referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
-    private ProgramObserver observer = new ProgramObserver();
+    private ProgramEventManager observer = new ProgramEventManager();
 
     /**
      * Unsubscribe a given program listener from the program observer

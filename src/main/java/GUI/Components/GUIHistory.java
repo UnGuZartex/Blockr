@@ -10,7 +10,7 @@ public class GUIHistory {
 
     private final GUIBlockHandler handler;
 
-    //An entry is defined as pressedposition, releasedposition
+    // An entry is defined as pressedposition, releasedposition
     private final Stack<Map.Entry<Position, Position>>  undoMovementStack = new Stack<>();
     private final Stack<Map.Entry<Position, Position>>  redoMovementStack = new Stack<>();
 

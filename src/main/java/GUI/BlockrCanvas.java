@@ -2,8 +2,8 @@ package GUI;
 
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.ProgramController;
-import Controllers.Controls.*;
 import GUI.Blocks.GUIBlock;
+import GUI.Components.ControlHandler;
 import GUI.Components.GUIBlockHandler;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
@@ -74,7 +74,7 @@ public class BlockrCanvas extends CanvasWindow {
     @Override
     protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
         resetHighlightedBlock();
-        controlHandler.handleKeyEvent(id,keyCode,keyChar, modifiers);
+        controlHandler.handleKeyEvent(keyCode, modifiers);
         updateHighLightedBlock();
         repaint();
     }

@@ -1,4 +1,4 @@
-package Controllers.Controls;
+package GUI.Components;
 
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
@@ -21,10 +21,11 @@ public class ControlHandler implements ProgramListener {
         controller.subscribeListener(this);
     }
 
-    public void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
+    public void handleKeyEvent(int keyCode, int modifiers) {
 
-        int shiftdown = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;
-        int ctrldown = KeyEvent.CTRL_DOWN_MASK;
+        int shiftDown = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;
+        int ctrlDown = KeyEvent.CTRL_DOWN_MASK;
+
         if (keyCode == KeyEvent.VK_F5) {
             controller.runProgramStep();
         }
@@ -32,8 +33,8 @@ public class ControlHandler implements ProgramListener {
             controller.resetProgram();
         }
 
-        if (keyCode == KeyEvent.VK_Z && ((modifiers & ctrldown) != 0)) {
-            if ((modifiers & shiftdown) == shiftdown) {
+        if (keyCode == KeyEvent.VK_Z) {
+            if ((modifiers ^ shiftDown) == 0) {
                 if (executing) {
                     controller.redoProgramStep();
                 }
@@ -41,7 +42,7 @@ public class ControlHandler implements ProgramListener {
                     guiHistory.redo();
                 }
             }
-            else {
+            else if ((modifiers ^ ctrlDown) == 0) {
                 if (executing) {
                     controller.undoProgramStep();
                 } else {
