@@ -31,7 +31,6 @@ public class CommandHistory {
     public void undo() {
         if (undoStackFunc.isEmpty()) return;
         Memento mem = undoStackFunc.pop();
-        originator.loadMemento(mem);
         mem.undo();
         redoStackFunc.push(mem);
     }
@@ -40,7 +39,6 @@ public class CommandHistory {
         if (redoStackFunc.isEmpty()) return;
         Memento mem = redoStackFunc.pop();
         undoStackFunc.push(mem);
-        originator.loadMemento(mem);
         mem.redo();
     }
 
@@ -50,7 +48,6 @@ public class CommandHistory {
 
         Memento mem = undoStackFunc.firstElement();
         mem.undo();
-        originator.loadMemento(mem);
         redoStackFunc.clear();
         undoStackFunc.clear();
     }

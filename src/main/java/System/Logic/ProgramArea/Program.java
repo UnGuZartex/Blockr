@@ -170,35 +170,31 @@ public class Program {
         return new ProgramMemento();
     }
 
-    public void loadMemento(Memento mem) {
-        ProgramMemento memento = (ProgramMemento) mem;
-        this.currentBlock = memento.currentMementoBlock;
-        this.lastResult = memento.currentResult;
-    }
-
     private class ProgramMemento implements Memento {
         private Block currentMementoBlock = currentBlock;
 
-        private Result currentResult;
+        private Result currentResult = lastResult;
 
         private final BlockFunctionality command = currentMementoBlock.getFunctionality().copy();
 
         @Override
         public Result execute() {
             currentMementoBlock.setFunctionality(command);
-            currentResult = command.execute();
-            return currentResult;
+            return command.execute();
         }
 
         @Override
         public void undo() {
             command.undo();
+            currentBlock = currentMementoBlock;
+            lastResult = currentResult;
         }
 
         @Override
         public void redo() {
             command.redo();
             currentBlock = currentMementoBlock.getNext();
+            lastResult = currentResult;
         }
     }
 }
