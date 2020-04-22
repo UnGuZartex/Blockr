@@ -171,9 +171,9 @@ public class Program {
     }
 
     private class ProgramMemento implements Memento {
-        private Block currentMementoBlock = currentBlock;
+        private final Block currentMementoBlock = currentBlock;
 
-        private Result currentResult = lastResult;
+        private final Result currentResult = lastResult;
 
         private final BlockFunctionality command = currentMementoBlock.getFunctionality().copy();
 
