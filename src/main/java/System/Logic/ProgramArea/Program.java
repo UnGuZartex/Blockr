@@ -3,7 +3,9 @@ package System.Logic.ProgramArea;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
-import System.BlockStructure.Functionality.BlockFunctionality;
+
+import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -30,7 +32,7 @@ public class Program {
 
 
 
-    private CommandHistory history = new CommandHistory(this);
+    private CommandHistory history = new CommandHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -66,7 +68,7 @@ public class Program {
         }
 
         if (!isFinished()) {
-            lastResult = history.execute();
+            lastResult = history.execute(currentBlock, lastResult);
             currentBlock = currentBlock.getNext();
         }
         return lastResult;
@@ -108,16 +110,26 @@ public class Program {
      * @post the start block is reset.
      */
     public void resetProgram() {
-        history.reset();
+        Map.Entry<Result, Block> reset = history.reset();
+        this.currentBlock = startBlock;
+        this.lastResult = reset.getKey();
     }
 
     public Result undoProgram() {
-        history.undo();
+        Map.Entry<Result, Block> undo = history.undo(lastResult, currentBlock);
+        if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = undo.getValue();
+            this.lastResult = undo.getKey();
+        }
         return this.lastResult;
     }
 
     public Result redoProgram() {
-        history.redo();
+        Map.Entry<Result, Block> redo = history.redo(lastResult, currentBlock);
+        if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = redo.getValue();
+            this.lastResult = redo.getKey();
+        }
         return this.lastResult;
     }
 
@@ -164,42 +176,5 @@ public class Program {
 
     public boolean isExecuting() {
         return !history.atStart();
-    }
-
-    public Memento createMemento() {
-        return new ProgramMemento();
-    }
-
-    public void loadMemento(Memento mem) {
-        ProgramMemento memento = (ProgramMemento) mem;
-        this.currentBlock = memento.currentMementoBlock;
-        this.lastResult = memento.currentResult;
-    }
-
-    private class ProgramMemento implements Memento {
-        private final Block currentMementoBlock = currentBlock;
-
-        private Result currentResult;
-
-        private final BlockFunctionality command = currentMementoBlock.getFunctionality().copy();
-
-        @Override
-        public Result execute() {
-            currentMementoBlock.setFunctionality(command);
-            currentResult = command.execute();
-            return currentResult;
-        }
-
-        @Override
-        public void undo() {
-            currentMementoBlock.setFunctionality(command);
-            command.undo();
-        }
-
-        @Override
-        public void redo() {
-            currentMementoBlock.setFunctionality(command);
-            command.redo();
-        }
     }
 }
