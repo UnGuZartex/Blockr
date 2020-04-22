@@ -158,7 +158,7 @@ The user is aware that the program is running. The Game World gets updated based
 The user has already made any action to the system such that an undo-operation makes sense.
 
 ### Success Guarantee (Postcondition)
-The user is aware that the system returns to its previous state.
+The user is aware that the system returns to its previous state (=blocks in program area and game world).
 
 ### Main Success Scenario
 1. The user presses ctrl + z.
@@ -173,7 +173,7 @@ The user is aware that the system returns to its previous state.
 The user should have undone the system, a snapshot which can be redone is saved in the system. 
 
 ### Success Guarantee (Postcondition)
-The user is aware that the system will return to a previous state.
+The user is aware that the system will return to a previous state (=blocks in program area and game world).
 
 ### Main Success Scenario
 1. The user presses ctrl + shift + z.
