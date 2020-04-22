@@ -181,9 +181,9 @@ public class ProgramArea {
      * Delete the program from this program area which has the given block
      * as starting block. If no such program exists, nothing happens.
      *
-     * @post The program with the given startblock is deleted from this program area.
-     *
      * @param blockToDelete The starting block for the program to delete.
+     *
+     * @post The program with the given startblock is deleted from this program area.
      */
     public void deleteProgram(Block blockToDelete) {
         programs.stream()

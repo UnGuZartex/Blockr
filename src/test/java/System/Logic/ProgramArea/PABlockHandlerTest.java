@@ -60,7 +60,6 @@ class PABlockHandlerTest {
         assertEquals(3, handler.getPA().getAllBlocksCount());
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
         assertEquals(3, handler.getPA().getAllBlocksCount());
-        handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
     }
 
     @Test
@@ -104,5 +103,21 @@ class PABlockHandlerTest {
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
         assertEquals(2, handler.getPA().getAllBlocksCount());
         handler.deleteProgram(block);
+        assertEquals(1, handler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void setMaxBlocks() {
+        for (int i = 0; i < MAX_BLOCKS; i++) {
+            assertEquals(i, handler.getPA().getAllBlocksCount());
+            handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
+            assertEquals(i+1, handler.getPA().getAllBlocksCount());
+        }
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
+        assertEquals(MAX_BLOCKS, handler.getPA().getAllBlocksCount());
+
+        handler.setMaxBlocks(MAX_BLOCKS + 1);
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
+        assertEquals(MAX_BLOCKS + 1, handler.getPA().getAllBlocksCount());
     }
 }
