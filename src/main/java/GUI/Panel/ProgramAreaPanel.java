@@ -169,14 +169,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *       of the blocks list.
      */
     public void setBlockDrawLayerFirst(List<GUIBlock> highestLayerBlocks) {
-
         List<Map.Entry<GUIBlock, Integer>> blocksCopy = new ArrayList<>();
 
         for (GUIBlock block : highestLayerBlocks) {
             blocksCopy.add(blocks.stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null));
         }
 
-        blocks.remove(blocksCopy);
+        blocks.removeAll(blocksCopy);
         blocks.addAll(blocksCopy);
     }
 

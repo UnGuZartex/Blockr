@@ -108,10 +108,9 @@ public class GUIBlockHandler {
     public void loadSnapshot(Snapshot snapshot) {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
-        System.err.println("undo'd");
 
-        System.err.println(guiSnapshot.blockPositions.size());
         for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
+            System.out.println("index " + guiSnapshot.paletteIndices.get(i));
             addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }
@@ -159,6 +158,7 @@ public class GUIBlockHandler {
     }
 
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
+        draggedBlockIndex = paletteIndex;
         draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
