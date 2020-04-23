@@ -1,8 +1,10 @@
 package GUI;
 
 import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
+import GUI.Blocks.IGUIBlock;
 import GUI.Components.ControlHandler;
 import GUI.Components.GUIBlockHandler;
 import GUI.Panel.GameWorldPanel;
@@ -12,6 +14,7 @@ import GameWorldAPI.GameWorld.GameWorld;
 import Images.ImageLibrary;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
@@ -27,23 +30,26 @@ public class BlockrCanvas extends CanvasWindow {
     private ControlHandler controlHandler;
 
     private GUIBlock highlightedBlock;
-    private ProgramController programController;
-    private ConnectionController connectionController;
-    private ImageLibrary images;
+    private final ProgramController programController;
+    private final ConnectionController connectionController;
+    private final HistoryController historyController;
+    private ImageLibrary library;
 
     /**
      * Initializes a CanvasWindow object. 
      *
      */
     // TODO exception throw (@throws)
-    protected BlockrCanvas(ImageLibrary images, ProgramController programController, ConnectionController connectionController) {
+    protected BlockrCanvas(ImageLibrary library, ProgramController programController,
+                           ConnectionController connectionController, HistoryController historyController) {
         super("Blockr");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.width = screenSize.width;
         this.height = screenSize.height;
+        this.library = library;
         this.programController = programController;
         this.connectionController = connectionController;
-        this.images = images;
+        this.historyController = historyController;
     }
 
     public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
@@ -51,22 +57,29 @@ public class BlockrCanvas extends CanvasWindow {
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
         gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
         blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
-        controlHandler = new ControlHandler(programController, blockHandler.getHistory());
+        controlHandler = new ControlHandler(programController, historyController);
     }
 
     @Override
     protected void paint(Graphics g) {
         g.setColor(Color.black);
-        gameWorldPanel.paint(g, images);
-        palettePanel.paint(g, images);
-        programAreaPanel.paint(g, images);
+        gameWorldPanel.paint(g, library);
+        palettePanel.paint(g, library);
+        programAreaPanel.paint(g, library);
     }
 
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
         resetHighlightedBlock();
-        blockHandler.handleMouseEvent(id, x, y, true);
+
+        if (id == MouseEvent.MOUSE_RELEASED) {
+            historyController.execute(new MoveCommand(id, x, y, blockHandler));
+        }
+        else {
+            blockHandler.handleMouseEvent(id, x, y);
+        }
+
         updateHighLightedBlock();
         repaint();
     }

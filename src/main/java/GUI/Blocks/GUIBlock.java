@@ -75,6 +75,15 @@ public abstract class GUIBlock implements IGUIBlock {
     }
 
     /**
+     * Return the position of this block.
+     *
+     * @return the position of this block.
+     */
+    public Position getPosition() {
+        return new Position(x, y);
+    }
+
+    /**
      * Calculate the total height of the block structure this block is connected to, starting
      * from this block.
      *

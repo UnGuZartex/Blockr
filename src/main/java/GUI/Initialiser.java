@@ -2,9 +2,11 @@ package GUI;
 
 import Controllers.BlockLinkDatabase;
 import Controllers.ControllerClasses.ConnectionController;
+import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.JarLoader;
 import GUI.Blocks.*;
+import GUI.Components.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.Action;
 import GameWorldAPI.GameWorldType.GameWorldType;
@@ -47,9 +49,13 @@ public class Initialiser {
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         ProgramController programController = new ProgramController(converter, blockHandler);
+
+        CommandHistory history = new CommandHistory();
+        HistoryController historyController = new HistoryController(history);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
                 programController,
-                connectionController);
+                connectionController,
+                historyController);
         canvas.setPanels(GUIPaletteBlocks, gameWorld);
         return canvas;
     }

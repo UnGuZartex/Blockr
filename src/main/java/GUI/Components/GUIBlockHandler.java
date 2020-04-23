@@ -5,13 +5,14 @@ import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import GameWorldAPI.History.Snapshot;
+import System.Logic.ProgramArea.ProgramArea;
+import Utility.Command;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * A class used to handle the movement of GUI blocks between the
@@ -61,11 +62,6 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
-
-    private final GUIHistory history;
-
-    private Position pressedPosition;
-
     /**
      * Create a new gui block handler with a given palette and program area panel.
      *
@@ -78,7 +74,6 @@ public class GUIBlockHandler {
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
         this.palette = palette;
         this.programArea = programArea;
-        this.history = new GUIHistory(this);
     }
 
     /**
@@ -90,27 +85,34 @@ public class GUIBlockHandler {
      *
      * @effect The mouse event is handled accordingly depending on the given id.
      */
-    /**
-     * TODO
-     * @param createCommand
-     */
-    public void handleMouseEvent(int id, int x, int y, boolean createCommand) {
+    public void handleMouseEvent(int id, int x, int y) {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
-
-                if (draggedBlock != null) {
-                    pressedPosition = new Position(draggedBlock.getX(), draggedBlock.getY());
-                }
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
-                handleMouseReleased(createCommand);
+                handleMouseReleased();
                 break;
 
             case MouseEvent.MOUSE_DRAGGED:
                 handleMouseDragged(x, y);
                 break;
+        }
+    }
+
+    public Snapshot createSnapshot() {
+        return new GUIBlockHandlerSnapshot();
+    }
+
+    public void loadSnapshot(Snapshot snapshot) {
+        GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
+        programArea.deleteBlockFromProgramArea(programArea.getBlocks());
+        System.err.println("undo'd");
+
+        System.err.println(guiSnapshot.blockPositions.size());
+        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }
 
@@ -132,7 +134,7 @@ public class GUIBlockHandler {
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
      */
-    protected void handleMousePressed(int x, int y) {
+    private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
 
@@ -156,6 +158,17 @@ public class GUIBlockHandler {
         }
     }
 
+    private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
+        draggedBlock = palette.getNewBlock(paletteIndex);
+        draggedBlocks = new ArrayList<>(List.of(draggedBlock));
+        blockSourcePanel = palette;
+        programArea.setTemporaryBlock(draggedBlock);
+        dragDelta = new Position(0, 0);
+
+        handleMouseDragged(pos.getX(), pos.getY());
+        handleMouseReleased();
+    }
+
     /**
      * Handle the event where the mouse is released depending on
      * where the mouse was pressed the first time and where it was released.
@@ -170,9 +183,8 @@ public class GUIBlockHandler {
      * @effect If the dragged block is dragged to the program area, the event is handled accordingly.
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
      *         and deletes the block from the program area.
-     * @param createCommand
      */
-    protected void handleMouseReleased(boolean createCommand) {
+    private void handleMouseReleased() {
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
@@ -191,10 +203,6 @@ public class GUIBlockHandler {
                 draggedBlock.resetHeight();
             }
 
-            if (createCommand) {
-                history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(draggedBlock.getX(), draggedBlock.getY())));
-            }
-
             programArea.setTemporaryBlock(null);
             draggedBlock = null;
             draggedBlocks = null;
@@ -209,7 +217,7 @@ public class GUIBlockHandler {
      *
      * @effect The position of the dragged block is updated accordingly.
      */
-    protected void handleMouseDragged(int x, int y) {
+    private void handleMouseDragged(int x, int y) {
         if (draggedBlock != null) {
             draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
@@ -271,7 +279,28 @@ public class GUIBlockHandler {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 
-    public GUIHistory getHistory() {
-        return history;
+    private class GUIBlockHandlerSnapshot implements Snapshot {
+
+        private List<Position> blockPositions = new ArrayList<>();
+        private List<Integer> paletteIndices = new ArrayList<>();
+
+        public GUIBlockHandlerSnapshot() {
+            List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
+
+            for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+                blockPositions.add(entry.getKey().getPosition());
+                paletteIndices.add(entry.getValue());
+            }
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public LocalDateTime getSnapshotDate() {
+            return null;
+        }
     }
 }

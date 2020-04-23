@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class GUIHistory {
 
-    private final GUIBlockHandler handler;
+    /*private final GUIBlockHandler handler;
 
     // An entry is defined as pressedposition, releasedposition
     private final Stack<Map.Entry<Position, Position>>  undoMovementStack = new Stack<>();
@@ -42,5 +42,5 @@ public class GUIHistory {
         handler.handleMouseDragged(toRelease.getX(), toRelease.getY());
         handler.handleMouseReleased(false);
         AddingStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
-    }
+    }*/
 }

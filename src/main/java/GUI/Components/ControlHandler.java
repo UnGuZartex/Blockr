@@ -1,5 +1,6 @@
 package GUI.Components;
 
+import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.ProgramListener;
 import GUI.Components.GUIHistory;
@@ -10,14 +11,13 @@ import java.awt.event.KeyEvent;
 public class ControlHandler implements ProgramListener {
 
     private final ProgramController controller;
-
-    private final GUIHistory guiHistory;
+    private final HistoryController history;
 
     private boolean executing;
 
-    public ControlHandler(ProgramController controller, GUIHistory history) {
+    public ControlHandler(ProgramController controller, HistoryController history) {
         this.controller = controller;
-        this.guiHistory = history;
+        this.history = history;
         controller.subscribeListener(this);
     }
 
@@ -35,19 +35,21 @@ public class ControlHandler implements ProgramListener {
 
         if (keyCode == KeyEvent.VK_Z) {
             if ((modifiers ^ shiftDown) == 0) {
-                if (executing) {
+                /*if (executing) {
                     controller.redoProgramStep();
                 }
                 else {
                     guiHistory.redo();
-                }
+                }*/
+                history.redo();
             }
             else if ((modifiers ^ ctrlDown) == 0) {
-                if (executing) {
+                history.undo();
+                /*if (executing) {
                     controller.undoProgramStep();
                 } else {
                     guiHistory.undo();
-                }
+                }*/
             }
         }
 
