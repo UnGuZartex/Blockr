@@ -40,7 +40,7 @@ public class GUIHistory {
         Position toPress = entry.getValue();
         handler.handleMousePressed(toPress.getX(), toPress.getY());
         handler.handleMouseDragged(toRelease.getX(), toRelease.getY());
-        handler.handleMouseReleased();
+        handler.handleMouseReleased(false);
         AddingStack.push(new AbstractMap.SimpleEntry<>(toPress, toRelease));
     }
 }

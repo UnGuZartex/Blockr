@@ -90,18 +90,22 @@ public class GUIBlockHandler {
      *
      * @effect The mouse event is handled accordingly depending on the given id.
      */
-    public void handleMouseEvent(int id, int x, int y) {
+    /**
+     * TODO
+     * @param createCommand
+     */
+    public void handleMouseEvent(int id, int x, int y, boolean createCommand) {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
-                pressedPosition = new Position(x,y);
+
+                if (draggedBlock != null) {
+                    pressedPosition = new Position(draggedBlock.getX(), draggedBlock.getY());
+                }
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
-                if (draggedBlock != null) {
-                    history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(x, y)));
-                }
-                handleMouseReleased();
+                handleMouseReleased(createCommand);
                 break;
 
             case MouseEvent.MOUSE_DRAGGED:
@@ -166,8 +170,9 @@ public class GUIBlockHandler {
      * @effect If the dragged block is dragged to the program area, the event is handled accordingly.
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
      *         and deletes the block from the program area.
+     * @param createCommand
      */
-    protected void handleMouseReleased() {
+    protected void handleMouseReleased(boolean createCommand) {
         if (draggedBlock != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
@@ -184,6 +189,10 @@ public class GUIBlockHandler {
             else {
                 draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
                 draggedBlock.resetHeight();
+            }
+
+            if (createCommand) {
+                history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(draggedBlock.getX(), draggedBlock.getY())));
             }
 
             programArea.setTemporaryBlock(null);

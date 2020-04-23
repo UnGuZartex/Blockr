@@ -66,7 +66,7 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
         resetHighlightedBlock();
-        blockHandler.handleMouseEvent(id, x, y);
+        blockHandler.handleMouseEvent(id, x, y, true);
         updateHighLightedBlock();
         repaint();
     }
