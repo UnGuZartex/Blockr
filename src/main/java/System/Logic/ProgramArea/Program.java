@@ -2,7 +2,6 @@ package System.Logic.ProgramArea;
 
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Connectors.SubConnector;
 
 import java.util.AbstractMap;
@@ -66,10 +65,10 @@ public class Program {
      *
      * @param block The block to check.
      *
-     * @return True if and only if the given block is effective and a functional block.
+     * @return True if and only if the given block is effective.
      */
     public static boolean isValidStartBlock(Block block) {
-        return block instanceof FunctionalBlock;
+        return block != null;
     }
 
     /**

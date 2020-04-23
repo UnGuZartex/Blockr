@@ -78,7 +78,7 @@ class StatementBlockTest {
     void cloneTest() {
         Block block = block1.clone();
         assertNotEquals(block, block1);
-        assertNotEquals(block.getFunctionality(), block1.getFunctionality());
+        assertEquals(block.getFunctionality(), block1.getFunctionality());
         assertEquals(block.getFunctionality().getGameWorld(), block1.getFunctionality().getGameWorld());
         assertTrue(block instanceof StatementBlock);
         assertTrue(block.getFunctionality() instanceof PredicateFunctionality);

@@ -42,6 +42,6 @@ public class IfBlock extends CavityBlock {
      */
     @Override
     public Block clone() {
-        return new IfBlock((CavityFunctionality) functionality.copy());
+        return new IfBlock(new CavityFunctionality(functionality.getGameWorld()));
     }
 }

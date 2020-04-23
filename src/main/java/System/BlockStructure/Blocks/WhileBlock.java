@@ -37,6 +37,6 @@ public class WhileBlock extends CavityBlock {
      */
     @Override
     public Block clone() {
-        return new WhileBlock((CavityFunctionality) functionality.copy());
+        return new WhileBlock(new CavityFunctionality(functionality.getGameWorld()));
     }
 }

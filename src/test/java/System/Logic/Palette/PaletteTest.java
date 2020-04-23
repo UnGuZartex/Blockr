@@ -80,14 +80,26 @@ class PaletteTest {
 
     @Test
     void getNewBlock() {
-        for (int i = 0; i < blocks.size(); i++) {
-            block = palette.getNewBlock(i);
-            assertNotEquals(blocks.get(i), block);
-            assertEquals(blocks.get(i).getClass(), block.getClass());
-            assertNotEquals(blocks.get(i).getFunctionality(), block.getFunctionality());
-            assertEquals(blocks.get(i).getFunctionality().getClass(), block.getFunctionality().getClass());
-            assertEquals(blocks.get(i).getFunctionality().getGameWorld(), block.getFunctionality().getGameWorld());
-        }
+        block = palette.getNewBlock(0);
+        assertNotEquals(blocks.get(0), block);
+        assertEquals(blocks.get(0).getClass(), block.getClass());
+        assertNotEquals(blocks.get(0).getFunctionality(), block.getFunctionality());
+        assertEquals(blocks.get(0).getFunctionality().getClass(), block.getFunctionality().getClass());
+        assertEquals(blocks.get(0).getFunctionality().getGameWorld(), block.getFunctionality().getGameWorld());
+
+        block = palette.getNewBlock(1);
+        assertNotEquals(blocks.get(1), block);
+        assertEquals(blocks.get(1).getClass(), block.getClass());
+        assertNotEquals(blocks.get(1).getFunctionality(), block.getFunctionality());
+        assertEquals(blocks.get(1).getFunctionality().getClass(), block.getFunctionality().getClass());
+        assertEquals(blocks.get(1).getFunctionality().getGameWorld(), block.getFunctionality().getGameWorld());
+
+        block = palette.getNewBlock(2);
+        assertNotEquals(blocks.get(2), block);
+        assertEquals(blocks.get(2).getClass(), block.getClass());
+        assertEquals(blocks.get(2).getFunctionality(), block.getFunctionality());
+        assertEquals(blocks.get(2).getFunctionality().getClass(), block.getFunctionality().getClass());
+        assertEquals(blocks.get(2).getFunctionality().getGameWorld(), block.getFunctionality().getGameWorld());
     }
 
     @Test

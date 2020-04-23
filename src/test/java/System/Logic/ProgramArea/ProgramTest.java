@@ -76,7 +76,7 @@ class ProgramTest {
     void isValidStartBlock() {
         assertTrue(Program.isValidStartBlock(moveForwardComplete));
         assertTrue(Program.isValidStartBlock(new WhileBlock(new CavityFunctionality(level))));
-        assertFalse(Program.isValidStartBlock(not));
+        assertTrue(Program.isValidStartBlock(not));
         assertFalse(Program.isValidStartBlock(null));
     }
 

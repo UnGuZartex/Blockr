@@ -69,7 +69,7 @@ class FunctionalBlockTest {
     void cloneTest() {
         Block block = turnLeft.clone();
         assertNotEquals(block, turnLeft);
-        assertNotEquals(block.getFunctionality(), turnLeft.getFunctionality());
+        assertEquals(block.getFunctionality(), turnLeft.getFunctionality());
         assertEquals(block.getFunctionality().getGameWorld(), turnLeft.getFunctionality().getGameWorld());
         assertTrue(block instanceof FunctionalBlock);
         assertTrue(block.getFunctionality() instanceof ActionFunctionality);

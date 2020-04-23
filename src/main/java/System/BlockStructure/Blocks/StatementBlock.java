@@ -25,11 +25,11 @@ public class StatementBlock extends ConditionalBlock {
     /**
      * Get a clone of this block.
      *
-     * @return A new statement block with a copy of the functionality and which
+     * @return A new statement block with the functionality of this block which
      *         is not connected yet.
      */
     @Override
     public Block clone() {
-        return new StatementBlock((PredicateFunctionality) functionality.copy());
+        return new StatementBlock((PredicateFunctionality) functionality);
     }
 }
