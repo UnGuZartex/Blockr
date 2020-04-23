@@ -1,7 +1,9 @@
 package GUI.Components;
 
+import Controllers.ControllerClasses.HistoryController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
+import GUI.MoveCommand;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
@@ -62,6 +64,8 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
+    private HistoryController historyController;
+
     /**
      * Create a new gui block handler with a given palette and program area panel.
      *
@@ -70,10 +74,22 @@ public class GUIBlockHandler {
      *
      * @post The current palette panel is set to the given palette panel.
      * @post The current program area panel is set to the given program area panel.
+     *
+     * @param historyController TODO
      */
-    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
+    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) {
         this.palette = palette;
         this.programArea = programArea;
+        this.historyController = historyController;
+    }
+
+    public void handleMouseEventPre(int id, int x, int y) {
+        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
+            historyController.execute(new MoveCommand(id, x, y, this));
+        }
+        else {
+            handleMouseEvent(id, x, y);
+        }
     }
 
     /**

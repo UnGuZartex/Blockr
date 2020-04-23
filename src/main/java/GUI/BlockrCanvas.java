@@ -32,7 +32,6 @@ public class BlockrCanvas extends CanvasWindow {
     private GUIBlock highlightedBlock;
     private final ProgramController programController;
     private final ConnectionController connectionController;
-    private final HistoryController historyController;
     private ImageLibrary library;
 
     /**
@@ -41,7 +40,7 @@ public class BlockrCanvas extends CanvasWindow {
      */
     // TODO exception throw (@throws)
     protected BlockrCanvas(ImageLibrary library, ProgramController programController,
-                           ConnectionController connectionController, HistoryController historyController) {
+                           ConnectionController connectionController) {
         super("Blockr");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.width = screenSize.width;
@@ -49,14 +48,13 @@ public class BlockrCanvas extends CanvasWindow {
         this.library = library;
         this.programController = programController;
         this.connectionController = connectionController;
-        this.historyController = historyController;
     }
 
-    public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw) {
+    public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw, HistoryController historyController) {
         palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, programController, connectionController);
         gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
-        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel);
+        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel, historyController);
         controlHandler = new ControlHandler(programController, historyController);
     }
 
@@ -72,14 +70,7 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
         resetHighlightedBlock();
-
-        if (id == MouseEvent.MOUSE_RELEASED) {
-            historyController.execute(new MoveCommand(id, x, y, blockHandler));
-        }
-        else {
-            blockHandler.handleMouseEvent(id, x, y);
-        }
-
+        blockHandler.handleMouseEventPre(id, x, y);
         updateHighLightedBlock();
         repaint();
     }

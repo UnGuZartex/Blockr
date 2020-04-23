@@ -54,9 +54,8 @@ public class Initialiser {
         HistoryController historyController = new HistoryController(history);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
                 programController,
-                connectionController,
-                historyController);
-        canvas.setPanels(GUIPaletteBlocks, gameWorld);
+                connectionController);
+        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController);
         return canvas;
     }
 
