@@ -180,7 +180,7 @@ public class Program {
 
         public ProgramSnapshot() {
             System.out.println("index: " + currentBlock.getIndexOfBlock(currentBlock));
-            currentBlockIndex = currentBlock.getIndexOfBlock(currentBlock);
+            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
         }
 
         @Override
