@@ -221,15 +221,6 @@ public class ProgramArea {
         observer.notifyProgramReset();
     }
 
-// TODO blijven?
-//    public boolean isExecuted() {
-//        if (programs.size() == 1) {
-//            Program program = programs.get(0);
-//            return program.isExecuting();
-//        }
-//        return false;
-//    }
-
     /**
      * Get the highest block in the block structure this block is connected to.
      *
