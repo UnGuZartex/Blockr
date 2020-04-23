@@ -8,21 +8,13 @@ import System.BlockStructure.Blocks.StatementBlock;
 public class PredicateFunctionality extends ConditionalBlockFunctionality<StatementBlock> {
     private final Predicate predicate;
 
-    public PredicateFunctionality(Predicate predicate, GameWorld gameWorld) {
-        super(gameWorld);
+    public PredicateFunctionality(Predicate predicate) {
         this.predicate = predicate;
     }
 
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         evaluation = gameWorld.evaluatePredicate(predicate);
         return Result.SUCCESS;
-    }
-
-    @Override
-    public BlockFunctionality copy() {
-        PredicateFunctionality func = new PredicateFunctionality(predicate, gameWorld);
-        func.setBlock(this.block);
-        return func;
     }
 }

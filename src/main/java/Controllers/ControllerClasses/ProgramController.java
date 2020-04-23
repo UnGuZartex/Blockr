@@ -3,7 +3,6 @@ package Controllers.ControllerClasses;
 import Controllers.BlockLinkDatabase;
 import Controllers.ProgramListener;
 import GUI.Blocks.IGUIBlock;
-import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
@@ -41,14 +40,6 @@ public class ProgramController {
         }
 
         return null;
-    }
-
-    public void undoProgramStep() {
-        blockHandler.getPA().undoProgram();
-    }
-
-    public void redoProgramStep() {
-        blockHandler.getPA().redoProgram();
     }
 
     public void runProgramStep() {

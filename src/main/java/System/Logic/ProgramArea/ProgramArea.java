@@ -2,8 +2,11 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
 import Controllers.ProgramEventManager;
+import GUI.Components.CommandHistory;
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
+import Utility.Command;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,19 @@ public class ProgramArea {
      * This observer will notify listeners about the events of the program.
      */
     private ProgramEventManager observer = new ProgramEventManager();
+
+    private GameWorld gameWorld;
+
+    private CommandHistory history;
+
+    public ProgramArea(GameWorld gameWorld, CommandHistory history) {
+        this.gameWorld = gameWorld;
+        this.history = history;
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 
     /**
      * Unsubscribe a given program listener from the program observer
@@ -83,7 +99,8 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                Result stepResult = program.executeStep();
+                history.execute(new RunProgramCommand(this));
+                Result stepResult = program.getLastResult();
 
                 if (program.isFinished()) {
                     observer.notifyGameFinished(stepResult);
@@ -92,7 +109,6 @@ public class ProgramArea {
             else {
                 observer.notifyProgramInvalid();
             }
-            observer.notifyExecuting(program.isExecuting());
         }
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
@@ -105,15 +121,17 @@ public class ProgramArea {
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
+    /**
+     * TODO
+     */
     public void resetProgram() {
-        for (Program program : programs) {
-            program.resetProgram();
+        if (programs.size() == 1) {
+            history.execute(new ResetProgramCommand(this));
+            observer.notifyProgramReset();
         }
-
-        observer.notifyProgramReset();
     }
 
-    public void undoProgram() {
+    /*public void undoProgram() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
@@ -135,9 +153,9 @@ public class ProgramArea {
         }
 
 
-    }
+    }*/
 
-    public void redoProgram() {
+    /*public void redoProgram() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
@@ -156,7 +174,7 @@ public class ProgramArea {
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
         }
-    }
+    }*/
 
     /**
      * Add a new program to this program area with given start block.
@@ -227,13 +245,5 @@ public class ProgramArea {
         else {
             return block;
         }
-    }
-
-    public boolean isExecuted() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-            return program.isExecuting();
-        }
-        return false;
     }
 }

@@ -122,8 +122,10 @@ public class GUIBlockHandler {
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
         for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
-            System.out.println("position: " + guiSnapshot.blockPositions.get(i).getX() + " " + guiSnapshot.blockPositions.get(i).getY());
-            System.out.println("index: " + guiSnapshot.paletteIndices.get(i));
+            //System.out.println("position: " + guiSnapshot.blockPositions.get(i).getX() + " " + guiSnapshot.blockPositions.get(i).getY());
+            //System.out.println("index: " + guiSnapshot.paletteIndices.get(i));
+            //System.out.println("--------------------------------------------");
+            //System.out.println("id " + );
             addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }
@@ -149,6 +151,7 @@ public class GUIBlockHandler {
     private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
+        draggedBlocks = null;
         GUIBlock draggedBlock;
 
         if (programAreaContainsMouse || draggedBlockIndex != -1) {
@@ -204,6 +207,7 @@ public class GUIBlockHandler {
      */
     private void handleMouseReleased() {
         if (draggedBlocks != null) {
+
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
                     handleBlockFromPaletteToProgramArea();
@@ -222,7 +226,6 @@ public class GUIBlockHandler {
             }
 
             programArea.setTemporaryBlock(null);
-            draggedBlocks = null;
         }
     }
 

@@ -91,7 +91,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      */
     public void addTemporaryBlockToProgramArea(int index) {
 
-        System.out.println("test");
         if (temporaryBlock == null) {
             throw new IllegalStateException("");
         }
@@ -100,7 +99,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        blocks.add(new AbstractMap.SimpleEntry<>(temporaryBlock, index));
+        blocks.add(0, new AbstractMap.SimpleEntry<>(temporaryBlock, index));
         programController.addBlockToPA(temporaryBlock, index);
     }
 
@@ -236,10 +235,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         changeBlockColors(Color.red);
         gameState = "INVALID PROGRAM";
 
-    }
-
-    @Override
-    public void onExecuting(boolean b) {
     }
 
     /**

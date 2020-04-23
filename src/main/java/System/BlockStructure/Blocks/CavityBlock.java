@@ -16,7 +16,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     /**
      * Variable referring to the sub connector connecting the cavity.
      */
-    private final SubConnector cavitySubConnector;
+    protected final SubConnector cavitySubConnector;
     /**
      * Variable referring to the sub connector connecting the conditional.
      */

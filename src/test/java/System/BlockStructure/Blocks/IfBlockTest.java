@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IfBlockTest {
 
-    IfBlock if1, if2, if3, if4, if5;
+   /* IfBlock if1, if2, if3, if4, if5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
@@ -290,5 +290,5 @@ class IfBlockTest {
 //        if4.setAlreadyRan(true);
 //        if4.reset();
 //        assertFalse(if4.hasAlreadyRan());
-//    }
+//    }*/
 }

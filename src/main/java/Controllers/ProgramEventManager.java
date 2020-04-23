@@ -81,17 +81,4 @@ public class ProgramEventManager {
             listener.onTooManyPrograms();
         }
     }
-
-    /**
-     * Notify the listeners about the execution state of the program.
-     *
-     * @param b Boolean indicating whether the program is running.
-     *
-     * @effect The listeners are notified about the execution state of the program.
-     */
-    public void notifyExecuting(boolean b) {
-        for (ProgramListener listener : listeners) {
-            listener.onExecuting(b);
-        }
-    }
 }

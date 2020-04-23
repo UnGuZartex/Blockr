@@ -10,6 +10,6 @@ public class NotBlock extends OperationalBlock {
 
     @Override
     public Block clone() {
-        return new NotBlock(new NotFunctionality(functionality.getGameWorld()));
+        return new NotBlock(new NotFunctionality());
     }
 }

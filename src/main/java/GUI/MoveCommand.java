@@ -29,7 +29,7 @@ public class MoveCommand implements Command
     @Override
     public void undo() {
         Snapshot snapshot = guiBlockHandler.createSnapshot();
-        System.out.println("created snapshot " + snapshot);
+        System.out.println("created undo snapshot " + snapshot);
         guiBlockHandler.loadSnapshot(this.snapshot);
         System.out.println("loaded undo snapshot " + this.snapshot);
         this.snapshot = snapshot;
@@ -38,7 +38,7 @@ public class MoveCommand implements Command
     @Override
     public void redo() {
         Snapshot snapshot = guiBlockHandler.createSnapshot();
-        System.out.println("created snapshot " + snapshot);
+        System.out.println("created redo snapshot " + snapshot);
         guiBlockHandler.loadSnapshot(this.snapshot);
         System.out.println("loaded redo snapshot " + this.snapshot);
         this.snapshot = snapshot;

@@ -8,17 +8,14 @@ import GameWorldAPI.GameWorld.Result;
 
 import java.awt.event.KeyEvent;
 
-public class ControlHandler implements ProgramListener {
+public class ControlHandler {
 
     private final ProgramController controller;
-    private final HistoryController history;
+    private final HistoryController historyController;
 
-    private boolean executing;
-
-    public ControlHandler(ProgramController controller, HistoryController history) {
+    public ControlHandler(ProgramController controller, HistoryController historyController) {
         this.controller = controller;
-        this.history = history;
-        controller.subscribeListener(this);
+        this.historyController = historyController;
     }
 
     public void handleKeyEvent(int keyCode, int modifiers) {
@@ -35,48 +32,12 @@ public class ControlHandler implements ProgramListener {
 
         if (keyCode == KeyEvent.VK_Z) {
             if ((modifiers ^ shiftDown) == 0) {
-                /*if (executing) {
-                    controller.redoProgramStep();
-                }
-                else {
-                    guiHistory.redo();
-                }*/
-                history.redo();
+                historyController.redo();
             }
             else if ((modifiers ^ ctrlDown) == 0) {
-                history.undo();
-                /*if (executing) {
-                    controller.undoProgramStep();
-                } else {
-                    guiHistory.undo();
-                }*/
+                historyController.undo();
             }
         }
 
-    }
-
-    @Override
-    public void onGameFinished(Result result) {
-        executing = true;
-    }
-
-    @Override
-    public void onProgramReset() {
-        executing = false;
-    }
-
-    @Override
-    public void onTooManyPrograms() {
-        executing = false;
-    }
-
-    @Override
-    public void onProgramInvalid() {
-        executing = false;
-    }
-
-    @Override
-    public void onExecuting(boolean b) {
-        executing = b;
     }
 }

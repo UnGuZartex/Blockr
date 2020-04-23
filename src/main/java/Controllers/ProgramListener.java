@@ -30,6 +30,4 @@ public interface ProgramListener {
      * This event is called when the current program is invalid.
      */
     void onProgramInvalid();
-
-    void onExecuting(boolean b);
 }

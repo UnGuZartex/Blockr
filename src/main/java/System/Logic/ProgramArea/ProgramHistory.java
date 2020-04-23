@@ -5,14 +5,14 @@ import GameWorldAPI.GameWorld.Result;
 import java.util.Stack;
 
 public class ProgramHistory {
-    /**
+   /* /**
      * Variable referring to the undo stack.
      */
-    private final Stack<Memento> undoStackFunc = new Stack<>();
+    //private final Stack<Memento> undoStackFunc = new Stack<>();
     /**
      * Variable referring to the redo stack.
      */
-    private final Stack<Memento> redoStackFunc = new Stack<>();
+   /* private final Stack<Memento> redoStackFunc = new Stack<>();
 
 
 
@@ -48,5 +48,5 @@ public class ProgramHistory {
 
     public boolean atStart() {
         return undoStackFunc.size() == 0;
-    }
+    }*/
 }

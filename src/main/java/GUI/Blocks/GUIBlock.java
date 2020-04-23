@@ -255,7 +255,6 @@ public abstract class GUIBlock implements IGUIBlock {
      * TODO commentaar
      */
     public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
-
         GUIConnector intersectingConnectorSub;
         Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
         GUIBlock main, sub;

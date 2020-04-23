@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProgramTest {
 
-    ConnectionHandler handler;
+    /*ConnectionHandler handler;
 
     Program validProgram, invalidProgram;
     FunctionalBlock moveForwardComplete, moveForward1, turnLeftComplete;
@@ -128,5 +128,5 @@ class ProgramTest {
         assertEquals(3, Program.getSizeOfBlock(incompleteBlock));
         assertEquals(1, Program.getSizeOfBlock(moveForward1));
         assertEquals(1, Program.getSizeOfBlock(not));
-    }
+    }*/
 }

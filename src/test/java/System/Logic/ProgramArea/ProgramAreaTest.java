@@ -1,11 +1,13 @@
 package System.Logic.ProgramArea;
 
+import GUI.Components.CommandHistory;
 import GameWorld.Level;
 import GameWorldUtility.LevelInitializer;
 import GameWorldUtility.Actions.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import Utility.Command;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,15 +24,16 @@ class ProgramAreaTest {
     void setUp() {
 
         LevelInitializer init = new LevelInitializer();
+        CommandHistory history = new CommandHistory();
         level = (Level) init.createNewGameWorld();
 
-        pa0 = new ProgramArea();
-        pa1 = new ProgramArea();
-        pa2 = new ProgramArea();
+        pa0 = new ProgramArea(level, history);
+        pa1 = new ProgramArea(level, history);
+        pa2 = new ProgramArea(level, history);
 
-        start1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
-        start2a = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
-        start2b = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        start1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        start2a = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        start2b = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
         pa1.addProgram(start1);
         pa2.addProgram(start2a);
@@ -58,7 +61,7 @@ class ProgramAreaTest {
 
     @Test
     void addProgram_ValidProgram() {
-        Block block = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level));
+        Block block = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
         pa0.addProgram(block); // No error may be thrown
         assertEquals(block, pa0.getProgram().getStartBlock());
     }

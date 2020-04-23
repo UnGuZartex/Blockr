@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StatementBlockTest {
 
-    StatementBlock block1, block2;
+    /*StatementBlock block1, block2;
     CavityBlock cavoc;
 
     @BeforeEach
@@ -98,5 +98,5 @@ class StatementBlockTest {
     void hasProperConnections() {
         assertTrue(block1.hasProperConnections());
         assertFalse(block2.hasProperConnections());
-    }
+    }*/
 }

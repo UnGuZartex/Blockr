@@ -1,9 +1,13 @@
 package System.Logic.ProgramArea;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Functionality.BlockFunctionality;
+
+import java.time.LocalDateTime;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -27,10 +31,6 @@ public class Program {
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = Result.SUCCESS;
-
-
-
-    private ProgramHistory history = new ProgramHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -60,15 +60,23 @@ public class Program {
      * @throws IllegalStateException
      *         If this program is not valid.
      */
-    public Result executeStep() {
+    /**
+     * TODO
+     * @param gameWorld
+     * @return
+     */
+    public void executeStep(GameWorld gameWorld) {
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is invalid!");
         }
 
         if (!isFinished()) {
-            lastResult = history.execute(createMemento());
+            lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock = currentBlock.getNext();
         }
+    }
+
+    public Result getLastResult() {
         return lastResult;
     }
 
@@ -107,18 +115,12 @@ public class Program {
      * @post The current block is set to the start block.
      * @post the start block is reset.
      */
+    /**
+     * TODO
+     */
     public void resetProgram() {
-        history.reset();
-    }
-
-    public Result undoProgram() {
-        history.undo();
-        return this.lastResult;
-    }
-
-    public Result redoProgram() {
-        history.redo();
-        return this.lastResult;
+        currentBlock = startBlock;
+        lastResult = Result.SUCCESS;
     }
 
     /**
@@ -162,38 +164,33 @@ public class Program {
         return sum;
     }
 
-    public boolean isExecuting() {
-        return !history.atStart();
+    public Snapshot createSnapshot() {
+        return new ProgramSnapshot();
     }
 
-    public Memento createMemento() {
-        return new ProgramMemento();
+    public void loadSnapshot(Snapshot snapshot) {
+        ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
+        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        lastResult = programSnapshot.currentResult;
     }
 
-    private class ProgramMemento implements Memento {
-        private final Block currentMementoBlock = currentBlock;
-
+    private class ProgramSnapshot implements Snapshot {
+        private final int currentBlockIndex;
         private final Result currentResult = lastResult;
 
-        private final BlockFunctionality command = currentMementoBlock.getFunctionality().copy();
-
-        @Override
-        public Result execute() {
-            currentMementoBlock.setFunctionality(command);
-            return command.execute();
+        public ProgramSnapshot() {
+            System.out.println("index: " + currentBlock.getIndexOfBlock(currentBlock));
+            currentBlockIndex = currentBlock.getIndexOfBlock(currentBlock);
         }
 
         @Override
-        public void undo() {
-            command.undo();
-            currentBlock = currentMementoBlock;
-            lastResult = currentResult;
+        public String getName() {
+            return null;
         }
 
         @Override
-        public void redo() {
-            lastResult = command.execute();
-            currentBlock = currentMementoBlock.getNext();
+        public LocalDateTime getSnapshotDate() {
+            return null;
         }
     }
 }
