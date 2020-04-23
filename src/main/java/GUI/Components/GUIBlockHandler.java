@@ -64,6 +64,9 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
+    private List<Position> blockPositions = new ArrayList<>();
+    private List<Integer> paletteIndices = new ArrayList<>();
+
     private HistoryController historyController;
 
     /**
@@ -85,9 +88,15 @@ public class GUIBlockHandler {
 
     public void handleMouseEventPre(int id, int x, int y) {
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
-            historyController.execute(new MoveCommand(id, x, y, this));
+            historyController.execute(new MoveCommand(x, y, this));
         }
         else {
+
+            if (id == MouseEvent.MOUSE_PRESSED) {
+                System.out.println("set block data");
+                setBlockData();
+            }
+
             handleMouseEvent(id, x, y);
         }
     }
@@ -125,9 +134,21 @@ public class GUIBlockHandler {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
-        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
-            System.out.println("index " + guiSnapshot.paletteIndices.get(i));
-            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
+        for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
+            System.out.println("position: " + guiSnapshot.blockPositionsSnapshot.get(i).getX() + " " + guiSnapshot.blockPositionsSnapshot.get(i).getY());
+            System.out.println("index: " + guiSnapshot.paletteIndicesSnapshot.get(i));
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
+        }
+    }
+
+    private void setBlockData() {
+        List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
+        int index = 0;
+
+        for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+            blockPositions.add(entry.getKey().getPosition());
+            paletteIndices.add(entry.getValue());
+            index++;
         }
     }
 
@@ -297,16 +318,12 @@ public class GUIBlockHandler {
 
     private class GUIBlockHandlerSnapshot implements Snapshot {
 
-        private List<Position> blockPositions = new ArrayList<>();
-        private List<Integer> paletteIndices = new ArrayList<>();
+        private final List<Position> blockPositionsSnapshot;
+        private final List<Integer> paletteIndicesSnapshot;
 
         public GUIBlockHandlerSnapshot() {
-            List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
-
-            for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
-                blockPositions.add(entry.getKey().getPosition());
-                paletteIndices.add(entry.getValue());
-            }
+            blockPositionsSnapshot = new ArrayList<>(blockPositions);
+            paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
         }
 
         @Override

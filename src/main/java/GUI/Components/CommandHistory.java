@@ -13,9 +13,7 @@ public class CommandHistory {
     }
 
     public void undo() {
-        System.out.println("undo");
         if (undoStack.isEmpty()) return;
-        System.out.println("undo2");
         Command command = undoStack.pop();
         command.undo();
         redoStack.push(command);

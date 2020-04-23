@@ -4,13 +4,15 @@ import GUI.Components.GUIBlockHandler;
 import GameWorldAPI.History.Snapshot;
 import Utility.Command;
 
+import java.awt.event.MouseEvent;
+
 public class MoveCommand implements Command
 {
     int id, x, y;
     GUIBlockHandler guiBlockHandler;
     Snapshot snapshot;
 
-    public MoveCommand(int id, int x, int y, GUIBlockHandler guiBlockHandler) {
+    public MoveCommand(int x, int y, GUIBlockHandler guiBlockHandler) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -21,7 +23,7 @@ public class MoveCommand implements Command
     public void execute() {
         this.snapshot = guiBlockHandler.createSnapshot();
         System.out.println("created snapshot " + this.snapshot);
-        guiBlockHandler.handleMouseEvent(id, x, y);
+        guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, x, y);
     }
 
     @Override
