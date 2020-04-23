@@ -8,6 +8,7 @@ import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import GameWorldAPI.History.Snapshot;
+import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.ProgramArea;
 import Utility.Command;
 import Utility.Position;
@@ -40,19 +41,14 @@ public class GUIBlockHandler {
     private GamePanel blockSourcePanel;
 
     /**
-     * Variable referring to the current dragged block.
-     */
-    private GUIBlock draggedBlock;
-
-    /**
      * Variable referring to the blocks connected to the current dragged block.
      */
     private List<GUIBlock> draggedBlocks;
 
     /**
-     * Variable referring to the last valid position of the current dragged block.
+     * Variable referring to the last valid positions of the current dragged blocks.
      */
-    private Position lastValidPosition;
+    private List<Position> lastValidPositions;
 
     /**
      * Variable referring to the relation between the mouse and the current dragged block.
@@ -63,9 +59,6 @@ public class GUIBlockHandler {
      * Variable referring to the index of the current dragged block inside the palette.
      */
     private int draggedBlockIndex;
-
-    private List<Position> blockPositions = new ArrayList<>();
-    private List<Integer> paletteIndices = new ArrayList<>();
 
     private HistoryController historyController;
 
@@ -87,16 +80,10 @@ public class GUIBlockHandler {
     }
 
     public void handleMouseEventPre(int id, int x, int y) {
-        if (id == MouseEvent.MOUSE_RELEASED && draggedBlock != null) {
+        if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
             historyController.execute(new MoveCommand(x, y, this));
         }
         else {
-
-            if (id == MouseEvent.MOUSE_PRESSED) {
-                System.out.println("set block data");
-                setBlockData();
-            }
-
             handleMouseEvent(id, x, y);
         }
     }
@@ -134,21 +121,10 @@ public class GUIBlockHandler {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
-        for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
-            System.out.println("position: " + guiSnapshot.blockPositionsSnapshot.get(i).getX() + " " + guiSnapshot.blockPositionsSnapshot.get(i).getY());
-            System.out.println("index: " + guiSnapshot.paletteIndicesSnapshot.get(i));
-            addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
-        }
-    }
-
-    private void setBlockData() {
-        List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
-        int index = 0;
-
-        for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
-            blockPositions.add(entry.getKey().getPosition());
-            paletteIndices.add(entry.getValue());
-            index++;
+        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
+            System.out.println("position: " + guiSnapshot.blockPositions.get(i).getX() + " " + guiSnapshot.blockPositions.get(i).getY());
+            System.out.println("index: " + guiSnapshot.paletteIndices.get(i));
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }
 
@@ -173,6 +149,7 @@ public class GUIBlockHandler {
     private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
+        GUIBlock draggedBlock;
 
         if (programAreaContainsMouse || draggedBlockIndex != -1) {
             if (draggedBlockIndex != -1) {
@@ -190,13 +167,17 @@ public class GUIBlockHandler {
             }
 
             dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
-            lastValidPosition = new Position(draggedBlock.getX(), draggedBlock.getY());
+            lastValidPositions = new ArrayList<>();
+
+            for (GUIBlock block : draggedBlocks) {
+                lastValidPositions.add(new Position(block.getX(), block.getY()));
+            }
         }
     }
 
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
         draggedBlockIndex = paletteIndex;
-        draggedBlock = palette.getNewBlock(paletteIndex);
+        GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
         programArea.setTemporaryBlock(draggedBlock);
@@ -222,7 +203,7 @@ public class GUIBlockHandler {
      *         and deletes the block from the program area.
      */
     private void handleMouseReleased() {
-        if (draggedBlock != null) {
+        if (draggedBlocks != null) {
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
                     handleBlockFromPaletteToProgramArea();
@@ -232,16 +213,15 @@ public class GUIBlockHandler {
                 }
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == programArea) {
-                programArea.disconnectInProgramArea(draggedBlock);
+                programArea.disconnectInProgramArea(draggedBlocks.get(0));
                 programArea.deleteBlockFromProgramArea(draggedBlocks);
             }
             else {
-                draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-                draggedBlock.resetHeight();
+                draggedBlocks.get(0).setPosition(lastValidPositions.get(0).getX(), lastValidPositions.get(0).getY());
+                draggedBlocks.get(0).resetHeight();
             }
 
             programArea.setTemporaryBlock(null);
-            draggedBlock = null;
             draggedBlocks = null;
         }
     }
@@ -255,8 +235,8 @@ public class GUIBlockHandler {
      * @effect The position of the dragged block is updated accordingly.
      */
     private void handleMouseDragged(int x, int y) {
-        if (draggedBlock != null) {
-            draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
+        if (draggedBlocks != null) {
+            draggedBlocks.get(0).setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
     }
 
@@ -268,8 +248,8 @@ public class GUIBlockHandler {
      */
     private void handleBlockFromPaletteToProgramArea() {
         programArea.addTemporaryBlockToProgramArea(draggedBlockIndex);
-        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
-        connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
+        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlocks.get(0))).findAny();
+        connectedBlock.ifPresent(guiBlock -> draggedBlocks.get(0).connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
     /**
@@ -280,7 +260,7 @@ public class GUIBlockHandler {
      *         blocks if possible.
      */
     private void handleBlockFromProgramAreaToProgramArea() {
-        programArea.disconnectInProgramArea(draggedBlock);
+        programArea.disconnectInProgramArea(draggedBlocks.get(0));
 
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
@@ -318,12 +298,24 @@ public class GUIBlockHandler {
 
     private class GUIBlockHandlerSnapshot implements Snapshot {
 
-        private final List<Position> blockPositionsSnapshot;
-        private final List<Integer> paletteIndicesSnapshot;
+        private final List<Position> blockPositions;
+        private final List<Integer> paletteIndices;
 
         public GUIBlockHandlerSnapshot() {
-            blockPositionsSnapshot = new ArrayList<>(blockPositions);
-            paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
+            List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
+            blockPositions = new ArrayList<>();
+            paletteIndices = new ArrayList<>();
+
+            for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+                if (draggedBlocks != null && draggedBlocks.contains(entry.getKey())) {
+                    int index = draggedBlocks.indexOf(entry.getKey());
+                    blockPositions.add(lastValidPositions.get(index));
+                }
+                else {
+                    blockPositions.add(entry.getKey().getPosition());
+                }
+                paletteIndices.add(entry.getValue());
+            }
         }
 
         @Override
