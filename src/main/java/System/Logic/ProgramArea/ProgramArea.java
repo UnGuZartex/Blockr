@@ -67,7 +67,10 @@ public class ProgramArea {
      *
      * @param startBlock The start block for the new program.
      *
-     * @post A new program with given start block is added to this program area.
+     * @effect A new program with given start block is added to this program area if it
+     *         is not connected through it's main connector.
+     * @effect If the given block is connected through it's main connector, the highest
+     *         block is added to the program area.
      *
      * @throws IllegalArgumentException
      *         If the given start block is not effective.
@@ -76,7 +79,9 @@ public class ProgramArea {
         if (startBlock == null) {
             throw new IllegalArgumentException("The start block can't be null");
         }
-        if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
+        if (startBlock.getMainConnector().isConnected()) {
+            addHighestAsProgram(startBlock);
+        } else if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
             programs.add(new Program(startBlock));
         }
     }
@@ -102,7 +107,7 @@ public class ProgramArea {
      *
      * @param blockToDelete The starting block for the program to delete.
      *
-     * @post The program with the given startblock is deleted from this program area.
+     * @post The program with the given start block is deleted from this program area.
      */
     public void deleteProgram(Block blockToDelete) {
         programs.stream()

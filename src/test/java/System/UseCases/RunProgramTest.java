@@ -1,4 +1,4 @@
-package System;
+package System.UseCases;
 
 import GameWorld.Cell;
 import GameWorld.CellType;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ExecutionTest {
+public class RunProgramTest {
 
     PABlockHandler paBlockHandler;
     Robot robot;

@@ -102,7 +102,8 @@ public class PABlockHandler {
      * @param block The block to connect.
      * @param subConnector The sub connector of the block to connect to.
      *
-     * @pre The given sub connector should be from a block which is in the program area.
+     * @pre The given sub connector should be from a block which is in the program area..
+     * @pre The given sub connector should be able to connect to the main connector of the given block.
      *
      * @effect The given block is deleted as a program in the program area.
      * @effect The two blocks are connected.
@@ -123,6 +124,8 @@ public class PABlockHandler {
      *
      * @param block The block to disconnect.
      *
+     * @pre The given block must be in the program area.
+     *
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is added as a program.
      * @effect An update is done.
@@ -137,8 +140,6 @@ public class PABlockHandler {
      * Delete a program from the program area with given start block.
      *
      * @param block The starting block of the program to delete.
-     *
-
      *
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is deleted from the program area.
