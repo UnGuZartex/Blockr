@@ -1,7 +1,6 @@
 package Controllers.ControllerClasses;
 
 import Controllers.BlockLinkDatabase;
-import Controllers.ProgramListener;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -36,14 +35,6 @@ public class ProgramController {
 
     public void runProgramStep() {
         blockHandler.getPA().runProgramStep();
-    }
-
-    public void subscribeListener(ProgramListener listener) {
-        blockHandler.getPA().subscribe(listener);
-    }
-
-    public void unsubscribeListener(ProgramListener listener) {
-        blockHandler.getPA().unsubscribe(listener);
     }
 
     public void resetProgram(boolean command) {

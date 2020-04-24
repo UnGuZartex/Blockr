@@ -70,7 +70,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         super(cornerX, cornerY, width, height);
         this.programController = programController;
         this.connectionController = connectionController;
-        programController.subscribeListener(this);
     }
 
     /**
