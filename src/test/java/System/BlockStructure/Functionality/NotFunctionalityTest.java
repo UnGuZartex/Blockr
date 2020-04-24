@@ -18,14 +18,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NotFunctionalityTest {
 
-    /*private NotFunctionality functionality;
+class NotFunctionalityTest { // TODO miss opnieuw + beter?
+
+
+    private NotFunctionality functionality;
     private OperationalBlock notBlock, block1, block2;
     private StatementBlock wallInFrontBlock;
     private ConnectionHandler connectionHandler;
-
-
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
@@ -44,9 +44,8 @@ class NotFunctionalityTest {
     @BeforeEach
     void setUp() {
 
-
         /* Simple field has only one cell */
-        /*PositionSimpleBlankUp = new GridPosition(0,0);
+        PositionSimpleBlankUp = new GridPosition(0,0);
         PositionSimpleGoalDown = new GridPosition(0,0);
         PositionSimpleGoalLeft = new GridPosition(0,0);
         PositionSimpleBlankRight = new GridPosition(0,0);
@@ -108,15 +107,15 @@ class NotFunctionalityTest {
         levelRightOnBlankBeforeWall = new Level(new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall), new Grid(cellsRightOnBlankBeforeWall));
 
 
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelUpOnBlankBeforeWall));
+        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
-        notBlock = new NotBlock(new NotFunctionality(levelUpOnBlankBeforeWall));
+        notBlock = new NotBlock();
         connectionHandler = new ConnectionHandler();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
 
-        functionality = new NotFunctionality(levelUpOnBlankBeforeWall);
-        block1 =   new NotBlock(new NotFunctionality(levelUpOnBlankBeforeWall));
-        block2 =   new NotBlock(new NotFunctionality(levelUpOnBlankBeforeWall));
+        functionality = new NotFunctionality();
+        block1 = new NotBlock();
+        block2 = new NotBlock();
     }
 
     @AfterEach
@@ -174,119 +173,13 @@ class NotFunctionalityTest {
     }
 
     @Test
-    void getEvaluation() {
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelDownOnGoalBeforeBlank));
-        notBlock =  new NotBlock(new NotFunctionality(levelDownOnGoalBeforeBlank));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertTrue(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelLeftOnGoalBeforeGoal));
-        notBlock =  new NotBlock(new NotFunctionality(levelLeftOnGoalBeforeGoal));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertTrue(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelRightOnBlankBeforeWall));
-        notBlock =  new NotBlock(new NotFunctionality(levelRightOnBlankBeforeWall));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleBlankUp));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleBlankUp));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleGoalDown));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleGoalDown));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleGoalLeft));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleGoalLeft));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleBlankRight));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleBlankRight));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().getEvaluation());
-    }
-
-    @Test
     void evaluate() {
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertFalse(notBlock.getFunctionality().getEvaluation());
 
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelDownOnGoalBeforeBlank));
-        notBlock =  new NotBlock(new NotFunctionality(levelDownOnGoalBeforeBlank));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertTrue(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelLeftOnGoalBeforeGoal));
-        notBlock =  new NotBlock(new NotFunctionality(levelLeftOnGoalBeforeGoal));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertTrue(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelRightOnBlankBeforeWall));
-        notBlock =  new NotBlock(new NotFunctionality(levelRightOnBlankBeforeWall));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleBlankUp));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleBlankUp));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleGoalDown));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleGoalDown));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleGoalLeft));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleGoalLeft));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
-
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),levelSimpleBlankRight));
-        notBlock =  new NotBlock(new NotFunctionality(levelSimpleBlankRight));
-        connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
-        notBlock.getFunctionality().evaluate();
-        assertFalse(notBlock.getFunctionality().evaluation);
-<<<<<<< HEAD
+        assertFalse(notBlock.getFunctionality().getEvaluation());
+        notBlock.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        assertTrue(notBlock.getFunctionality().getEvaluation());
     }
-
-    @Test
-    void copy() {
-        BlockFunctionality func = functionality.copy();
-        assertNotEquals(func, functionality);
-        assertFalse(func.getEvaluation());
-        assertEquals(func.getGameWorld(), functionality.getGameWorld());
-        assertTrue(func instanceof  NotFunctionality);
-        assertEquals(((NotFunctionality)func).block, functionality.block);
-    }
-=======
-    }*/
 }
