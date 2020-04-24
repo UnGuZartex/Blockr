@@ -34,16 +34,9 @@ public class ProgramArea {
 
     private final CommandHistory history;
 
-    int index;
-
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
         this.history = history;
-        setStartSnapshot();
-        //gameWorldStartSnapshot = gameWorld.createSnapshot();
-    }
-
-    private void setStartSnapshot() {
         gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
@@ -265,6 +258,5 @@ public class ProgramArea {
 
     private void resetGameWorld() {
         gameWorld.loadSnapshot(gameWorldStartSnapshot);
-        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 }
