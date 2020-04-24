@@ -5,7 +5,6 @@ import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
-import System.BlockStructure.Functionality.BlockFunctionality;
 
 import java.time.LocalDateTime;
 
@@ -142,6 +141,10 @@ public class Program {
      */
     public int getSize() {
         return getSizeOfBlock(startBlock);
+    }
+
+    public boolean isInStartState() {
+        return currentBlock == startBlock && lastResult == Result.SUCCESS;
     }
 
     /**

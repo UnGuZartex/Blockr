@@ -9,5 +9,6 @@ public class RunProgramCommand extends ProgramCommand {
     @Override
     protected void executeTask() {
         programArea.getProgram().executeStep(programArea.getGameWorld());
+        programArea.notifyProgramState();
     }
 }

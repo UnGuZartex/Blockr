@@ -50,13 +50,14 @@ public class ProgramEventManager {
     }
 
     /**
-     * Notify the listeners that the program has been reset.
+     * Notify the listeners that the program is currently in its
+     * starting state.
      *
-     * @effect The listeners are notified about the program reset.
+     * @effect The listeners are notified about the program state.
      */
-    public void notifyProgramReset() {
+    public void notifyProgramInStartState() {
         for (ProgramListener listener : listeners) {
-            listener.onProgramReset();
+            listener.onProgramStartState();
         }
     }
 

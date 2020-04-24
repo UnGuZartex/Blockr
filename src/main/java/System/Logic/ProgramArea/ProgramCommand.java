@@ -22,12 +22,9 @@ public abstract class ProgramCommand implements Command {
 
     @Override
     public void undo() {
-        Snapshot newProgramSnapShot = programArea.getProgram().createSnapshot();
-        Snapshot newGameWorldSnapshot = programArea.getGameWorld().createSnapshot();
         programArea.getProgram().loadSnapshot(programSnapShot);
         programArea.getGameWorld().loadSnapshot(gameWorldSnapshot);
-        gameWorldSnapshot = newGameWorldSnapshot;
-        programSnapShot = newProgramSnapShot;
+        programArea.notifyProgramState();
     }
 
     @Override

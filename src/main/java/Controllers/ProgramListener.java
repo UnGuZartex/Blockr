@@ -17,9 +17,9 @@ public interface ProgramListener {
     void onGameFinished(Result result);
 
     /**
-     * This event is called when the program has been reset.
+     * This event is called when the program is in its start state.
      */
-    void onProgramReset();
+    void onProgramStartState();
 
     /**
      * This event is called when the program area contains too much programs.

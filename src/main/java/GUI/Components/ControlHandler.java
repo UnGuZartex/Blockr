@@ -2,9 +2,6 @@ package GUI.Components;
 
 import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
-import Controllers.ProgramListener;
-import GUI.Components.GUIHistory;
-import GameWorldAPI.GameWorld.Result;
 
 import java.awt.event.KeyEvent;
 

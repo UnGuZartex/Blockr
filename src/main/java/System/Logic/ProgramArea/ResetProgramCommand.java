@@ -9,5 +9,6 @@ public class ResetProgramCommand extends ProgramCommand {
     @Override
     protected void executeTask() {
         programArea.getProgram().resetProgram();
+        programArea.notifyProgramState();
     }
 }

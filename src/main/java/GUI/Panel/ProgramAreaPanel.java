@@ -185,6 +185,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @effect The colors of the blocks are changed to green if the player reached its goal
      *         during the game, orange otherwise.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onGameFinished(Result result) {
@@ -204,12 +205,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Event to call when the game is reset.
+     * Event to call when the program is in its start state.
      *
      * @effect The block colors are set to white.
+     * @effect The game state text is updated accordingly.
      */
     @Override
-    public void onProgramReset() {
+    public void onProgramStartState() {
         changeBlockColors(Color.white);
         gameState = "";
     }
@@ -218,6 +220,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Event to call when there are to many programs.
      *
      * @effect The colors of the blocks are set to red.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onTooManyPrograms() {
@@ -229,12 +232,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Event to call when the program is invalid.
      *
      * @effect The block colors are set to red.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onProgramInvalid() {
         changeBlockColors(Color.red);
         gameState = "INVALID PROGRAM";
-
     }
 
     /**

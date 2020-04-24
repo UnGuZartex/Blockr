@@ -71,7 +71,7 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if (programs.size() == 1){
+        if (programs.size() == 1) {
             return programs.get(0);
         } else {
             return null;
@@ -99,11 +99,6 @@ public class ProgramArea {
 
             if (program.isValidProgram()) {
                 history.execute(new RunProgramCommand(this));
-                Result stepResult = program.getLastResult();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
             }
             else {
                 observer.notifyProgramInvalid();
@@ -132,54 +127,8 @@ public class ProgramArea {
         }
         else if (programs.size() == 1) {
             history.execute(new ResetProgramCommand(this));
-            observer.notifyProgramReset();
         }
     }
-
-    /*public void undoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                Result stepResult = program.undoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-            observer.notifyProgramReset();
-            observer.notifyExecuting(program.isExecuting());
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-
-
-    }*/
-
-    /*public void redoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                Result stepResult = program.redoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
-                observer.notifyExecuting(program.isExecuting());
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-    }*/
 
     /**
      * Add a new program to this program area with given start block.
@@ -235,6 +184,20 @@ public class ProgramArea {
      */
     public void addHighestAsProgram(Block block) {
         addProgram(getHighestBlock(block));
+    }
+
+    public void notifyProgramState() {
+        System.out.println("state");
+        Program program = getProgram();
+        Result stepResult = program.getLastResult();
+
+        if (program.isFinished()) {
+            observer.notifyGameFinished(stepResult);
+        }
+        else if (program.isInStartState()) {
+            System.out.println("standard state");
+            observer.notifyProgramInStartState();
+        }
     }
 
     /**
