@@ -171,12 +171,8 @@ public class Program {
     }
 
     private class ProgramSnapshot implements Snapshot {
-        private final int currentBlockIndex;
+        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
         private final Result currentResult = lastResult;
-
-        public ProgramSnapshot() {
-            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
-        }
 
         @Override
         public String getName() {

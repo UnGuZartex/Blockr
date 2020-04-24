@@ -1,13 +1,12 @@
 package System.Logic.ProgramArea;
 
-import Controllers.ProgramListener;
 import Controllers.ProgramEventManager;
-import GameWorldAPI.History.Snapshot;
-import System.Logic.CommandHistory;
+import Controllers.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
-import Utility.Command;
+import System.Logic.CommandHistory;
 
 import java.util.ArrayList;
 
@@ -266,5 +265,6 @@ public class ProgramArea {
 
     private void resetGameWorld() {
         gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 }
