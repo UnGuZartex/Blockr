@@ -13,12 +13,12 @@ public class WhileBlock extends CavityBlock {
     private boolean passed;
 
     /**
-     * Initialise a new while block with given cavity functionality.
+     * Initialise a new while block.
      *
-     * @effect Calls super constructor with given functionality.
+     * @effect Calls super constructor.
      */
-    public WhileBlock(CavityFunctionality functionality) {
-        super(functionality);
+    public WhileBlock() {
+        super(new CavityFunctionality());
     }
 
     @Override
@@ -67,6 +67,6 @@ public class WhileBlock extends CavityBlock {
 
     @Override
     public Block clone() {
-        return new WhileBlock(new CavityFunctionality());
+        return new WhileBlock();
     }
 }

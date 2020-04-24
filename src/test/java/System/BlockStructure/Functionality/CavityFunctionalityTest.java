@@ -80,8 +80,8 @@ class CavityFunctionalityTest {
         levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
 
 
-        if1 = new IfBlock(new CavityFunctionality());
-        block = new IfBlock(new CavityFunctionality());
+        if1 = new IfBlock();
+        block = new IfBlock();
 
         cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
@@ -147,7 +147,7 @@ class CavityFunctionalityTest {
         if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertTrue(if1.getFunctionality().getEvaluation());
 
-        if1 = new IfBlock(new CavityFunctionality());
+        if1 = new IfBlock();
         cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());

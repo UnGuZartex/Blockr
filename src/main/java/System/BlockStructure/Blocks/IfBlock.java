@@ -12,13 +12,12 @@ import System.BlockStructure.Functionality.CavityFunctionality;
 public class IfBlock extends CavityBlock {
 
     /**
-     * Initialise a new if block  with given cavity functionality.
+     * Initialise a new if block.
      *
-     *
-     * @effect Calls super constructor with given functionality.
+     * @effect Calls super constructor.
      */
-    public IfBlock(CavityFunctionality functionality) {
-        super(functionality);
+    public IfBlock() {
+        super(new CavityFunctionality());
     }
 
     @Override
@@ -65,6 +64,6 @@ public class IfBlock extends CavityBlock {
 
     @Override
     public Block clone() {
-        return new IfBlock(new CavityFunctionality());
+        return new IfBlock();
     }
 }

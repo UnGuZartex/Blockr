@@ -61,9 +61,9 @@ public class Initialiser {
     }
 
     private void initialiseDefaultBlocks() {
-        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock(new CavityFunctionality()));
-        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock(new CavityFunctionality()));
-        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock(new NotFunctionality()));
+        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock());
+        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock());
+        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
     }
 
     private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {

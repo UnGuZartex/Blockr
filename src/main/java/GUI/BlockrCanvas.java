@@ -4,7 +4,6 @@ import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
 import GUI.Blocks.GUIBlock;
-import GUI.Blocks.IGUIBlock;
 import GUI.Components.ControlHandler;
 import GUI.Components.GUIBlockHandler;
 import GUI.Panel.GameWorldPanel;
@@ -14,7 +13,6 @@ import GameWorldAPI.GameWorld.GameWorld;
 import Images.ImageLibrary;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
@@ -84,7 +82,7 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     private void updateHighLightedBlock() {
-        highlightedBlock = (GUIBlock) programController.getHightlightedBlock();
+        highlightedBlock = (GUIBlock) programController.getHighlightedBlock();
         if (highlightedBlock != null) highlightedBlock.setColor(Color.gray);
     }
 

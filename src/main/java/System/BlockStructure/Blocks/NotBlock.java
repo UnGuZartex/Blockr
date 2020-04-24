@@ -4,12 +4,12 @@ import System.BlockStructure.Functionality.NotFunctionality;
 
 public class NotBlock extends OperationalBlock {
 
-    public <B extends OperationalBlock> NotBlock(NotFunctionality functionality) {
-        super(functionality, 1);
+    public <B extends OperationalBlock> NotBlock() {
+        super(new NotFunctionality(), 1);
     }
 
     @Override
     public Block clone() {
-        return new NotBlock(new NotFunctionality());
+        return new NotBlock();
     }
 }
