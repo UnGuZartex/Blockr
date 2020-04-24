@@ -27,10 +27,5 @@ public abstract class ProgramCommand implements Command {
         programArea.notifyProgramState();
     }
 
-    @Override
-    public void redo() {
-        execute();
-    }
-
     protected abstract void executeTask();
 }

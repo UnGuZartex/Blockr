@@ -3,7 +3,7 @@ package GUI;
 import Controllers.BlockLinkDatabase;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.JarLoader;
 import GUI.Blocks.*;
 import System.Logic.CommandHistory;
@@ -15,8 +15,6 @@ import Images.ImageLibrary;
 import Images.ImageLoader;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
-import System.BlockStructure.Functionality.CavityFunctionality;
-import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
@@ -52,9 +50,9 @@ public class Initialiser {
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
-        ProgramController programController = new ProgramController(converter, blockHandler);
+        BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
-                programController,
+                blockHandlerController,
                 connectionController);
         canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController, blockHandler);
         return canvas;

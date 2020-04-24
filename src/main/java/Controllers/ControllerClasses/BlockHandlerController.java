@@ -5,13 +5,12 @@ import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
 
-
-public class ProgramController {
+public class BlockHandlerController {
 
     private final BlockLinkDatabase blockDatabase;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler) {
+    public BlockHandlerController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler) {
         this.blockDatabase = blockDatabase;
         this.blockHandler = blockHandler;
     }

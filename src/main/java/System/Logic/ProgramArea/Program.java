@@ -170,7 +170,7 @@ public class Program {
         lastResult = programSnapshot.currentResult;
     }
 
-    private class ProgramSnapshot implements Snapshot {
+    private final class ProgramSnapshot implements Snapshot {
         private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
         private final Result currentResult = lastResult;
 
