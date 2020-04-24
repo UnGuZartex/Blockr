@@ -5,9 +5,9 @@ import Utility.Command;
 
 public abstract class ProgramCommand implements Command {
 
-    ProgramArea programArea;
-    Snapshot programSnapShot;
-    Snapshot gameWorldSnapshot;
+    protected final ProgramArea programArea;
+    private Snapshot programSnapShot;
+    private Snapshot gameWorldSnapshot;
 
     protected ProgramCommand(ProgramArea programArea) {
         this.programArea = programArea;

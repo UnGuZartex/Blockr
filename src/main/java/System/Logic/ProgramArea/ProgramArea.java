@@ -21,26 +21,38 @@ public class ProgramArea {
     /**
      * Variable referring to the programs in this program area.
      */
-    private ArrayList<Program> programs = new ArrayList<>();
+    private final ArrayList<Program> programs = new ArrayList<>();
 
     /**
      * Variable referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
-    private ProgramEventManager observer = new ProgramEventManager();
+    private final ProgramEventManager observer = new ProgramEventManager();
 
-    private GameWorld gameWorld;
+    private final GameWorld gameWorld;
 
-    private final Snapshot gameWorldStartSnapshot;
+    private Snapshot gameWorldStartSnapshot;
 
     private final CommandHistory history;
+
+    int index;
 
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
         this.history = history;
+        setStartSnapshot();
+        //gameWorldStartSnapshot = gameWorld.createSnapshot();
+    }
+
+    private void setStartSnapshot() {
         gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
+    /**
+     * Return the game world attached to this program area.
+     *
+     * @return the game world attached to this program area.
+     */
     public GameWorld getGameWorld() {
         return gameWorld;
     }
@@ -111,7 +123,9 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                history.execute(new RunProgramCommand(this));
+                if (!program.isFinished()) {
+                    history.execute(new RunProgramCommand(this));
+                }
             }
             else {
                 observer.notifyProgramInvalid();

@@ -8,12 +8,11 @@ import java.awt.event.MouseEvent;
 
 public class MoveCommand implements Command
 {
-    int id, x, y;
-    GUIBlockHandler guiBlockHandler;
-    Snapshot snapshot;
+    private final int x, y;
+    private final GUIBlockHandler guiBlockHandler;
+    private Snapshot GUIBlocksSnapshot;
 
     public MoveCommand(int x, int y, GUIBlockHandler guiBlockHandler) {
-        this.id = id;
         this.x = x;
         this.y = y;
         this.guiBlockHandler = guiBlockHandler;
@@ -21,21 +20,21 @@ public class MoveCommand implements Command
 
     @Override
     public void execute() {
-        this.snapshot = guiBlockHandler.createSnapshot();
+        this.GUIBlocksSnapshot = guiBlockHandler.createSnapshot();
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, x, y);
     }
 
     @Override
     public void undo() {
         Snapshot snapshot = guiBlockHandler.createSnapshot();
-        guiBlockHandler.loadSnapshot(this.snapshot);
-        this.snapshot = snapshot;
+        guiBlockHandler.loadSnapshot(this.GUIBlocksSnapshot);
+        this.GUIBlocksSnapshot = snapshot;
     }
 
     @Override
     public void redo() {
         Snapshot snapshot = guiBlockHandler.createSnapshot();
-        guiBlockHandler.loadSnapshot(this.snapshot);
-        this.snapshot = snapshot;
+        guiBlockHandler.loadSnapshot(this.GUIBlocksSnapshot);
+        this.GUIBlocksSnapshot = snapshot;
     }
 }

@@ -108,14 +108,11 @@ public class Program {
     }
 
     /**
-     * Reset this program. The blocks in this program are reset,
-     * and the current block is set to the start block.
+     * Reset this program. The current block is set to the start block,
+     * and the last result is set to a success.
      *
      * @post The current block is set to the start block.
-     * @post the start block is reset.
-     */
-    /**
-     * TODO
+     * @post the last result is set to a success.
      */
     public void resetProgram() {
         currentBlock = startBlock;
@@ -178,7 +175,6 @@ public class Program {
         private final Result currentResult = lastResult;
 
         public ProgramSnapshot() {
-            System.out.println("index: " + currentBlock.getIndexOfBlock(currentBlock));
             currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
         }
 
