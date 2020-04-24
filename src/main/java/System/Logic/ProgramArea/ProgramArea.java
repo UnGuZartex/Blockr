@@ -1,13 +1,12 @@
 package System.Logic.ProgramArea;
 
-import Controllers.ProgramListener;
 import Controllers.ProgramEventManager;
-import GameWorldAPI.History.Snapshot;
-import System.Logic.CommandHistory;
+import Controllers.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
-import Utility.Command;
+import System.Logic.CommandHistory;
 
 import java.util.ArrayList;
 
@@ -31,14 +30,13 @@ public class ProgramArea {
 
     private GameWorld gameWorld;
 
-    private final Snapshot gameWorldStartSnapshot;
+    private Snapshot gameWorldStartSnapshot;
 
     private final CommandHistory history;
 
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
         this.history = history;
-        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
     public GameWorld getGameWorld() {
@@ -251,6 +249,15 @@ public class ProgramArea {
     }
 
     private void resetGameWorld() {
-        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        if (gameWorldStartSnapshot != null) {
+            gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        }
+        gameWorldStartSnapshot = null;
+    }
+
+    public void setGameWorldStartSnapshot(Snapshot gameWorldStartSnapshot) {
+        if (this.gameWorldStartSnapshot == null) {
+            this.gameWorldStartSnapshot = gameWorldStartSnapshot;
+        }
     }
 }

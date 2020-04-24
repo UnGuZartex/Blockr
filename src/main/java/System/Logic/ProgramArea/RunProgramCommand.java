@@ -9,5 +9,6 @@ public class RunProgramCommand extends ProgramCommand {
     @Override
     protected void executeTask() {
         programArea.runProgramStep();
+        programArea.setGameWorldStartSnapshot(this.gameWorldSnapshot);
     }
 }
