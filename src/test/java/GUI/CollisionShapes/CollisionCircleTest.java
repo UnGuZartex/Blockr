@@ -201,7 +201,6 @@ class CollisionCircleTest {
         assertTrue(circle1.contains(x1, y1));
         assertTrue(circle1.contains(x1 + r1, y1));
         assertTrue(circle1.contains(x1, y1 + r1));
-        // TODO: assertTrue(circle1.contains((int)Math.floor(x1 + r*Math.cos(angle)), (int)Math.floor(y1 + r*Math.sin(angle))));
 
         r = 2*r1 + (r1) * random.nextDouble();
         assertFalse(circle1.contains(x1 + r1 + 1, y1));
