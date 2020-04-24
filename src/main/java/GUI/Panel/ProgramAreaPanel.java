@@ -204,13 +204,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Event to call when the program is in its start state.
+     * Event to call when the program is in its default state.
      *
      * @effect The block colors are set to white.
      * @effect The game state text is updated accordingly.
      */
     @Override
-    public void onProgramStartState() {
+    public void onProgramDefaultState() {
         changeBlockColors(Color.white);
         gameState = "";
     }

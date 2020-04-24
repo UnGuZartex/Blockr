@@ -37,13 +37,15 @@ public class HistoryController {
     }
 
     public void executeProgramRunCommand() {
-        execute(new RunProgramCommand(programArea));
+        if (programArea.canAddProgramCommand()) {
+            execute(new RunProgramCommand(programArea));
+        }
     }
 
     public void executeProgramResetCommand() {
-        //if (programArea.canReset()) {
+        if (programArea.canAddProgramCommand()) {
             execute(new ResetProgramCommand(programArea));
-        //}
+        }
     }
 
     /**

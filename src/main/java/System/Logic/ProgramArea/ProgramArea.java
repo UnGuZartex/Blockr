@@ -107,7 +107,7 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                history.execute(new RunProgramCommand(this));
+                //history.execute(new RunProgramCommand(this));
             }
             else {
                 observer.notifyProgramInvalid();
@@ -124,18 +124,9 @@ public class ProgramArea {
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
-    /**
-     * TODO
-     */
-    public void resetProgram(boolean command) {
-
-        if (!command) {
-            for (Program program : programs) {
-                program.resetProgram();
-            }
-        }
-        else if (programs.size() == 1) {
-            history.execute(new ResetProgramCommand(this));
+    public void resetProgram() {
+        for (Program program : programs) {
+            program.resetProgram();
         }
     }
 
@@ -209,6 +200,10 @@ public class ProgramArea {
         else {
             observer.notifyProgramInDefaultState();
         }
+    }
+
+    public boolean canAddProgramCommand() {
+        return programs.size() == 1 && programs.get(0).isValidProgram();
     }
 
     /**
