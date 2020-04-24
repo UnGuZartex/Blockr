@@ -135,7 +135,7 @@ public class ProgramArea {
     /**
      * TODO commentaar
      */
-    public void runProgramStep() {
+    protected void runProgramStep() {
 
         if (programs.size() != 1) {
             throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
@@ -223,7 +223,7 @@ public class ProgramArea {
         addProgram(getHighestBlock(block));
     }
 
-    public void notifyProgramState() {
+    protected void notifyProgramState() {
         Program program = getProgram();
         Result stepResult = program.getLastResult();
 
