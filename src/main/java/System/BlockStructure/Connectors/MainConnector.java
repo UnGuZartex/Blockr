@@ -89,7 +89,6 @@ public class MainConnector extends Connector {
      *         has a connectable type to the type of this main connector.
      */
     public boolean canHaveAsSubConnector(SubConnector subConnector) {
-        return subConnector != null && !isConnected() && !subConnector.isConnected() &&
-                getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
+        return subConnector != null && getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
     }
 }

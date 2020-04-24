@@ -16,10 +16,9 @@ public abstract class BlockFunctionality {
      */
     protected boolean evaluation;
 
-    protected Snapshot snapshot;
-
     /**
      * Initialize a new block functionality.
+     */
     protected BlockFunctionality() { }
 
     /**

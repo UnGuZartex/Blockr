@@ -5,7 +5,6 @@ import Controllers.ProgramListener;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
-import System.Logic.ProgramArea.Program;
 
 
 public class ProgramController {
@@ -31,15 +30,8 @@ public class ProgramController {
     }
 
     public IGUIBlock getHighlightedBlock() {
-        Program program = blockHandler.getPA().getProgram();
-        if (program != null) {
-            Block highlightedBlock = program.getCurrentBlock();
-            if (highlightedBlock != null) {
-                return blockDatabase.getGUIBlockFromBlock(highlightedBlock);
-            }
-        }
-
-        return null;
+        Block highlightedBlock = blockHandler.getPA().getNextBlockInProgram();
+        return (highlightedBlock != null) ? blockDatabase.getGUIBlockFromBlock(highlightedBlock) : null;
     }
 
     public void runProgramStep() {

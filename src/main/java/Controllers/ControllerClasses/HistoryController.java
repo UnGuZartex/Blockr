@@ -1,6 +1,9 @@
 package Controllers.ControllerClasses;
 
 import System.Logic.CommandHistory;
+import System.Logic.ProgramArea.ProgramArea;
+import System.Logic.ProgramArea.ResetProgramCommand;
+import System.Logic.ProgramArea.RunProgramCommand;
 import Utility.Command;
 
 /**
@@ -8,6 +11,7 @@ import Utility.Command;
  */
 public class HistoryController {
     private CommandHistory history;
+    private ProgramArea programArea;
 
     /**
      * Create a new history controller with a given command history.
@@ -16,8 +20,9 @@ public class HistoryController {
      *
      * @post The current command history is set to the given history.
      */
-    public HistoryController(CommandHistory history) {
+    public HistoryController(CommandHistory history, ProgramArea programArea) {
         this.history = history;
+        this.programArea = programArea;
     }
 
     /**
@@ -29,6 +34,16 @@ public class HistoryController {
      */
     public void execute(Command command) {
         history.execute(command);
+    }
+
+    public void executeProgramRunCommand() {
+        execute(new RunProgramCommand(programArea));
+    }
+
+    public void executeProgramResetCommand() {
+        //if (programArea.canReset()) {
+            execute(new ResetProgramCommand(programArea));
+        //}
     }
 
     /**

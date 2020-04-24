@@ -1,17 +1,14 @@
 package GUI.Components;
 
 import Controllers.ControllerClasses.HistoryController;
-import Controllers.ControllerClasses.ProgramController;
 
 import java.awt.event.KeyEvent;
 
 public class ControlHandler {
 
-    private final ProgramController controller;
     private final HistoryController historyController;
 
-    public ControlHandler(ProgramController controller, HistoryController historyController) {
-        this.controller = controller;
+    public ControlHandler(HistoryController historyController) {
         this.historyController = historyController;
     }
 
@@ -21,10 +18,10 @@ public class ControlHandler {
         int ctrlDown = KeyEvent.CTRL_DOWN_MASK;
 
         if (keyCode == KeyEvent.VK_F5) {
-            controller.runProgramStep();
+            historyController.executeProgramRunCommand();
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
-            controller.resetProgram(true);
+            historyController.executeProgramResetCommand();
         }
 
         if (keyCode == KeyEvent.VK_Z) {

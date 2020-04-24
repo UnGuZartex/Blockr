@@ -29,11 +29,8 @@ public class ProgramArea {
 
     private GameWorld gameWorld;
 
-    private CommandHistory history;
-
-    public ProgramArea(GameWorld gameWorld, CommandHistory history) {
+    public ProgramArea(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
-        this.history = history;
     }
 
     public GameWorld getGameWorld() {
@@ -73,9 +70,17 @@ public class ProgramArea {
     public Program getProgram() {
         if (programs.size() == 1) {
             return programs.get(0);
-        } else {
-            return null;
         }
+
+        return null;
+    }
+
+    public Block getNextBlockInProgram() {
+        if (programs.size() == 1) {
+            return programs.get(0).getCurrentBlock();
+        }
+
+        return null;
     }
 
     /**
