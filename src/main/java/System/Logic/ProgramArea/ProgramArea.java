@@ -37,6 +37,7 @@ public class ProgramArea {
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
         this.history = history;
+        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
     public GameWorld getGameWorld() {
@@ -249,15 +250,7 @@ public class ProgramArea {
     }
 
     private void resetGameWorld() {
-        if (gameWorldStartSnapshot != null) {
-            gameWorld.loadSnapshot(gameWorldStartSnapshot);
-        }
-        gameWorldStartSnapshot = null;
-    }
-
-    public void setGameWorldStartSnapshot(Snapshot gameWorldStartSnapshot) {
-        if (this.gameWorldStartSnapshot == null) {
-            this.gameWorldStartSnapshot = gameWorldStartSnapshot;
-        }
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 }
