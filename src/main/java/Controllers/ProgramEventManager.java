@@ -51,13 +51,13 @@ public class ProgramEventManager {
 
     /**
      * Notify the listeners that the program is currently in its
-     * starting state.
+     * default state.
      *
      * @effect The listeners are notified about the program state.
      */
-    public void notifyProgramInStartState() {
+    public void notifyProgramInDefaultState() {
         for (ProgramListener listener : listeners) {
-            listener.onProgramStartState();
+            listener.onProgramDefaultState();
         }
     }
 

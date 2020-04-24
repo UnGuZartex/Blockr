@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
 import Controllers.ProgramEventManager;
+import GameWorldAPI.History.Snapshot;
 import System.Logic.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
@@ -29,8 +30,11 @@ public class ProgramArea {
 
     private GameWorld gameWorld;
 
+    private final Snapshot gameWorldStartSnapshot;
+
     public ProgramArea(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
+        gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
     public GameWorld getGameWorld() {
@@ -135,6 +139,10 @@ public class ProgramArea {
         }
     }
 
+    public void resetGameWorld() {
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+    }
+
     /**
      * Add a new program to this program area with given start block.
      *
@@ -192,16 +200,14 @@ public class ProgramArea {
     }
 
     public void notifyProgramState() {
-        System.out.println("state");
         Program program = getProgram();
         Result stepResult = program.getLastResult();
 
         if (program.isFinished()) {
             observer.notifyGameFinished(stepResult);
         }
-        else if (program.isInStartState()) {
-            System.out.println("standard state");
-            observer.notifyProgramInStartState();
+        else {
+            observer.notifyProgramInDefaultState();
         }
     }
 

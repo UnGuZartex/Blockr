@@ -143,10 +143,6 @@ public class Program {
         return getSizeOfBlock(startBlock);
     }
 
-    public boolean isInStartState() {
-        return currentBlock == startBlock && lastResult == Result.SUCCESS;
-    }
-
     /**
      * Get the size of the given block.
      *
