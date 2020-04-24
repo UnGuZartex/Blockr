@@ -7,8 +7,8 @@ import java.util.Stack;
  * This class holds two stacks of commands for dynamic history management.
  */
 public class CommandHistory {
-    private Stack<Command> undoStack = new Stack<Command>();
-    private Stack<Command> redoStack = new Stack<Command>();
+    private Stack<Command> undoStack = new Stack<>();
+    private Stack<Command> redoStack = new Stack<>();
 
     /**
      * Execute a given command and add it to history.

@@ -32,12 +32,7 @@ public abstract class ProgramCommand implements Command {
 
     @Override
     public void redo() {
-        Snapshot newProgramSnapShot = programArea.getProgram().createSnapshot();
-        Snapshot newGameWorldSnapshot = programArea.getGameWorld().createSnapshot();
-        programArea.getProgram().loadSnapshot(programSnapShot);
-        programArea.getGameWorld().loadSnapshot(gameWorldSnapshot);
-        gameWorldSnapshot = newGameWorldSnapshot;
-        programSnapShot = newProgramSnapShot;
+        execute();
     }
 
     protected abstract void executeTask();
