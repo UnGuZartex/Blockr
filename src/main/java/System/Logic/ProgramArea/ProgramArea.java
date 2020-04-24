@@ -7,6 +7,7 @@ import System.Logic.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
+import Utility.Command;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class ProgramArea {
     private ArrayList<Program> programs = new ArrayList<>();
 
     /**
-     * Variabele referring to the observer of this class.
+     * Variable referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
     private ProgramEventManager observer = new ProgramEventManager();
@@ -32,8 +33,11 @@ public class ProgramArea {
 
     private final Snapshot gameWorldStartSnapshot;
 
-    public ProgramArea(GameWorld gameWorld) {
+    private final CommandHistory history;
+
+    public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
+        this.history = history;
         gameWorldStartSnapshot = gameWorld.createSnapshot();
     }
 
@@ -102,12 +106,12 @@ public class ProgramArea {
     /**
      * TODO commentaar
      */
-    public void runProgramStep() {
+    public void addProgramRunCommand() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                //history.execute(new RunProgramCommand(this));
+                history.execute(new RunProgramCommand(this));
             }
             else {
                 observer.notifyProgramInvalid();
@@ -118,20 +122,49 @@ public class ProgramArea {
         }
     }
 
+    public void addProgramResetCommand() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                history.execute(new ResetProgramCommand(this));
+            }
+        }
+    }
+
+    /**
+     * TODO commentaar
+     */
+    public void runProgramStep() {
+
+        if (programs.size() != 1) {
+            throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
+        }
+
+        if (!getProgram().isValidProgram()) {
+            throw new IllegalStateException("A program step cannot be executed when the program is invalid!");
+        }
+
+        getProgram().executeStep(gameWorld);
+        notifyProgramState();
+    }
+
     /**
      * Reset all programs to their initial state.
      *
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
+    /**
+     * TODO commentaar
+     */
     public void resetProgram() {
         for (Program program : programs) {
             program.resetProgram();
         }
-    }
 
-    public void resetGameWorld() {
-        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        resetGameWorld();
+        observer.notifyProgramInDefaultState();
     }
 
     /**
@@ -202,10 +235,6 @@ public class ProgramArea {
         }
     }
 
-    public boolean canAddProgramCommand() {
-        return programs.size() == 1 && programs.get(0).isValidProgram();
-    }
-
     /**
      * Get the highest block in the block structure this block is connected to.
      *
@@ -219,5 +248,9 @@ public class ProgramArea {
         else {
             return block;
         }
+    }
+
+    private void resetGameWorld() {
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
     }
 }

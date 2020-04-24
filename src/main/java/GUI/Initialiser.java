@@ -47,8 +47,8 @@ public class Initialiser {
     public BlockrCanvas createNewCanvas() throws IOException {
 
         CommandHistory history = new CommandHistory();
-        HistoryController historyController = new HistoryController(history);
         ProgramArea programArea = new ProgramArea(gameWorld, history);
+        HistoryController historyController = new HistoryController(history, programArea);
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
@@ -56,7 +56,7 @@ public class Initialiser {
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
                 programController,
                 connectionController);
-        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController);
+        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController, blockHandler);
         return canvas;
     }
 

@@ -32,12 +32,4 @@ public class ProgramController {
         Block highlightedBlock = blockHandler.getPA().getNextBlockInProgram();
         return (highlightedBlock != null) ? blockDatabase.getGUIBlockFromBlock(highlightedBlock) : null;
     }
-
-    public void runProgramStep() {
-        blockHandler.getPA().runProgramStep();
-    }
-
-    public void resetProgram(boolean command) {
-        blockHandler.getPA().resetProgram(command);
-    }
 }

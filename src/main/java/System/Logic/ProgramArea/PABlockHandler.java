@@ -172,7 +172,7 @@ public class PABlockHandler {
      */
     private void Update() {
         amountOfBlocks = programArea.getAllBlocksCount();
-        programArea.resetProgram(false);
+        programArea.resetProgram();
         notifyMaxBlocksReached();
     }
 
