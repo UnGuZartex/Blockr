@@ -8,9 +8,6 @@ import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import GameWorldAPI.History.Snapshot;
-import System.BlockStructure.Blocks.Block;
-import System.Logic.ProgramArea.ProgramArea;
-import Utility.Command;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;
@@ -122,10 +119,6 @@ public class GUIBlockHandler {
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
         for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
-            //System.out.println("position: " + guiSnapshot.blockPositions.get(i).getX() + " " + guiSnapshot.blockPositions.get(i).getY());
-            //System.out.println("index: " + guiSnapshot.paletteIndices.get(i));
-            //System.out.println("--------------------------------------------");
-            //System.out.println("id " + );
             addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }

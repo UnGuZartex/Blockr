@@ -30,12 +30,12 @@ public class ProgramController {
         blockHandler.deleteProgram(toDelete);
     }
 
-    public IGUIBlock getHightlightedBlock() {
+    public IGUIBlock getHighlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
-            Block hightlightedBlock = program.getCurrentBlock();
-            if (hightlightedBlock != null) {
-                return blockDatabase.getGUIBlockFromBlock(hightlightedBlock);
+            Block highlightedBlock = program.getCurrentBlock();
+            if (highlightedBlock != null) {
+                return blockDatabase.getGUIBlockFromBlock(highlightedBlock);
             }
         }
 
