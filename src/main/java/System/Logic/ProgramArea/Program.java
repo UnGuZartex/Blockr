@@ -202,7 +202,6 @@ public class Program {
         private final Result currentResult = lastResult;
 
         public ProgramSnapshot() {
-            System.out.println("index: " + currentBlock.getIndexOfBlock(currentBlock));
             currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
         }
 
