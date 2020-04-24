@@ -1,17 +1,18 @@
 package GUI.Components;
 
+import Controllers.ControllerClasses.HistoryController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
+import GUI.MoveCommand;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
+import GameWorldAPI.History.Snapshot;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * A class used to handle the movement of GUI blocks between the
@@ -37,19 +38,14 @@ public class GUIBlockHandler {
     private GamePanel blockSourcePanel;
 
     /**
-     * Variable referring to the current dragged block.
-     */
-    private GUIBlock draggedBlock;
-
-    /**
      * Variable referring to the blocks connected to the current dragged block.
      */
     private List<GUIBlock> draggedBlocks;
 
     /**
-     * Variable referring to the last valid position of the current dragged block.
+     * Variable referring to the last valid positions of the current dragged blocks.
      */
-    private Position lastValidPosition;
+    private List<Position> lastValidPositions;
 
     /**
      * Variable referring to the relation between the mouse and the current dragged block.
@@ -61,10 +57,7 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
-
-    private final GUIHistory history;
-
-    private Position pressedPosition;
+    private HistoryController historyController;
 
     /**
      * Create a new gui block handler with a given palette and program area panel.
@@ -74,11 +67,22 @@ public class GUIBlockHandler {
      *
      * @post The current palette panel is set to the given palette panel.
      * @post The current program area panel is set to the given program area panel.
+     *
+     * @param historyController TODO
      */
-    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) {
+    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) {
         this.palette = palette;
         this.programArea = programArea;
-        this.history = new GUIHistory(this);
+        this.historyController = historyController;
+    }
+
+    public void handleMouseEventPre(int id, int x, int y) {
+        if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
+            historyController.execute(new MoveCommand(x, y, this));
+        }
+        else {
+            handleMouseEvent(id, x, y);
+        }
     }
 
     /**
@@ -94,19 +98,28 @@ public class GUIBlockHandler {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
-                pressedPosition = new Position(x,y);
                 break;
 
             case MouseEvent.MOUSE_RELEASED:
-                if (draggedBlock != null) {
-                    history.newMovement(new AbstractMap.SimpleEntry<>(pressedPosition, new Position(x, y)));
-                }
                 handleMouseReleased();
                 break;
 
             case MouseEvent.MOUSE_DRAGGED:
                 handleMouseDragged(x, y);
                 break;
+        }
+    }
+
+    public Snapshot createSnapshot() {
+        return new GUIBlockHandlerSnapshot();
+    }
+
+    public void loadSnapshot(Snapshot snapshot) {
+        GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
+        programArea.deleteBlockFromProgramArea(programArea.getBlocks());
+
+        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
         }
     }
 
@@ -128,9 +141,10 @@ public class GUIBlockHandler {
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
      */
-    protected void handleMousePressed(int x, int y) {
+    private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
+        GUIBlock draggedBlock;
 
         if (programAreaContainsMouse || draggedBlockIndex != -1) {
             if (draggedBlockIndex != -1) {
@@ -148,8 +162,24 @@ public class GUIBlockHandler {
             }
 
             dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
-            lastValidPosition = new Position(draggedBlock.getX(), draggedBlock.getY());
+            lastValidPositions = new ArrayList<>();
+
+            for (GUIBlock block : draggedBlocks) {
+                lastValidPositions.add(new Position(block.getX(), block.getY()));
+            }
         }
+    }
+
+    private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
+        draggedBlockIndex = paletteIndex;
+        GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
+        draggedBlocks = new ArrayList<>(List.of(draggedBlock));
+        blockSourcePanel = palette;
+        programArea.setTemporaryBlock(draggedBlock);
+        dragDelta = new Position(0, 0);
+
+        handleMouseDragged(pos.getX(), pos.getY());
+        handleMouseReleased();
     }
 
     /**
@@ -167,8 +197,9 @@ public class GUIBlockHandler {
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
      *         and deletes the block from the program area.
      */
-    protected void handleMouseReleased() {
-        if (draggedBlock != null) {
+    private void handleMouseReleased() {
+        if (draggedBlocks != null) {
+
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
                     handleBlockFromPaletteToProgramArea();
@@ -178,16 +209,15 @@ public class GUIBlockHandler {
                 }
             }
             else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == programArea) {
-                programArea.disconnectInProgramArea(draggedBlock);
+                programArea.disconnectInProgramArea(draggedBlocks.get(0));
                 programArea.deleteBlockFromProgramArea(draggedBlocks);
             }
             else {
-                draggedBlock.setPosition(lastValidPosition.getX(), lastValidPosition.getY());
-                draggedBlock.resetHeight();
+                draggedBlocks.get(0).setPosition(lastValidPositions.get(0).getX(), lastValidPositions.get(0).getY());
+                draggedBlocks.get(0).resetHeight();
             }
 
             programArea.setTemporaryBlock(null);
-            draggedBlock = null;
             draggedBlocks = null;
         }
     }
@@ -200,9 +230,9 @@ public class GUIBlockHandler {
      *
      * @effect The position of the dragged block is updated accordingly.
      */
-    protected void handleMouseDragged(int x, int y) {
-        if (draggedBlock != null) {
-            draggedBlock.setPosition(x + dragDelta.getX(), y + dragDelta.getY());
+    private void handleMouseDragged(int x, int y) {
+        if (draggedBlocks != null) {
+            draggedBlocks.get(0).setPosition(x + dragDelta.getX(), y + dragDelta.getY());
         }
     }
 
@@ -214,8 +244,8 @@ public class GUIBlockHandler {
      */
     private void handleBlockFromPaletteToProgramArea() {
         programArea.addTemporaryBlockToProgramArea(draggedBlockIndex);
-        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlock)).findAny();
-        connectedBlock.ifPresent(guiBlock -> draggedBlock.connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
+        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlocks.get(0))).findAny();
+        connectedBlock.ifPresent(guiBlock -> draggedBlocks.get(0).connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
     /**
@@ -226,7 +256,7 @@ public class GUIBlockHandler {
      *         blocks if possible.
      */
     private void handleBlockFromProgramAreaToProgramArea() {
-        programArea.disconnectInProgramArea(draggedBlock);
+        programArea.disconnectInProgramArea(draggedBlocks.get(0));
 
         for (GUIBlock block : draggedBlocks) {
             Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
@@ -262,7 +292,36 @@ public class GUIBlockHandler {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 
-    public GUIHistory getHistory() {
-        return history;
+    private class GUIBlockHandlerSnapshot implements Snapshot {
+
+        private final List<Position> blockPositions;
+        private final List<Integer> paletteIndices;
+
+        public GUIBlockHandlerSnapshot() {
+            List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
+            blockPositions = new ArrayList<>();
+            paletteIndices = new ArrayList<>();
+
+            for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+                if (draggedBlocks != null && draggedBlocks.contains(entry.getKey())) {
+                    int index = draggedBlocks.indexOf(entry.getKey());
+                    blockPositions.add(lastValidPositions.get(index));
+                }
+                else {
+                    blockPositions.add(entry.getKey().getPosition());
+                }
+                paletteIndices.add(entry.getValue());
+            }
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public LocalDateTime getSnapshotDate() {
+            return null;
+        }
     }
 }

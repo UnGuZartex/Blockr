@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NotFunctionalityTest {
 
-    private NotFunctionality functionality;
+    /*private NotFunctionality functionality;
     private OperationalBlock notBlock, block1, block2;
     private StatementBlock wallInFrontBlock;
     private ConnectionHandler connectionHandler;
@@ -46,7 +46,7 @@ class NotFunctionalityTest {
 
 
         /* Simple field has only one cell */
-        PositionSimpleBlankUp = new GridPosition(0,0);
+        /*PositionSimpleBlankUp = new GridPosition(0,0);
         PositionSimpleGoalDown = new GridPosition(0,0);
         PositionSimpleGoalLeft = new GridPosition(0,0);
         PositionSimpleBlankRight = new GridPosition(0,0);
@@ -275,6 +275,7 @@ class NotFunctionalityTest {
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
         notBlock.getFunctionality().evaluate();
         assertFalse(notBlock.getFunctionality().evaluation);
+<<<<<<< HEAD
     }
 
     @Test
@@ -286,4 +287,6 @@ class NotFunctionalityTest {
         assertTrue(func instanceof  NotFunctionality);
         assertEquals(((NotFunctionality)func).block, functionality.block);
     }
+=======
+    }*/
 }

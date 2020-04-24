@@ -6,7 +6,7 @@ import Images.ImageLibrary;
 import java.awt.*;
 
 /**
- * A class for a game world panel, which can listen to the program.
+ * A class for representing the game world panel.
  *
  * @invar The game world panel must contain a valid game world at all time.
  *        | isValidGameWorld(gameWorld)
@@ -21,7 +21,7 @@ public class GameWorldPanel extends GamePanel {
     private final GameWorld gameWorld;
 
     /**
-     * Initialise a new game world panel with a game world, corner coordinates and dimension.
+     * Initialise a new game world panel with a given game world, position and dimensions.
      *
      * @param gameWorld The game world for this panel.
      * @param cornerX The x coordinate for the corner of this panel.
@@ -50,6 +50,12 @@ public class GameWorldPanel extends GamePanel {
      * @param gameWorld The game world to check.
      *
      * @return True if and only if the given game world is not null.
+=======
+     *
+     * @post The current game world is set to the given game world.
+     *
+     * @effect Calls the super constructor with the given position and dimensions.
+>>>>>>> b2ed5d8aecfa994c58c41603357365bcf8d9f443
      */
     public static boolean isValidGameWorld(GameWorld gameWorld) {
         return gameWorld != null;
@@ -58,16 +64,15 @@ public class GameWorldPanel extends GamePanel {
     /**
      * Paint the game state.
      *
-     * @param g The graphics to paint this panel with.
+     * @param g The given graphics.
+     * @param library library The image library.
      *
-     * @effect Draws the background of this panel.
-     * @effect Draws the grid for this panel using the image library.
-     * @effect draws the game state.
+     * @effect The game world is drawn.
      */
     @Override
-    public void paint(Graphics g, ImageLibrary images) {
-        drawBackground(g);
+    public void paint(Graphics g, ImageLibrary library) {
         Graphics g2 = g.create(getPanelRectangle().getX(), getPanelRectangle().getY(), getPanelRectangle().getWidth(), getPanelRectangle().getHeight());
-        gameWorld.paint(g2, images);
+        gameWorld.paint(g2, library);
+        drawBackGround(g, library, null);
     }
 }

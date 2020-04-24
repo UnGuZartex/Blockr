@@ -104,11 +104,15 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     /**
      * Paint this palette panel.
      *
-     * @param g The graphics to paint this panel with.
+     * @param g The given graphics.
+     * @library library The image library.
+     *
+     * @effect The palette background is drawn.
+     * @effect The palette blocks are drawn.
      */
     @Override
-    public void paint(Graphics g, ImageLibrary images) {
-        drawBackground(g);
+    public void paint(Graphics g, ImageLibrary library) {
+        drawBackGround(g, library, "paletteBackground");
         drawBlocks(g);
     }
 
@@ -116,6 +120,8 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * Draw all the blocks in the panel.
      *
      * @param g The graphics to draw the blocks with.
+     *
+     * @effect All blocks inside the panel are drawn.
      */
     private void drawBlocks(Graphics g) {
         if (!reachedMaxBlocks) {

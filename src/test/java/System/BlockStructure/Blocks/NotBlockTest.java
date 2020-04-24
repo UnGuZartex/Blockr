@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class NotBlockTest {
 
     NotBlock not1, not2, not3, not4;
+    /*OperationalBlock not1, not2, not3, not4;
+>>>>>>> b2ed5d8aecfa994c58c41603357365bcf8d9f443:src/test/java/System/BlockStructure/Blocks/OperationalBlockTest.java
     StatementBlock wallInFront1, wallInFront2;
     CavityBlock cavoc3, cavoc2;
 
@@ -95,6 +97,7 @@ class NotBlockTest {
         assertEquals(1, not4.getNbSubConnectors());
     }
 
+<<<<<<< HEAD:src/test/java/System/BlockStructure/Blocks/NotBlockTest.java
     @Test
     void cloneTest() {
         Block block = not1.clone();
@@ -106,4 +109,26 @@ class NotBlockTest {
         assertFalse(block.getSubConnectorAt(0).isConnected());
         assertFalse(block.getMainConnector().isConnected());
     }
+=======
+//    @Test
+//    void setAlreadyRan() {
+//        assertFalse(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(true); // false -> true
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(true); // true -> true
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(false); // true -> false
+//        assertFalse(not1.hasAlreadyRan());
+//        not1.setAlreadyRan(false); // false -> false
+//        assertFalse(not1.hasAlreadyRan());
+//    }
+//
+//    @Test
+//    void reset() {
+//        not1.setAlreadyRan(true);
+//        assertTrue(not1.hasAlreadyRan());
+//        not1.reset();
+//        assertFalse(not1.hasAlreadyRan());
+//    }*/
+
 }

@@ -87,12 +87,6 @@ class PalettePanelTest {
     }
 
     @Test
-    void getLeftCorner() {
-        assertEquals(cornerX, panel.getLeftCorner().getX());
-        assertEquals(cornerY, panel.getLeftCorner().getY());
-    }
-
-    @Test
     void getNewBlock_maxBlocksReached() {
         panel.onMaxBlocksReached(true);
         assertThrows(IllegalStateException.class, () -> panel.getNewBlock(0));

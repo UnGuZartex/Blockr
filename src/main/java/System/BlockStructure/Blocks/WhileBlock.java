@@ -10,13 +10,54 @@ import System.BlockStructure.Functionality.CavityFunctionality;
  */
 public class WhileBlock extends CavityBlock {
 
+    private boolean passed;
+
     /**
-     * Initialise a new while block with given cavity functionality.
+     * Initialise a new while block.
      *
-     * @effect Calls super constructor with given functionality.
+     * @effect Calls super constructor.
      */
-    public WhileBlock(CavityFunctionality functionality) {
-        super(functionality);
+    public WhileBlock() {
+        super(new CavityFunctionality());
+    }
+
+    @Override
+    public Block getBlockAtIndex(int index) {
+        if (index == 0) {
+            return this;
+        }
+        else {
+            if (cavitySubConnector.isConnected() && !passed) {
+                passed = true;
+                Block nextBlock = getCavitySubConnector().getConnectedBlock();
+                nextBlock.setReturnToBlock(getNewReturnBlock());
+                Block toReturn = nextBlock.getBlockAtIndex(index - 1);
+                passed = false;
+                return toReturn;
+            }
+            else {
+                return super.getBlockAtIndex(index);
+            }
+        }
+    }
+
+    public int getIndexOfBlock(Block block) {
+        if (block == this) {
+            return 0;
+        }
+        else {
+            if (cavitySubConnector.isConnected() && !passed) {
+                passed = true;
+                Block nextBlock = getCavitySubConnector().getConnectedBlock();
+                nextBlock.setReturnToBlock(getNewReturnBlock());
+                int toReturn = nextBlock.getIndexOfBlock(block);
+                passed = false;
+                return 1 + toReturn;
+            }
+            else {
+                return super.getIndexOfBlock(block);
+            }
+        }
     }
 
     /**
@@ -37,6 +78,6 @@ public class WhileBlock extends CavityBlock {
      */
     @Override
     public Block clone() {
-        return new WhileBlock(new CavityFunctionality(functionality.getGameWorld()));
+        return new WhileBlock();
     }
 }

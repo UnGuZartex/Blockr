@@ -51,29 +51,29 @@ public abstract class GamePanel {
     }
 
     /**
-     * Get the left corner of this panel.
-     *
-     * @return The coordinate of the left upper corner of this panel.
-     */
-    public Point getLeftCorner() {
-        return new Point(panelRectangle.getX(), panelRectangle.getY());
-    }
-
-    /**
      * Paint this panel.
      *
-     * @param g The graphics to paint this panel with.
+     * @param g The given graphics.
+     * @library library The image library.
      */
-    public abstract void paint(Graphics g, ImageLibrary images);
+    abstract void paint(Graphics g, ImageLibrary library);
 
     /**
-     * Draw the background of this panel.
+     * Paint the panel background.
      *
-     * @param g The graphics to draw the background with.
+     * @param g The given graphics.
+     * @library library The image library.
      *
-     * @effect The panel rectangle is drawn
+     * @effect The panel boundaries are drawn.
+     * @effect The panel background is drawn if an image name is given.
      */
-    protected void drawBackground(Graphics g) {
-        panelRectangle.paint(g);
+    protected void drawBackGround(Graphics g, ImageLibrary library, String imageName) {
+
+        if (imageName != null) {
+            g.drawImage(library.getImage(imageName), panelRectangle.getX(),
+                    panelRectangle.getY(), panelRectangle.getWidth(), panelRectangle.getHeight(), null);
+        }
+
+        g.drawRect(panelRectangle.getX(), panelRectangle.getY(), panelRectangle.getWidth(), panelRectangle.getHeight());
     }
 }

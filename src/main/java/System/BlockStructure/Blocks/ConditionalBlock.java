@@ -36,7 +36,7 @@ public abstract class ConditionalBlock extends Block {
     }
 
     /**
-     * Check whether or not this conditional block has a next block.
+     * Check whether this conditional block has a next block.
      *
      * @return False cause a conditional block has no next block.
      */
@@ -67,7 +67,7 @@ public abstract class ConditionalBlock extends Block {
 
 
     /**
-     * Checks whether or not this conditional block has proper connections.
+     * Checks whether this conditional block has proper connections.
      *
      * @return False if the main connector is not connected, otherwise return
      *         if parent block of this conditional block has a proper connections.
@@ -78,5 +78,15 @@ public abstract class ConditionalBlock extends Block {
             return false;
         }
         return super.hasProperConnections();
+    }
+
+    @Override
+    public Block getBlockAtIndex(int index) {
+        return null;
+    }
+
+    @Override
+    public int getIndexOfBlock(Block block) {
+        return -1;
     }
 }

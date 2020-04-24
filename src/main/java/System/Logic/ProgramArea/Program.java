@@ -1,11 +1,12 @@
 package System.Logic.ProgramArea;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
-import java.util.AbstractMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -36,10 +37,6 @@ public class Program {
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = DEFAULT_RESULT;
-    /**
-     * Variable referring to the history of a program.
-     */
-    private final CommandHistory history = new CommandHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -99,9 +96,9 @@ public class Program {
     }
 
     /**
-     * Execute a step of this program, set the current block
-     * to the next block to execute if it is not finished yet and
-     * return the current result of the executed program step.
+     * Execute a step of this program.
+     *
+     * @param gameWorld The game world to operate on.
      *
      * @effect The functionality of the current block is evaluated.
      *
@@ -114,15 +111,14 @@ public class Program {
      * @throws IllegalStateException
      *         If this program is not valid.
      */
-    public Result executeStep() throws IllegalStateException{
+    public void executeStep(GameWorld gameWorld) throws IllegalStateException{
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
-            lastResult = history.execute(currentBlock, lastResult);
+            lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock = currentBlock.getNext();
         }
-        return lastResult;
     }
 
     /**
@@ -156,41 +152,6 @@ public class Program {
         return getSizeOfBlock(startBlock);
     }
 
-
-
-    // TODO testing + doc
-    public boolean isExecuting() {
-        return !history.atStart();
-    }
-
-    /**
-     * Redo the history and set the current block and last result correct again.
-     *
-     * @post The current block is set to a redo block if  a redo is not null.
-     * @post The last result is set to a redo result if a redo is not null.
-     */
-    public void undoProgram() {
-        Map.Entry<Result, Block> undo = history.undo(lastResult);
-        if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
-            this.currentBlock = undo.getValue();
-            this.lastResult = undo.getKey();
-        }
-    }
-
-    /**
-     * Redo the history and set the current block and last result correct again.
-     *
-     * @post The current block is set to a redo block if  a redo is not null.
-     * @post The last result is set to a redo result if a redo is not null.
-     */
-    public void redoProgram() {
-        Map.Entry<Result, Block> redo = history.redo(lastResult);
-        if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
-            this.currentBlock = redo.getValue();
-            this.lastResult = redo.getKey();
-        }
-    }
-
     /**
      * Reset this program.
      *
@@ -200,6 +161,10 @@ public class Program {
     public void resetProgram() {
         this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
+    }
+
+    public boolean isInStartState() {
+        return currentBlock == startBlock && lastResult == Result.SUCCESS;
     }
 
     /**
@@ -220,5 +185,35 @@ public class Program {
             }
         }
         return sum;
+    }
+
+    public Snapshot createSnapshot() {
+        return new ProgramSnapshot();
+    }
+
+    public void loadSnapshot(Snapshot snapshot) {
+        ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
+        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        lastResult = programSnapshot.currentResult;
+    }
+
+    private class ProgramSnapshot implements Snapshot {
+        private final int currentBlockIndex;
+        private final Result currentResult = lastResult;
+
+        public ProgramSnapshot() {
+            System.out.println("index: " + currentBlock.getIndexOfBlock(currentBlock));
+            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public LocalDateTime getSnapshotDate() {
+            return null;
+        }
     }
 }

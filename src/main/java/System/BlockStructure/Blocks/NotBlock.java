@@ -9,6 +9,7 @@ import System.BlockStructure.Functionality.NotFunctionality;
  */
 public class NotBlock extends OperationalBlock {
 
+
     /**
      * Initialise a new not block with given functionality.
      *
@@ -17,8 +18,8 @@ public class NotBlock extends OperationalBlock {
      * @effect Calls super constructor with given functionality and one
      *         one sub connector.
      */
-    public NotBlock(NotFunctionality functionality) {
-        super(functionality, 1);
+    public NotBlock() {
+        super(new NotFunctionality(), 1);
     }
 
     /**
@@ -29,6 +30,6 @@ public class NotBlock extends OperationalBlock {
      */
     @Override
     public Block clone() {
-        return new NotBlock(new NotFunctionality(functionality.getGameWorld()));
+        return new NotBlock();
     }
 }

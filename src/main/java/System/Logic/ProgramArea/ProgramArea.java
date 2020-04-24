@@ -1,7 +1,9 @@
 package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
-import Controllers.ProgramObserver;
+import Controllers.ProgramEventManager;
+import System.Logic.CommandHistory;
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
 
@@ -19,10 +21,22 @@ public class ProgramArea {
      */
     private final ArrayList<Program> programs = new ArrayList<>();
     /**
-     * Variabele referring to the observer of this class.
-     * This observer will notify listeners about the events of the program.
+     * Variable referring to the program event manager.
      */
-    private final ProgramObserver observer = new ProgramObserver();
+    private final ProgramEventManager observer = new ProgramEventManager();
+
+    private final GameWorld gameWorld;
+
+    private final CommandHistory history;
+
+    public ProgramArea(GameWorld gameWorld, CommandHistory history) {
+        this.gameWorld = gameWorld;
+        this.history = history;
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 
     /**
      * Unsubscribe a given program listener from the program observer
@@ -55,7 +69,7 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if(programs.size() == 1){
+        if (programs.size() == 1) {
             return programs.get(0);
         } else {
             return null;
@@ -151,57 +165,7 @@ public class ProgramArea {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                Result stepResult = program.executeStep();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-            observer.notifyExecuting(program.isExecuting());
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-    }
-
-    public void undoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                program.undoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(program.getLastResult());
-                }
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-            observer.notifyProgramReset();
-            observer.notifyExecuting(program.isExecuting());
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-
-
-    }
-
-    public void redoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                program.redoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(program.getLastResult());
-                }
-                observer.notifyExecuting(program.isExecuting());
+                history.execute(new RunProgramCommand(this));
             }
             else {
                 observer.notifyProgramInvalid();
@@ -212,18 +176,35 @@ public class ProgramArea {
         }
     }
 
-    /**
+    /** TODO
      * Reset all programs to their initial state.
      *
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
-    public void resetProgram() {
-        for (Program program : programs) {
-            program.resetProgram();
+    public void resetProgram(boolean command) {
+        if (!command) {
+            for (Program program : programs) {
+                program.resetProgram();
+            }
         }
+        else if (programs.size() == 1) {
+            history.execute(new ResetProgramCommand(this));
+        }
+    }
 
-        observer.notifyProgramReset();
+    public void notifyProgramState() {
+        System.out.println("state");
+        Program program = getProgram();
+        Result stepResult = program.getLastResult();
+
+        if (program.isFinished()) {
+            observer.notifyGameFinished(stepResult);
+        }
+        else if (program.isInStartState()) {
+            System.out.println("standard state");
+            observer.notifyProgramInStartState();
+        }
     }
 
     /**

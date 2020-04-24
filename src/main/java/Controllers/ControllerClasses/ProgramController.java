@@ -3,7 +3,6 @@ package Controllers.ControllerClasses;
 import Controllers.BlockLinkDatabase;
 import Controllers.ProgramListener;
 import GUI.Blocks.IGUIBlock;
-import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.Program;
@@ -11,14 +10,12 @@ import System.Logic.ProgramArea.Program;
 
 public class ProgramController {
 
-    private final GameWorld gameWorld;
     private final BlockLinkDatabase blockDatabase;
     private final PABlockHandler blockHandler;
 
-    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler, GameWorld gameWorld) {
+    public ProgramController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler) {
         this.blockDatabase = blockDatabase;
         this.blockHandler = blockHandler;
-        this.gameWorld = gameWorld;
     }
 
     public void addBlockToPA(IGUIBlock block, int index) {
@@ -33,24 +30,16 @@ public class ProgramController {
         blockHandler.deleteProgram(toDelete);
     }
 
-    public IGUIBlock getHightlightedBlock() {
+    public IGUIBlock getHighlightedBlock() {
         Program program = blockHandler.getPA().getProgram();
         if (program != null) {
-            Block hightlightedBlock = program.getCurrentBlock();
-            if (hightlightedBlock != null) {
-                return blockDatabase.getGUIBlockFromBlock(hightlightedBlock);
+            Block highlightedBlock = program.getCurrentBlock();
+            if (highlightedBlock != null) {
+                return blockDatabase.getGUIBlockFromBlock(highlightedBlock);
             }
         }
 
         return null;
-    }
-
-    public void undoProgramStep() {
-        blockHandler.getPA().undoProgram();
-    }
-
-    public void redoProgramStep() {
-        blockHandler.getPA().redoProgram();
     }
 
     public void runProgramStep() {
@@ -65,7 +54,7 @@ public class ProgramController {
         blockHandler.getPA().unsubscribe(listener);
     }
 
-    public void resetProgram() {
-        blockHandler.getPA().resetProgram();
+    public void resetProgram(boolean command) {
+        blockHandler.getPA().resetProgram(command);
     }
 }

@@ -8,6 +8,9 @@ import System.BlockStructure.Blocks.StatementBlock;
 /**
  * A class for predicate functionalities, which are conditional functionalities.
  *
+ * @invar A predicate functionality must have a valid predicate.
+ *        | isValidPredicate(predicate)
+ *
  * @author Alpha-team
  */
 public class PredicateFunctionality extends ConditionalBlockFunctionality<StatementBlock> {
@@ -18,18 +21,31 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
     private final Predicate predicate;
 
     /**
-     * Initialise a new predicate functionality with given game world and action.
+     * Initialise a new predicate functionality with given predicate.
      *
      * @param predicate The predicate for this functionality.
-     * @param gameWorld The game world for this functionality.
-     *
-     * @effect The super constructor is called with given game world.
      *
      * @post The predicate of this functionality is set to the given predicate.
+     *
+     * @throws IllegalArgumentException
+     *         When the given predicate is not valid.
      */
-    public PredicateFunctionality(Predicate predicate, GameWorld gameWorld) {
-        super(gameWorld);
+    public PredicateFunctionality(Predicate predicate) throws IllegalArgumentException {
+        if (!isValidPredicate(predicate)) {
+            throw new IllegalArgumentException("The given predicate is not valid!");
+        }
         this.predicate = predicate;
+    }
+
+    /**
+     * Check whether or not the given predicate is valid.
+     *
+     * @param predicate The predicate to check.
+     *
+     * @return True if and only if the given predicate is not null.
+     */
+    public static boolean isValidPredicate(Predicate predicate) {
+        return predicate != null;
     }
 
     /**
@@ -41,21 +57,8 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
      * @return The success result.
      */
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         evaluation = gameWorld.evaluatePredicate(predicate);
         return Result.SUCCESS;
-    }
-
-    /**
-     * Copy this functionality
-     *
-     * @return A new predicate functionality with the same predicate and game world
-     *         as this functionality.
-     */
-    @Override
-    public BlockFunctionality copy() {
-        PredicateFunctionality func = new PredicateFunctionality(predicate, gameWorld);
-        func.setBlock(this.block);
-        return func;
     }
 }

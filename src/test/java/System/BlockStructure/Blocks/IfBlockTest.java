@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IfBlockTest {
 
-    IfBlock if1, if2, if3, if4, if5;
+   /* IfBlock if1, if2, if3, if4, if5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
@@ -235,6 +235,7 @@ class IfBlockTest {
         assertEquals(3, if5.getNbSubConnectors());
     }
 
+<<<<<<< HEAD
     @Test
     void getNewReturnBlock() {
         assertTrue(if1.getSubConnectorAt(0).isConnected());
@@ -266,4 +267,56 @@ class IfBlockTest {
         assertNull(func1Under.getReturnToBlock());
         assertNull(cond1.getReturnToBlock());
     }
+=======
+//    @Test
+//    void hasAlreadyRan() {
+//        assertFalse(if1.hasAlreadyRan());
+//        assertFalse(if2.hasAlreadyRan());
+//        assertFalse(if3.hasAlreadyRan());
+//        assertFalse(if4.hasAlreadyRan());
+//        assertFalse(if5.hasAlreadyRan());
+//        if1.setAlreadyRan(true);
+//        if2.setAlreadyRan(true);
+//        if3.setAlreadyRan(false);
+//        if4.setAlreadyRan(false);
+//        if5.setAlreadyRan(true);
+//        assertTrue(if1.hasAlreadyRan());
+//        assertTrue(if2.hasAlreadyRan());
+//        assertFalse(if3.hasAlreadyRan());
+//        assertFalse(if4.hasAlreadyRan());
+//        assertTrue(if5.hasAlreadyRan());
+//    }
+
+//    @Test
+//    void setAlreadyRan() {
+//        assertFalse(if1.hasAlreadyRan());
+//        if1.setAlreadyRan(true); // false -> true
+//        assertTrue(if1.hasAlreadyRan());
+//        if1.setAlreadyRan(true); // true -> true
+//        assertTrue(if1.hasAlreadyRan());
+//        if1.setAlreadyRan(false); // true -> false
+//        assertFalse(if1.hasAlreadyRan());
+//        if1.setAlreadyRan(false); // false -> false
+//        assertFalse(if1.hasAlreadyRan());
+//    }
+//
+//    @Test
+//    void reset() {
+//        if1.setAlreadyRan(true);
+//        func1.setAlreadyRan(true);
+//        func11.setAlreadyRan(true);
+//        func1Under.setAlreadyRan(true);
+//        cond1.setAlreadyRan(true);
+//        if1.reset();
+//        assertFalse(if1.hasAlreadyRan());
+//        assertFalse(func1.hasAlreadyRan());
+//        assertFalse(func11.hasAlreadyRan());
+//        assertFalse(func1Under.hasAlreadyRan());
+//        assertFalse(cond1.hasAlreadyRan());
+//
+//        if4.setAlreadyRan(true);
+//        if4.reset();
+//        assertFalse(if4.hasAlreadyRan());
+//    }*/
+
 }
