@@ -9,7 +9,7 @@ import System.BlockStructure.Functionality.PredicateFunctionality;
  *
  * @author Alpha-team
  */
-public class StatementBlock extends ConditionalBlock {
+public class PredicateBlock extends ConditionalBlock {
 
     /**
      * Initialise a new statement block with given functionality.
@@ -18,7 +18,7 @@ public class StatementBlock extends ConditionalBlock {
      *
      * @effect Calls super constructor with given functionality.
      */
-    public StatementBlock(PredicateFunctionality functionality) {
+    public PredicateBlock(PredicateFunctionality functionality) {
         super(functionality);
     }
 
@@ -30,6 +30,6 @@ public class StatementBlock extends ConditionalBlock {
      */
     @Override
     public Block clone() {
-        return new StatementBlock((PredicateFunctionality) functionality);
+        return new PredicateBlock((PredicateFunctionality) functionality);
     }
 }

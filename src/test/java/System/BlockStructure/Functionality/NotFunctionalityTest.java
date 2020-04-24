@@ -10,7 +10,7 @@ import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Blocks.NotBlock;
 import System.BlockStructure.Blocks.OperationalBlock;
-import System.BlockStructure.Blocks.StatementBlock;
+import System.BlockStructure.Blocks.PredicateBlock;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ class NotFunctionalityTest { // TODO miss opnieuw + beter?
 
     private NotFunctionality functionality;
     private OperationalBlock notBlock, block1, block2;
-    private StatementBlock wallInFrontBlock;
+    private PredicateBlock wallInFrontBlock;
     private ConnectionHandler connectionHandler;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
@@ -107,7 +107,7 @@ class NotFunctionalityTest { // TODO miss opnieuw + beter?
         levelRightOnBlankBeforeWall = new Level(new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall), new Grid(cellsRightOnBlankBeforeWall));
 
 
-        wallInFrontBlock = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        wallInFrontBlock = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         notBlock = new NotBlock();
         connectionHandler = new ConnectionHandler();

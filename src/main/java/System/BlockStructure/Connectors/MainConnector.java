@@ -82,14 +82,15 @@ public class MainConnector extends Connector {
     /**
      * Check if the given sub connector can be connected to this main connector.
      *
-     * @param subConnector The subconnector to check.
+     * @param subConnector The sub connector to check.
      *
      * @return True if and only if the given sub connector is effective, has an
      *         opposite orientation to the orientation of this main connector and
      *         has a connectable type to the type of this main connector.
      */
     public boolean canHaveAsSubConnector(SubConnector subConnector) {
-        return subConnector != null && !isConnected() && !subConnector.isConnected() &&
-                getOrientation().isOpposite(subConnector.getOrientation()) && getType().canConnectWith(subConnector.getType());
+        return subConnector != null &&
+               getOrientation().isOpposite(subConnector.getOrientation()) &&
+               getType().canConnectWith(subConnector.getType());
     }
 }

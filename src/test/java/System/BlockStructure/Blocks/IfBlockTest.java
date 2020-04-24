@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IfBlockTest {
 
-   /* IfBlock if1, if2, if3, if4, if5;
+    IfBlock if1, if2, if3, if4, if5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
@@ -79,22 +79,22 @@ class IfBlockTest {
         Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall);
         levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
 
-        if1 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
-        if2 = new IfBlock(new CavityFunctionality(levelRightOnBlankBeforeWall));
-        if3 = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
-        if4 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
-        if5 = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        if1 = new IfBlock();
+        if2 = new IfBlock();
+        if3 = new IfBlock();
+        if4 = new IfBlock();
+        if5 = new IfBlock();
 
-        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
-        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
-        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelRightOnBlankBeforeWall));
-        func3 =new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelUpOnBlankBeforeWall));
-        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelLeftOnGoalBeforeGoal));
-        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), levelUpOnBlankBeforeWall));
+        func1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func11 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func3 =new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func1Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
+        func5Under = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelLeftOnGoalBeforeGoal));
-        cond3 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelUpOnBlankBeforeWall));
-        cond5 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelUpOnBlankBeforeWall));
+        cond1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond3 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond5 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(if1, func3.getSubConnectorAt(0));
@@ -176,19 +176,19 @@ class IfBlockTest {
         assertFalse(if4.hasNext());
         assertTrue(if5.hasNext());
 
-        if1.getFunctionality().evaluate();
+        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertTrue(if1.hasNext());
 
-        if2.getFunctionality().evaluate();
+        if2.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertFalse(if2.hasNext());
 
-        if3.getFunctionality().evaluate();
+        if3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertFalse(if3.hasNext());
 
-        if4.getFunctionality().evaluate();
+        if4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertFalse(if4.hasNext());
 
-        if5.getFunctionality().evaluate();
+        if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertFalse(if5.hasNext());
     }
 
@@ -200,19 +200,19 @@ class IfBlockTest {
         assertNull(if4.getNext());
         assertEquals(func5Under, if5.getNext());
 
-        if1.getFunctionality().evaluate();
+        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertEquals(func1Under, if1.getNext());
 
-        if2.getFunctionality().evaluate();
+        if2.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertNull(if2.getNext());
 
-        if3.getFunctionality().evaluate();
+        if3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertNull(if3.getNext());
 
-        if4.getFunctionality().evaluate();
+        if4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertNull(if4.getNext());
 
-        if5.getFunctionality().evaluate();
+        if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertEquals(func5Under, if5.getNext());
     }
 
@@ -235,7 +235,6 @@ class IfBlockTest {
         assertEquals(3, if5.getNbSubConnectors());
     }
 
-<<<<<<< HEAD
     @Test
     void getNewReturnBlock() {
         assertTrue(if1.getSubConnectorAt(0).isConnected());
@@ -249,7 +248,6 @@ class IfBlockTest {
         Block block = if1.clone();
         assertNotEquals(block, if1);
         assertNotEquals(block.getFunctionality(), if1.getFunctionality());
-        assertEquals(block.getFunctionality().getGameWorld(), if1.getFunctionality().getGameWorld());
         assertTrue(block instanceof IfBlock);
         assertTrue(block.getFunctionality() instanceof CavityFunctionality);
         assertFalse(block.getSubConnectorAt(0).isConnected());
@@ -267,56 +265,4 @@ class IfBlockTest {
         assertNull(func1Under.getReturnToBlock());
         assertNull(cond1.getReturnToBlock());
     }
-=======
-//    @Test
-//    void hasAlreadyRan() {
-//        assertFalse(if1.hasAlreadyRan());
-//        assertFalse(if2.hasAlreadyRan());
-//        assertFalse(if3.hasAlreadyRan());
-//        assertFalse(if4.hasAlreadyRan());
-//        assertFalse(if5.hasAlreadyRan());
-//        if1.setAlreadyRan(true);
-//        if2.setAlreadyRan(true);
-//        if3.setAlreadyRan(false);
-//        if4.setAlreadyRan(false);
-//        if5.setAlreadyRan(true);
-//        assertTrue(if1.hasAlreadyRan());
-//        assertTrue(if2.hasAlreadyRan());
-//        assertFalse(if3.hasAlreadyRan());
-//        assertFalse(if4.hasAlreadyRan());
-//        assertTrue(if5.hasAlreadyRan());
-//    }
-
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(true); // false -> true
-//        assertTrue(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(true); // true -> true
-//        assertTrue(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(false); // true -> false
-//        assertFalse(if1.hasAlreadyRan());
-//        if1.setAlreadyRan(false); // false -> false
-//        assertFalse(if1.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void reset() {
-//        if1.setAlreadyRan(true);
-//        func1.setAlreadyRan(true);
-//        func11.setAlreadyRan(true);
-//        func1Under.setAlreadyRan(true);
-//        cond1.setAlreadyRan(true);
-//        if1.reset();
-//        assertFalse(if1.hasAlreadyRan());
-//        assertFalse(func1.hasAlreadyRan());
-//        assertFalse(func11.hasAlreadyRan());
-//        assertFalse(func1Under.hasAlreadyRan());
-//        assertFalse(cond1.hasAlreadyRan());
-//
-//        if4.setAlreadyRan(true);
-//        if4.reset();
-//        assertFalse(if4.hasAlreadyRan());
-//    }*/
-
 }

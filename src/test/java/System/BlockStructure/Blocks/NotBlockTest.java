@@ -3,7 +3,6 @@ package System.BlockStructure.Blocks;
 import GameWorld.Level;
 import GameWorldUtility.LevelInitializer;
 import GameWorldUtility.Predicates.WallInFrontPredicate;
-import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
@@ -16,25 +15,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class NotBlockTest {
 
     NotBlock not1, not2, not3, not4;
-    /*OperationalBlock not1, not2, not3, not4;
->>>>>>> b2ed5d8aecfa994c58c41603357365bcf8d9f443:src/test/java/System/BlockStructure/Blocks/OperationalBlockTest.java
-    StatementBlock wallInFront1, wallInFront2;
+    PredicateBlock wallInFront1, wallInFront2;
     CavityBlock cavoc3, cavoc2;
 
     @BeforeEach
     void setUp() {
         LevelInitializer init = new LevelInitializer();
         Level level = (Level) init.createNewGameWorld();
-        not1 = new NotBlock(new NotFunctionality(level));
-        not2 = new NotBlock(new NotFunctionality(level));
-        not3 = new NotBlock(new NotFunctionality(level));
-        not4 = new NotBlock(new NotFunctionality(level));
+        not1 = new NotBlock();
+        not2 = new NotBlock();
+        not3 = new NotBlock();
+        not4 = new NotBlock();
 
-        wallInFront1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
-        wallInFront2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+        wallInFront1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        wallInFront2 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
-        cavoc3 = new IfBlock(new CavityFunctionality(level));
-        cavoc2 = new IfBlock(new CavityFunctionality(level));
+        cavoc3 = new IfBlock();
+        cavoc2 = new IfBlock();
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(wallInFront1, not1.getSubConnectorAt(0));
@@ -97,38 +94,14 @@ class NotBlockTest {
         assertEquals(1, not4.getNbSubConnectors());
     }
 
-<<<<<<< HEAD:src/test/java/System/BlockStructure/Blocks/NotBlockTest.java
     @Test
     void cloneTest() {
         Block block = not1.clone();
         assertNotEquals(block, not1);
         assertNotEquals(block.getFunctionality(), not1.getFunctionality());
-        assertEquals(block.getFunctionality().getGameWorld(), not1.getFunctionality().getGameWorld());
         assertTrue(block instanceof NotBlock);
         assertTrue(block.getFunctionality() instanceof NotFunctionality);
         assertFalse(block.getSubConnectorAt(0).isConnected());
         assertFalse(block.getMainConnector().isConnected());
     }
-=======
-//    @Test
-//    void setAlreadyRan() {
-//        assertFalse(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(true); // false -> true
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(true); // true -> true
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(false); // true -> false
-//        assertFalse(not1.hasAlreadyRan());
-//        not1.setAlreadyRan(false); // false -> false
-//        assertFalse(not1.hasAlreadyRan());
-//    }
-//
-//    @Test
-//    void reset() {
-//        not1.setAlreadyRan(true);
-//        assertTrue(not1.hasAlreadyRan());
-//        not1.reset();
-//        assertFalse(not1.hasAlreadyRan());
-//    }*/
-
 }

@@ -10,7 +10,7 @@ import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Blocks.ConditionalBlock;
 import System.BlockStructure.Blocks.IfBlock;
-import System.BlockStructure.Blocks.StatementBlock;
+import System.BlockStructure.Blocks.PredicateBlock;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +83,7 @@ class CavityFunctionalityTest { // TODO miss opnieuw?
         if1 = new IfBlock();
         block = new IfBlock();
 
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());
@@ -147,7 +147,7 @@ class CavityFunctionalityTest { // TODO miss opnieuw?
         assertTrue(if1.getFunctionality().getEvaluation());
 
         if1 = new IfBlock();
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        cond1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());
 

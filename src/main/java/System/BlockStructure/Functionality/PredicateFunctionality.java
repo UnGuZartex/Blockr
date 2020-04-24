@@ -3,7 +3,7 @@ package System.BlockStructure.Functionality;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.GameWorldType.Predicate;
-import System.BlockStructure.Blocks.StatementBlock;
+import System.BlockStructure.Blocks.PredicateBlock;
 
 /**
  * A class for predicate functionalities, which are conditional functionalities.
@@ -13,7 +13,7 @@ import System.BlockStructure.Blocks.StatementBlock;
  *
  * @author Alpha-team
  */
-public class PredicateFunctionality extends ConditionalBlockFunctionality<StatementBlock> {
+public class PredicateFunctionality extends ConditionalBlockFunctionality<PredicateBlock> {
 
     /**
      * Variable referring to the predicate of this functionality.

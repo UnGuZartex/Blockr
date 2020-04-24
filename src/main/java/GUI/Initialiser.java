@@ -15,8 +15,6 @@ import Images.ImageLibrary;
 import Images.ImageLoader;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
-import System.BlockStructure.Functionality.CavityFunctionality;
-import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
@@ -75,7 +73,7 @@ public class Initialiser {
 
         for (Predicate predicate : gameWorldType.getAllPredicates()) {
             GUIPaletteBlocks.add(new GUIConditionalBlock(predicate.getName(), 0, 0));
-            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate)));
+            systemPaletteBlocks.add(new PredicateBlock(new PredicateFunctionality(predicate)));
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {

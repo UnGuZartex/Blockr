@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StatementBlockTest {
+class PredicateBlockTest {
 
     /*StatementBlock block1, block2;
     CavityBlock cavoc;
