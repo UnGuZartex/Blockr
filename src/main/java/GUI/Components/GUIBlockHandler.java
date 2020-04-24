@@ -151,7 +151,6 @@ public class GUIBlockHandler {
     private void handleMousePressed(int x, int y) {
         draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
         boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
-        draggedBlocks = null;
         GUIBlock draggedBlock;
 
         if (programAreaContainsMouse || draggedBlockIndex != -1) {
@@ -226,6 +225,7 @@ public class GUIBlockHandler {
             }
 
             programArea.setTemporaryBlock(null);
+            draggedBlocks = null;
         }
     }
 

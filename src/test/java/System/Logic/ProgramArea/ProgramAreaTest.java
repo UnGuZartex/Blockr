@@ -1,13 +1,12 @@
 package System.Logic.ProgramArea;
 
-import GUI.Components.CommandHistory;
+import System.Logic.CommandHistory;
 import GameWorld.Level;
 import GameWorldUtility.LevelInitializer;
 import GameWorldUtility.Actions.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
-import Utility.Command;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

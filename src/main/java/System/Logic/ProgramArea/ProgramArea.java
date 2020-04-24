@@ -2,11 +2,10 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
 import Controllers.ProgramEventManager;
-import GUI.Components.CommandHistory;
+import System.Logic.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
-import Utility.Command;
 
 import java.util.ArrayList;
 
@@ -72,7 +71,7 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if(programs.size() == 1){
+        if (programs.size() == 1){
             return programs.get(0);
         } else {
             return null;
@@ -124,8 +123,14 @@ public class ProgramArea {
     /**
      * TODO
      */
-    public void resetProgram() {
-        if (programs.size() == 1) {
+    public void resetProgram(boolean command) {
+
+        if (!command) {
+            for (Program program : programs) {
+                program.resetProgram();
+            }
+        }
+        else if (programs.size() == 1) {
             history.execute(new ResetProgramCommand(this));
             observer.notifyProgramReset();
         }

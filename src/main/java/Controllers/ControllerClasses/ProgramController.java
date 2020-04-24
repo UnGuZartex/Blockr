@@ -54,7 +54,7 @@ public class ProgramController {
         blockHandler.getPA().unsubscribe(listener);
     }
 
-    public void resetProgram() {
-        blockHandler.getPA().resetProgram();
+    public void resetProgram(boolean command) {
+        blockHandler.getPA().resetProgram(command);
     }
 }

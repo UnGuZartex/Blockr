@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import GUI.Components.CommandHistory;
+import System.Logic.CommandHistory;
 import Utility.Command;
 
 public class HistoryController {

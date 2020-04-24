@@ -27,7 +27,7 @@ public class ControlHandler {
             controller.runProgramStep();
         }
         if (keyCode == KeyEvent.VK_ESCAPE) {
-            controller.resetProgram();
+            controller.resetProgram(true);
         }
 
         if (keyCode == KeyEvent.VK_Z) {
@@ -38,6 +38,5 @@ public class ControlHandler {
                 historyController.undo();
             }
         }
-
     }
 }

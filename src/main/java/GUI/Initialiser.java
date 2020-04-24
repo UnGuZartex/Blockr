@@ -6,7 +6,7 @@ import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.ProgramController;
 import Controllers.JarLoader;
 import GUI.Blocks.*;
-import GUI.Components.CommandHistory;
+import System.Logic.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.Action;
 import GameWorldAPI.GameWorldType.GameWorldType;
