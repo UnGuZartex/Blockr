@@ -1,8 +1,12 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
-import System.BlockStructure.Blocks.Factory.TurnLeftBlockFactory;
-import System.BlockStructure.Blocks.Factory.TurnRightBlockFactory;
+
+import GameWorld.Level;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Actions.TurnLeftAction;
+import GameWorldUtility.Actions.TurnRightAction;
+import GameWorldUtility.LevelInitializer;
+import System.BlockStructure.Functionality.ActionFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +20,11 @@ class FunctionalBlockTest {
 
     @BeforeEach
     void setUp() {
-        TurnLeftBlockFactory turnLeftBlockFactory = new TurnLeftBlockFactory();
-        turnLeft = turnLeftBlockFactory.createBlock();
-        TurnRightBlockFactory turnRightBlockFactory = new TurnRightBlockFactory();
-        turnRight = turnRightBlockFactory.createBlock();
-        MoveForwardBlockFactory moveForwardBlockFactory = new MoveForwardBlockFactory();
-        moveForward = moveForwardBlockFactory.createBlock();
+        LevelInitializer init = new LevelInitializer();
+        Level level = (Level) init.createNewGameWorld();
+        turnLeft = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction(), level));
+        turnRight = new FunctionalBlock(new ActionFunctionality(new TurnRightAction(), level));
+        moveForward = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(turnRight, turnLeft.getSubConnectorAt(0));
@@ -39,47 +42,6 @@ class FunctionalBlockTest {
         assertEquals(1, turnLeft.getNbSubConnectors());
         assertEquals(1, turnRight.getNbSubConnectors());
         assertEquals(1, moveForward.getNbSubConnectors());
-    }
-
-    @Test
-    void hasAlreadyRan() {
-        assertFalse(turnLeft.hasAlreadyRan());
-        assertFalse(turnRight.hasAlreadyRan());
-        assertFalse(moveForward.hasAlreadyRan());
-    }
-
-    @Test
-    void setAlreadyRan() {
-        assertFalse(turnLeft.hasAlreadyRan());
-        turnLeft.setAlreadyRan(true); // false -> true
-        assertTrue(turnLeft.hasAlreadyRan());
-        turnLeft.setAlreadyRan(true); // true -> true
-        assertTrue(turnLeft.hasAlreadyRan());
-        turnLeft.setAlreadyRan(false); // true -> false
-        assertFalse(turnLeft.hasAlreadyRan());
-        turnLeft.setAlreadyRan(false); // false -> false
-        assertFalse(turnLeft.hasAlreadyRan());
-    }
-
-    @Test
-    void getSubConnectorWithID() {
-        assertEquals(turnLeft.getSubConnectorAt(0), turnLeft.getSubConnectorWithID("SUB_1"));
-        assertThrows(IllegalStateException.class,  () -> {turnLeft.getSubConnectorWithID("INVALID");});
-    }
-
-    @Test
-    void reset() {
-        moveForward.setAlreadyRan(true);
-        turnLeft.setAlreadyRan(true);
-        turnRight.setAlreadyRan(true);
-        assertTrue(moveForward.hasAlreadyRan());
-        assertTrue(turnLeft.hasAlreadyRan());
-        assertTrue(turnRight.hasAlreadyRan());
-        moveForward.reset();
-        turnLeft.reset();
-        assertFalse(moveForward.hasAlreadyRan());
-        assertFalse(turnLeft.hasAlreadyRan());
-        assertFalse(turnRight.hasAlreadyRan());
     }
 
     @Test
@@ -104,9 +66,14 @@ class FunctionalBlockTest {
     }
 
     @Test
-    void returnToClosestCavity() {
-        assertEquals(moveForward.getNextIfNone(), moveForward);
-        assertEquals(turnLeft.getNextIfNone(), turnLeft);
-        assertEquals(turnRight.getNextIfNone(), turnLeft);
+    void cloneTest() {
+        Block block = turnLeft.clone();
+        assertNotEquals(block, turnLeft);
+        assertNotEquals(block.getFunctionality(), turnLeft.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), turnLeft.getFunctionality().getGameWorld());
+        assertTrue(block instanceof FunctionalBlock);
+        assertTrue(block.getFunctionality() instanceof ActionFunctionality);
+        assertFalse(block.getSubConnectorAt(0).isConnected());
+        assertFalse(block.getMainConnector().isConnected());
     }
 }

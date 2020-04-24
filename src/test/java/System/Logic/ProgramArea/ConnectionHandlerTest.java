@@ -1,7 +1,11 @@
 package System.Logic.ProgramArea;
 
+import GameWorld.Level;
+import GameWorldUtility.LevelInitializer;
+import GameWorldUtility.Actions.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Functionality.ActionFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,18 +16,20 @@ class ConnectionHandlerTest {
 
     ConnectionHandler handler;
     Block block1, block2, block3, block4, block5;
-
+    Level level;
 
     @BeforeEach
     void setUp() {
+
+        LevelInitializer init = new LevelInitializer();
+        level = (Level) init.createNewGameWorld();
         handler = new ConnectionHandler();
 
-        MoveForwardBlockFactory factory = new MoveForwardBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
-        block3 = factory.createBlock();
-        block4 = factory.createBlock();
-        block5 = factory.createBlock();
+        block1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        block2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        block3 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        block4 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        block5 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
     }
 
     @AfterEach

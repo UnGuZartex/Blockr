@@ -1,7 +1,8 @@
 package System.BlockStructure.Functionality;
 
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.OperationalBlock;
-import System.GameWorld.Level.Level;
 
 /**
  * A class for the not functionality.
@@ -11,19 +12,41 @@ import System.GameWorld.Level.Level;
 public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
     /**
-     * Evaluate this not functionality on the given level and set the evaluation
+     * Initialise a new block functionality
+     *
+     * @param gameWorld the game world this functionality is linked to
+     */
+    public NotFunctionality(GameWorld gameWorld) {
+        super(gameWorld);
+    }
+
+    /**
+     * Evaluate this not functionality on the given gameWorld and set the evaluation
      * of this functionality to the inverse of the evaluation of the block connected
      * to this functionality.
      *
-     * @param level The level to apply this functionality on.
-     *
      * @post Set the evaluation of this functionality to the inverse of the evaluation
      *       of the functionality of the block of this functionality.
+     *
+     * @return SUCCESS because an evaluation of a boolean is always successful.
      */
     @Override
-    public void evaluate(Level level) {
+    public Result evaluate() {
         BlockFunctionality functionality = block.getNext().getFunctionality();
-        functionality.evaluate(level);
+        functionality.evaluate();
         evaluation = !functionality.getEvaluation();
+        return Result.SUCCESS;
+    }
+
+    /**
+     * Get a copy of this functionality.
+     *
+     * @return A new not functionality which has the same block and game world as this functionality.
+     */
+    @Override
+    public BlockFunctionality copy() {
+        NotFunctionality func = new NotFunctionality(gameWorld);
+        func.setBlock(this.block);
+        return func;
     }
 }

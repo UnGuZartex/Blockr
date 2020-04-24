@@ -26,17 +26,16 @@ public class GUICavityBlock extends GUIBlock {
     private GUIConnector cavityConnector, conditionalConnector, lowerSubConnector;
 
     /**
-     * Initialise a new cavity block with given name, id and coordinates.
+     * Initialise a new cavity block with given name and coordinates.
      *
      * @param name The name for this cavity block.
-     * @param id The id for this cavity block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
      * @effect Calls the super constructor with given parameters.
      */
-    public GUICavityBlock(String name, String id, int x, int y) {
-        super(name, id, x, y);
+    public GUICavityBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     /**
@@ -57,6 +56,18 @@ public class GUICavityBlock extends GUIBlock {
         }
     }
 
+    /**
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
+     *
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
+     *
+     * @effect If the cavity connector is connected and the method call came from that connected block,
+     *         then the cavity changes height based on the given height delta.
+     * @effect If the main connector is connected to a block, this method is called on that connected block to
+     *         further propagate the height change call.
+     */
     @Override
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
 
@@ -114,19 +125,40 @@ public class GUICavityBlock extends GUIBlock {
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
-        mainConnector = new GUIConnector("MAIN", this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector("CAVITY", this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector("SUB_1",this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
-        conditionalConnector = new GUIConnector("CONDITIONAL", this, width, cavityUpHeight / 2, Color.red);
-        subConnectors.add(cavityConnector);
+        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
+        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
+        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
+        conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, Color.red);
         subConnectors.add(lowerSubConnector);
+        subConnectors.add(cavityConnector);
         subConnectors.add(conditionalConnector);
     }
 
-    // TODO doc
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
+    @Override
+    public GUIBlock clone() {
+        return new GUICavityBlock(name, x, y);
+    }
+
+    /**
+     * Change the cavity height of this cavity block with the given height difference.
+     *
+     * @param heightDelta The given height difference.
+     *
+     * @effect Set the cavity height to the newly calculated height.
+     * @effect If the lower sub connector is connected, the blocks connected to that connector
+     *         are translated to correct their position after the cavity height change.
+     *
+     * @throws IllegalArgumentException
+     *         when the given height delta is invalid.
+     */
     private void changeCavityHeight(int heightDelta) throws IllegalArgumentException {
         if (cavityHeight + heightDelta < 0) {
-            throw new IllegalArgumentException("Invalid height delta, cavity height can't be < 0!");
+            throw new IllegalArgumentException("The given height delta is invalid, cavity height can't be < 0!");
         }
 
         setNewCavityHeight(cavityHeight + heightDelta);
@@ -136,7 +168,19 @@ public class GUICavityBlock extends GUIBlock {
         }
     }
 
-    // TODO doc
+    /**
+     * Set the cavity height of this cavity block to the given cavity height and change
+     * other block properties accordingly.
+     *
+     * @param newCavityHeight The given cavity height.
+     *
+     * @post The cavity height is set to the given cavity height.
+     * @post The block height is set the correct value, factoring in the new cavity height.
+     *
+     * @effect The height of the rectangle representing the cavity is set to the given cavity height.
+     * @effect The position of the lower cavity rectangle is changed accordingly.
+     * @effect The position of the lower sub connector is changed accordingly.
+     */
     private void setNewCavityHeight(int newCavityHeight) {
         cavityHeight = newCavityHeight;
         height = cavityUpHeight + cavityHeight + cavityDownHeight;

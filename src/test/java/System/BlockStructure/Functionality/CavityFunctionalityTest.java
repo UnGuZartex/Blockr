@@ -1,31 +1,32 @@
 package System.BlockStructure.Functionality;
 
+import GameWorld.Cell;
+import GameWorld.CellType;
+import GameWorld.Grid;
+import GameWorld.Level;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
+import RobotCollection.Robot.Direction;
+import RobotCollection.Robot.Robot;
+import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Blocks.ConditionalBlock;
-import System.BlockStructure.Blocks.Factory.IfBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
 import System.BlockStructure.Blocks.IfBlock;
-import System.GameWorld.Cell;
-import System.GameWorld.CellType;
-import System.GameWorld.Direction;
-import System.GameWorld.Level.Level;
+import System.BlockStructure.Blocks.StatementBlock;
 import System.Logic.ProgramArea.ConnectionHandler;
-import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CavityFunctionalityTest {
 
     CavityFunctionality ifFunc;
-    IfBlock if1, if2, block;
+    IfBlock if1, block;
     ConditionalBlock cond1;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
-    private Position PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
+    private GridPosition PositionUpOnBlankBeforeWall, PositionDownOnGoalBeforeBlank,
             PositionLeftOnGoalBeforeGoal, PositionRightOnBlankBeforeWall;
     private Direction directionUpOnBlankBeforeWall, directionDownOnGoalBeforeBlank,
             directionLeftOnGoalBeforeGoal, directionRightOnBlankBeforeWall;
@@ -34,22 +35,11 @@ class CavityFunctionalityTest {
 
     @BeforeEach
     void setUp() {
-        IfBlockFactory ifFactory = new IfBlockFactory();
-        if1 = ifFactory.createBlock();
-        if2 = ifFactory.createBlock();
-        ifFunc = new CavityFunctionality();
-        block = ifFactory.createBlock();
 
-        WallInFrontBlockFactory condFactory = new WallInFrontBlockFactory();
-        cond1 = condFactory.createBlock();
-
-        ConnectionHandler handler = new ConnectionHandler();
-        handler.connect(cond1, if1.getConditionalSubConnector());
-
-        PositionUpOnBlankBeforeWall = new Position(1,1);
-        PositionDownOnGoalBeforeBlank = new Position(1,1);
-        PositionLeftOnGoalBeforeGoal = new Position(1,1);
-        PositionRightOnBlankBeforeWall = new Position(1,1);
+        PositionUpOnBlankBeforeWall = new GridPosition(1,1);
+        PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
+        PositionLeftOnGoalBeforeGoal = new GridPosition(1,1);
+        PositionRightOnBlankBeforeWall = new GridPosition(1,1);
 
         directionUpOnBlankBeforeWall = Direction.UP;
         directionDownOnGoalBeforeBlank = Direction.DOWN;
@@ -77,10 +67,28 @@ class CavityFunctionalityTest {
                 { new Cell(CellType.BLANK), new Cell(CellType.WALL), new Cell(CellType.BLANK) },
         };
 
-        levelUpOnBlankBeforeWall = new Level(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall, cellsUpOnBlankBeforeWall);
-        levelDownOnGoalBeforeBlank = new Level(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank, cellsDownOnGoalBeforeBlank);
-        levelLeftOnGoalBeforeGoal = new Level(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal, cellsLeftOnGoalBeforeGoal);
-        levelRightOnBlankBeforeWall = new Level(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall, cellsRightOnBlankBeforeWall);
+        Robot upRobot = new Robot(PositionUpOnBlankBeforeWall, directionUpOnBlankBeforeWall);
+        levelUpOnBlankBeforeWall = new Level(upRobot, new Grid(cellsUpOnBlankBeforeWall));
+
+        Robot downRobot = new Robot(PositionDownOnGoalBeforeBlank, directionDownOnGoalBeforeBlank);
+        levelDownOnGoalBeforeBlank = new Level(downRobot, new Grid(cellsDownOnGoalBeforeBlank));
+
+        Robot leftRobot = new Robot(PositionLeftOnGoalBeforeGoal, directionLeftOnGoalBeforeGoal);
+        levelLeftOnGoalBeforeGoal = new Level(leftRobot, new Grid(cellsLeftOnGoalBeforeGoal));
+
+        Robot rightRobot = new Robot(PositionRightOnBlankBeforeWall, directionRightOnBlankBeforeWall);
+        levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
+
+
+        if1 = new IfBlock(new CavityFunctionality(levelRightOnBlankBeforeWall));
+        block = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelRightOnBlankBeforeWall));
+
+        ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(cond1, if1.getConditionalSubConnector());
+
+        ifFunc = new CavityFunctionality(levelDownOnGoalBeforeBlank);
 
     }
 
@@ -128,17 +136,37 @@ class CavityFunctionalityTest {
     }
 
     @Test
+    void getGameWorld() {
+        assertEquals(levelDownOnGoalBeforeBlank, ifFunc.getGameWorld());
+    }
+
+    @Test
     void evaluate() {
-        ifFunc.evaluate(levelDownOnGoalBeforeBlank);
+        ifFunc.evaluate();
         assertFalse(ifFunc.getEvaluation());
 
-        block.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
+        block.getFunctionality().evaluate();
         assertFalse(block.getFunctionality().getEvaluation());
 
-        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        if1.getFunctionality().evaluate();
         assertTrue(if1.getFunctionality().getEvaluation());
 
-        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
+        if1 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelLeftOnGoalBeforeGoal));
+        ConnectionHandler handler = new ConnectionHandler();
+        handler.connect(cond1, if1.getConditionalSubConnector());
+
+        if1.getFunctionality().evaluate();
         assertFalse(if1.getFunctionality().getEvaluation());
+    }
+
+    @Test
+    void copy() {
+        BlockFunctionality func = ifFunc.copy();
+        assertNotEquals(func, ifFunc);
+        assertFalse(func.getEvaluation());
+        assertEquals(func.getGameWorld(), ifFunc.getGameWorld());
+        assertTrue(func instanceof  CavityFunctionality);
+        assertEquals(((CavityFunctionality)func).block, ifFunc.block);
     }
 }

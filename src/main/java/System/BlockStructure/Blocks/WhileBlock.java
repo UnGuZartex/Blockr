@@ -13,8 +13,6 @@ public class WhileBlock extends CavityBlock {
     /**
      * Initialise a new while block with given cavity functionality.
      *
-     * @param functionality The functionality for this block.
-     *
      * @effect Calls super constructor with given functionality.
      */
     public WhileBlock(CavityFunctionality functionality) {
@@ -22,36 +20,23 @@ public class WhileBlock extends CavityBlock {
     }
 
     /**
-     * Get the next block to execute, this depends on the evaluation of the condition of this block.
-     * If the condition is true, the next block is the first in the cavity, otherwise, the next block
-     * is the first block under the while.
+     * Get the new return to block for this block.
      *
-     * @return The next block to execute
+     * @return This block.
      */
     @Override
-    public Block getNext() {
-        if (getFunctionality().getEvaluation()) {
-            setAlreadyRan(false);
-            return getCavitySubConnector().getConnectedBlock();
-        }
-        else if(getCavitySubConnector().isConnected()) {
-            getCavitySubConnector().getConnectedBlock().reset();
-        }
-        setAlreadyRan(true);
-        return super.getNext();
+    protected Block getNewReturnBlock() {
+        return this;
     }
 
     /**
-     * Returns the next block if any other block didn't have a next block to run.
+     * Get a clone of this block.
      *
-     * @return if this block has already ran all of its connectors then return the closest
-     * cavity. Otherwise return itself for evaluation.
+     * @return A new while block with a copy of the current functionality and which is not
+     *         connected to any block.
      */
     @Override
-    public Block getNextIfNone() {
-        if (hasAlreadyRan()) {
-            return super.getNextIfNone();
-        }
-        return this;
+    public Block clone() {
+        return new WhileBlock((CavityFunctionality) functionality.copy());
     }
 }

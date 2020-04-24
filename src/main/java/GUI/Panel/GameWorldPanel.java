@@ -1,8 +1,7 @@
 package GUI.Panel;
 
-import Controllers.ProgramController;
-import Controllers.ProgramListener;
-import GUI.Components.GUIGrid;
+import GameWorldAPI.GameWorld.GameWorld;
+import Images.ImageLibrary;
 
 import java.awt.*;
 
@@ -11,16 +10,10 @@ import java.awt.*;
  *
  * @author Alpha-team
  */
-public class GameWorldPanel extends GamePanel implements ProgramListener {
+public class GameWorldPanel extends GamePanel {
 
-    /**
-     * Variable referring to the grid.
-     */
-    private GUIGrid GUIGrid;
-    /**
-     * Variable referring to the game state.
-     */
-    protected String gameState = "";
+
+    private GameWorld gw;
 
     /**
      * Initialise a new game world panel with given corner, dimension and controller.
@@ -35,19 +28,12 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
      * @effect subscribes this panel as a listener to the controller.
      * @effect The grid is initialised to a new grid with given coordinates and dimensions.
      */
-    public GameWorldPanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
-        super(cornerX, cornerY, width, height);
-        controller.subscribeListener(this);
-        GUIGrid = new GUIGrid(cornerX, cornerY, width, height);
-    }
-
     /**
-     * Reset the game state.
-     *
-     * @post The game state is set to an empty string.
+     * TODO commentaar
      */
-    public void resetGameText() {
-        gameState = "";
+    public GameWorldPanel(GameWorld gw, int cornerX, int cornerY, int width, int height) {
+        super(cornerX, cornerY, width, height);
+        this.gw = gw;
     }
 
     /**
@@ -60,73 +46,14 @@ public class GameWorldPanel extends GamePanel implements ProgramListener {
      * @effect draws the game state.
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g, ImageLibrary images) {
+
         drawBackground(g);
-        GUIGrid.paint(g, library);
-        drawGameState(g);
+        Graphics g2 = g.create(getPanelRectangle().getX(), getPanelRectangle().getY(), getPanelRectangle().getWidth(), getPanelRectangle().getHeight());
+        gw.paint(g2, images);
     }
 
-    /**
-     * Draw the background of this panel.
-     *
-     * @param g The graphics to draw the background with.
-     */
-    @Override
-    protected void drawBackground(Graphics g) {
-        g.drawImage(library.getGameWorldBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        panelRectangle.paintNonFill(g);
-    }
 
-    /**
-     * Draw the gamestate of this panel.
-     *
-     * @param g The graphics to draw the game state with.
-     */
-    private void drawGameState(Graphics g) {
-        Font currentFont = g.getFont();
-        Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
-        g.setFont(newFont);
-        g.drawString(gameState, panelRectangle.getX(), 100);
-        g.setFont(currentFont);
-    }
 
-    /**
-     * Event to call when the game has been won.
-     */
-    @Override
-    public void onGameWon() {
-        gameState = "YOU WIN!  :)";
-    }
 
-    /**
-     * Event to call when the game has been lost.
-     */
-    @Override
-    public void onGameLost() {
-        gameState = "YOU LOSE!  :(";
-    }
-
-    /**
-     * Event to call when the program has been reset.
-     */
-    @Override
-    public void onProgramReset() {
-        gameState = "";
-    }
-
-    /**
-     * Event to call when there are too many programs.
-     */
-    @Override
-    public void onTooManyPrograms() {
-        gameState = "TOO MANY PROGRAMS!";
-    }
-
-    /**
-     * Event to call when there is an invalid program.
-     */
-    @Override
-    public void onProgramInvalid() {
-        gameState = "INVALID PROGRAM";
-    }
 }

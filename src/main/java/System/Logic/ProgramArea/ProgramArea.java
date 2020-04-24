@@ -2,9 +2,8 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramListener;
 import Controllers.ProgramObserver;
-import Controllers.RobotListener;
+import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.Block;
-import System.GameState.GameState;
 
 import java.util.ArrayList;
 
@@ -18,13 +17,13 @@ public class ProgramArea {
     /**
      * Variable referring to the programs in this program area.
      */
-    private ArrayList<Program> programs = new ArrayList<>();
+    private final ArrayList<Program> programs = new ArrayList<>();
 
     /**
      * Variabele referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
-    private ProgramObserver observer = new ProgramObserver();
+    private final ProgramObserver observer = new ProgramObserver();
 
     /**
      * Unsubscribe a given program listener from the program observer
@@ -76,26 +75,24 @@ public class ProgramArea {
      * @effect The observer notifies its listeners whether the game is won or not
      *         when the program is fully finished executing.
      */
+    /**
+     * TODO commentaar
+     */
     public void runProgramStep() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                program.executeStep();
+                Result stepResult = program.executeStep();
 
                 if (program.isFinished()) {
-                    if (GameState.getCurrentLevel().hasWon()) {
-                        observer.notifyGameWon();
-                    }
-                    else {
-                        observer.notifyGameLost();
-                    }
+                    observer.notifyGameFinished(stepResult);
                 }
             }
             else {
-                System.err.println("NOT VALID");
                 observer.notifyProgramInvalid();
             }
+            observer.notifyExecuting(program.isExecuting());
         }
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
@@ -114,6 +111,51 @@ public class ProgramArea {
         }
 
         observer.notifyProgramReset();
+    }
+
+    public void undoProgram() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                Result stepResult = program.undoProgram();
+
+                if (program.isFinished()) {
+                    observer.notifyGameFinished(stepResult);
+                }
+            }
+            else {
+                observer.notifyProgramInvalid();
+            }
+            observer.notifyProgramReset();
+            observer.notifyExecuting(program.isExecuting());
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
+
+
+    }
+
+    public void redoProgram() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                Result stepResult = program.redoProgram();
+
+                if (program.isFinished()) {
+                    observer.notifyGameFinished(stepResult);
+                }
+                observer.notifyExecuting(program.isExecuting());
+            }
+            else {
+                observer.notifyProgramInvalid();
+            }
+        }
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
     }
 
     /**
@@ -144,9 +186,9 @@ public class ProgramArea {
      * @param blockToDelete The starting block for the program to delete.
      */
     public void deleteProgram(Block blockToDelete) {
-        programs.stream().
-                filter(p -> p.getStartBlock() == blockToDelete).
-                findFirst().ifPresent(toDelete -> programs.remove(toDelete));
+        programs.stream()
+                .filter(p -> p.getStartBlock() == blockToDelete)
+                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
     }
 
     /**
@@ -161,5 +203,37 @@ public class ProgramArea {
             sum += program.getSize();
         }
         return sum;
+    }
+
+    /**
+     * Add the highest block in the block structure of the given block as a program.
+     *
+     * @param block The given block.
+     */
+    public void addHighestAsProgram(Block block) {
+        addProgram(getHighestBlock(block));
+    }
+
+    /**
+     * Get the highest block in the block structure this block is connected to.
+     *
+     * @return This block if no block is higher, else the highest
+     *         block of the block connected to the main connector.
+     */
+    private Block getHighestBlock(Block block) {
+        if (block.getMainConnector().isConnected()) {
+            return getHighestBlock(block.getMainConnector().getConnectedBlock());
+        }
+        else {
+            return block;
+        }
+    }
+
+    public boolean isExecuted() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+            return program.isExecuting();
+        }
+        return false;
     }
 }

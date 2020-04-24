@@ -1,30 +1,12 @@
 package GUI;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * A window for custom drawing.
@@ -101,7 +83,7 @@ class KeyEventItem extends RecordingItem {
 
 	@Override
 	void replay(int itemIndex, CanvasWindow window) {
-		window.handleKeyEvent(id, keyCode, keyChar);
+		window.handleKeyEvent(id, keyCode, keyChar,0);
 	}
 }
 class PaintItem extends RecordingItem {
@@ -291,7 +273,7 @@ public class CanvasWindow {
 		//System.out.println(e);
 		if (recording != null)
 			recording.items.add(new KeyEventItem(e.getID(), e.getKeyCode(), e.getKeyChar()));
-		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar());
+		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar(), e.getModifiersEx());
 	}
 	
 	/**
@@ -299,7 +281,7 @@ public class CanvasWindow {
 	 * 
 	 * @param e
 	 */
-	protected void handleKeyEvent(int id, int keyCode, char keyChar) {
+	protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
 	}
 
 	BufferedImage captureImage() {

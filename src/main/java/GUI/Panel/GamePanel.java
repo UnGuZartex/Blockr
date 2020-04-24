@@ -1,7 +1,7 @@
 package GUI.Panel;
 
 import GUI.CollisionShapes.CollisionRectangle;
-import GUI.Images.ImageLibrary;
+import Images.ImageLibrary;
 
 import java.awt.*;
 
@@ -12,10 +12,6 @@ import java.awt.*;
  */
 public abstract class GamePanel {
 
-    /**
-     * Variable referring to the image library for the panel.
-     */
-    protected static ImageLibrary library;
     /**
      * Variable referring to the area of the panel.
      */
@@ -33,7 +29,7 @@ public abstract class GamePanel {
      *         the color black.
      */
     protected GamePanel(int cornerX, int cornerY, int width, int height) {
-        panelRectangle = new CollisionRectangle(cornerX, cornerY, width, height, Color.black);
+        panelRectangle = new CollisionRectangle(cornerX, cornerY, width, height, Color.lightGray);
     }
 
     /**
@@ -68,21 +64,16 @@ public abstract class GamePanel {
      *
      * @param g The graphics to paint this panel with.
      */
-    public abstract void paint(Graphics g);
-
-    /**
-     * Set the image library to the given library.
-     *
-     * @param library The new library for this panel.
-     */
-    public static void setImageLibrary(ImageLibrary library) {
-        GamePanel.library = library;
-    }
+    public abstract void paint(Graphics g, ImageLibrary images);
 
     /**
      * Draw the background of this panel.
      *
      * @param g The graphics to draw the background with.
+     *
+     * @effect The panel rectangle is drawn
      */
-    protected abstract void drawBackground(Graphics g);
+    protected void drawBackground(Graphics g) {
+        panelRectangle.paint(g);
+    }
 }

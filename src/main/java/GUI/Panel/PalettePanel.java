@@ -1,11 +1,10 @@
 package GUI.Panel;
 
-import Controllers.ProgramController;
+import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
+import Images.ImageLibrary;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,76 +13,68 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class PalettePanel extends GamePanel {
+public class PalettePanel extends GamePanel implements ProgramAreaListener {
 
     /**
-     * Variable referring to the controller of this panel.
+     * Variables referring to the blocks in this palette.
      */
-    private ProgramController controller;
-    /**
-     * Variable referring to the block ID's in this panel.
-     */
-    private final List<String> IDList;
-    /**
-     * Variables referring to the blocks in this panel.
-     */
-    public List<GUIBlock> blocks = new ArrayList<>();
+    public List<GUIBlock> blocks;
 
     /**
-     * Initialise a new panel with given coordinates, dimensions and  controller.
+     * Variable indicating if the max amount of blocks is reached in the program area.
+     */
+    private boolean reachedMaxBlocks;
+
+    /**
+     * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
      *
-     * @param cornerX The x coordinate for the corner of this panel.
-     * @param cornerY The y coordinate for the corner of this panel.
-     * @param width The width of this panel.
-     * @param height The height of this panel.
-     * @param controller The controller to control this panel.
+     * @param cornerX The given x coordinate for the corner of this panel.
+     * @param cornerY The given y coordinate for the corner of this panel.
+     * @param width The given width of this panel.
+     * @param height The given height of this panel.
+     * @param blocks The given list of palette ui blocks.
+     *
+     * @post The blocks in this palette are set to the given list of blocks.
      *
      * @effect Super constructor is called with given coordinates and dimensions.
-     * @effect The ID list is set to all the different block ID's
-     * @effect The palette is refilled.
      * @effect The block positions are set.
-     *
-     * @post The controller of this panel is set to the given controller.
      */
-    public PalettePanel(int cornerX, int cornerY, int width, int height, ProgramController controller) {
+    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) {
         super(cornerX, cornerY, width, height);
-        this.controller = controller;
-        IDList = Arrays.asList("IF", "WHILE", "NOT", "WALL IN FRONT", "MOVE FORWARD", "TURN LEFT", "TURN RIGHT");
-        refillPalette();
+        this.blocks = blocks;
         setBlockPositions();
     }
 
     /**
-     * Get the blocks in this palette.
+     * Return a clone of the block at the given palette index.
      *
-     * @return A copy of the blocks in this palette.
+     * @param index The given block index.
+     *
+     * @return A clone of the block at the given palette index.
+     *
+     * @throws IllegalArgumentException
+     *         when the given index is invalid for this palette.
      */
-    public List<GUIBlock> getBlocks() {
-        return new ArrayList<>(blocks);
-    }
+    public GUIBlock getNewBlock(int index) throws IllegalArgumentException {
 
-    /**
-     * Get a new block with the given ID and coordinates.
-     *
-     * @param ID The id for the new block.
-     * @param x The x coordinate for the new block.
-     * @param y The y coordinate for the new block.
-     *
-     * @return A new GUI block with the given id and coordinates.
-     */
-    public GUIBlock getNewBlock(String ID, int x, int y) {
-        return controller.getBlock(ID, x, y);
-    }
-
-    /**
-     * Draw all the blocks in the panel.
-     *
-     * @param g The graphics to draw the blocks with.
-     */
-    public void drawBlocks(Graphics g) {
-        for (GUIBlock block : blocks) {
-            block.paint(g);
+        if (index < 0 || index >= blocks.size()) {
+            throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
+
+        return blocks.get(index).clone();
+    }
+
+    /**
+     * Return the index of the block colliding with the given x and y coordinates if possible,
+     * return null otherwise.
+     *
+     * @param x The given x-coordinate.
+     * @param y The given y-coordinate.
+     *
+     * @return the index of the block colliding with the given x and y coordinates, null otherwise.
+     */
+    public int getSelectedBlockIndex(int x, int y) {
+         return blocks.indexOf(blocks.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
     }
 
     /**
@@ -92,49 +83,35 @@ public class PalettePanel extends GamePanel {
      * @param g The graphics to paint this panel with.
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g, ImageLibrary images) {
         drawBackground(g);
+        drawBlocks(g);
     }
 
     /**
-     * Draw the background of this panel.
+     * Draw all the blocks in the panel.
      *
-     * @param g The graphics to draw the background with.
+     * @param g The graphics to draw the blocks with.
      */
-    @Override
-    protected void drawBackground(Graphics g) {
-        g.drawImage(library.getPaletteBackgroundImage(), getLeftCorner().x, getLeftCorner().y, getSize().x, getSize().y, null);
-        panelRectangle.paintNonFill(g);
-    }
-
-    /**
-     * Update this panel.
-     *
-     * @effect If the maximum number of blocks is reached, then the blocks are cleared.
-     * @effect Else f there are no blocks in the list, the palette is refilled and the blocks
-     *         are positioned properly.
-     */
-    public void update() {
-        if (controller.reachedMaxBlocks()) {
-            blocks.clear();
-        } else if (blocks.size() == 0) {
-            refillPalette();
-            setBlockPositions();
-        }
-    }
-
-    /**
-     * Refill this palette.
-     *
-     * @effect If the controller hasn't reached the maximum number of blocks, then
-     *         are all with in the ID list initialised.
-     */
-    private void refillPalette() {
-        if (!controller.reachedMaxBlocks()) {
-            for (String id : IDList) {
-                blocks.add(controller.getBlock(id, 0, 0));
+    private void drawBlocks(Graphics g) {
+        if (!reachedMaxBlocks) {
+            for (GUIBlock block : blocks) {
+                block.paint(g);
             }
         }
+    }
+
+    /**
+     * This event is called when the program area has either reached its max blocks, or
+     * the current amount of blocks is under the max blocks again.
+     *
+     * @param reachedMaxBlocks the given boolean indicating if the number of max blocks in the program area is reached.
+     *
+     * @post The variable referring if the max blocks are reached is set to the given boolean.
+     */
+    @Override
+    public void onMaxBlocksReached(boolean reachedMaxBlocks) {
+        this.reachedMaxBlocks = reachedMaxBlocks;
     }
 
     /**

@@ -1,8 +1,8 @@
 package System.BlockStructure.Functionality;
 
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.CavityBlock;
-import System.BlockStructure.Blocks.IfBlock;
-import System.GameWorld.Level.Level;
 
 /**
  * A class for cavity functionalities.
@@ -12,22 +12,44 @@ import System.GameWorld.Level.Level;
 public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlock> {
 
     /**
-     * Evaluate this functionality on the given level.
+     * Initialise a new block functionality
      *
-     * @param level The level to apply this functionality on.
+     * @param gameWorld the game world this functionality is linked to
+     */
+    public CavityFunctionality(GameWorld gameWorld) {
+        super(gameWorld);
+    }
+
+    /**
+     * Evaluate this functionality on the given gameWorld.
      *
      * @post The evaluation is set to the evaluation of the condition
      *       of the block of this functionality.
+     *
+     * @return SUCCESS, the cavity has no effect on the game world and will always be a success.
      */
     @Override
-    public void evaluate(Level level) {
+    public Result evaluate() {
         try {
             BlockFunctionality functionality = block.getCondition().getFunctionality();
-            functionality.evaluate(level);
+            functionality.evaluate();
             evaluation = functionality.getEvaluation();
         } catch (NullPointerException e) {
             evaluation = false;
         }
+
+        return Result.SUCCESS;
     }
 
+    /**
+     * Get a copy of this functionality.
+     *
+     * @return A new cavity functionality which has the same block and game world as this functionality.
+     */
+    @Override
+    public BlockFunctionality copy() {
+        CavityFunctionality func = new CavityFunctionality(gameWorld);
+        func.setBlock(this.block);
+        return func;
+    }
 }

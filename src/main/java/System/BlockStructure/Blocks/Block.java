@@ -14,18 +14,19 @@ import java.util.List;
 public abstract class Block {
 
     /**
+     * Variable referring to the last cavity visited
+     */
+    private Block returnToBlock;
+
+    /**
      * Variable referring to the functionality of this block.
      */
-    private final BlockFunctionality functionality;
+    protected BlockFunctionality functionality;
+
     /**
      * Variable referring to all the sub connectors of this block.
      */
     private final List<SubConnector> subConnector = new ArrayList<>();
-    /**
-    /**
-     * Variable referring to whether or not this block has already ran.
-     */
-    private boolean alreadyRan = false;
 
     /**
      * Initialise a new block with given functionality
@@ -45,6 +46,27 @@ public abstract class Block {
      */
     public BlockFunctionality getFunctionality() {
         return functionality;
+    }
+
+    /**
+     * Set the functionality of this bloc to the given functionality.
+     *
+     * @param functionality The new functionality for this block.
+     *
+     * @post The functionality of this block is set to the givne functionality.
+     */
+    public void setFunctionality(BlockFunctionality functionality) {
+        this.functionality = functionality;
+    }
+
+    /**
+     * Check whether this block has proper connections.
+     *
+     * @return True if and only if this block has no following up blocks
+     *         or its next block has valid following up blocks.
+     */
+    public boolean hasProperConnections() {
+        return !hasNext() || getNext().hasProperConnections();
     }
 
     /**
@@ -77,12 +99,39 @@ public abstract class Block {
     }
 
     /**
-     * Check whether or not this block has already ran.
+     * Reset this block and all its connected blocks.
      *
-     * @return True if and only if this block has already ran.
+     * @effect The already ran variable is set to null.
+     * @effect The connected blocks are reset.
      */
-    public boolean hasAlreadyRan() {
-        return alreadyRan;
+    public void reset() {
+        setReturnToBlock(null);
+        for(int i = 0; i < getSubConnectors().size(); i++) {
+            if (getSubConnectors().get(i).isConnected()) {
+                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
+                connectBlock.reset();
+            }
+        }
+    }
+
+    /**
+     * Get the return to block.
+     *
+     * @return The block to return to.
+     */
+    protected Block getReturnToBlock() {
+        return returnToBlock;
+    }
+
+    /**
+     * Set the return to block.
+     *
+     * @param returnToBlock The new return to block.
+     *
+     * @post The return to block is set to the given block.
+     */
+    protected void setReturnToBlock(Block returnToBlock) {
+        this.returnToBlock = returnToBlock;
     }
 
     /**
@@ -107,61 +156,9 @@ public abstract class Block {
     public abstract Block getNext();
 
     /**
-     * Get the next block to execute if there are none left.
+     * Clone this block.
      *
-     * @return The block which could be executed next.
+     * @return A new block with the with the same properties as this block.
      */
-    public abstract Block getNextIfNone();
-
-    /**
-     * Set whether or not this block has already ran.
-     *
-     * @param alreadyRan The new value of already ran.
-     */
-    public void setAlreadyRan(boolean alreadyRan) {
-        this.alreadyRan = alreadyRan;
-    }
-
-    /**
-     * Reset this block and all its connected blocks.
-     *
-     * @post The already ran variable of this block is set to false
-     *       and all connected blocks through sub connectors are
-     *       reset.
-     */
-    public void reset() {
-        alreadyRan = false;
-        for(int i = 0; i < getSubConnectors().size(); i++) {
-            if (getSubConnectors().get(i).isConnected()) {
-                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
-                connectBlock.reset();
-            }
-        }
-    }
-
-    /**
-     * Check whether or not this block has proper connections.
-     *
-     * @return True if and only if this block has no following up blocks
-     *         or its next block has valid following up blocks.
-     */
-    public boolean hasProperConnections() {
-        return !hasNext() || getNext().hasProperConnections();
-}
-
-
-    /**
-     * Finds the correct subconnector of a block given its ID.
-     * @param ID the ID to search for
-     * @return The connector in the block with this given ID.
-     */
-    public SubConnector getSubConnectorWithID(String ID) {
-        System.out.println(ID);
-        for (SubConnector connector:subConnector) {
-            if (connector.getID().equals(ID)) {
-                return connector;
-            }
-        }
-        throw new IllegalStateException("This connection ID cannot exist for this block");
-    }
+    public abstract Block clone();
 }

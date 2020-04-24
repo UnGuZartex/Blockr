@@ -2,8 +2,9 @@ package System.Logic.ProgramArea;
 
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
-import System.GameState.GameState;
-import System.Logic.Palette.PaletteState;
+import System.Logic.Palette.Palette;
+
+import java.util.List;
 
 /**
  * A class to handle the blocks in the program area.
@@ -18,45 +19,61 @@ public class PABlockHandler {
     /**
      * Variable referring to the palette state in this program area block handler.
      */
-    private PaletteState palette = new PaletteState();
+    private final Palette palette;
     /**
      * Variable referring to the program area in this program area block handler.
      */
-    private ProgramArea PA = new ProgramArea();
+    private final ProgramArea PA = new ProgramArea();
     /**
      * Variable referring to the connection handler in this program area block handler.
      */
-    private ConnectionHandler connectionHandler = new ConnectionHandler();
+    private final ConnectionHandler connectionHandler = new ConnectionHandler();
     /**
      * Variable referring to the amount of blocks used in this program area block handler.
      */
     private int amountOfBlocks = 0;
 
     /**
-     * Checks whether or not the maximum number of blocks has been reached.
+     * Variable referring to the max amount of blocks that may be used.
+     */
+    private int maxBlocks = 10;
+
+    /**
+     * Create a new program area block handler with a given list of starting palette blocks.
+     *
+     * @param paletteBlocks The given list of starting palette blocks.
+     *
+     * @effect A new palette is initialized with the given list of blocks.
+     */
+    public PABlockHandler(List<Block> paletteBlocks) {
+        palette = new Palette(paletteBlocks);
+    }
+
+    /**
+     * Checks whether the maximum number of blocks has been reached.
      *
      * @return True if and only if the amount of blocks is smaller or equal
      *         to the maximum number of blocks.
      */
     public boolean hasProperNbBlocks() {
-        return amountOfBlocks <= GameState.getMaxAmountOfBlocks();
+        return amountOfBlocks <= maxBlocks;
     }
 
     /**
-     * Get the block with given ID from the palette.
+     * Get the block at the given index from the palette.
      *
-     * @param ID The ID of the block to get.
+     * @param index The index of the wanted block in the palette.
      *
-     * @return A block from the palette with given ID if the max
+     * @return A block from the palette at the given index if the max
      *         number of blocks has not been reached yet, otherwise
-     *         is null returned.
+     *         null is returned.
      */
-    public Block getFromPalette(String ID) {
+    public Block getFromPalette(int index) {
         if (!hasReachedMaxBlocks()) {
-            return palette.getNewBlockWithID(ID);
-        } else {
-            return null;
+            return palette.getNewBlock(index);
         }
+
+        return null;
     }
 
     /**
@@ -84,10 +101,15 @@ public class PABlockHandler {
      *
      * @pre The given sub connector should be from a block which is in the program area.
      *
-     * @post The two blocks are connected.
+     * @effect The given block is deleted as a program in the program area.
+     * @effect The two blocks are connected.
+     * @effect The root block of the newly connected block structure is added as a program,
+     *         if it isn't already.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
+        PA.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
+        PA.addHighestAsProgram(block);
         Update();
     }
 
@@ -97,15 +119,12 @@ public class PABlockHandler {
      *
      * @param block The block to disconnect.
      *
-     * @pre The given block should be connected to a program in the
-     *      program area of this program area block handler.
-     * @pre The given block may not be the starting block of any program
-     *      in the program area of this program area block handler.
-     *
-     * @post The given block is disconnected.
+     * @effect The given block is disconnected on its main connector.
+     * @effect The given block is added as a program.
      */
     public void disconnectInPA(Block block) {
         connectionHandler.disconnect(block);
+        PA.addProgram(block);
         Update();
     }
 
@@ -114,20 +133,26 @@ public class PABlockHandler {
      *
      * @param block The starting block of the program to delete.
      *
-     * @post The given block is deleted from the program area.
+     * @effect The given block is disconnected on its main connector.
+     * @effect The given block is deleted from the program area.
      */
     public void deleteProgram(Block block) {
+        connectionHandler.disconnect(block);
         PA.deleteProgram(block);
         Update();
     }
 
     /**
-     * Update the amount of blocks used in the program area.
+     * Update the amount of blocks used in the program area and
+     * reset the current program(s) in the program area.
      *
      * @post The total number of blocks has been updated.
+     *
+     * @effect The program(s) in the program area are reset.
      */
     private void Update() {
         amountOfBlocks = PA.getAllBlocksCount();
+        PA.resetProgram();
     }
 
     /**
@@ -140,13 +165,21 @@ public class PABlockHandler {
     }
 
     /**
-     * Checks whether or not the max number of blocks has
+     * Checks whether the max number of blocks has
      * been reached.
      *
      * @return True if and only if the amount of blocks is greater than or
      *         equal to the maximum amount of blocks in the game state.
      */
-    public boolean hasReachedMaxBlocks() {
-        return amountOfBlocks >= GameState.getMaxAmountOfBlocks();
+    private boolean hasReachedMaxBlocks() {
+        return amountOfBlocks >= maxBlocks;
+    }
+
+    /**
+     * Sets the max number of blocks of this PAHandler
+     * @param maxBlocks the amount of blocks to set
+     */
+    protected void setMaxBlocks(int maxBlocks) {
+        this.maxBlocks = maxBlocks;
     }
 }

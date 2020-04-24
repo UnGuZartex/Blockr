@@ -23,26 +23,24 @@ public class GUIConditionalBlock extends GUIBlock {
     public static final Color DEFAULT_COLOR = Color.WHITE;
 
     /**
-     * Initialise a new conditional block with given id, name and coordinates.
+     * Initialise a new conditional block with given name and coordinates.
      *
      * @param name The name for this block.
-     * @param id The id for this block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
      * @effect Calls the super constructor with given parameters.
      */
-    public GUIConditionalBlock(String name, String id, int x, int y) {
-        super(name, id, x, y);
+    public GUIConditionalBlock(String name, int x, int y) {
+        super(name, x, y);
     }
 
     /**
-     * Change the height of this block.
+     * Change the height of this block if possible and affect all connected
+     * blocks accordingly.
      *
-     * @param heightDelta The height difference.
-     * @param previousBlock The previous block.
-     *
-     * @post Nothing changed.
+     * @param heightDelta The given height difference.
+     * @param previousBlock The previous block that called this method.
      */
     @Override
     protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
@@ -62,6 +60,16 @@ public class GUIConditionalBlock extends GUIBlock {
         width = DEFAULT_WIDTH;
         blockRectangles = new ArrayList<>();
         blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_COLOR));
-        mainConnector = new GUIConnector("MAIN", this, 0, height / 2, Color.blue);
+        mainConnector = new GUIConnector( this, 0, height / 2, Color.blue);
+    }
+
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
+    @Override
+    public GUIBlock clone() {
+        return new GUIConditionalBlock(name, x, y);
     }
 }

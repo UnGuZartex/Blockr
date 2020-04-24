@@ -1,7 +1,10 @@
 package System.BlockStructure.Blocks;
 
-import System.BlockStructure.Blocks.Factory.IfBlockFactory;
-import System.BlockStructure.Blocks.Factory.WallInFrontBlockFactory;
+import GameWorld.Level;
+import GameWorldUtility.LevelInitializer;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
+import System.BlockStructure.Functionality.CavityFunctionality;
+import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +19,13 @@ class StatementBlockTest {
 
     @BeforeEach
     void setUp() {
-        WallInFrontBlockFactory factory = new WallInFrontBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
+        LevelInitializer init = new LevelInitializer();
+        Level level = (Level) init.createNewGameWorld();
 
-        IfBlockFactory factory2 = new IfBlockFactory();
-        cavoc = factory2.createBlock();
+        block1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+        block2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+
+        cavoc = new IfBlock(new CavityFunctionality(level));
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(block1, cavoc.getConditionalSubConnector());
     }
@@ -52,12 +56,6 @@ class StatementBlockTest {
     }
 
     @Test
-    void returnToClosestCavity() {
-        assertNull(block1.getNextIfNone());
-        assertNull(block2.getNextIfNone());
-    }
-
-    @Test
     void getSubConnectorAt() {
         assertThrows(IndexOutOfBoundsException.class, () -> { block1.getSubConnectorAt(0); });
         assertThrows(IndexOutOfBoundsException.class, () -> { block2.getSubConnectorAt(0); });
@@ -69,30 +67,21 @@ class StatementBlockTest {
         assertEquals(0, block2.getNbSubConnectors());
     }
 
-    @Test
-    void setAlreadyRan() {
-        assertFalse(block1.hasAlreadyRan());
-        block1.setAlreadyRan(true); // false -> true
-        assertTrue(block1.hasAlreadyRan());
-        block1.setAlreadyRan(true); // true -> true
-        assertTrue(block1.hasAlreadyRan());
-        block1.setAlreadyRan(false); // true -> false
-        assertFalse(block1.hasAlreadyRan());
-        block1.setAlreadyRan(false); // false -> false
-        assertFalse(block1.hasAlreadyRan());
-    }
-
-    @Test
-    void reset() {
-        block1.setAlreadyRan(true);
-        assertTrue(block1.hasAlreadyRan());
-        block1.reset();
-        assertFalse(block1.hasAlreadyRan());
-    }
 
     @Test
     void hasProperConnections() {
         assertTrue(block1.hasProperConnections());
         assertFalse(block2.hasProperConnections());
+    }
+
+    @Test
+    void cloneTest() {
+        Block block = block1.clone();
+        assertNotEquals(block, block1);
+        assertNotEquals(block.getFunctionality(), block1.getFunctionality());
+        assertEquals(block.getFunctionality().getGameWorld(), block1.getFunctionality().getGameWorld());
+        assertTrue(block instanceof StatementBlock);
+        assertTrue(block.getFunctionality() instanceof PredicateFunctionality);
+        assertFalse(block.getMainConnector().isConnected());
     }
 }

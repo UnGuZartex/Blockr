@@ -1,8 +1,6 @@
 package System.BlockStructure.Connectors;
 
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.Factory.BlockFactory;
-import System.BlockStructure.Blocks.Factory.MoveForwardBlockFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,25 +17,25 @@ class SubConnectorTest {
 
     @BeforeEach
     void setUp() {
-        plugUp = new SubConnector("CheckCheck",block1, Orientation.FACING_UP, Type.PLUG);
+        plugUp = new SubConnector(block1, Orientation.FACING_UP, Type.PLUG);
         mainPlugUp = new MainConnector(block2, Orientation.FACING_DOWN, Type.SOCKET);
         mainPlugUp.connect(plugUp);
-        plugDown = new SubConnector("CheckCheck",block1, Orientation.FACING_DOWN, Type.PLUG);
+        plugDown = new SubConnector(block1, Orientation.FACING_DOWN, Type.PLUG);
         mainPlugDown = new MainConnector(block2, Orientation.FACING_UP, Type.SOCKET);
         mainPlugDown.connect(plugDown);
-        plugLeft = new SubConnector("CheckCheck",block1, Orientation.FACING_LEFT, Type.PLUG);
+        plugLeft = new SubConnector(block1, Orientation.FACING_LEFT, Type.PLUG);
         mainPlugLeft = new MainConnector(block2, Orientation.FACING_LEFT, Type.SOCKET);
-        plugRight = new SubConnector("CheckCheck",block1, Orientation.FACING_RIGHT, Type.PLUG);
+        plugRight = new SubConnector(block1, Orientation.FACING_RIGHT, Type.PLUG);
         mainPlugRight = new MainConnector(block2, Orientation.FACING_LEFT, Type.SOCKET);
 
-        socketUp = new SubConnector("CheckCheck",block1, Orientation.FACING_UP, Type.SOCKET);
+        socketUp = new SubConnector(block1, Orientation.FACING_UP, Type.SOCKET);
         mainSocketUp = new MainConnector(block2, Orientation.FACING_DOWN, Type.PLUG);
-        socketDown = new SubConnector("CheckCheck",block1, Orientation.FACING_DOWN, Type.SOCKET);
+        socketDown = new SubConnector(block1, Orientation.FACING_DOWN, Type.SOCKET);
         mainSocketDown = new MainConnector(block2, Orientation.FACING_UP, Type.PLUG);
-        socketLeft = new SubConnector("CheckCheck",block1, Orientation.FACING_LEFT, Type.SOCKET);
+        socketLeft = new SubConnector(block1, Orientation.FACING_LEFT, Type.SOCKET);
         mainSocketLeft = new MainConnector(block2, Orientation.FACING_RIGHT, Type.PLUG);
         mainSocketLeft.connect(socketLeft);
-        socketRight = new SubConnector("CheckCheck",block1, Orientation.FACING_RIGHT, Type.SOCKET);
+        socketRight = new SubConnector(block1, Orientation.FACING_RIGHT, Type.SOCKET);
         mainSocketRight = new MainConnector(block2, Orientation.FACING_LEFT, Type.PLUG);
         mainSocketRight.connect(socketRight);
     }
@@ -83,10 +81,6 @@ class SubConnectorTest {
     
     @Test
     void getOrientation() {
-        BlockFactory factory = new MoveForwardBlockFactory();
-        block1 = factory.createBlock();
-        block2 = factory.createBlock();
-
         assertEquals(Orientation.FACING_UP, plugUp.getOrientation());
         assertEquals(Orientation.FACING_DOWN, plugDown.getOrientation());
         assertEquals(Orientation.FACING_LEFT, plugLeft.getOrientation());
@@ -197,10 +191,5 @@ class SubConnectorTest {
         assertThrows(IllegalStateException.class, () -> { plugDown.disconnect(); });
         assertThrows(IllegalStateException.class, () -> { socketLeft.disconnect(); });
         assertThrows(IllegalStateException.class, () -> { socketRight.disconnect(); });
-    }
-
-    @Test
-    void getID() {
-        assertEquals("CheckCheck", socketDown.getID());
     }
 }

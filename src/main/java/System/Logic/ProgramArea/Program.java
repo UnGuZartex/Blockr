@@ -1,8 +1,11 @@
 package System.Logic.ProgramArea;
 
-import System.BlockStructure.Blocks.*;
+import GameWorldAPI.GameWorld.Result;
+import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
-import System.GameState.GameState;
+
+import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -22,6 +25,14 @@ public class Program {
      * Variable referring to the block which should be executed next.
      */
     private Block currentBlock;
+    /**
+     * Variable referring to the result of the last executed step in the program.
+     */
+    private Result lastResult = Result.SUCCESS;
+
+
+
+    private CommandHistory history = new CommandHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -30,57 +41,47 @@ public class Program {
      *
      * @effect The program is reset and thus ready for execution.
      *
-     * @post The startblock of this program is set to the given block.
+     * @post The start block of this program is set to the given block.
      */
     public Program(Block start) {
         startBlock = start;
-        resetProgram();
+        currentBlock = startBlock;
     }
 
     /**
-     * Execute a step of this program and set the current block
-     * to the next block to execute if it is not finished yet.
+     * Execute a step of this program, set the current block
+     * to the next block to execute if it is not finished yet and
+     * return the current result of the executed program step.
      *
      * @effect The functionality of the current block is evaluated.
      *
-     * @post The currentblock of this program is set to the next block.
+     * @post The current block of this program is set to the next block.
+     *
+     * @return The current result of the program
      *
      * @throws IllegalStateException
      *         If this program is not valid.
-     * @throws IllegalStateException
-     *         If there is no level loaded.
      */
-    public void executeStep() {
-
+    public Result executeStep() {
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is invalid!");
         }
 
-        if (GameState.getCurrentLevel() == null) {
-            throw new IllegalStateException("There is no level loaded!");
-        }
-
         if (!isFinished()) {
-            currentBlock.getFunctionality().evaluate(GameState.getCurrentLevel());
-            currentBlock.setAlreadyRan(true);
-
-            if (!currentBlock.hasNext()) {
-                currentBlock = currentBlock.getNextIfNone();
-            } else {
-                currentBlock = currentBlock.getNext();
-            }
+            lastResult = history.execute(currentBlock, lastResult);
+            currentBlock = currentBlock.getNext();
         }
+        return lastResult;
     }
 
     /**
-     * Checks whether or not this program is finished or not.
+     * Checks whether this program is finished or not.
      *
-     * @return True if and only if this program is finished, thus when
-     *         the current block is again the start block and this block
-     *         has already run.
+     * @return True if and only if the program has finished executing all the blocks
+     *         or if the last result of executing the program is not a SUCCESS.
      */
     public boolean isFinished() {
-        return currentBlock == startBlock && currentBlock.hasAlreadyRan();
+        return currentBlock == null || lastResult != Result.SUCCESS;
     }
 
     /**
@@ -102,19 +103,38 @@ public class Program {
     }
 
     /**
-     * Reset this program. The blocks in this program are reset
+     * Reset this program. The blocks in this program are reset,
      * and the current block is set to the start block.
      *
      * @post The current block is set to the start block.
      * @post the start block is reset.
      */
     public void resetProgram() {
-        currentBlock = startBlock;
-        startBlock.reset();
+        Map.Entry<Result, Block> reset = history.reset();
+        this.currentBlock = startBlock;
+        this.lastResult = reset.getKey();
+    }
+
+    public Result undoProgram() {
+        Map.Entry<Result, Block> undo = history.undo(lastResult);
+        if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = undo.getValue();
+            this.lastResult = undo.getKey();
+        }
+        return this.lastResult;
+    }
+
+    public Result redoProgram() {
+        Map.Entry<Result, Block> redo = history.redo(lastResult);
+        if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
+            this.currentBlock = redo.getValue();
+            this.lastResult = redo.getKey();
+        }
+        return this.lastResult;
     }
 
     /**
-     * Checks whether or not this is a valid program.
+     * Checks whether this is a valid program.
      *
      * @return True if and only if the start block of this program
      *         has proper connections.
@@ -152,5 +172,9 @@ public class Program {
             }
         }
         return sum;
+    }
+
+    public boolean isExecuting() {
+        return !history.atStart();
     }
 }

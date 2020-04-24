@@ -1,24 +1,20 @@
 package Controllers;
 
-import System.GameWorld.Direction;
-import Utility.Position;
+import GameWorldAPI.GameWorld.Result;
 
 /**
- * A class used as a listener for receiving events about the program state.
+ * An interface used as a listener for receiving events about the program state.
  *
  * @author Alpha-team
  */
 public interface ProgramListener {
 
     /**
-     * This event is called when the program has finished and the game is won.
+     * This event is called when the game run by the program has finished.
+     *
+     * @param result the result of the game
      */
-    void onGameWon();
-
-    /**
-     * This event is called when the player has lost the game.
-     */
-    void onGameLost();
+    void onGameFinished(Result result);
 
     /**
      * This event is called when the program has been reset.
@@ -34,4 +30,6 @@ public interface ProgramListener {
      * This event is called when the current program is invalid.
      */
     void onProgramInvalid();
+
+    void onExecuting(boolean b);
 }
