@@ -22,7 +22,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the blocks in the program area panel.
      */
-    private List<GUIBlock> blocks = new ArrayList<>();
+    private final List<GUIBlock> blocks = new ArrayList<>();
 
     /**
      * Variable referring to the block that is currently being dragged from the palette
@@ -33,12 +33,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the program controller.
      */
-    private ProgramController programController;
+    private final ProgramController programController;
 
     /**
      * Variable referring to the connection controller.
      */
-    private ConnectionController connectionController;
+    private final ConnectionController connectionController;
 
     /**
      * Variable referring to the game state.

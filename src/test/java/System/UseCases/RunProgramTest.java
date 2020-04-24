@@ -367,7 +367,6 @@ public class RunProgramTest {
         stateCheck(null, Result.END, 1,2,Direction.DOWN);
     }
 
-
     @Test
     void multiplePrograms() {
         FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
@@ -390,5 +389,23 @@ public class RunProgramTest {
         assertNull(paBlockHandler.getPA().getProgram());
 
         paBlockHandler.getPA().runProgramStep();
+    }
+
+    @Test
+    void invalidProgram() {
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        CavityBlock cavityBlock = (CavityBlock) paBlockHandler.getFromPalette(5);
+
+        paBlockHandler.addToPA(turnRight);
+        paBlockHandler.connectToExistingBlock(cavityBlock, turnRight.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, cavityBlock.getCavitySubConnector());
+
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        paBlockHandler.getPA().runProgramStep();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
     }
 }

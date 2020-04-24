@@ -11,6 +11,9 @@ import java.util.List;
  * A class for the palette panel. This is the panel where the
  * blocks can be selected from.
  *
+ * @invar The palette panel must contain valid blocks at any time.
+ *        | areValidBlocks(blocks)
+ *
  * @author Alpha-team
  */
 public class PalettePanel extends GamePanel implements ProgramAreaListener {
@@ -18,7 +21,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     /**
      * Variables referring to the blocks in this palette.
      */
-    public List<GUIBlock> blocks;
+    private final List<GUIBlock> blocks;
 
     /**
      * Variable indicating if the max amount of blocks is reached in the program area.
@@ -38,11 +41,29 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      *
      * @effect Super constructor is called with given coordinates and dimensions.
      * @effect The block positions are set.
+     *
+     * @throws IllegalArgumentException
+     *         when the given list doesn't contain at least one block.
      */
-    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) {
+    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
+        if (!areValidBlocks(blocks)) {
+            throw new IllegalArgumentException("The given blocks are not valid!");
+        }
         this.blocks = blocks;
         setBlockPositions();
+    }
+
+    /**
+     * Checks whether or not the given blocks are valid for the palette.
+     *
+     * @param blocks The blocks to check.
+     *
+     * @return True if and only if the given blocks are not null, contain at least one
+     *         gui block but doesn't contain null.
+     */
+    public static boolean areValidBlocks(List<GUIBlock> blocks) {
+        return blocks != null && blocks.size() >= 1 && !blocks.contains(null);
     }
 
     /**
@@ -52,15 +73,18 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      *
      * @return A clone of the block at the given palette index.
      *
+     * @throws IllegalStateException
+     *         when the max amount of blocks has been reached.
      * @throws IllegalArgumentException
      *         when the given index is invalid for this palette.
      */
-    public GUIBlock getNewBlock(int index) throws IllegalArgumentException {
-
+    public GUIBlock getNewBlock(int index) throws IllegalStateException, IllegalArgumentException {
+        if (reachedMaxBlocks) {
+            throw new IllegalStateException("The max amount of blocks has been reached!");
+        }
         if (index < 0 || index >= blocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
-
         return blocks.get(index).clone();
     }
 
@@ -71,7 +95,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * @param x The given x-coordinate.
      * @param y The given y-coordinate.
      *
-     * @return the index of the block colliding with the given x and y coordinates, null otherwise.
+     * @return the index of the block colliding with the given x and y coordinates, -1 otherwise.
      */
     public int getSelectedBlockIndex(int x, int y) {
          return blocks.indexOf(blocks.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));

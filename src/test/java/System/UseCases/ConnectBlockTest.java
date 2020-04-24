@@ -199,7 +199,7 @@ class ConnectBlockTest {
 
     @Test
     void singleBlock_cavityUnderCavity() {
-        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(1);
+        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(5);
 
         paBlockHandler.connectToExistingBlock(cavity, cavityBlock.getSubConnectorAt(0));
 
