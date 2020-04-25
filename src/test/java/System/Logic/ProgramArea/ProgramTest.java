@@ -76,7 +76,7 @@ class ProgramTest {
 
     @Test
     void isValidStartBlock() {
-        assertTrue(Program.isValidStartBlock(moveForwardComplete));
+        assertFalse(Program.isValidStartBlock(moveForwardComplete));
         assertTrue(Program.isValidStartBlock(new WhileBlock()));
         assertTrue(Program.isValidStartBlock(not));
         assertFalse(Program.isValidStartBlock(null));
