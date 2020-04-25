@@ -16,11 +16,11 @@ public class MoveBlockCommand implements Command
         this.start = start;
         this.end = end;
         this.guiBlockHandler = guiBlockHandler;
-        this.GUIBlocksSnapshot = guiBlockHandler.createSnapshot();
     }
 
     @Override
     public void execute() {
+        GUIBlocksSnapshot = guiBlockHandler.createSnapshot();
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, start.getX(), start.getY());
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_DRAGGED, end.getX(), end.getY());
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, end.getX(), end.getY());

@@ -51,8 +51,14 @@ public class GUIBlockHandler {
      */
     private Position dragDelta;
 
+    /**
+     * Variable referring to the mouse position where a mouse interaction first happened.
+     */
     private Position startPosition;
 
+    /**
+     * Variable referring to the history controller in this gui block handler.
+     */
     private HistoryController historyController;
 
     private List<Position> blockPositions = new ArrayList<>();
@@ -120,6 +126,8 @@ public class GUIBlockHandler {
         for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
             addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
+
+        collectBlockData();
     }
 
     /**
@@ -142,7 +150,6 @@ public class GUIBlockHandler {
      */
     private void handleMousePressed(int x, int y) {
         if (draggedBlocks == null) {
-            collectBlockData();
             startPosition = new Position(x, y);
             int draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
             boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
@@ -193,6 +200,7 @@ public class GUIBlockHandler {
     }
 
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
+
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
@@ -207,9 +215,9 @@ public class GUIBlockHandler {
      * Handle the event where the mouse is released depending on
      * where the mouse was pressed the first time and where it was released.
      *
-     * @post The list of dragged blocks is set to null.
+     * @post The list of dragged blocks is reset.
      *
-     * @effect The temporary block in the program area is set to null.
+     * @effect The temporary block in the program area is reset.
      * @effect If the dragged block is placed on an illegal position, the block is set to its
      *         last known location, and the height of the structure containing the block is reset
      *         to before the block was disconnected.
@@ -238,6 +246,7 @@ public class GUIBlockHandler {
 
             programArea.setTemporaryBlockPair(null);
             draggedBlocks = null;
+            collectBlockData();
         }
     }
 
