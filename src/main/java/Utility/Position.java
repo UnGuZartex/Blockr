@@ -7,7 +7,7 @@ import java.util.Comparator;
  *
  * @author Alpha-team
  */
-public class Position implements Comparator<Position> {
+public class Position {
 
     /**
      * Variable referring to the x-coordinate of this position.
@@ -60,12 +60,5 @@ public class Position implements Comparator<Position> {
      */
     public double getDistance(Position other) {
         return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
-    }
-
-    @Override
-    public int compare(Position p1, Position p2) {
-        int comparison = Integer.compare(p1.getY(), p2.getY());
-        System.out.println(comparison);
-        return (comparison == 0) ? Integer.compare(p1.getX(), p1.getX()) : comparison;
     }
 }
