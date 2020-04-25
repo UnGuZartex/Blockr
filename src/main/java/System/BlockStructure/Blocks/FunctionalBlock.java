@@ -95,21 +95,16 @@ public class FunctionalBlock extends Block {
      */
     @Override
     public Block getBlockAtIndex(int index) {
-
         if (index < 0) {
             return null;
         }
-
         if (index == 0) {
             return this;
         }
-
         if (getSubConnectorAt(0).isConnected()) {
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
         }
-        else {
-            return getReturnToBlock().getBlockAtIndex(index - 1);
-        }
+        return getReturnToBlock().getBlockAtIndex(index - 1);
     }
 
     /**
@@ -125,23 +120,18 @@ public class FunctionalBlock extends Block {
      */
     @Override
     public int getIndexOfBlock(Block block) {
-
         if (block == null) {
             return -1;
         }
-
         if (block == this) {
             return 0;
         }
-
         if (getSubConnectorAt(0).isConnected()) {
             return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
         }
-
         if (getReturnToBlock() == null) {
             return -1;
         }
-
         return 1 + getReturnToBlock().getIndexOfBlock(block);
     }
 }
