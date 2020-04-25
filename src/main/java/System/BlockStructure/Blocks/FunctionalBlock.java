@@ -104,6 +104,9 @@ public class FunctionalBlock extends Block {
         if (getSubConnectorAt(0).isConnected()) {
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
         }
+        if (getReturnToBlock() == null) {
+            return null;
+        }
         return getReturnToBlock().getBlockAtIndex(index - 1);
     }
 

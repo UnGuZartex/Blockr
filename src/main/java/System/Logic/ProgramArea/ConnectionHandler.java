@@ -11,12 +11,12 @@ import System.BlockStructure.Connectors.SubConnector;
 public class ConnectionHandler {
 
     /**
-     * Connect a given block on it's main connector to a given sub connector.
+     * Connect a given block on its main connector to a given sub connector.
      *
-     * @param main The block to connect on it's main connector.
+     * @param main The block to connect on its main connector.
      * @param toConnectTo The sub connector to connect to the main connector of the given block.
      *
-     * @pre The given block may not have any connection on it's main connector.
+     * @pre The given block may not have any connection on its main connector.
      *
      * @post The given block its main connector is connected to the given sub connector. 
      */
@@ -49,12 +49,12 @@ public class ConnectionHandler {
     }
 
     /**
-     * Disconnect the given block on it's main connector, if the
+     * Disconnect the given block on its main connector, if the
      * connector is connected.
      *
      * @param toDisconnect The block to disconnect.
      *
-     * @post The given block is disconnected on its mainconnector,
+     * @post The given block is disconnected on its main connector,
      *       if the connector was connected.
      */
     public void disconnect(Block toDisconnect) {

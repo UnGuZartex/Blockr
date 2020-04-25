@@ -51,8 +51,14 @@ public class GUIBlockHandler {
      */
     private Position dragDelta;
 
+    /**
+     * Variable referring to the mouse position where a mouse interaction first happened.
+     */
     private Position startPosition;
 
+    /**
+     * Variable referring to the history controller in this gui block handler.
+     */
     private HistoryController historyController;
 
     private List<Position> blockPositions = new ArrayList<>();
@@ -77,32 +83,11 @@ public class GUIBlockHandler {
 
     public void handleMouseEventPre(int id, int x, int y) {
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
-            historyController.execute(new MoveCommand(startPosition, new Position(x, y), this));
+            historyController.execute(new MoveBlockCommand(startPosition, new Position(x, y), this));
         }
         else {
             handleMouseEvent(id, x, y);
         }
-    }
-
-    private void collectBlockData() {
-        blockPositions = new ArrayList<>();
-        paletteIndices = new ArrayList<>();
-
-        List<GUIBlock> blocks = programArea.getBlocks();
-        blocks.sort((o1, o2) -> {
-            int comparison = Integer.compare(o1.getY(), o2.getY());
-            comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
-            return comparison;
-        });
-
-        for (GUIBlock block : blocks) {
-            Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
-                    .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
-            blockPositions.add(entry.getKey().getPosition());
-            paletteIndices.add(entry.getValue());
-        }
-
-        System.out.println("block data set");
     }
 
     /**
@@ -141,6 +126,8 @@ public class GUIBlockHandler {
         for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
             addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
+
+        collectBlockData();
     }
 
     /**
@@ -159,10 +146,10 @@ public class GUIBlockHandler {
      *
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
+     * @effect The current block data is collected.
      */
     private void handleMousePressed(int x, int y) {
         if (draggedBlocks == null) {
-            collectBlockData();
             startPosition = new Position(x, y);
             int draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
             boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
@@ -173,7 +160,7 @@ public class GUIBlockHandler {
                     draggedBlock = palette.getNewBlock(draggedBlockIndex);
                     draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                     blockSourcePanel = palette;
-                    programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, draggedBlockIndex));
+                    programArea.setTemporaryBlockPair(new AbstractMap.SimpleEntry<>(draggedBlock, draggedBlockIndex));
                 }
                 else {
                     draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
@@ -193,11 +180,31 @@ public class GUIBlockHandler {
         }
     }
 
+    private void collectBlockData() {
+        blockPositions = new ArrayList<>();
+        paletteIndices = new ArrayList<>();
+
+        List<GUIBlock> blocks = programArea.getBlocks();
+        blocks.sort((o1, o2) -> {
+            int comparison = Integer.compare(o1.getY(), o2.getY());
+            comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
+            return comparison;
+        });
+
+        for (GUIBlock block : blocks) {
+            Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
+                    .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
+            blockPositions.add(entry.getKey().getPosition());
+            paletteIndices.add(entry.getValue());
+        }
+    }
+
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
+
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
-        programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, paletteIndex));
+        programArea.setTemporaryBlockPair(new AbstractMap.SimpleEntry<>(draggedBlock, paletteIndex));
         dragDelta = new Position(0, 0);
 
         handleMouseDragged(pos.getX(), pos.getY());
@@ -208,11 +215,11 @@ public class GUIBlockHandler {
      * Handle the event where the mouse is released depending on
      * where the mouse was pressed the first time and where it was released.
      *
-     * @post The list of dragged blocks is set to null.
+     * @post The list of dragged blocks is reset.
      *
-     * @effect The temporary block in the program area is set to null.
+     * @effect The temporary block in the program area is reset.
      * @effect If the dragged block is placed on an illegal position, the block is set to its
-     *         last known location and the height of the structure containing the block is reset
+     *         last known location, and the height of the structure containing the block is reset
      *         to before the block was disconnected.
      * @effect If the dragged block is dragged to the program area, the event is handled accordingly.
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
@@ -237,8 +244,9 @@ public class GUIBlockHandler {
                 draggedBlocks.get(0).resetHeight();
             }
 
-            programArea.setTemporaryBlock(null);
+            programArea.setTemporaryBlockPair(null);
             draggedBlocks = null;
+            collectBlockData();
         }
     }
 

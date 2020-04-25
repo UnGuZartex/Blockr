@@ -24,20 +24,26 @@ public class Program {
      * Variable referring to the default result of a program.
      */
     public final static Result DEFAULT_RESULT = Result.SUCCESS;
+
     /**
      * Variable referring to the start block of this program. This is
      * the first block of the program.
      */
     private final Block startBlock;
+
     /**
      * Variable referring to the block which should be executed next.
      */
     private Block currentBlock;
+
     /**
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = DEFAULT_RESULT;
 
+    /**
+     * Variable referring to the execution state of the program.
+     */
     private boolean isExecuting = false;
 
     /**
@@ -67,7 +73,7 @@ public class Program {
      * @return True if and only if the given block is effective.
      */
     public static boolean isValidStartBlock(Block block) {
-        return block != null; // TODO en niet connected via main connector?
+        return block != null && !block.getMainConnector().isConnected();
     }
 
     /**
@@ -165,12 +171,13 @@ public class Program {
      *
      * @post The current block is set to the start block.
      * @post The last result is set to the default result.
-     * @post The program is not executing anymore.
+     * @post The executing variable is changed indicating the
+     *       program is not executing anymore.
      */
     public void resetProgram() {
-        isExecuting = false;
         this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
+        isExecuting = false;
     }
 
     /**
@@ -207,7 +214,10 @@ public class Program {
      *
      * @param snapshot The snapshot to load.
      *
-     * @post The current block and
+     * @post The current block is set to the block at the snapshot index
+     *       in this program.
+     * @post The last result is set to the result stored in the snapshot.
+     * @post The execution state is set to the state stored in the snapshot.
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
@@ -220,41 +230,35 @@ public class Program {
      * A private inner class for program snapshots.
      */
     private class ProgramSnapshot implements Snapshot {
+
         /**
          * Variable referring to the index of the block to remember.
          */
-        private final int currentBlockIndex;
+        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+
         /**
          * Variable referring to the result to remember.
          */
         private final Result currentResult = lastResult;
 
+        /**
+         * Variable referring to the execution state to remember.
+         */
         private final boolean isExecutingNow = isExecuting;
+
         /**
          * Variable referring to the creation time of this snapshot.
          */
         private final LocalDateTime creationTime = LocalDateTime.now();
 
         /**
-         * Initialise a new program.
-         *
-         * @effect The current block index is set to the index of the current block if
-         *         it isn't null, otherwise it is set to -1.
-         */
-        public ProgramSnapshot() {
-            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
-            System.out.println(currentBlockIndex + " " + startBlock.getBlockAtIndex(currentBlockIndex));
-        }
-
-        /**
          * Get the name of this snapshot.
          *
-         * @return The block index of the block to keep track of
-         *         and the current result to remember.
+         * @return the name of this snapshot.
          */
         @Override
         public String getName() {
-            return "Program snapshot: current block index is " + currentBlockIndex + " and the last result was " + currentResult.name();
+            return "Program snapshot " + this;
         }
 
         /**
