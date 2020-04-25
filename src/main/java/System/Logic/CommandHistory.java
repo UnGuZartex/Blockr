@@ -21,7 +21,7 @@ public class CommandHistory {
      */
     public void execute(Command command) {
         command.execute();
-        System.out.println("added command");
+        System.out.println("added command " + undoStack.size() + "\n");
         undoStack.push(command);
         redoStack.clear();
     }

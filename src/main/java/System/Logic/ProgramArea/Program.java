@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 public class Program {
 
     /**
+     * Variable referring to the default result of a program.
+     */
+    public final static Result DEFAULT_RESULT = Result.SUCCESS;
+    /**
      * Variable referring to the start block of this program. This is
      * the first block of the program.
      */
@@ -30,13 +34,11 @@ public class Program {
      */
     private Block currentBlock;
     /**
-     * Variable referring to the default result of a program.
-     */
-    public final static Result DEFAULT_RESULT = Result.SUCCESS;
-    /**
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = DEFAULT_RESULT;
+
+    private boolean isExecuting = false;
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -87,7 +89,6 @@ public class Program {
     }
 
     /**
-<<<<<<< HEAD
      * Get the last result of this program.
      *
      * @return The last result.
@@ -108,19 +109,13 @@ public class Program {
      *
      * @throws IllegalStateException
      *         If this program is not valid.
-=======
-     * Reset this program. The current block is set to the start block,
-     * and the last result is set to a success.
-     *
-     * @post The current block is set to the start block.
-     * @post the last result is set to a success.
->>>>>>> efd17084fe8a1eae10844791f3865e9052755770
      */
     public void executeStep(GameWorld gameWorld) throws IllegalStateException{
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
+            isExecuting = true;
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock = currentBlock.getNext();
         }
@@ -134,6 +129,16 @@ public class Program {
      */
     public boolean isValidProgram() {
         return startBlock.hasProperConnections();
+    }
+
+    /**
+     * Checks whether this program is executing.
+     *
+     * @return True if the program has executed a step before,
+     *         false otherwise.
+     */
+    public boolean isExecuting() {
+        return isExecuting;
     }
 
     /**
@@ -153,6 +158,22 @@ public class Program {
      */
     public int getSize() {
         return getSizeOfBlock(startBlock);
+    }
+
+    /**
+     * Reset this program.
+     *
+     * @post The current block is set to the start block.
+     * @post The last result is set to the default result.
+     */
+    public void resetProgram() {
+        isExecuting = false;
+        this.currentBlock = startBlock;
+        this.lastResult = DEFAULT_RESULT;
+    }
+
+    public boolean isInStartState() {
+        return currentBlock == startBlock && lastResult == Result.SUCCESS;
     }
 
     /**

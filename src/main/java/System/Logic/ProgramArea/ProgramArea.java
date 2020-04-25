@@ -214,9 +214,15 @@ public class ProgramArea {
      */
     public void addProgramResetCommand() {
         if (programs.size() == 1) {
-            Program program = getProgram();
-            if (program.isValidProgram()) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
+            }
+        }
+        else {
+            for (Program program : programs) {
+                program.resetProgram();
             }
         }
     }
@@ -259,6 +265,41 @@ public class ProgramArea {
         observer.notifyProgramInDefaultState();
     }
 
+    public void addHighestAsProgram(Block block) throws IllegalArgumentException {
+        if (block == null) {
+            throw new IllegalArgumentException("The block can't be null");
+        }
+        addProgram(getHighestBlock(block));
+    }
+
+    /**
+     * Delete the program from this program area which has the given block
+     * as starting block. If no such program exists, nothing happens.
+     *
+     * @param blockToDelete The starting block for the program to delete.
+     *
+     * @post The program with the given start block is deleted from this program area.
+     */
+    public void deleteProgram(Block blockToDelete) {
+        programs.stream()
+                .filter(p -> p.getStartBlock() == blockToDelete)
+                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
+    }
+
+    /**
+     * Get the total number of blocks in this program area.
+     *
+     * @return The sum of the total number of blocks in each program
+     *         in this program area.
+     */
+    public int getAllBlocksCount() {
+        int sum = 0;
+        for (Program program : programs) {
+            sum += program.getSize();
+        }
+        return sum;
+    }
+
     /**
      * Notify the program state to the observer.
      *
@@ -268,10 +309,11 @@ public class ProgramArea {
      * @throws IllegalStateException
      *         If There isn't 1 program in the program area.
      */
-    protected void notifyProgramState() throws IllegalStateException {
-        if (programs.size() != 1) {
+    protected void notifyProgramState() {
+          if (programs.size() != 1) {
             throw new IllegalStateException("There is not just 1 program in the program area!");
         }
+      
         Program program = getProgram();
         Result stepResult = program.getLastResult();
         if (program.isFinished()) {

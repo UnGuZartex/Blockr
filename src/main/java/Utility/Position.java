@@ -1,5 +1,7 @@
 package Utility;
 
+import java.util.Comparator;
+
 /**
  * A class for positions with x,y coordinates
  *
