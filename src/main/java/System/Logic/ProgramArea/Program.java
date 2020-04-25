@@ -24,7 +24,7 @@ public class Program {
      * Variable referring to the default result of a program.
      */
     public final static Result DEFAULT_RESULT = Result.SUCCESS;
-    
+
     /**
      * Variable referring to the start block of this program. This is
      * the first block of the program.

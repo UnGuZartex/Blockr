@@ -25,6 +25,9 @@ public class HistoryController {
      *
      * @post The current command history is set to the given history.
      */
+    /**
+     * TODO invar?
+     */
     public HistoryController(CommandHistory history, ProgramArea programArea) {
         this.history = history;
         this.programArea = programArea;
@@ -41,10 +44,24 @@ public class HistoryController {
         history.execute(command);
     }
 
+    /**
+     * Execute a program step command in the program area,
+     * if possible.
+     *
+     * @Effect The program area adds a program run command to the history,
+     *         if possible.
+     */
     public void executeProgramRunCommand() {
         programArea.addProgramRunCommand();
     }
 
+    /**
+     * Execute a program reset command in the program area,
+     * if possible.
+     *
+     * @Effect The program area  adds a program reset command to the history,
+     *         if possible.
+     */
     public void executeProgramResetCommand() {
         programArea.addProgramResetCommand();
     }

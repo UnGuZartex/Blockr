@@ -21,18 +21,22 @@ public class ProgramArea {
      * Variable referring to the programs in this program area.
      */
     private final ArrayList<Program> programs = new ArrayList<>();
+
     /**
      * Variable referring to the program event manager.
      */
     private final ProgramEventManager observer = new ProgramEventManager();
+
     /**
-     * VAriable referring to the game world this program area operates on.
+     * Variable referring to the game world this program area operates on.
      */
     private final GameWorld gameWorld;
+
     /**
      * Variable referring to the initial snapshot of the game world.
      */
     private final Snapshot gameWorldStartSnapshot;
+
     /**
      * Variable referring to the command history of this program area.
      */
@@ -133,8 +137,8 @@ public class ProgramArea {
      * @param startBlock The start block for the new program.
      *
      * @effect A new program with given start block is added to this program area if it
-     *         is not connected through it's main connector.
-     * @effect If the given block is connected through it's main connector, the highest
+     *         is not connected through its main connector.
+     * @effect If the given block is connected through its main connector, the highest
      *         block is added to the program area.
      *
      * @throws IllegalArgumentException
@@ -185,7 +189,7 @@ public class ProgramArea {
      *
      * @effect If there is more than 1 program area in the program, it is notified
      *         to the observer.
-     * @effect If there is 1 program in this program area and it is invalid, it is
+     * @effect If there is 1 program in this program area, and it is invalid, it is
      *         noticed to the observer.
      * @effect If there is 1 program in the program area which is valid and not finished,
      *         then is a new run program command executed in the command history with this
@@ -208,8 +212,8 @@ public class ProgramArea {
     /**
      * Add a program reset command.
      *
-     * @effect if there is 1 program in the program area which is valid, a new
-     *         program reset command is executed on the command history with
+     * @effect If there is 1 program in the program area which is valid and executing,
+     *         a new program reset command is executed on the command history with
      *         this program area.
      */
     public void addProgramResetCommand() {
@@ -218,11 +222,6 @@ public class ProgramArea {
 
             if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
-            }
-        }
-        else {
-            for (Program program : programs) {
-                program.resetProgram();
             }
         }
     }
@@ -275,7 +274,7 @@ public class ProgramArea {
      *         If There isn't 1 program in the program area.
      */
     protected void notifyProgramState() {
-          if (programs.size() != 1) {
+        if (programs.size() != 1) {
             throw new IllegalStateException("There is not just 1 program in the program area!");
         }
       
