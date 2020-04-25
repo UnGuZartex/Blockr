@@ -65,7 +65,7 @@ public class Program {
      * @return True if and only if the given block is effective.
      */
     public static boolean isValidStartBlock(Block block) {
-        return block != null;
+        return block != null; // TODO en niet connected via main connector?
     }
 
     /**
@@ -105,9 +105,6 @@ public class Program {
      * @post The current block of this program is set to the next block
      *       if the program is not finished yet.
      *
-     * @return The result of an execution if the program is not finished,
-     *         otherwise is the last result returned
-     *
      * @throws IllegalStateException
      *         If this program is not valid.
      */
@@ -144,9 +141,7 @@ public class Program {
     /**
      * Get the size of this program.
      *
-     * @return The size of this program, which is the size of the start
-     *         block of this program
-     *         | getSizeOfBlock(startBlock)
+     * @return The total number of blocks that this program contains.
      */
     public int getSize() {
         return getSizeOfBlock(startBlock);
@@ -187,32 +182,64 @@ public class Program {
         return sum;
     }
 
+    /**
+     * Create a snapshot of this program.
+     *
+     * @return A new program snapshot.
+     */
     public Snapshot createSnapshot() {
         return new ProgramSnapshot();
     }
 
+    /**
+     * Load the given snapshot.
+     *
+     * @param snapshot The snapshot to load.
+     *
+     * @post The current block and
+     */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
         currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
         lastResult = programSnapshot.currentResult;
     }
 
+    /**
+     * A private inner class for program snapshots.
+     */
     private class ProgramSnapshot implements Snapshot {
-        private final int currentBlockIndex;
+        /**
+         * Variable referring to the index of the block to remember.
+         */
+        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        /**
+         * Variable referring to the result to remember.
+         */
         private final Result currentResult = lastResult;
+        /**
+         * Variable referring to the creation time of this snapshot.
+         */
+        private final LocalDateTime creationTime = LocalDateTime.now();
 
-        public ProgramSnapshot() {
-            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
-        }
-
+        /**
+         * Get the name of this snapshot.
+         *
+         * @return The block index of the block to keep track of
+         *         and the current result to remember.
+         */
         @Override
         public String getName() {
-            return null;
+            return "Program snapshot: current block index is " + currentBlockIndex + " and the last result was " + currentResult.name();
         }
 
+        /**
+         * Get the snapshot date.
+         *
+         * @return The the time this snapshot was initialised.
+         */
         @Override
         public LocalDateTime getSnapshotDate() {
-            return null;
+            return creationTime;
         }
     }
 }
