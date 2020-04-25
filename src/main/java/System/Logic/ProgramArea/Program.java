@@ -87,6 +87,7 @@ public class Program {
     }
 
     /**
+<<<<<<< HEAD
      * Get the last result of this program.
      *
      * @return The last result.
@@ -107,6 +108,13 @@ public class Program {
      *
      * @throws IllegalStateException
      *         If this program is not valid.
+=======
+     * Reset this program. The current block is set to the start block,
+     * and the last result is set to a success.
+     *
+     * @post The current block is set to the start block.
+     * @post the last result is set to a success.
+>>>>>>> efd17084fe8a1eae10844791f3865e9052755770
      */
     public void executeStep(GameWorld gameWorld) throws IllegalStateException{
         if (!isValidProgram()) {
@@ -146,6 +154,7 @@ public class Program {
     public int getSize() {
         return getSizeOfBlock(startBlock);
     }
+
 
     /**
      * Reset this program.

@@ -1,3 +1,4 @@
+
 package System.BlockStructure.Functionality;
 
 import GameWorldAPI.GameWorld.GameWorld;
@@ -52,3 +53,4 @@ class PredicateFunctionalityTest {
         assertTrue(functionality.getEvaluation());
     }
 }
+

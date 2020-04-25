@@ -5,9 +5,9 @@ import Utility.Command;
 
 public abstract class ProgramCommand implements Command {
 
-    ProgramArea programArea;
-    Snapshot programSnapShot;
-    Snapshot gameWorldSnapshot;
+    protected final ProgramArea programArea;
+    private Snapshot programSnapShot;
+    private Snapshot gameWorldSnapshot;
 
     protected ProgramCommand(ProgramArea programArea) {
         this.programArea = programArea;
@@ -25,11 +25,6 @@ public abstract class ProgramCommand implements Command {
         programArea.getProgram().loadSnapshot(programSnapShot);
         programArea.getGameWorld().loadSnapshot(gameWorldSnapshot);
         programArea.notifyProgramState();
-    }
-
-    @Override
-    public void redo() {
-        execute();
     }
 
     protected abstract void executeTask();

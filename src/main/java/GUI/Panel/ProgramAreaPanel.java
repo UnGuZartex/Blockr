@@ -1,13 +1,12 @@
 package GUI.Panel;
 
 import Controllers.ControllerClasses.ConnectionController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.Result;
 import Images.ImageLibrary;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -33,7 +32,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
     /**
      * Variable referring to the program controller.
      */
-    private final ProgramController programController;
+    private BlockHandlerController blockHandlerController;
 
     /**
      * Variable referring to the connection controller.
@@ -52,21 +51,20 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      * @param cornerY The y coordinate for the corner of this panel.
      * @param width The width of this panel.
      * @param height The height of this panel.
-     * @param programController The program controller used to handle program actions.
+     * @param blockHandlerController The program controller used to handle program actions.
      * @param connectionController The connection controller used to handle connections.
      *
-     * @effect Calls super constructor with given coordinates and dimensions.
+     * @effect Calls the super constructor with given coordinates and dimensions.
      * @effect Subscribes this panel as a listener to the panel.
      *
      * @post The program controller of this panel is set to the given program controller.
      * @post The connection controller of this panel is set to the given connection controller.
      */
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController programController,
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController,
                 ConnectionController connectionController) {
         super(cornerX, cornerY, width, height);
-        this.programController = programController;
+        this.blockHandlerController = blockHandlerController;
         this.connectionController = connectionController;
-        programController.subscribeListener(this);
     }
 
     /**
@@ -95,7 +93,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         }
 
         blocks.add(0, new AbstractMap.SimpleEntry<>(temporaryBlock, index));
-        programController.addBlockToPA(temporaryBlock, index);
+        blockHandlerController.addBlockToPA(temporaryBlock, index);
     }
 
     public void setTemporaryBlock(GUIBlock block) {
@@ -126,7 +124,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         blocks.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
 
         for (GUIBlock block : GUIBlocks) {
-            programController.deleteFromPA(block);
+            blockHandlerController.deleteFromPA(block);
         }
     }
 
@@ -196,13 +194,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
     }
 
     /**
-     * Event to call when the program is in its start state.
+     * Event to call when the program is in its default state.
      *
      * @effect The block colors are set to white.
      * @effect The game state text is updated accordingly.
      */
     @Override
-    public void onProgramStartState() {
+    public void onProgramDefaultState() {
         changeBlockColors(Color.white);
         gameState = "";
     }

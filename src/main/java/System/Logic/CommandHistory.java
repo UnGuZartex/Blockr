@@ -50,7 +50,7 @@ public class CommandHistory {
      * Redo the most recent undone command in this history.
      *
      * @effect The most recent undone command on the redo stack
-     *         is redone, if the stack isn't empty.
+     *         is executed, if the stack isn't empty.
      * @effect The most recent undone command on the redo stack
      *         is removed from the redo stack, if the
      *         stack isn't empty.
@@ -62,7 +62,7 @@ public class CommandHistory {
         if (redoStack.isEmpty()) return;
         System.out.println("redo command");
         Command command = redoStack.pop();
-        command.redo();
+        command.execute();
         undoStack.push(command);
     }
 }

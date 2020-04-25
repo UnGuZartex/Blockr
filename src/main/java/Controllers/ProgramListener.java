@@ -17,9 +17,9 @@ public interface ProgramListener {
     void onGameFinished(Result result);
 
     /**
-     * This event is called when the program is in its start state.
+     * This event is called when the program is in its default state.
      */
-    void onProgramStartState();
+    void onProgramDefaultState();
 
     /**
      * This event is called when the program area contains too much programs.

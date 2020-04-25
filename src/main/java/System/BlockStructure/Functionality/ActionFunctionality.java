@@ -24,6 +24,7 @@ public class ActionFunctionality extends BlockFunctionality {
      *
      * @param action The action for this functionality.
      *
+     *
      * @post The action of this functionality is set to the given action.
      *
      * @throws IllegalArgumentException

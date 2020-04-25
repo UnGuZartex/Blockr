@@ -3,7 +3,6 @@ package GUI.Components;
 import Controllers.ControllerClasses.HistoryController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
-import GUI.MoveCommand;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
@@ -57,7 +56,12 @@ public class GUIBlockHandler {
      */
     private int draggedBlockIndex;
 
+    private Position startPosition;
+
     private HistoryController historyController;
+
+    private List<Position> blockPositions = new ArrayList<>();
+    private List<Integer> paletteIndices = new ArrayList<>();
 
     /**
      * Create a new gui block handler with a given palette and program area panel.
@@ -78,10 +82,21 @@ public class GUIBlockHandler {
 
     public void handleMouseEventPre(int id, int x, int y) {
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
-            historyController.execute(new MoveCommand(x, y, this));
+            historyController.execute(new MoveCommand(startPosition, new Position(x, y), this));
         }
         else {
             handleMouseEvent(id, x, y);
+        }
+    }
+
+    private void collectBlockData() {
+        List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
+        blockPositions = new ArrayList<>();
+        paletteIndices = new ArrayList<>();
+
+        for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+            blockPositions.add(entry.getKey().getPosition());
+            paletteIndices.add(entry.getValue());
         }
     }
 
@@ -97,6 +112,8 @@ public class GUIBlockHandler {
     public void handleMouseEvent(int id, int x, int y) {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
+                startPosition = new Position(x, y);
+                collectBlockData();
                 handleMousePressed(x, y);
                 break;
 
@@ -118,8 +135,8 @@ public class GUIBlockHandler {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
-        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
-            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
+        for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
     }
 
@@ -281,7 +298,7 @@ public class GUIBlockHandler {
     }
 
     /**
-     * Checks if a given list of guiblocks is in a given collision rectangle panel.
+     * Checks if a given list of gui blocks is in a given collision rectangle panel.
      *
      * @param panel the given panel
      * @param blocks the given list of gui blocks
@@ -292,27 +309,10 @@ public class GUIBlockHandler {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 
-    private class GUIBlockHandlerSnapshot implements Snapshot {
+    private final class GUIBlockHandlerSnapshot implements Snapshot {
 
-        private final List<Position> blockPositions;
-        private final List<Integer> paletteIndices;
-
-        public GUIBlockHandlerSnapshot() {
-            List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
-            blockPositions = new ArrayList<>();
-            paletteIndices = new ArrayList<>();
-
-            for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
-                if (draggedBlocks != null && draggedBlocks.contains(entry.getKey())) {
-                    int index = draggedBlocks.indexOf(entry.getKey());
-                    blockPositions.add(lastValidPositions.get(index));
-                }
-                else {
-                    blockPositions.add(entry.getKey().getPosition());
-                }
-                paletteIndices.add(entry.getValue());
-            }
-        }
+        private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
+        private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
 
         @Override
         public String getName() {

@@ -83,11 +83,11 @@ public class ResetTest {
         assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
         assertTrue(paBlockHandler.hasProperNbBlocks());
 
-        paBlockHandler.getPA().runProgramStep();
-        paBlockHandler.getPA().runProgramStep();
-        paBlockHandler.getPA().runProgramStep();
-        paBlockHandler.getPA().runProgramStep();
-        paBlockHandler.getPA().runProgramStep();
+//        paBlockHandler.getPA().runProgramStep();
+//        paBlockHandler.getPA().runProgramStep();
+//        paBlockHandler.getPA().runProgramStep();
+//        paBlockHandler.getPA().runProgramStep();
+//        paBlockHandler.getPA().runProgramStep();
         // paBlockHandler.getPA().resetProgram();
 
         // TODO checks for reset with history

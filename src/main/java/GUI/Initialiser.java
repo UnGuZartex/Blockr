@@ -3,7 +3,7 @@ package GUI;
 import Controllers.BlockLinkDatabase;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.JarLoader;
 import GUI.Blocks.*;
 import System.Logic.CommandHistory;
@@ -45,16 +45,16 @@ public class Initialiser {
     public BlockrCanvas createNewCanvas() throws IOException {
 
         CommandHistory history = new CommandHistory();
-        HistoryController historyController = new HistoryController(history);
         ProgramArea programArea = new ProgramArea(gameWorld, history);
+        HistoryController historyController = new HistoryController(history, programArea);
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
-        ProgramController programController = new ProgramController(converter, blockHandler);
+        BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
-                programController,
+                blockHandlerController,
                 connectionController);
-        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController);
+        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController, blockHandler);
         return canvas;
     }
 

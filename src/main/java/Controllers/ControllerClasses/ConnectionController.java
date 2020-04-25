@@ -28,7 +28,6 @@ public class ConnectionController {
         blockHandler.disconnectInPA(mainBlock);
     }
 
-    // TODO wegkrijgen met observers
     public boolean isValidConnection(IGUIBlock withMain, IGUIBlock withSub, int subConnectorIndex) {
         MainConnector mainConnector = converter.getBlockFromGUIBlock(withMain).getMainConnector();
         SubConnector subConnector = converter.getBlockFromGUIBlock(withSub).getSubConnectorAt(subConnectorIndex);

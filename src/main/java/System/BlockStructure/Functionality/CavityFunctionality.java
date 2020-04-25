@@ -14,10 +14,16 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
     /**
      * Evaluate this functionality on the given gameWorld.
      *
+<<<<<<< HEAD
      * @post The evaluation is set to the evaluation of the condition
      *       of the block of this functionality.
      *
      * @return A cavity functionality will always be executable and result in SUCCESS.
+=======
+     * @return SUCCESS, the cavity has no effect on the game world and will always be a success.
+     * @post The evaluation is set to the evaluation of the condition
+     * of the block of this functionality.
+>>>>>>> efd17084fe8a1eae10844791f3865e9052755770
      */
     @Override
     public Result evaluate(GameWorld gameWorld) {
