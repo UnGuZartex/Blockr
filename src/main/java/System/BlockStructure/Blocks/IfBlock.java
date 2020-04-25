@@ -12,13 +12,12 @@ import System.BlockStructure.Functionality.CavityFunctionality;
 public class IfBlock extends CavityBlock {
 
     /**
-     * Initialise a new if block  with given cavity functionality.
+     * Initialise a new if block.
      *
-     *
-     * @effect Calls super constructor with given functionality.
+     * @effect Calls super constructor.
      */
-    public IfBlock(CavityFunctionality functionality) {
-        super(functionality);
+    public IfBlock() {
+        super(new CavityFunctionality());
     }
 
     @Override
@@ -30,7 +29,41 @@ public class IfBlock extends CavityBlock {
     }
 
     @Override
+    public Block getBlockAtIndex(int index) {
+        if (index == 0) {
+            return this;
+        }
+        else {
+            if (cavitySubConnector.isConnected()) {
+                Block nextBlock = getCavitySubConnector().getConnectedBlock();
+                nextBlock.setReturnToBlock(getNewReturnBlock());
+                return nextBlock.getBlockAtIndex(index - 1);
+            }
+            else {
+                return super.getBlockAtIndex(index);
+            }
+        }
+    }
+
+    @Override
+    public int getIndexOfBlock(Block block) {
+        if (block == this) {
+            return 0;
+        }
+        else {
+            if (cavitySubConnector.isConnected()) {
+                Block nextBlock = getCavitySubConnector().getConnectedBlock();
+                nextBlock.setReturnToBlock(getNewReturnBlock());
+                return 1 + nextBlock.getIndexOfBlock(block);
+            }
+            else {
+                return super.getIndexOfBlock(block);
+            }
+        }
+    }
+
+    @Override
     public Block clone() {
-        return new IfBlock(new CavityFunctionality(functionality.getGameWorld()));
+        return new IfBlock();
     }
 }

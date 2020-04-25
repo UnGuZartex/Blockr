@@ -17,20 +17,9 @@ public abstract class BlockFunctionality {
     protected boolean evaluation;
 
     /**
-     * Variable referring to the game world this functionality acts upon.
-     */
-    protected final GameWorld gameWorld;
-
-    protected Snapshot snapshot;
-
-    /**
      * Initialize a new block functionality.
-     *
-     * @param gameWorld the game world this functionality is linked to
      */
-    public BlockFunctionality(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
-    }
+    protected BlockFunctionality() { }
 
     /**
      * Get the evaluation of this functionality.
@@ -46,34 +35,5 @@ public abstract class BlockFunctionality {
      *
      * @effect Evaluates this functionality on the given game world.
      */
-    public abstract Result evaluate();
-
-    /**
-     * Return the game world linked to this functionality.
-     *
-     * @return the game world linked to this functionality.
-     */
-    public GameWorld getGameWorld() {
-        return gameWorld;
-    }
-
-
-    public Result execute() {
-        this.snapshot = gameWorld.createSnapshot();
-        return evaluate();
-    }
-
-    public void undo() {
-        Snapshot redosnapshot = gameWorld.createSnapshot();
-        gameWorld.loadSnapshot(snapshot);
-        snapshot = redosnapshot;
-    }
-
-    public void redo() {
-        Snapshot undosnapshot = gameWorld.createSnapshot();
-        gameWorld.loadSnapshot(snapshot);
-        snapshot = undosnapshot;
-    }
-
-    public abstract BlockFunctionality copy();
+    public abstract Result evaluate(GameWorld gameWorld);
 }

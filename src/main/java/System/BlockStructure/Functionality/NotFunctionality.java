@@ -11,16 +11,6 @@ import System.BlockStructure.Blocks.OperationalBlock;
  */
 public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
-
-    /**
-     * Initialise a new block functionality
-     *
-     * @param gameWorld the game world this functionality is linked to
-     */
-    public NotFunctionality(GameWorld gameWorld) {
-        super(gameWorld);
-    }
-
     /**
      * Evaluate this not functionality on the given gameWorld and set the evaluation
      * of this functionality to the inverse of the evaluation of the block connected
@@ -32,17 +22,10 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      * @return SUCCESS because an evaluation of a boolean is always successful.
      */
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         BlockFunctionality functionality = block.getNext().getFunctionality();
-        functionality.evaluate();
+        functionality.evaluate(gameWorld);
         evaluation = !functionality.getEvaluation();
         return Result.SUCCESS;
-    }
-
-    @Override
-    public BlockFunctionality copy() {
-        NotFunctionality func = new NotFunctionality(gameWorld);
-        func.setBlock(this.block);
-        return func;
     }
 }

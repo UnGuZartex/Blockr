@@ -12,15 +12,6 @@ import System.BlockStructure.Blocks.CavityBlock;
 public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlock> {
 
     /**
-     * Initialise a new block functionality
-     *
-     * @param gameWorld the game world this functionality is linked to
-     */
-    public CavityFunctionality(GameWorld gameWorld) {
-        super(gameWorld);
-    }
-
-    /**
      * Evaluate this functionality on the given gameWorld.
      *
      * @post The evaluation is set to the evaluation of the condition
@@ -29,10 +20,10 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
      * @return SUCCESS, the cavity has no effect on the game world and will always be a success.
      */
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         try {
             BlockFunctionality functionality = block.getCondition().getFunctionality();
-            functionality.evaluate();
+            functionality.evaluate(gameWorld);
             evaluation = functionality.getEvaluation();
         } catch (NullPointerException e) {
             evaluation = false;
@@ -40,12 +31,4 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
 
         return Result.SUCCESS;
     }
-
-    @Override
-    public BlockFunctionality copy() {
-        CavityFunctionality func = new CavityFunctionality(gameWorld);
-        func.setBlock(this.block);
-        return func;
-    }
-
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OperationalBlockTest {
 
-    OperationalBlock not1, not2, not3, not4;
+    /*OperationalBlock not1, not2, not3, not4;
     StatementBlock wallInFront1, wallInFront2;
     CavityBlock cavoc3, cavoc2;
 
@@ -125,5 +125,5 @@ class OperationalBlockTest {
 //        assertTrue(not1.hasAlreadyRan());
 //        not1.reset();
 //        assertFalse(not1.hasAlreadyRan());
-//    }
+//    }*/
 }

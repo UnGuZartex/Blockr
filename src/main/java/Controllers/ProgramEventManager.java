@@ -50,13 +50,14 @@ public class ProgramEventManager {
     }
 
     /**
-     * Notify the listeners that the program has been reset.
+     * Notify the listeners that the program is currently in its
+     * default state.
      *
-     * @effect The listeners are notified about the program reset.
+     * @effect The listeners are notified about the program state.
      */
-    public void notifyProgramReset() {
+    public void notifyProgramInDefaultState() {
         for (ProgramListener listener : listeners) {
-            listener.onProgramReset();
+            listener.onProgramDefaultState();
         }
     }
 
@@ -79,19 +80,6 @@ public class ProgramEventManager {
     public void notifyTooManyPrograms() {
         for (ProgramListener listener : listeners) {
             listener.onTooManyPrograms();
-        }
-    }
-
-    /**
-     * Notify the listeners about the execution state of the program.
-     *
-     * @param b Boolean indicating whether the program is running.
-     *
-     * @effect The listeners are notified about the execution state of the program.
-     */
-    public void notifyExecuting(boolean b) {
-        for (ProgramListener listener : listeners) {
-            listener.onExecuting(b);
         }
     }
 }

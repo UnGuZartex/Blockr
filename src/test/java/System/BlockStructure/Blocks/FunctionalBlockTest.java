@@ -22,9 +22,9 @@ class FunctionalBlockTest {
     void setUp() {
         LevelInitializer init = new LevelInitializer();
         Level level = (Level) init.createNewGameWorld();
-        turnLeft = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction(), level));
-        turnRight = new FunctionalBlock(new ActionFunctionality(new TurnRightAction(), level));
-        moveForward = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        turnLeft = new FunctionalBlock(new ActionFunctionality(new TurnLeftAction()));
+        turnRight = new FunctionalBlock(new ActionFunctionality(new TurnRightAction()));
+        moveForward = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(turnRight, turnLeft.getSubConnectorAt(0));

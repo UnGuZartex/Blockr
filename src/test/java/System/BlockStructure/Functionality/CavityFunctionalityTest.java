@@ -80,15 +80,15 @@ class CavityFunctionalityTest {
         levelRightOnBlankBeforeWall = new Level(rightRobot, new Grid(cellsRightOnBlankBeforeWall));
 
 
-        if1 = new IfBlock(new CavityFunctionality(levelRightOnBlankBeforeWall));
-        block = new IfBlock(new CavityFunctionality(levelUpOnBlankBeforeWall));
+        if1 = new IfBlock();
+        block = new IfBlock();
 
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelRightOnBlankBeforeWall));
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());
 
-        ifFunc = new CavityFunctionality(levelDownOnGoalBeforeBlank);
+        ifFunc = new CavityFunctionality();
 
     }
 
@@ -138,21 +138,21 @@ class CavityFunctionalityTest {
     @Test
     void evaluate() {
 
-        ifFunc.evaluate();
+        ifFunc.evaluate(levelDownOnGoalBeforeBlank);
         assertFalse(ifFunc.getEvaluation());
 
-        block.getFunctionality().evaluate();
+        block.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
         assertFalse(block.getFunctionality().getEvaluation());
 
-        if1.getFunctionality().evaluate();
+        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertTrue(if1.getFunctionality().getEvaluation());
 
-        if1 = new IfBlock(new CavityFunctionality(levelLeftOnGoalBeforeGoal));
-        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(), levelLeftOnGoalBeforeGoal));
+        if1 = new IfBlock();
+        cond1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate()));
         ConnectionHandler handler = new ConnectionHandler();
         handler.connect(cond1, if1.getConditionalSubConnector());
 
-        if1.getFunctionality().evaluate();
+        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
         assertFalse(if1.getFunctionality().getEvaluation());
     }
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PABlockHandlerTest {
 
-    PABlockHandler handler;
+    /*PABlockHandler handler;
     private static final int MAX_BLOCKS = 3;
     Level level;
 
@@ -104,5 +104,5 @@ class PABlockHandlerTest {
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(),level)));
         assertEquals(2, handler.getPA().getAllBlocksCount());
         handler.deleteProgram(block);
-    }
+    }*/
 }

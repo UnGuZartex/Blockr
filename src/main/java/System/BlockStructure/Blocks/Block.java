@@ -133,6 +133,10 @@ public abstract class Block {
 
     public abstract Block clone();
 
+    public abstract Block getBlockAtIndex(int index);
+
+    public abstract int getIndexOfBlock(Block block);
+
     protected Block getReturnToBlock() {
         return returnToBlock;
     }

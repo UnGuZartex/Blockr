@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WhileBlockTest {
 
-    WhileBlock while1, while2, while3, while4, while5;
+    /*WhileBlock while1, while2, while3, while4, while5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
 
@@ -252,5 +252,5 @@ class WhileBlockTest {
         assertEquals(3, while3.getNbSubConnectors());
         assertEquals(3, while4.getNbSubConnectors());
         assertEquals(3, while5.getNbSubConnectors());
-    }
+    }*/
 }

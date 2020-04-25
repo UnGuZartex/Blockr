@@ -15,7 +15,7 @@ public abstract class OperationalBlock extends ConditionalBlock {
 
     /**
      * Variable referring to the current condition which should be checked. By
-     * default this is set on 1.
+     * default, this is set on 1.
      */
     private int counter;
 

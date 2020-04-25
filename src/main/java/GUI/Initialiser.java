@@ -2,9 +2,11 @@ package GUI;
 
 import Controllers.BlockLinkDatabase;
 import Controllers.ControllerClasses.ConnectionController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.ControllerClasses.HistoryController;
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.JarLoader;
 import GUI.Blocks.*;
+import System.Logic.CommandHistory;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.Action;
 import GameWorldAPI.GameWorldType.GameWorldType;
@@ -13,10 +15,9 @@ import Images.ImageLibrary;
 import Images.ImageLoader;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
-import System.BlockStructure.Functionality.CavityFunctionality;
-import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.ProgramArea;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -43,33 +44,36 @@ public class Initialiser {
 
     public BlockrCanvas createNewCanvas() throws IOException {
 
-        PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks);
+        CommandHistory history = new CommandHistory();
+        ProgramArea programArea = new ProgramArea(gameWorld, history);
+        HistoryController historyController = new HistoryController(history, programArea);
+        PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
         BlockLinkDatabase converter = new BlockLinkDatabase();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
-        ProgramController programController = new ProgramController(converter, blockHandler);
+        BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
-                programController,
+                blockHandlerController,
                 connectionController);
-        canvas.setPanels(GUIPaletteBlocks, gameWorld);
+        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController, blockHandler);
         return canvas;
     }
 
     private void initialiseDefaultBlocks() {
-        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock(new CavityFunctionality(gameWorld)));
-        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock(new CavityFunctionality(gameWorld)));
-        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock(new NotFunctionality(gameWorld)));
+        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock());
+        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock());
+        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
     }
 
     private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {
 
         for (Action action : gameWorldType.getAllActions()) {
             GUIPaletteBlocks.add(new GUIFunctionalBlock(action.getName(), 0, 0));
-            systemPaletteBlocks.add(new FunctionalBlock(new ActionFunctionality(action, gameWorld)));
+            systemPaletteBlocks.add(new FunctionalBlock(new ActionFunctionality(action)));
         }
 
         for (Predicate predicate : gameWorldType.getAllPredicates()) {
             GUIPaletteBlocks.add(new GUIConditionalBlock(predicate.getName(), 0, 0));
-            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate, gameWorld)));
+            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate)));
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {
