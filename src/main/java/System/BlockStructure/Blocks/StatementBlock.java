@@ -22,6 +22,12 @@ public class StatementBlock extends ConditionalBlock {
         super(functionality);
     }
 
+    /**
+     * Get a clone of this block.
+     *
+     * @return A new statement block with a copy of the functionality and which
+     *         is not connected yet.
+     */
     @Override
     public Block clone() {
         return new StatementBlock((PredicateFunctionality) functionality);

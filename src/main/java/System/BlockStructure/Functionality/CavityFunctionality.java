@@ -14,10 +14,9 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
     /**
      * Evaluate this functionality on the given gameWorld.
      *
-     * @post The evaluation is set to the evaluation of the condition
-     *       of the block of this functionality.
-     *
      * @return SUCCESS, the cavity has no effect on the game world and will always be a success.
+     * @post The evaluation is set to the evaluation of the condition
+     * of the block of this functionality.
      */
     @Override
     public Result evaluate(GameWorld gameWorld) {
@@ -32,3 +31,4 @@ public class CavityFunctionality extends ConditionalBlockFunctionality<CavityBlo
         return Result.SUCCESS;
     }
 }
+

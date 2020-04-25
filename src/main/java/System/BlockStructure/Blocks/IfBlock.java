@@ -1,11 +1,10 @@
 package System.BlockStructure.Blocks;
 
-import GameWorldAPI.GameWorld.GameWorld;
 import System.BlockStructure.Functionality.CavityFunctionality;
 
 /**
  * A class for if blocks. These are cavity blocks which have a
- * cavity functionality. The cavity can only be ran time.
+ * cavity functionality. The cavity can only be ran 1 time.
  *
  * @author Alpha-team
  */
@@ -20,6 +19,12 @@ public class IfBlock extends CavityBlock {
         super(new CavityFunctionality());
     }
 
+    /**
+     * Get the new return to block.
+     *
+     * @return If a block below this if is connected, that block, otherwise
+     *         the default return to block.
+     */
     @Override
     protected Block getNewReturnBlock() {
         if (getSubConnectorAt(0).isConnected()) {
@@ -28,6 +33,12 @@ public class IfBlock extends CavityBlock {
         return getReturnToBlock();
     }
 
+    /**
+     * Get a clone of this block.
+     *
+     * @return A new if block with a copy of the current functionality and which is not
+     *         connected to any block.
+     */
     @Override
     public Block getBlockAtIndex(int index) {
         if (index == 0) {

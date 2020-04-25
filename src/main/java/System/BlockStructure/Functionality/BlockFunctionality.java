@@ -17,11 +17,6 @@ public abstract class BlockFunctionality {
     protected boolean evaluation;
 
     /**
-     * Initialize a new block functionality.
-     */
-    protected BlockFunctionality() { }
-
-    /**
      * Get the evaluation of this functionality.
      *
      * @return the evaluation of this functionality.

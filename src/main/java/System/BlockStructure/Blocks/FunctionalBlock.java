@@ -64,6 +64,12 @@ public class FunctionalBlock extends Block {
         return getReturnToBlock();
     }
 
+    /**
+     * Get a copy of this functional block.
+     *
+     * @return A new functional block, but with a copy of the functionality
+     *         and which is not connected.
+     */
     @Override
     public Block clone() {
         return new FunctionalBlock(functionality);
