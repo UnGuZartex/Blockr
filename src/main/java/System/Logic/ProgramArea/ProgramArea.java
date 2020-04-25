@@ -98,7 +98,6 @@ public class ProgramArea {
     /**
      * Add a new program to this program area with given start block.
      *
-<<<<<<< HEAD
      * @param startBlock The start block for the new program.
      *
      * @effect A new program with given start block is added to this program area if it
@@ -234,25 +233,6 @@ public class ProgramArea {
             sum += program.getSize();
         }
         return sum;
-    }
-
-
-
-    /** TODO
-     * Reset all programs to their initial state.
-     *
-     * @effect Each program in the programs list is reset.
-     * @effect The observer notifies its listeners that the program has been reset.
-     */
-    public void resetProgram(boolean command) {
-        if (!command) {
-            for (Program program : programs) {
-                program.resetProgram();
-            }
-        }
-        else if (programs.size() == 1) {
-            history.execute(new ResetProgramCommand(this));
-        }
     }
 
     protected void notifyProgramState() {

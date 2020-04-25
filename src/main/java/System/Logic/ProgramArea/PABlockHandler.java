@@ -183,7 +183,6 @@ public class PABlockHandler {
      *         the max blocks state.
      */
     private void Update() {
-        programArea.resetProgram(false);
         programArea.resetProgram();
         notifyMaxBlocksReached();
     }
