@@ -67,10 +67,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         this.connectionController = connectionController;
     }
 
-    /**
-     * TODO wegkrijgen?
-     * @return
-     */
     public ConnectionController getConnectionController() {
         return connectionController;
     }

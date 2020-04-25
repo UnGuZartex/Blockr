@@ -133,7 +133,6 @@ public class GUIConnector {
         } else {
             return null;
         }
-
     }
 
     /**
