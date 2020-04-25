@@ -211,7 +211,7 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = programSnapshot.getCurrentBlock();
+        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
         lastResult = programSnapshot.currentResult;
     }
 
@@ -239,25 +239,9 @@ public class Program {
          *         it isn't null, otherwise it is set to -1.
          */
         public ProgramSnapshot() {
-            if (currentBlock == null) {
-                currentBlockIndex = -1;
-            } else {
-                currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
-            }
-        }
+            currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
 
-        /**
-         * Get the current block of this snapshot.
-         *
-         * @return Null if the index is -1, otherwise the block at the index from
-         *         the start block is returned.
-         */
-        private Block getCurrentBlock() {
-            if (currentBlockIndex == -1) {
-                return null;
-            } else {
-                return startBlock.getBlockAtIndex(currentBlockIndex);
-            }
+            System.out.println(currentBlockIndex + " " + startBlock.getBlockAtIndex(currentBlockIndex));
         }
 
         /**
