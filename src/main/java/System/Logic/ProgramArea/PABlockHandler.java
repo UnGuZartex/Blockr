@@ -208,21 +208,6 @@ public class PABlockHandler {
     }
 
     /**
-     * Update the amount of blocks used in the program area and
-     * reset the current program(s) in the program area.
-     *
-     * @post The total number of blocks used has been updated.
-     *
-     * @effect The programs in the program area are reset.
-     * @effect The program area listeners are notified about
-     *         the max blocks state.
-     */
-    private void Update() {
-        programArea.resetProgramArea();
-        notifyMaxBlocksReached();
-    }
-
-    /**
      * Notify the program area listeners whether the max amount
      * of blocks inside the program area has been reached.
      *

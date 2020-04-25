@@ -79,20 +79,6 @@ public class ProgramArea {
     }
 
     /**
-     * Get the total number of blocks in this program area.
-     *
-     * @return The sum of the total number of blocks in each program
-     *         in this program area.
-     */
-    public int getAllBlocksCount() {
-        int sum = 0;
-        for (Program program : programs) {
-            sum += program.getSize();
-        }
-        return sum;
-    }
-
-    /**
      * Unsubscribe a given program listener from the program observer
      *
      * @param listener The given listener
@@ -263,27 +249,6 @@ public class ProgramArea {
         }
         gameWorld.loadSnapshot(gameWorldStartSnapshot);
         observer.notifyProgramInDefaultState();
-    }
-
-    public void addHighestAsProgram(Block block) throws IllegalArgumentException {
-        if (block == null) {
-            throw new IllegalArgumentException("The block can't be null");
-        }
-        addProgram(getHighestBlock(block));
-    }
-
-    /**
-     * Delete the program from this program area which has the given block
-     * as starting block. If no such program exists, nothing happens.
-     *
-     * @param blockToDelete The starting block for the program to delete.
-     *
-     * @post The program with the given start block is deleted from this program area.
-     */
-    public void deleteProgram(Block blockToDelete) {
-        programs.stream()
-                .filter(p -> p.getStartBlock() == blockToDelete)
-                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
     }
 
     /**

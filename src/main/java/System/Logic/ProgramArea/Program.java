@@ -165,6 +165,7 @@ public class Program {
      *
      * @post The current block is set to the start block.
      * @post The last result is set to the default result.
+     * @post The program is not executing anymore.
      */
     public void resetProgram() {
         isExecuting = false;
@@ -194,17 +195,6 @@ public class Program {
             }
         }
         return sum;
-    }
-
-    /**
-     * Reset this program.
-     *
-     * @post The current block is set to the start block.
-     * @post The last result is set to the default result.
-     */
-    public void resetProgram() {
-        this.currentBlock = startBlock;
-        this.lastResult = DEFAULT_RESULT;
     }
 
     /**
