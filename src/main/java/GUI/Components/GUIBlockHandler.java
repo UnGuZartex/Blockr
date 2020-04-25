@@ -90,11 +90,12 @@ public class GUIBlockHandler {
     }
 
     private void collectBlockData() {
-        List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
         blockPositions = new ArrayList<>();
         paletteIndices = new ArrayList<>();
 
-        for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+        programArea.getBlocks().sort((GUIBlock b1, GUIBlock b2) -> b1.getY())
+
+        for (Map.Entry<GUIBlock, Integer> entry : programArea.getBlockPairs()) {
             blockPositions.add(entry.getKey().getPosition());
             paletteIndices.add(entry.getValue());
         }
