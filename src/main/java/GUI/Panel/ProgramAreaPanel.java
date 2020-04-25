@@ -27,7 +27,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      * Variable referring to the block that is currently being dragged from the palette
      * and may or may not end up inside the program area.
      */
-    private GUIBlock temporaryBlock;
+    private Map.Entry<GUIBlock, Integer> temporaryBlock;
 
     /**
      * Variable referring to the program controller.
@@ -67,10 +67,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         this.connectionController = connectionController;
     }
 
-    /**
-     * TODO wegkrijgen?
-     * @return
-     */
     public ConnectionController getConnectionController() {
         return connectionController;
     }
@@ -82,7 +78,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      *
      * @effect TODO commentaar
      */
-    public void addTemporaryBlockToProgramArea(int index) throws IllegalStateException {
+    public void addTemporaryBlockToProgramArea() throws IllegalStateException {
 
         if (temporaryBlock == null) {
             throw new IllegalStateException("");
@@ -92,12 +88,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        blocks.add(0, new AbstractMap.SimpleEntry<>(temporaryBlock, index));
-        blockHandlerController.addBlockToPA(temporaryBlock, index);
+        blocks.add(temporaryBlock);
+        blockHandlerController.addBlockToPA(temporaryBlock.getKey(), temporaryBlock.getValue());
     }
 
-    public void setTemporaryBlock(GUIBlock block) {
-        temporaryBlock = block;
+    public void setTemporaryBlock(Map.Entry<GUIBlock, Integer> blockPair) {
+        temporaryBlock = blockPair;
     }
 
     /**
@@ -268,7 +264,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         }
 
         if (temporaryBlock != null) {
-            temporaryBlock.paint(g);
+            temporaryBlock.getKey().paint(g);
         }
     }
 

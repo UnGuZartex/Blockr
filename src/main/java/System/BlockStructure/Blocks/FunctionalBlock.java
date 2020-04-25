@@ -91,24 +91,18 @@ public class FunctionalBlock extends Block {
      * @param index The index of the block to get.
      *
      * @return The block at the given index in the linked link structure. If the
-     *         given index is out of range, null is returned.
-     *
-     * @throws IllegalArgumentException
-     *         When the given index is negative.
+     *         given index is out of range, or the index is illegal, null is returned.
      */
     @Override
-    public Block getBlockAtIndex(int index) throws IllegalArgumentException {
+    public Block getBlockAtIndex(int index) {
         if (index < 0) {
-            throw new IllegalArgumentException("The given index can't be negative!");
+            return null;
         }
         if (index == 0) {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
-        }
-        if (getReturnToBlock() == null) {
-            return null;
         }
         return getReturnToBlock().getBlockAtIndex(index - 1);
     }
@@ -118,13 +112,17 @@ public class FunctionalBlock extends Block {
      *
      * @param block The block to get the index of.
      *
-     * @pre The given block may not be connected trough the main connector of this block.
+     * @pre The given block may not be connected through the main connector of this block.
      *
      * @return The index of the given block in the structure of this block. If the
-     *         given block does
+     *         given block is null, or the block does not exist inside the connected
+     *         block structure, null is returned.
      */
     @Override
     public int getIndexOfBlock(Block block) {
+        if (block == null) {
+            return -1;
+        }
         if (block == this) {
             return 0;
         }

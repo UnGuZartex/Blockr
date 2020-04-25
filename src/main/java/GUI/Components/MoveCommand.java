@@ -18,11 +18,11 @@ public class MoveCommand implements Command
         this.start = start;
         this.end = end;
         this.guiBlockHandler = guiBlockHandler;
+        this.GUIBlocksSnapshot = guiBlockHandler.createSnapshot();
     }
 
     @Override
     public void execute() {
-        this.GUIBlocksSnapshot = guiBlockHandler.createSnapshot();
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, start.getX(), start.getY());
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_DRAGGED, end.getX(), end.getY());
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, end.getX(), end.getY());
@@ -30,8 +30,6 @@ public class MoveCommand implements Command
 
     @Override
     public void undo() {
-        Snapshot snapshot = guiBlockHandler.createSnapshot();
-        guiBlockHandler.loadSnapshot(this.GUIBlocksSnapshot);
-        this.GUIBlocksSnapshot = snapshot;
+        guiBlockHandler.loadSnapshot(GUIBlocksSnapshot);
     }
 }
