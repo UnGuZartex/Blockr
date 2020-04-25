@@ -20,14 +20,11 @@ public class ActionFunctionality extends BlockFunctionality {
      * Initialise a new action functionality with given game world and action.
      *
      * @param action The action for this functionality.
-     * @param gameWorld The game world for this functionality.
      *
-     * @effect The super constructor is called with given game world.
      *
      * @post The action of this functionality is set to the given action.
      */
-    public ActionFunctionality(Action action, GameWorld gameWorld) {
-        super(gameWorld);
+    public ActionFunctionality(Action action) {
         this.action = action;
     }
 
@@ -38,18 +35,7 @@ public class ActionFunctionality extends BlockFunctionality {
      *         functionality on the game world of this functionality.
      */
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         return gameWorld.executeAction(action);
-    }
-
-    /**
-     * Copy this functionality
-     *
-     * @return A new action functionality with the same action and game world
-     *         as this functionality.
-     */
-    @Override
-    public BlockFunctionality copy() {
-        return new ActionFunctionality(action, gameWorld);
     }
 }

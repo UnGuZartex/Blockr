@@ -72,7 +72,7 @@ public class FunctionalBlock extends Block {
      */
     @Override
     public Block clone() {
-        return new FunctionalBlock(functionality.copy());
+        return new FunctionalBlock(functionality);
     }
 
     /**
@@ -83,5 +83,41 @@ public class FunctionalBlock extends Block {
     @Override
     public MainConnector getMainConnector() {
         return mainConnector;
+    }
+
+    @Override
+    public Block getBlockAtIndex(int index) {
+
+        if (index == 0) {
+            return this;
+        }
+        else {
+            if (getSubConnectorAt(0).isConnected()) {
+                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+            }
+            else {
+                return getReturnToBlock().getBlockAtIndex(index - 1);
+            }
+        }
+    }
+
+    @Override
+    public int getIndexOfBlock(Block block) {
+
+        if (block == this) {
+            return 0;
+        }
+        else {
+            if (getSubConnectorAt(0).isConnected()) {
+                return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            }
+            else {
+                if (getReturnToBlock() == null) {
+                    return -1;
+                }
+
+                return 1 + getReturnToBlock().getIndexOfBlock(block);
+            }
+        }
     }
 }

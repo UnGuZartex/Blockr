@@ -1,14 +1,14 @@
 package GUI.Panel;
 
 import Controllers.ControllerClasses.ConnectionController;
-import Controllers.ControllerClasses.ProgramController;
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ProgramListener;
 import GUI.Blocks.GUIBlock;
 import GameWorldAPI.GameWorld.Result;
 import Images.ImageLibrary;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the blocks in the program area panel.
      */
-    private List<GUIBlock> blocks = new ArrayList<>();
+    private List<Map.Entry<GUIBlock, Integer>> blocks = new ArrayList<>();
 
     /**
      * Variable referring to the block that is currently being dragged from the palette
@@ -33,7 +33,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the program controller.
      */
-    private ProgramController programController;
+    private BlockHandlerController blockHandlerController;
 
     /**
      * Variable referring to the connection controller.
@@ -55,30 +55,20 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param cornerY The y coordinate for the corner of this panel.
      * @param width The width of this panel.
      * @param height The height of this panel.
-     * @param programController The program controller used to handle program actions.
+     * @param blockHandlerController The program controller used to handle program actions.
      * @param connectionController The connection controller used to handle connections.
      *
-     * @effect Calls super constructor with given coordinates and dimensions.
+     * @effect Calls the super constructor with given coordinates and dimensions.
      * @effect Subscribes this panel as a listener to the panel.
      *
      * @post The program controller of this panel is set to the given program controller.
      * @post The connection controller of this panel is set to the given connection controller.
      */
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, ProgramController programController,
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController,
                 ConnectionController connectionController) {
         super(cornerX, cornerY, width, height);
-        this.programController = programController;
+        this.blockHandlerController = blockHandlerController;
         this.connectionController = connectionController;
-        programController.subscribeListener(this);
-    }
-
-    /**
-     * Reset the game state.
-     *
-     * @post The game state is set to an empty string.
-     */
-    public void resetGameText() {
-        gameState = "";
     }
 
     /**
@@ -107,8 +97,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        blocks.add(temporaryBlock);
-        programController.addBlockToPA(temporaryBlock, index);
+        blocks.add(0, new AbstractMap.SimpleEntry<>(temporaryBlock, index));
+        blockHandlerController.addBlockToPA(temporaryBlock, index);
     }
 
     public void setTemporaryBlock(GUIBlock block) {
@@ -136,10 +126,14 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @post All given blocks are deleted from the program area.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
-        blocks.removeAll(GUIBlocks);
+        for (Map.Entry<GUIBlock, Integer> entry : new ArrayList<>(blocks)) {
+            if (GUIBlocks.contains(entry.getKey())) {
+                blocks.remove(entry);
+            }
+        }
 
         for (GUIBlock block : GUIBlocks) {
-            programController.deleteFromPA(block);
+            blockHandlerController.deleteFromPA(block);
         }
     }
 
@@ -149,6 +143,17 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @return All the blocks in the program area.
      */
     public List<GUIBlock> getBlocks() {
+
+        List<GUIBlock> blocks = new ArrayList<>();
+
+        for (Map.Entry<GUIBlock, Integer> entry : this.blocks) {
+            blocks.add(entry.getKey());
+        }
+
+        return blocks;
+    }
+
+    public List<Map.Entry<GUIBlock, Integer>> getBlockPairs() {
         return new ArrayList<>(blocks);
     }
 
@@ -161,20 +166,14 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *       of the blocks list.
      */
     public void setBlockDrawLayerFirst(List<GUIBlock> highestLayerBlocks) {
-        blocks.remove(highestLayerBlocks);
-        blocks.addAll(highestLayerBlocks);
-    }
+        List<Map.Entry<GUIBlock, Integer>> blocksCopy = new ArrayList<>();
 
-    /**
-     * Paint this panel.
-     *
-     * @param g The graphics to paint this panel with.
-     */
-    @Override
-    public void paint(Graphics g, ImageLibrary images) {
-        drawBackground(g);
-        drawBlocks(g);
-        drawGameState(g);
+        for (GUIBlock block : highestLayerBlocks) {
+            blocksCopy.add(blocks.stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null));
+        }
+
+        blocks.removeAll(blocksCopy);
+        blocks.addAll(blocksCopy);
     }
 
     /**
@@ -184,6 +183,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @effect The colors of the blocks are changed to green if the player reached its goal
      *         during the game, orange otherwise.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onGameFinished(Result result) {
@@ -203,12 +203,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Event to call when the game is reset.
+     * Event to call when the program is in its default state.
      *
      * @effect The block colors are set to white.
+     * @effect The game state text is updated accordingly.
      */
     @Override
-    public void onProgramReset() {
+    public void onProgramDefaultState() {
         changeBlockColors(Color.white);
         gameState = "";
     }
@@ -217,6 +218,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Event to call when there are to many programs.
      *
      * @effect The colors of the blocks are set to red.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onTooManyPrograms() {
@@ -228,16 +230,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Event to call when the program is invalid.
      *
      * @effect The block colors are set to red.
+     * @effect The game state text is updated accordingly.
      */
     @Override
     public void onProgramInvalid() {
         changeBlockColors(Color.red);
         gameState = "INVALID PROGRAM";
-
-    }
-
-    @Override
-    public void onExecuting(boolean b) {
     }
 
     /**
@@ -246,9 +244,26 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param color The new color for the blocks.
      */
     private void changeBlockColors(Color color) {
-        for (GUIBlock block : blocks) {
-            block.setColor(color);
+        for (Map.Entry<GUIBlock, Integer> entry : blocks) {
+            entry.getKey().setColor(color);
         }
+    }
+
+    /**
+     * Paint this panel.
+     *
+     * @param g The given graphics.
+     * @library library The image library.
+     *
+     * @effect The program area background is drawn.
+     * @effect The program area blocks are drawn.
+     * @effect The game state is drawn.
+     */
+    @Override
+    public void paint(Graphics g, ImageLibrary library) {
+        drawBackGround(g, library, "programAreaBackground");
+        drawBlocks(g);
+        drawGameState(g);
     }
 
     /**
@@ -257,8 +272,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param g The graphics to draw the blocks with.
      */
     private void drawBlocks(Graphics g) {
-        for (GUIBlock block : blocks) {
-            block.paint(g);
+        for (Map.Entry<GUIBlock, Integer> entry : blocks) {
+            entry.getKey().paint(g);
         }
 
         if (temporaryBlock != null) {
@@ -275,7 +290,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         Font currentFont = g.getFont();
         Font newFont = currentFont.deriveFont(currentFont.getSize() * 4F);
         g.setFont(newFont);
-        g.setFont(currentFont);
         g.drawString(gameState, panelRectangle.getX(), 100);
+        g.setFont(currentFont);
     }
 }

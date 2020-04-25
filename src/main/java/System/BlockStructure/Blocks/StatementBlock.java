@@ -30,6 +30,6 @@ public class StatementBlock extends ConditionalBlock {
      */
     @Override
     public Block clone() {
-        return new StatementBlock((PredicateFunctionality) functionality.copy());
+        return new StatementBlock((PredicateFunctionality) functionality);
     }
 }

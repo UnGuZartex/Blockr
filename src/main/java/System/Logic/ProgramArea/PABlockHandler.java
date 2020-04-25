@@ -1,9 +1,11 @@
 package System.Logic.ProgramArea;
 
+import Controllers.ProgramAreaListener;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.Palette.Palette;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,14 +22,17 @@ public class PABlockHandler {
      * Variable referring to the palette state in this program area block handler.
      */
     private final Palette palette;
+
     /**
      * Variable referring to the program area in this program area block handler.
      */
-    private final ProgramArea PA = new ProgramArea();
+    private final ProgramArea programArea;
+
     /**
      * Variable referring to the connection handler in this program area block handler.
      */
     private final ConnectionHandler connectionHandler = new ConnectionHandler();
+
     /**
      * Variable referring to the amount of blocks used in this program area block handler.
      */
@@ -39,14 +44,24 @@ public class PABlockHandler {
     private int maxBlocks = 10;
 
     /**
+     * Variable referring to the program area listeners.
+     */
+    private List<ProgramAreaListener> listeners = new ArrayList<>();
+
+    /**
      * Create a new program area block handler with a given list of starting palette blocks.
      *
      * @param paletteBlocks The given list of starting palette blocks.
      *
      * @effect A new palette is initialized with the given list of blocks.
      */
-    public PABlockHandler(List<Block> paletteBlocks) {
+    /**
+     * TODO
+     * @param paletteBlocks
+     */
+    public PABlockHandler(List<Block> paletteBlocks, ProgramArea programArea) {
         palette = new Palette(paletteBlocks);
+        this.programArea = programArea;
     }
 
     /**
@@ -65,15 +80,18 @@ public class PABlockHandler {
      * @param index The index of the wanted block in the palette.
      *
      * @return A block from the palette at the given index if the max
-     *         number of blocks has not been reached yet, otherwise
-     *         null is returned.
+     *         number of blocks has not been reached yet.
+     *
+     * @throws IllegalStateException
+     *         When the maximum amount of blocks in the program area is reached.
      */
-    public Block getFromPalette(int index) {
-        if (!hasReachedMaxBlocks()) {
-            return palette.getNewBlock(index);
+    public Block getFromPalette(int index) throws IllegalStateException {
+
+        if (hasReachedMaxBlocks()) {
+            throw new IllegalStateException("The max amount of blocks is reached, the palette is empty.");
         }
 
-        return null;
+        return palette.getNewBlock(index);
     }
 
     /**
@@ -87,7 +105,7 @@ public class PABlockHandler {
      */
     public void addToPA(Block block) {
         if (!hasReachedMaxBlocks()) {
-            PA.addProgram(block);
+            programArea.addProgram(block);
             Update();
         }
     }
@@ -107,9 +125,9 @@ public class PABlockHandler {
      *         if it isn't already.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
-        PA.deleteProgram(block);
+        programArea.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
-        PA.addHighestAsProgram(block);
+        programArea.addHighestAsProgram(block);
         Update();
     }
 
@@ -124,7 +142,7 @@ public class PABlockHandler {
      */
     public void disconnectInPA(Block block) {
         connectionHandler.disconnect(block);
-        PA.addProgram(block);
+        programArea.addProgram(block);
         Update();
     }
 
@@ -138,7 +156,7 @@ public class PABlockHandler {
      */
     public void deleteProgram(Block block) {
         connectionHandler.disconnect(block);
-        PA.deleteProgram(block);
+        programArea.deleteProgram(block);
         Update();
     }
 
@@ -149,10 +167,13 @@ public class PABlockHandler {
      * @post The total number of blocks has been updated.
      *
      * @effect The program(s) in the program area are reset.
+     * @effect The program area listeners are notified about
+     *         the max blocks state.
      */
     private void Update() {
-        amountOfBlocks = PA.getAllBlocksCount();
-        PA.resetProgram();
+        amountOfBlocks = programArea.getAllBlocksCount();
+        programArea.resetProgram();
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -161,7 +182,41 @@ public class PABlockHandler {
      * @return The program area of this program area block handler.
      */
     public ProgramArea getPA() {
-        return PA;
+        return programArea;
+    }
+
+    /**
+     * Unsubscribe a given program area listener from this object.
+     *
+     * @param listener the given program listener
+     *
+     * @post The given listener is added to the current listeners.
+     */
+    public void subscribe(ProgramAreaListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Subscribe a given program listener to this object.
+     *
+     * @param listener the given program listener
+     *
+     * @post The given listener is removed from the current listeners.
+     */
+    public void unSubscribe(ProgramAreaListener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Notify the program area listeners whether the max amount
+     * of blocks inside the program area has been reached.
+     *
+     * @effect The listeners are notified about the state of the max blocks.
+     */
+    private void notifyMaxBlocksReached() {
+        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
+            listener.onMaxBlocksReached(hasReachedMaxBlocks());
+        }
     }
 
     /**

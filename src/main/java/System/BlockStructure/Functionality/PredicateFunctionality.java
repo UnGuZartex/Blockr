@@ -17,18 +17,7 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
      */
     private final Predicate predicate;
 
-    /**
-     * Initialise a new predicate functionality with given game world and action.
-     *
-     * @param predicate The predicate for this functionality.
-     * @param gameWorld The game world for this functionality.
-     *
-     * @effect The super constructor is called with given game world.
-     *
-     * @post The predicate of this functionality is set to the given predicate.
-     */
-    public PredicateFunctionality(Predicate predicate, GameWorld gameWorld) {
-        super(gameWorld);
+    public PredicateFunctionality(Predicate predicate) {
         this.predicate = predicate;
     }
 
@@ -41,21 +30,8 @@ public class PredicateFunctionality extends ConditionalBlockFunctionality<Statem
      * @return The success result.
      */
     @Override
-    public Result evaluate() {
+    public Result evaluate(GameWorld gameWorld) {
         evaluation = gameWorld.evaluatePredicate(predicate);
         return Result.SUCCESS;
-    }
-
-    /**
-     * Copy this functionality
-     *
-     * @return A new predicate functionality with the same predicate and game world
-     *         as this functionality.
-     */
-    @Override
-    public BlockFunctionality copy() {
-        PredicateFunctionality func = new PredicateFunctionality(predicate, gameWorld);
-        func.setBlock(this.block);
-        return func;
     }
 }

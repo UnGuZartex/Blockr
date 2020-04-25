@@ -19,12 +19,8 @@ public abstract class ConditionalBlockFunctionality<B extends Block> extends Blo
 
     /**
      * Initialise a new block functionality
-     *
-     * @param gameWorld the game world this functionality is linked to
      */
-    public ConditionalBlockFunctionality(GameWorld gameWorld) {
-        super(gameWorld);
-    }
+    public ConditionalBlockFunctionality() { }
 
     /**
      * Set the block of this functionality to the given block, only if the block

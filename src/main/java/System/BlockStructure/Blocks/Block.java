@@ -161,4 +161,8 @@ public abstract class Block {
      * @return A new block with the with the same properties as this block.
      */
     public abstract Block clone();
+
+    public abstract Block getBlockAtIndex(int index);
+
+    public abstract int getIndexOfBlock(Block block);
 }

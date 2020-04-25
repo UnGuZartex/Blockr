@@ -1,11 +1,12 @@
 package System.Logic.ProgramArea;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
-import java.util.AbstractMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -29,10 +30,6 @@ public class Program {
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = Result.SUCCESS;
-
-
-
-    private CommandHistory history = new CommandHistory();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -62,15 +59,23 @@ public class Program {
      * @throws IllegalStateException
      *         If this program is not valid.
      */
-    public Result executeStep() {
+    /**
+     * TODO
+     * @param gameWorld
+     * @return
+     */
+    public void executeStep(GameWorld gameWorld) {
         if (!isValidProgram()) {
             throw new IllegalStateException("This program is invalid!");
         }
 
         if (!isFinished()) {
-            lastResult = history.execute(currentBlock, lastResult);
+            lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock = currentBlock.getNext();
         }
+    }
+
+    public Result getLastResult() {
         return lastResult;
     }
 
@@ -103,34 +108,15 @@ public class Program {
     }
 
     /**
-     * Reset this program. The blocks in this program are reset,
-     * and the current block is set to the start block.
+     * Reset this program. The current block is set to the start block,
+     * and the last result is set to a success.
      *
      * @post The current block is set to the start block.
-     * @post the start block is reset.
+     * @post the last result is set to a success.
      */
     public void resetProgram() {
-        Map.Entry<Result, Block> reset = history.reset();
-        this.currentBlock = startBlock;
-        this.lastResult = reset.getKey();
-    }
-
-    public Result undoProgram() {
-        Map.Entry<Result, Block> undo = history.undo(lastResult);
-        if (!undo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
-            this.currentBlock = undo.getValue();
-            this.lastResult = undo.getKey();
-        }
-        return this.lastResult;
-    }
-
-    public Result redoProgram() {
-        Map.Entry<Result, Block> redo = history.redo(lastResult);
-        if (!redo.equals(new AbstractMap.SimpleEntry<>(null,null))) {
-            this.currentBlock = redo.getValue();
-            this.lastResult = redo.getKey();
-        }
-        return this.lastResult;
+        currentBlock = startBlock;
+        lastResult = Result.SUCCESS;
     }
 
     /**
@@ -174,7 +160,28 @@ public class Program {
         return sum;
     }
 
-    public boolean isExecuting() {
-        return !history.atStart();
+    public Snapshot createSnapshot() {
+        return new ProgramSnapshot();
+    }
+
+    public void loadSnapshot(Snapshot snapshot) {
+        ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
+        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        lastResult = programSnapshot.currentResult;
+    }
+
+    private final class ProgramSnapshot implements Snapshot {
+        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        private final Result currentResult = lastResult;
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public LocalDateTime getSnapshotDate() {
+            return null;
+        }
     }
 }

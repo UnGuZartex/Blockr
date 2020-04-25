@@ -1,9 +1,12 @@
 package System.Logic.ProgramArea;
 
+import Controllers.ProgramEventManager;
 import Controllers.ProgramListener;
-import Controllers.ProgramObserver;
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
+import GameWorldAPI.History.Snapshot;
 import System.BlockStructure.Blocks.Block;
+import System.Logic.CommandHistory;
 
 import java.util.ArrayList;
 
@@ -20,10 +23,32 @@ public class ProgramArea {
     private final ArrayList<Program> programs = new ArrayList<>();
 
     /**
-     * Variabele referring to the observer of this class.
+     * Variable referring to the observer of this class.
      * This observer will notify listeners about the events of the program.
      */
-    private final ProgramObserver observer = new ProgramObserver();
+    private final ProgramEventManager observer = new ProgramEventManager();
+
+    private final GameWorld gameWorld;
+
+    private Snapshot gameWorldStartSnapshot;
+
+    private final CommandHistory history;
+
+    public ProgramArea(GameWorld gameWorld, CommandHistory history) {
+        this.gameWorld = gameWorld;
+        this.history = history;
+        gameWorldStartSnapshot = gameWorld.createSnapshot();
+    }
+
+    /**
+     * Return the game world attached to this program area.
+     *
+     * @return the game world attached to this program area.
+     */
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
 
     /**
      * Unsubscribe a given program listener from the program observer
@@ -56,11 +81,19 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if(programs.size() == 1){
+        if (programs.size() == 1) {
             return programs.get(0);
-        } else {
-            return null;
         }
+
+        return null;
+    }
+
+    public Block getNextBlockInProgram() {
+        if (programs.size() == 1) {
+            return programs.get(0).getCurrentBlock();
+        }
+
+        return null;
     }
 
     /**
@@ -78,25 +111,49 @@ public class ProgramArea {
     /**
      * TODO commentaar
      */
-    public void runProgramStep() {
+    public void addProgramRunCommand() {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
             if (program.isValidProgram()) {
-                Result stepResult = program.executeStep();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
+                if (!program.isFinished()) {
+                    history.execute(new RunProgramCommand(this));
                 }
             }
             else {
                 observer.notifyProgramInvalid();
             }
-            observer.notifyExecuting(program.isExecuting());
         }
         else if (programs.size() > 1) {
             observer.notifyTooManyPrograms();
         }
+    }
+
+    public void addProgramResetCommand() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram()) {
+                history.execute(new ResetProgramCommand(this));
+            }
+        }
+    }
+
+    /**
+     * TODO commentaar
+     */
+    protected void runProgramStep() {
+
+        if (programs.size() != 1) {
+            throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
+        }
+
+        if (!getProgram().isValidProgram()) {
+            throw new IllegalStateException("A program step cannot be executed when the program is invalid!");
+        }
+
+        getProgram().executeStep(gameWorld);
+        notifyProgramState();
     }
 
     /**
@@ -105,57 +162,16 @@ public class ProgramArea {
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
+    /**
+     * TODO commentaar
+     */
     public void resetProgram() {
         for (Program program : programs) {
             program.resetProgram();
         }
 
-        observer.notifyProgramReset();
-    }
-
-    public void undoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                Result stepResult = program.undoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-            observer.notifyProgramReset();
-            observer.notifyExecuting(program.isExecuting());
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-
-
-    }
-
-    public void redoProgram() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                Result stepResult = program.redoProgram();
-
-                if (program.isFinished()) {
-                    observer.notifyGameFinished(stepResult);
-                }
-                observer.notifyExecuting(program.isExecuting());
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
+        resetGameWorld();
+        observer.notifyProgramInDefaultState();
     }
 
     /**
@@ -214,6 +230,18 @@ public class ProgramArea {
         addProgram(getHighestBlock(block));
     }
 
+    protected void notifyProgramState() {
+        Program program = getProgram();
+        Result stepResult = program.getLastResult();
+
+        if (program.isFinished()) {
+            observer.notifyGameFinished(stepResult);
+        }
+        else {
+            observer.notifyProgramInDefaultState();
+        }
+    }
+
     /**
      * Get the highest block in the block structure this block is connected to.
      *
@@ -229,11 +257,7 @@ public class ProgramArea {
         }
     }
 
-    public boolean isExecuted() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-            return program.isExecuting();
-        }
-        return false;
+    private void resetGameWorld() {
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
     }
 }

@@ -9,16 +9,8 @@ import System.BlockStructure.Functionality.NotFunctionality;
  */
 public class NotBlock extends OperationalBlock {
 
-    /**
-     * Initialise a new not block with given functionality.
-     *
-     * @param functionality The not functionality for this block.
-     *
-     * @effect Calls super constructor with given functionality and one
-     *         one sub connector.
-     */
-    public NotBlock(NotFunctionality functionality) {
-        super(functionality, 1);
+    public <B extends OperationalBlock> NotBlock() {
+        super(new NotFunctionality(), 1);
     }
 
     /**
@@ -29,6 +21,6 @@ public class NotBlock extends OperationalBlock {
      */
     @Override
     public Block clone() {
-        return new NotBlock((NotFunctionality) functionality.copy());
+        return new NotBlock();
     }
 }

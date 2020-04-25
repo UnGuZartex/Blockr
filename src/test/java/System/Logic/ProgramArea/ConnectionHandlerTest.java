@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConnectionHandlerTest {
 
-    ConnectionHandler handler;
+    /*ConnectionHandler handler;
     Block block1, block2, block3, block4, block5;
     Level level;
 
@@ -77,5 +77,5 @@ class ConnectionHandlerTest {
         handler.disconnect(block3);
         assertFalse(block2.getSubConnectorAt(0).isConnected());
         assertFalse(block3.getMainConnector().isConnected());
-    }
+    }*/
 }

@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NotBlockTest {
 
+    /*OperationalBlock not1, not2, not3, not4;
     NotBlock not1, not2, not3, not4;
     StatementBlock wallInFront1, wallInFront2;
     CavityBlock cavoc3, cavoc2;
@@ -94,16 +95,5 @@ class NotBlockTest {
         assertEquals(1, not3.getNbSubConnectors());
         assertEquals(1, not4.getNbSubConnectors());
     }
-
-    @Test
-    void cloneTest() {
-        Block block = not1.clone();
-        assertNotEquals(block, not1);
-        assertNotEquals(block.getFunctionality(), not1.getFunctionality());
-        assertEquals(block.getFunctionality().getGameWorld(), not1.getFunctionality().getGameWorld());
-        assertTrue(block instanceof NotBlock);
-        assertTrue(block.getFunctionality() instanceof NotFunctionality);
-        assertFalse(block.getSubConnectorAt(0).isConnected());
-        assertFalse(block.getMainConnector().isConnected());
-    }
+*/
 }
