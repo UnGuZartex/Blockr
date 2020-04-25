@@ -25,13 +25,29 @@ public class ProgramArea {
      * Variable referring to the program event manager.
      */
     private final ProgramEventManager observer = new ProgramEventManager();
-
+    /**
+     * VAriable referring to the game world this program area operates on.
+     */
     private final GameWorld gameWorld;
-
-    private Snapshot gameWorldStartSnapshot;
-
+    /**
+     * Variable referring to the initial snapshot of the game world.
+     */
+    private final Snapshot gameWorldStartSnapshot;
+    /**
+     * Variable referring to the command history of this program area.
+     */
     private final CommandHistory history;
 
+    /**
+     * Initialise a new program area with given game world and command history.
+     *
+     * @param gameWorld The game world for this program area.
+     * @param history The history for this program area.
+     *
+     * @post The game world of this program area is set to the given game world.
+     * @post The history of this program area is set to the given history.
+     * @post The initial game world snapshot is set to a new snapshot of the game world.
+     */
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {
         this.gameWorld = gameWorld;
         this.history = history;
@@ -47,6 +63,34 @@ public class ProgramArea {
         return gameWorld;
     }
 
+    /**
+     * Get the program in the program area.
+     *
+     * @return If there is only one program in this program area,
+     *         then it is returned. In all other cases, there is an
+     *         invalid number of programs in the program area and
+     *         is null returned.
+     */
+    public Program getProgram() {
+        if (programs.size() == 1) {
+            return programs.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * Get the total number of blocks in this program area.
+     *
+     * @return The sum of the total number of blocks in each program
+     *         in this program area.
+     */
+    public int getAllBlocksCount() {
+        int sum = 0;
+        for (Program program : programs) {
+            sum += program.getSize();
+        }
+        return sum;
+    }
 
     /**
      * Unsubscribe a given program listener from the program observer
@@ -71,26 +115,15 @@ public class ProgramArea {
     }
 
     /**
-     * Get the program in the program area.
+     * Get the next block in the program to execute.
      *
-     * @return If there is only one program in this program area,
-     *         then it is returned. In all other cases, there is an
-     *         invalid number of programs in the program area and
-     *         is null returned.
+     * @return If there is only one program in the program are, then the current block
+     *         of that program is returned, otherwise null is returned.
      */
-    public Program getProgram() {
-        if (programs.size() == 1) {
-            return programs.get(0);
-        }
-
-        return null;
-    }
-
     public Block getNextBlockInProgram() {
         if (programs.size() == 1) {
-            return programs.get(0).getCurrentBlock();
+            return getProgram().getCurrentBlock();
         }
-
         return null;
     }
 
@@ -119,84 +152,6 @@ public class ProgramArea {
     }
 
     /**
-     * @effect If there is only one program in this program area and that program is valid,
-     *         then the current program executes for one step.
-     * @effect The observer notifies its listeners that the amount of programs is too high
-     *         in the program area if that's the case.
-     * @effect The observer notifies its listeners that the program is invalid
-     *         if there's only one program in the program area and if it's invalid.
-     * @effect The observer notifies its listeners whether the game is won or not
-     *         when the program is fully finished executing.
-     */
-    /**
-     * TODO commentaar
-     */
-    public void addProgramRunCommand() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram()) {
-                if (!program.isFinished()) {
-                    history.execute(new RunProgramCommand(this));
-                }
-            }
-            else {
-                observer.notifyProgramInvalid();
-            }
-        }
-        else if (programs.size() > 1) {
-            observer.notifyTooManyPrograms();
-        }
-    }
-
-    public void addProgramResetCommand() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
-
-            if (program.isValidProgram() && program.isExecuting()) {
-                history.execute(new ResetProgramCommand(this));
-            }
-        }
-        else {
-            for (Program program : programs) {
-                program.resetProgram();
-            }
-        }
-    }
-
-    /**
-     * TODO commentaar
-     */
-    protected void runProgramStep() {
-
-        if (programs.size() != 1) {
-            throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
-        }
-
-        if (!getProgram().isValidProgram()) {
-            throw new IllegalStateException("A program step cannot be executed when the program is invalid!");
-        }
-
-        getProgram().executeStep(gameWorld);
-        notifyProgramState();
-    }
-
-    /** TODO commentaar
-     * Reset all programs to their initial state.
-     *
-     * @effect Each program in the programs list is reset.
-     * @effect The observer notifies its listeners that the program has been reset.
-     */
-    protected void resetProgram() {
-        for (Program program : programs) {
-            program.resetProgram();
-        }
-
-        resetGameWorld();
-        observer.notifyProgramInDefaultState();
-    }
-
-    /**
      * Add the highest block in the block structure of the given block as a program.
      *
      * @param block The given block.
@@ -222,27 +177,110 @@ public class ProgramArea {
     public void deleteProgram(Block blockToDelete) {
         programs.stream()
                 .filter(p -> p.getStartBlock() == blockToDelete)
-                .findFirst().ifPresent(toDelete -> programs.remove(toDelete));
+                .findFirst().ifPresent(programs::remove);
     }
 
     /**
-     * Get the total number of blocks in this program area.
+     * Add a program command to the command history stack.
      *
-     * @return The sum of the total number of blocks in each program
-     *         in this program area.
+     * @effect If there is more than 1 program area in the program, it is notified
+     *         to the observer.
+     * @effect If there is 1 program in this program area and it is invalid, it is
+     *         noticed to the observer.
+     * @effect If there is 1 program in the program area which is valid and not finished,
+     *         then is a new run program command executed in the command history with this
+     *         program area.
      */
-    public int getAllBlocksCount() {
-        int sum = 0;
-        for (Program program : programs) {
-            sum += program.getSize();
+    public void addProgramRunCommand() {
+        if (programs.size() == 1) {
+            Program program = getProgram();
+            if (!program.isValidProgram()) {
+                observer.notifyProgramInvalid();
+            } else if (!program.isFinished()) {
+                history.execute(new RunProgramCommand(this));
+            }
         }
-        return sum;
+        else if (programs.size() > 1) {
+            observer.notifyTooManyPrograms();
+        }
     }
 
+    /**
+     * Add a program reset command.
+     *
+     * @effect if there is 1 program in the program area which is valid, a new
+     *         program reset command is executed on the command history with
+     *         this program area.
+     */
+    public void addProgramResetCommand() {
+        if (programs.size() == 1) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram() && program.isExecuting()) {
+                history.execute(new ResetProgramCommand(this));
+            }
+        }
+        else {
+            for (Program program : programs) {
+                program.resetProgram();
+            }
+        }
+    }
+
+    /**
+     * Run a step of the program.
+     *
+     * @effect A step in the program of this program area is done using the
+     *         game world of this program area.
+     * @effect The program state is notified.
+     *
+     * @throws IllegalStateException
+     *         When there isn't 1 program in the program area.
+     * @throws IllegalStateException
+     *         When the program in the program area is not valid.
+     */
+    protected void runProgramStep() throws IllegalStateException {
+        if (programs.size() != 1) {
+            throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
+        }
+        if (!getProgram().isValidProgram()) {
+            throw new IllegalStateException("A program step cannot be executed when the program is invalid!");
+        }
+        getProgram().executeStep(gameWorld);
+        notifyProgramState();
+    }
+
+    /**
+     * Reset the program area.
+     *
+     * @effect Each program in the programs list is reset.
+     * @effect The initial snapshot of the game world is loaded.
+     * @effect The observer notifies its listeners that the program has been reset.
+     */
+    public void resetProgramArea() {
+        for (Program program : programs) {
+            program.resetProgram();
+        }
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        observer.notifyProgramInDefaultState();
+    }
+
+    /**
+     * Notify the program state to the observer.
+     *
+     * @effect If the program in the program area is finished, its result is
+     *         notified, otherwise the default state is notified.
+     *
+     * @throws IllegalStateException
+     *         If There isn't 1 program in the program area.
+     */
     protected void notifyProgramState() {
+          if (programs.size() != 1) {
+            throw new IllegalStateException("There is not just 1 program in the program area!");
+        }
+      
         Program program = getProgram();
         Result stepResult = program.getLastResult();
-
         if (program.isFinished()) {
             observer.notifyGameFinished(stepResult);
         }
@@ -264,9 +302,5 @@ public class ProgramArea {
         else {
             return block;
         }
-    }
-
-    private void resetGameWorld() {
-        gameWorld.loadSnapshot(gameWorldStartSnapshot);
     }
 }

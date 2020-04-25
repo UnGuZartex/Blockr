@@ -49,17 +49,6 @@ public abstract class Block {
     }
 
     /**
-     * Set the functionality of this bloc to the given functionality.
-     *
-     * @param functionality The new functionality for this block.
-     *
-     * @post The functionality of this block is set to the givne functionality.
-     */
-    public void setFunctionality(BlockFunctionality functionality) {
-        this.functionality = functionality;
-    }
-
-    /**
      * Check whether this block has proper connections.
      *
      * @return True if and only if this block has no following up blocks

@@ -89,7 +89,6 @@ public class Program {
     }
 
     /**
-<<<<<<< HEAD
      * Get the last result of this program.
      *
      * @return The last result.
@@ -110,13 +109,6 @@ public class Program {
      *
      * @throws IllegalStateException
      *         If this program is not valid.
-=======
-     * Reset this program. The current block is set to the start block,
-     * and the last result is set to a success.
-     *
-     * @post The current block is set to the start block.
-     * @post the last result is set to a success.
->>>>>>> efd17084fe8a1eae10844791f3865e9052755770
      */
     public void executeStep(GameWorld gameWorld) throws IllegalStateException{
         if (!isValidProgram()) {
@@ -168,21 +160,17 @@ public class Program {
         return getSizeOfBlock(startBlock);
     }
 
-
     /**
      * Reset this program.
      *
      * @post The current block is set to the start block.
      * @post The last result is set to the default result.
+     * @post The program is not executing anymore.
      */
     public void resetProgram() {
         isExecuting = false;
         this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
-    }
-
-    public boolean isInStartState() {
-        return currentBlock == startBlock && lastResult == Result.SUCCESS;
     }
 
     /**
@@ -193,7 +181,7 @@ public class Program {
      * @return The size of the given block. This is the number of blocks
      *         which are connected through a sub connector on this block.
      */
-    private static int getSizeOfBlock(Block block) {
+    public static int getSizeOfBlock(Block block) {
         int sizeOfSubConnectList = block.getNbSubConnectors();
         int sum = 1;
         for (int i = 0; i < sizeOfSubConnectList; i++) {
@@ -223,7 +211,7 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        currentBlock = programSnapshot.getCurrentBlock();
         lastResult = programSnapshot.currentResult;
     }
 
@@ -234,7 +222,7 @@ public class Program {
         /**
          * Variable referring to the index of the block to remember.
          */
-        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        private final int currentBlockIndex;
         /**
          * Variable referring to the result to remember.
          */
@@ -243,6 +231,34 @@ public class Program {
          * Variable referring to the creation time of this snapshot.
          */
         private final LocalDateTime creationTime = LocalDateTime.now();
+
+        /**
+         * Initialise a new program.
+         *
+         * @effect The current block index is set to the index of the current block if
+         *         it isn't null, otherwise it is set to -1.
+         */
+        public ProgramSnapshot() {
+            if (currentBlock == null) {
+                currentBlockIndex = -1;
+            } else {
+                currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+            }
+        }
+
+        /**
+         * Get the current block of this snapshot.
+         *
+         * @return Null if the index is -1, otherwise the block at the index from
+         *         the start block is returned.
+         */
+        private Block getCurrentBlock() {
+            if (currentBlockIndex == -1) {
+                return null;
+            } else {
+                return startBlock.getBlockAtIndex(currentBlockIndex);
+            }
+        }
 
         /**
          * Get the name of this snapshot.
