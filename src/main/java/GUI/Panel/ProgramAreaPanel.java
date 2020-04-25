@@ -15,6 +15,11 @@ import java.util.List;
  * A class for the panel of the program area. This panel can listen
  * to the program.
  *
+ * @invar The program area panel must contain a valid block handler controller at all time.
+ *        | blockHandlerController != null
+ * @invar The program area panel must contain a valid connection controller at all time.
+ *        | connectionController != null
+ *
  * @author ALpha-team
  */
 public class ProgramAreaPanel extends GamePanel implements ProgramListener {

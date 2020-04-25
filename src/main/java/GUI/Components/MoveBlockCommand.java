@@ -1,20 +1,18 @@
 package GUI.Components;
 
-import GUI.Components.GUIBlockHandler;
 import GameWorldAPI.History.Snapshot;
 import Utility.Command;
 import Utility.Position;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class MoveCommand implements Command
+public class MoveBlockCommand implements Command
 {
     private Position start, end;
     private final GUIBlockHandler guiBlockHandler;
     private Snapshot GUIBlocksSnapshot;
 
-    public MoveCommand(Position start, Position end, GUIBlockHandler guiBlockHandler) {
+    public MoveBlockCommand(Position start, Position end, GUIBlockHandler guiBlockHandler) {
         this.start = start;
         this.end = end;
         this.guiBlockHandler = guiBlockHandler;

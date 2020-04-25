@@ -9,7 +9,7 @@ import java.awt.*;
  * A class for representing the game world panel.
  *
  * @invar The game world panel must contain a valid game world at all time.
- *        | isValidGameWorld(gameWorld)
+ *        | gameWorld != null
  *
  * @author Alpha-team
  */
