@@ -394,7 +394,7 @@ public class RunProgramTest {
         assertTrue(paBlockHandler.hasProperNbBlocks());
         assertNull(paBlockHandler.getPA().getProgram());
 
-        assertThrows(NullPointerException.class, () -> command.execute());
+        assertThrows(IllegalStateException.class, () -> command.execute());
     }
 
     @Test
@@ -403,7 +403,7 @@ public class RunProgramTest {
         assertTrue(paBlockHandler.hasProperNbBlocks());
         assertNull(paBlockHandler.getPA().getProgram());
 
-        assertThrows(NullPointerException.class, () -> command.execute());
+        assertThrows(IllegalStateException.class, () -> command.execute());
     }
 
     @Test

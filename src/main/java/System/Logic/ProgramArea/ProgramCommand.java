@@ -14,7 +14,10 @@ public abstract class ProgramCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalStateException {
+        if (programArea.getProgram() == null || !programArea.getProgram().isValidProgram()) {
+            throw new IllegalStateException("There isn't 1 valid program in the program area!");
+        }
         programSnapShot = programArea.getProgram().createSnapshot();
         gameWorldSnapshot = programArea.getGameWorld().createSnapshot();
         executeTask();
