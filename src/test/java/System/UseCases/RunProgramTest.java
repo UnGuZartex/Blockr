@@ -19,14 +19,16 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.*;
+import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.ProgramArea;
+import System.Logic.ProgramArea.ProgramCommand;
+import System.Logic.ProgramArea.RunProgramCommand;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 

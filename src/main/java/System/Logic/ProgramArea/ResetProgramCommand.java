@@ -8,6 +8,6 @@ public class ResetProgramCommand extends ProgramCommand {
 
     @Override
     protected void executeTask() {
-        programArea.resetProgram();
+        programArea.resetProgramArea();
     }
 }

@@ -155,6 +155,25 @@ public class Program {
         return getSizeOfBlock(startBlock);
     }
 
+    /**
+     * Get the size of the given block.
+     *
+     * @param block The block to compute the size of.
+     *
+     * @return The size of the given block. This is the number of blocks
+     *         which are connected through a sub connector on this block.
+     */
+    public static int getSizeOfBlock(Block block) {
+        int sizeOfSubConnectList = block.getNbSubConnectors();
+        int sum = 1;
+        for (int i = 0; i < sizeOfSubConnectList; i++) {
+            SubConnector newSubConnector = block.getSubConnectorAt(i);
+            if (newSubConnector.isConnected()) {
+                sum += getSizeOfBlock(newSubConnector.getConnectedBlock());
+            }
+        }
+        return sum;
+    }
 
     /**
      * Reset this program.
@@ -165,30 +184,6 @@ public class Program {
     public void resetProgram() {
         this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
-    }
-
-    public boolean isInStartState() {
-        return currentBlock == startBlock && lastResult == Result.SUCCESS;
-    }
-
-    /**
-     * Get the size of the given block.
-     *
-     * @param block The block to compute the size of.
-     *
-     * @return The size of the given block. This is the number of blocks
-     *         which are connected through a sub connector on this block.
-     */
-    private static int getSizeOfBlock(Block block) {
-        int sizeOfSubConnectList = block.getNbSubConnectors();
-        int sum = 1;
-        for (int i = 0; i < sizeOfSubConnectList; i++) {
-            SubConnector newSubConnector = block.getSubConnectorAt(i);
-            if (newSubConnector.isConnected()) {
-                sum += getSizeOfBlock(newSubConnector.getConnectedBlock());
-            }
-        }
-        return sum;
     }
 
     /**
@@ -209,7 +204,7 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        currentBlock = programSnapshot.getCurrentBlock();
         lastResult = programSnapshot.currentResult;
     }
 
@@ -220,7 +215,7 @@ public class Program {
         /**
          * Variable referring to the index of the block to remember.
          */
-        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        private final int currentBlockIndex;
         /**
          * Variable referring to the result to remember.
          */
@@ -229,6 +224,34 @@ public class Program {
          * Variable referring to the creation time of this snapshot.
          */
         private final LocalDateTime creationTime = LocalDateTime.now();
+
+        /**
+         * Initialise a new program.
+         *
+         * @effect The current block index is set to the index of the current block if
+         *         it isn't null, otherwise it is set to -1.
+         */
+        public ProgramSnapshot() {
+            if (currentBlock == null) {
+                currentBlockIndex = -1;
+            } else {
+                currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+            }
+        }
+
+        /**
+         * Get the current block of this snapshot.
+         *
+         * @return Null if the index is -1, otherwise the block at the index from
+         *         the start block is returned.
+         */
+        private Block getCurrentBlock() {
+            if (currentBlockIndex == -1) {
+                return null;
+            } else {
+                return startBlock.getBlockAtIndex(currentBlockIndex);
+            }
+        }
 
         /**
          * Get the name of this snapshot.

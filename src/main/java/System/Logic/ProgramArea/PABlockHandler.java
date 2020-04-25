@@ -22,22 +22,18 @@ public class PABlockHandler {
      * Variable referring to the palette state in this program area block handler.
      */
     private final Palette palette;
-
     /**
      * Variable referring to the program area in this program area block handler.
      */
     private final ProgramArea programArea;
-
     /**
      * Variable referring to the connection handler in this program area block handler.
      */
     private final ConnectionHandler connectionHandler = new ConnectionHandler();
-
     /**
      * Variable referring to the max amount of blocks that may be used.
      */
     private int maxBlocks = 10;
-
     /**
      * Variable referring to the program area listeners.
      */
@@ -47,6 +43,9 @@ public class PABlockHandler {
      * Create a new program area block handler with a given list of starting palette blocks.
      *
      * @param paletteBlocks The given list of starting palette blocks.
+     * @param programArea The program area for the program area block handler.
+     *
+     * @post The program area of this pa block handler is set to the given program area.
      *
      * @effect A new palette is initialized with the given list of blocks.
      */
@@ -173,22 +172,6 @@ public class PABlockHandler {
     }
 
     /**
-     * Update the amount of blocks used in the program area and
-     * reset the current program(s) in the program area.
-     *
-     * @post The total number of blocks used has been updated.
-     *
-     * @effect The program(s) in the program area are reset.
-     * @effect The program area listeners are notified about
-     *         the max blocks state.
-     */
-    private void Update() {
-        programArea.resetProgram(false);
-        programArea.resetProgram();
-        notifyMaxBlocksReached();
-    }
-
-    /**
      * Unsubscribe a given program area listener from this object.
      *
      * @param listener the given program listener
@@ -208,6 +191,21 @@ public class PABlockHandler {
      */
     public void unSubscribe(ProgramAreaListener listener) {
         listeners.remove(listener);
+    }
+
+    /**
+     * Update the amount of blocks used in the program area and
+     * reset the current program(s) in the program area.
+     *
+     * @post The total number of blocks used has been updated.
+     *
+     * @effect The programs in the program area are reset.
+     * @effect The program area listeners are notified about
+     *         the max blocks state.
+     */
+    private void Update() {
+        programArea.resetProgramArea();
+        notifyMaxBlocksReached();
     }
 
     /**

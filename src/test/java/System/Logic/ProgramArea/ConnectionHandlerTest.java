@@ -1,8 +1,7 @@
 package System.Logic.ProgramArea;
 
-import GameWorld.Level;
+import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Actions.MoveForwardAction;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
@@ -10,30 +9,30 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ConnectionHandlerTest {
 
-    /*ConnectionHandler handler;
+    ConnectionHandler handler;
     Block block1, block2, block3, block4, block5;
-    Level level;
+    GameWorldType type;
 
     @BeforeEach
     void setUp() {
-
-        LevelInitializer init = new LevelInitializer();
-        level = (Level) init.createNewGameWorld();
+        type = new LevelInitializer();
         handler = new ConnectionHandler();
 
-        block1 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
-        block2 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
-        block3 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
-        block4 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
-        block5 = new FunctionalBlock(new ActionFunctionality(new MoveForwardAction(), level));
+        block1 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
+        block2 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1)));
+        block3 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2)));
+        block4 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1)));
+        block5 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
     }
 
     @AfterEach
     void tearDown() {
+        type = null;
         handler = null;
         block1 = null;
         block2 = null;
@@ -77,5 +76,5 @@ class ConnectionHandlerTest {
         handler.disconnect(block3);
         assertFalse(block2.getSubConnectorAt(0).isConnected());
         assertFalse(block3.getMainConnector().isConnected());
-    }*/
+    }
 }

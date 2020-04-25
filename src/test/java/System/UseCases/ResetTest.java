@@ -13,8 +13,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
-import System.Logic.ProgramArea.ProgramArea;
+import System.Logic.ProgramArea.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ResetTest {
+    // TODO no programs/too much programs
+    // TODO Game world has changed
 
+    ProgramCommand commandRun, commandReset;
     PABlockHandler paBlockHandler;
     Robot robot;
     Grid grid;
@@ -50,7 +52,8 @@ public class ResetTest {
 
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
-
+        commandRun = new RunProgramCommand(paBlockHandler.getPA());
+        commandReset = new ResetProgramCommand(paBlockHandler.getPA());
     }
 
     @AfterEach
@@ -66,6 +69,8 @@ public class ResetTest {
         notBlock = null;
         whileBlock = null;
         ifBlock = null;
+        commandRun = null;
+        commandReset = null;
     }
 
     @Test
