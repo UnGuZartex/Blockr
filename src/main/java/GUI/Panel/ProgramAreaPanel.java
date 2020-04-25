@@ -59,10 +59,24 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @post The connection controller of this panel is set to the given connection controller.
      *
      * @effect Calls the super constructor with given coordinates and dimensions.
+     *
+     * @throws IllegalArgumentException
+     *         when the given block handler controller is null.
+     * @throws IllegalArgumentException
+     *         when the given connection controller is null.
      */
     public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController,
-                ConnectionController connectionController) {
+                ConnectionController connectionController) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
+
+        if (blockHandlerController == null) {
+            throw new IllegalArgumentException("The given block handler controller is null.");
+        }
+
+        if (connectionController == null) {
+            throw new IllegalArgumentException("The given connection controller is null.");
+        }
+
         this.blockHandlerController = blockHandlerController;
         this.connectionController = connectionController;
     }

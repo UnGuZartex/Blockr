@@ -39,7 +39,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      *
      * @post The blocks in this palette are set to the given list of blocks.
      *
-     * @effect Super constructor is called with given coordinates and dimensions.
+     * @effect The super constructor is called with given coordinates and dimensions.
      * @effect The block positions are set.
      *
      * @throws IllegalArgumentException
@@ -47,15 +47,17 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
+
         if (!areValidBlocks(blocks)) {
             throw new IllegalArgumentException("The given blocks are not valid!");
         }
+
         this.blocks = blocks;
         setBlockPositions();
     }
 
     /**
-     * Checks whether or not the given blocks are valid for the palette.
+     * Checks whether the given blocks are valid for the palette.
      *
      * @param blocks The blocks to check.
      *

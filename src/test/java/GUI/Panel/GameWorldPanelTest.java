@@ -41,10 +41,4 @@ class GameWorldPanelTest {
     void gameWorldPanel_invalidGameWorld() {
         assertThrows(IllegalArgumentException.class, () -> new GameWorldPanel(null, cornerX, cornerY, width, height));
     }
-
-    @Test
-    void isValidGameWorld() {
-        assertTrue(GameWorldPanel.isValidGameWorld(type.createNewGameWorld()));
-        assertFalse(GameWorldPanel.isValidGameWorld(null));
-    }
 }
