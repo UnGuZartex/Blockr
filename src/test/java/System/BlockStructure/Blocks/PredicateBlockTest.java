@@ -1,9 +1,7 @@
 package System.BlockStructure.Blocks;
 
-import GameWorld.Level;
+import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Predicates.WallInFrontPredicate;
-import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -14,77 +12,80 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PredicateBlockTest {
 
-    /*StatementBlock block1, block2;
-    CavityBlock cavoc;
+    Block block;
+    PredicateBlock predicateConnected, predicateNotConnected;
+    CavityBlock dummy;
+    GameWorldType type;
 
     @BeforeEach
     void setUp() {
-        LevelInitializer init = new LevelInitializer();
-        Level level = (Level) init.createNewGameWorld();
+        type = new LevelInitializer();
 
-        block1 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
-        block2 = new StatementBlock(new PredicateFunctionality(new WallInFrontPredicate(),level));
+        predicateConnected = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));
+        predicateNotConnected = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));
 
-        cavoc = new IfBlock(new CavityFunctionality(level));
+        dummy = new IfBlock();
         ConnectionHandler handler = new ConnectionHandler();
-        handler.connect(block1, cavoc.getConditionalSubConnector());
+        handler.connect(predicateConnected, dummy.getConditionalSubConnector());
     }
 
     @AfterEach
     void tearDown() {
-        block1 = null;
-        block2 =  null;
-        cavoc = null;
+        predicateConnected = null;
+        predicateNotConnected =  null;
+        dummy = null;
+        type = null;
     }
 
     @Test
     void hasNext() {
-        assertFalse(block1.hasNext());
-        assertFalse(block2.hasNext());
+        assertFalse(predicateConnected.hasNext());
+        assertFalse(predicateNotConnected.hasNext());
     }
 
     @Test
     void getNext() {
-        assertNull(block1.getNext());
-        assertNull(block2.getNext());
-    }
-
-    @Test
-    void getMainConnector() {
-        assertEquals(block1.getMainConnector(), block1.mainConnector);
-        assertEquals(block2.getMainConnector(), block2.mainConnector);
+        assertNull(predicateConnected.getNext());
+        assertNull(predicateNotConnected.getNext());
     }
 
     @Test
     void getSubConnectorAt() {
-        assertThrows(IndexOutOfBoundsException.class, () -> { block1.getSubConnectorAt(0); });
-        assertThrows(IndexOutOfBoundsException.class, () -> { block2.getSubConnectorAt(0); });
+        assertThrows(IndexOutOfBoundsException.class, () -> predicateConnected.getSubConnectorAt(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> predicateNotConnected.getSubConnectorAt(0));
     }
 
     @Test
     void getNbSubConnectors() {
-        assertEquals(0, block1.getNbSubConnectors());
-        assertEquals(0, block2.getNbSubConnectors());
+        assertEquals(0, predicateConnected.getNbSubConnectors());
+        assertEquals(0, predicateNotConnected.getNbSubConnectors());
     }
-
 
     @Test
     void hasProperConnections() {
-        assertTrue(block1.hasProperConnections());
-        assertFalse(block2.hasProperConnections());
-<<<<<<< HEAD
+        assertTrue(predicateConnected.hasProperConnections());
+        assertFalse(predicateNotConnected.hasProperConnections());
     }
 
     @Test
     void cloneTest() {
-        Block block = block1.clone();
-        assertNotEquals(block, block1);
-        assertEquals(block.getFunctionality(), block1.getFunctionality());
-        assertEquals(block.getFunctionality().getGameWorld(), block1.getFunctionality().getGameWorld());
-        assertTrue(block instanceof StatementBlock);
-        assertTrue(block.getFunctionality() instanceof PredicateFunctionality);
+        Block block = predicateConnected.clone();
+        assertNotEquals(block, predicateConnected);
+        assertEquals(block.getFunctionality(), predicateConnected.getFunctionality());
+        assertEquals(block.getClass(), predicateConnected.getClass());
         assertFalse(block.getMainConnector().isConnected());
     }
-=======
-    }*/
+
+    @Test
+    void getBlockAtIndex() {
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(1));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getBlockAtIndex(0));
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(-1));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getIndexOfBlock(block));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getIndexOfBlock(block));
+    }
 }

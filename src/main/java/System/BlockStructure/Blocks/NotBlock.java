@@ -9,14 +9,10 @@ import System.BlockStructure.Functionality.NotFunctionality;
  */
 public class NotBlock extends OperationalBlock {
 
-
     /**
-     * Initialise a new not block with given functionality.
+     * Initialise a new not block.
      *
-     * @param functionality The not functionality for this block.
-     *
-     * @effect Calls super constructor with given functionality and one
-     *         one sub connector.
+     * @effect Calls super constructor with a new functionality and 1 sub connector.
      */
     public NotBlock() {
         super(new NotFunctionality(), 1);

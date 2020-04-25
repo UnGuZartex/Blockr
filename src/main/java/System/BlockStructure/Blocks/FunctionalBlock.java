@@ -24,7 +24,7 @@ public class FunctionalBlock extends Block {
      * main connector and sub connector of this functional block are
      * created.
      *
-     * @param functionality The functionality of this functionality block.
+     * @param functionality The functionality for this functionality block.
      *
      * @effect Calls super constructor with given functionality
      * @effect Set the main connector to a new connector which is facing up
@@ -85,39 +85,57 @@ public class FunctionalBlock extends Block {
         return mainConnector;
     }
 
+    /**
+     * Get the block at the given index.
+     *
+     * @param index The index of the block to get.
+     *
+     * @return The block at the given index in the linked link structure. If the
+     *         given index is out of range, null is returned.
+     *
+     * @throws IllegalArgumentException
+     *         When the given index is negative.
+     */
     @Override
-    public Block getBlockAtIndex(int index) {
-
+    public Block getBlockAtIndex(int index) throws IllegalArgumentException {
+        if (index < 0) {
+            throw new IllegalArgumentException("The given index can't be negative!");
+        }
         if (index == 0) {
             return this;
         }
-        else {
-            if (getSubConnectorAt(0).isConnected()) {
-                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
-            }
-            else {
-                return getReturnToBlock().getBlockAtIndex(index - 1);
-            }
+        if (getSubConnectorAt(0).isConnected()) {
+            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
         }
+        if (getReturnToBlock() == null) {
+            return null;
+        }
+        return getReturnToBlock().getBlockAtIndex(index - 1);
     }
 
+    /**
+     * Get the index of the given block from this block starting.
+     *
+     * @param block The block to get the index of.
+     *
+     * @pre The given block may not be connected trough the main connector of this block.
+     *
+     * @return The index of the given block in the structure of this block. If the
+     *         given block does
+     */
     @Override
     public int getIndexOfBlock(Block block) {
-
         if (block == this) {
             return 0;
         }
+        if (getSubConnectorAt(0).isConnected()) {
+            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+        }
         else {
-            if (getSubConnectorAt(0).isConnected()) {
-                return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            if (getReturnToBlock() == null) {
+                return -1;
             }
-            else {
-                if (getReturnToBlock() == null) {
-                    return -1;
-                }
-
-                return 1 + getReturnToBlock().getIndexOfBlock(block);
-            }
+            return 1 + getReturnToBlock().getIndexOfBlock(block);
         }
     }
 }

@@ -1,8 +1,7 @@
 package System.BlockStructure.Blocks;
 
-import GameWorld.Level;
+import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Predicates.WallInFrontPredicate;
 import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
@@ -14,94 +13,103 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NotBlockTest {
 
-    NotBlock not1, not2, not3, not4;
-    PredicateBlock wallInFront1, wallInFront2;
-    CavityBlock cavoc3, cavoc2;
+    GameWorldType type;
+    ConnectionHandler handler;
+    NotBlock notFullConnected, notOnlyPredicate, notOnlyCavity, notNoConnections;
+    PredicateBlock predicateFull, predicateHalve;
+    CavityBlock cavityFull, cavityHalve;
+    Block block;
 
     @BeforeEach
     void setUp() {
-        LevelInitializer init = new LevelInitializer();
-        Level level = (Level) init.createNewGameWorld();
-        not1 = new NotBlock();
-        not2 = new NotBlock();
-        not3 = new NotBlock();
-        not4 = new NotBlock();
+        type = new LevelInitializer();
 
-        wallInFront1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
-        wallInFront2 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
+        notFullConnected = new NotBlock();
+        notOnlyPredicate = new NotBlock();
+        notOnlyCavity = new NotBlock();
+        notNoConnections = new NotBlock();
 
-        cavoc3 = new IfBlock();
-        cavoc2 = new IfBlock();
+        predicateFull = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));
+        predicateHalve = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));
 
-        ConnectionHandler handler = new ConnectionHandler();
-        handler.connect(wallInFront1, not1.getSubConnectorAt(0));
-        handler.connect(wallInFront2, not2.getSubConnectorAt(0));
-        handler.connect(not2, cavoc2.getConditionalSubConnector());
-        handler.connect(not3, cavoc3.getConditionalSubConnector());
+        cavityFull = new WhileBlock();
+        cavityHalve = new IfBlock();
+
+        handler = new ConnectionHandler();
+        handler.connect(predicateFull, notFullConnected.getSubConnectorAt(0));
+        handler.connect(notFullConnected, cavityFull.getConditionalSubConnector());
+        handler.connect(predicateHalve, notOnlyPredicate.getSubConnectorAt(0));
+        handler.connect(notOnlyCavity, cavityHalve.getConditionalSubConnector());
     }
 
     @AfterEach
     void tearDown() {
-        not1 = null;
-        not2 = null;
-        not3 = null;
-        not4 = null;
+        type = null;
+        handler = null;
 
-        wallInFront1 = null;
-        wallInFront2 = null;
-
-        cavoc3 = null;
-        cavoc2 = null;
+        notFullConnected = null;
+        notOnlyPredicate = null;
+        notOnlyCavity = null;
+        notNoConnections = null;
+        predicateFull = null;
+        predicateHalve = null;
+        cavityFull = null;
+        cavityHalve = null;
     }
 
     @Test
     void hasNext() {
-        assertTrue(not1.hasNext());
-        assertTrue(not2.hasNext());
-        assertFalse(not3.hasNext());
-        assertFalse(not4.hasNext());
+        assertTrue(notFullConnected.hasNext());
+        assertTrue(notOnlyPredicate.hasNext());
+        assertFalse(notOnlyCavity.hasNext());
+        assertFalse(notNoConnections.hasNext());
     }
 
     @Test
     void getNext() {
-        assertEquals(not1.getNext(), wallInFront1);
-        assertEquals(not2.getNext(), wallInFront2);
-        assertNull(not3.getNext());
-        assertNull(not4.getNext());
-    }
-
-    @Test
-    void getMainConnector() {
-        assertEquals(not1.getMainConnector(), not1.mainConnector);
-        assertEquals(not2.getMainConnector(), not2.mainConnector);
-        assertEquals(not3.getMainConnector(), not3.mainConnector);
-        assertEquals(not4.getMainConnector(), not4.mainConnector);
+        assertEquals(notFullConnected.getNext(), predicateFull);
+        assertEquals(notOnlyPredicate.getNext(), predicateHalve);
+        assertNull(notOnlyCavity.getNext());
+        assertNull(notNoConnections.getNext());
     }
 
     @Test
     void hasProperConnections() {
-        assertFalse(not1.hasProperConnections()); // Not connected to main
-        assertTrue(not2.hasProperConnections());
-        assertFalse(not3.hasProperConnections()); // Not connected to sub
-        assertFalse(not4.hasProperConnections()); // Not connected to main and sub
+        assertTrue(notFullConnected.hasProperConnections());
+        assertFalse(notOnlyPredicate.hasProperConnections());
+        assertFalse(notOnlyCavity.hasProperConnections());
+        assertFalse(notNoConnections.hasProperConnections());
     }
 
     @Test
     void getNbSubConnectors() {
-        assertEquals(1, not1.getNbSubConnectors());
-        assertEquals(1, not2.getNbSubConnectors());
-        assertEquals(1, not3.getNbSubConnectors());
-        assertEquals(1, not4.getNbSubConnectors());
+        assertEquals(1, notFullConnected.getNbSubConnectors());
+        assertEquals(1, notOnlyPredicate.getNbSubConnectors());
+        assertEquals(1, notOnlyCavity.getNbSubConnectors());
+        assertEquals(1, notNoConnections.getNbSubConnectors());
     }
 
     @Test
     void cloneTest() {
-        Block block = not1.clone();
-        assertNotEquals(block, not1);
-        assertNotEquals(block.getFunctionality(), not1.getFunctionality());
-        assertTrue(block instanceof NotBlock);
+        Block block = notFullConnected.clone();
+        assertNotEquals(block, notFullConnected);
+        assertNotEquals(block.getFunctionality(), notFullConnected.getFunctionality());
+        assertEquals(block.getClass(), notFullConnected.getClass());
         assertTrue(block.getFunctionality() instanceof NotFunctionality);
         assertFalse(block.getSubConnectorAt(0).isConnected());
         assertFalse(block.getMainConnector().isConnected());
+    }
+
+    @Test
+    void getBlockAtIndex() {
+        assertThrows(IllegalStateException.class, () -> notFullConnected.getBlockAtIndex(1));
+        assertThrows(IllegalStateException.class, () -> notOnlyPredicate.getBlockAtIndex(0));
+        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getBlockAtIndex(-1));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getIndexOfBlock(block));
+        assertThrows(IllegalStateException.class, () -> notNoConnections.getIndexOfBlock(block));
     }
 }
