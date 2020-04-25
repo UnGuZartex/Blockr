@@ -21,7 +21,7 @@ public class ResetProgramCommand extends ProgramCommand {
     /**
      * Execute the task of this reset program command.
      *
-     * @effect The program area of this program command is reset. 
+     * @effect The program area of this program command is reset.
      */
     @Override
     protected void executeTask() {
