@@ -90,11 +90,17 @@ public class GUIBlockHandler {
     }
 
     private void collectBlockData() {
-        List<Map.Entry<GUIBlock, Integer>> blockPairs = programArea.getBlockPairs();
         blockPositions = new ArrayList<>();
         paletteIndices = new ArrayList<>();
 
-        for (Map.Entry<GUIBlock, Integer> entry : blockPairs) {
+        programArea.getBlocks().sort((o1, o2) -> {
+            int comparison = Integer.compare(o1.getY(), o2.getY());
+            return (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
+        });
+
+        for (GUIBlock block : programArea.getBlocks()) {
+            Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
+                    .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
             blockPositions.add(entry.getKey().getPosition());
             paletteIndices.add(entry.getValue());
         }
@@ -112,8 +118,6 @@ public class GUIBlockHandler {
     public void handleMouseEvent(int id, int x, int y) {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
-                startPosition = new Position(x, y);
-                collectBlockData();
                 handleMousePressed(x, y);
                 break;
 
@@ -147,42 +151,46 @@ public class GUIBlockHandler {
      * @param x the given mouse x-coordinate
      * @param y the given mouse y-coordinate
      *
-     * @post If the mouse collides with a block, the dragged block is set to
-     *       the block the mouse collides with.
      * @post The list of dragged blocks is set to the blocks connected to the current dragged block.
      * @post The palette index is set to the index of the dragged block inside the palette, if possible.
      * @post The drag delta of the dragged block is set accordingly.
      * @post The last valid position of the dragged block is set accordingly.
      * @post The source panel where the dragged block came from is set accordingly.
+     * @post The start position is set.
+     * @post The block data is set.
      *
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
      */
     private void handleMousePressed(int x, int y) {
-        draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
-        boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
-        GUIBlock draggedBlock;
+        if (draggedBlocks == null) {
+            collectBlockData();
+            startPosition = new Position(x, y);
+            draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
+            boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
+            GUIBlock draggedBlock;
 
-        if (programAreaContainsMouse || draggedBlockIndex != -1) {
-            if (draggedBlockIndex != -1) {
-                draggedBlock = palette.getNewBlock(draggedBlockIndex);
-                draggedBlocks = new ArrayList<>(List.of(draggedBlock));
-                blockSourcePanel = palette;
-                programArea.setTemporaryBlock(draggedBlock);
-            }
-            else {
-                draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
-                draggedBlocks = draggedBlock.getConnectedBlocks();
-                draggedBlock.disconnectHeight();
-                programArea.setBlockDrawLayerFirst(draggedBlocks);
-                blockSourcePanel = programArea;
-            }
+            if (programAreaContainsMouse || draggedBlockIndex != -1) {
+                if (draggedBlockIndex != -1) {
+                    draggedBlock = palette.getNewBlock(draggedBlockIndex);
+                    draggedBlocks = new ArrayList<>(List.of(draggedBlock));
+                    blockSourcePanel = palette;
+                    programArea.setTemporaryBlock(draggedBlock);
+                }
+                else {
+                    draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
+                    draggedBlocks = draggedBlock.getConnectedBlocks();
+                    draggedBlock.disconnectHeight();
+                    programArea.setBlockDrawLayerFirst(draggedBlocks);
+                    blockSourcePanel = programArea;
+                }
 
-            dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
-            lastValidPositions = new ArrayList<>();
+                dragDelta = new Position(draggedBlock.getX() - x, draggedBlock.getY() - y);
+                lastValidPositions = new ArrayList<>();
 
-            for (GUIBlock block : draggedBlocks) {
-                lastValidPositions.add(new Position(block.getX(), block.getY()));
+                for (GUIBlock block : draggedBlocks) {
+                    lastValidPositions.add(new Position(block.getX(), block.getY()));
+                }
             }
         }
     }
@@ -203,7 +211,6 @@ public class GUIBlockHandler {
      * Handle the event where the mouse is released depending on
      * where the mouse was pressed the first time and where it was released.
      *
-     * @post The dragged block is set to null.
      * @post The list of dragged blocks is set to null.
      *
      * @effect The temporary block in the program area is set to null.
@@ -216,7 +223,6 @@ public class GUIBlockHandler {
      */
     private void handleMouseReleased() {
         if (draggedBlocks != null) {
-
             if (isInPanel(programArea.getPanelRectangle(), draggedBlocks)) {
                 if (blockSourcePanel == palette) {
                     handleBlockFromPaletteToProgramArea();

@@ -101,6 +101,8 @@ public class PABlockHandler {
      * @param block The block to add to the program area.
      */
     public void addToPA(Block block) {
+        programArea.addProgramResetCommand();
+
         if (!hasReachedMaxBlocks()) {
             programArea.addProgram(block);
             Update();
@@ -124,6 +126,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
+        programArea.addProgramResetCommand();
         programArea.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
         programArea.addHighestAsProgram(block);
@@ -143,6 +146,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void disconnectInPA(Block block) {
+        programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.addProgram(block);
         Update();
@@ -158,6 +162,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void deleteProgram(Block block) {
+        programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
         Update();
@@ -169,6 +174,15 @@ public class PABlockHandler {
      */
     protected void setMaxBlocks(int maxBlocks) {
         this.maxBlocks = maxBlocks;
+    }
+
+    /**
+     * Update the amount of blocks used in the program area.
+     * @effect The program area listeners are notified about
+     *         the max blocks state.
+     */
+    private void Update() {
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -191,21 +205,6 @@ public class PABlockHandler {
      */
     public void unSubscribe(ProgramAreaListener listener) {
         listeners.remove(listener);
-    }
-
-    /**
-     * Update the amount of blocks used in the program area and
-     * reset the current program(s) in the program area.
-     *
-     * @post The total number of blocks used has been updated.
-     *
-     * @effect The programs in the program area are reset.
-     * @effect The program area listeners are notified about
-     *         the max blocks state.
-     */
-    private void Update() {
-        programArea.resetProgramArea();
-        notifyMaxBlocksReached();
     }
 
     /**

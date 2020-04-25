@@ -214,9 +214,15 @@ public class ProgramArea {
      */
     public void addProgramResetCommand() {
         if (programs.size() == 1) {
-            Program program = getProgram();
-            if (program.isValidProgram()) {
+            Program program = programs.get(0);
+
+            if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
+            }
+        }
+        else {
+            for (Program program : programs) {
+                program.resetProgram();
             }
         }
     }
@@ -268,10 +274,11 @@ public class ProgramArea {
      * @throws IllegalStateException
      *         If There isn't 1 program in the program area.
      */
-    protected void notifyProgramState() throws IllegalStateException {
-        if (programs.size() != 1) {
+    protected void notifyProgramState() {
+          if (programs.size() != 1) {
             throw new IllegalStateException("There is not just 1 program in the program area!");
         }
+      
         Program program = getProgram();
         Result stepResult = program.getLastResult();
         if (program.isFinished()) {
