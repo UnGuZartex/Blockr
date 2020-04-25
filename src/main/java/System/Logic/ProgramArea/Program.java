@@ -213,6 +213,7 @@ public class Program {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
         currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
         lastResult = programSnapshot.currentResult;
+        isExecuting = programSnapshot.isExecutingNow;
     }
 
     /**
@@ -227,6 +228,8 @@ public class Program {
          * Variable referring to the result to remember.
          */
         private final Result currentResult = lastResult;
+
+        private final boolean isExecutingNow = isExecuting;
         /**
          * Variable referring to the creation time of this snapshot.
          */
@@ -240,7 +243,6 @@ public class Program {
          */
         public ProgramSnapshot() {
             currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
-
             System.out.println(currentBlockIndex + " " + startBlock.getBlockAtIndex(currentBlockIndex));
         }
 

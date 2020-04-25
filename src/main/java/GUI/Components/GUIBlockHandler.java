@@ -51,11 +51,6 @@ public class GUIBlockHandler {
      */
     private Position dragDelta;
 
-    /**
-     * Variable referring to the index of the current dragged block inside the palette.
-     */
-    private int draggedBlockIndex;
-
     private Position startPosition;
 
     private HistoryController historyController;
@@ -106,6 +101,8 @@ public class GUIBlockHandler {
             blockPositions.add(entry.getKey().getPosition());
             paletteIndices.add(entry.getValue());
         }
+
+        System.out.println("block data set");
     }
 
     /**
@@ -154,7 +151,6 @@ public class GUIBlockHandler {
      * @param y the given mouse y-coordinate
      *
      * @post The list of dragged blocks is set to the blocks connected to the current dragged block.
-     * @post The palette index is set to the index of the dragged block inside the palette, if possible.
      * @post The drag delta of the dragged block is set accordingly.
      * @post The last valid position of the dragged block is set accordingly.
      * @post The source panel where the dragged block came from is set accordingly.
@@ -168,7 +164,7 @@ public class GUIBlockHandler {
         if (draggedBlocks == null) {
             collectBlockData();
             startPosition = new Position(x, y);
-            draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
+            int draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
             boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
             GUIBlock draggedBlock;
 
@@ -177,7 +173,7 @@ public class GUIBlockHandler {
                     draggedBlock = palette.getNewBlock(draggedBlockIndex);
                     draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                     blockSourcePanel = palette;
-                    programArea.setTemporaryBlock(draggedBlock);
+                    programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, draggedBlockIndex));
                 }
                 else {
                     draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
@@ -198,11 +194,10 @@ public class GUIBlockHandler {
     }
 
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
-        draggedBlockIndex = paletteIndex;
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
-        programArea.setTemporaryBlock(draggedBlock);
+        programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, paletteIndex));
         dragDelta = new Position(0, 0);
 
         handleMouseDragged(pos.getX(), pos.getY());
@@ -268,7 +263,7 @@ public class GUIBlockHandler {
      * @effect The dragged block is connected with other blocks if possible.
      */
     private void handleBlockFromPaletteToProgramArea() {
-        programArea.addTemporaryBlockToProgramArea(draggedBlockIndex);
+        programArea.addTemporaryBlockToProgramArea();
         Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlocks.get(0))).findAny();
         connectedBlock.ifPresent(guiBlock -> draggedBlocks.get(0).connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
