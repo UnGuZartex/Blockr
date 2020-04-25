@@ -351,4 +351,91 @@ public class UndoRedoTest {
         robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
         stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
     }
+
+
+    @Test
+    void returnFromNoneSuccess() {
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(ifBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnRight, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(moveForward, ifBlock.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.executeProgramRunCommand();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.executeProgramRunCommand();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.executeProgramRunCommand();
+        stateCheck(null, Result.FAILURE, 1,0,Direction.UP);
+
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+
+        controller.redo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.redo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.redo();
+    }
+
+    @Test
+    void emptyCavityTest() {
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(ifBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnRight, ifBlock.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, turnRight.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.executeProgramRunCommand();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.executeProgramRunCommand();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.executeProgramRunCommand();
+        stateCheck(null, Result.FAILURE, 1,0,Direction.UP);
+
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.undo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+
+        controller.redo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        controller.redo();
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.UP);
+        controller.redo();
+    }
 }

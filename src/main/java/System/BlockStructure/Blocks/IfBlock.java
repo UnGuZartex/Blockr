@@ -36,6 +36,8 @@ public class IfBlock extends CavityBlock {
     /**
      * Get a clone of this block.
      *
+     * @param index the index of the block to get.
+     *
      * @return A new if block with a copy of the current functionality and which is not
      *         connected to any block.
      */
@@ -56,6 +58,15 @@ public class IfBlock extends CavityBlock {
         }
     }
 
+    /**
+     * Get the index of the given block.
+     *
+     * @param block The block to get the index of.
+     *
+     * @return The index of the given block. If this block has a cavity, then
+     *         is in the cavity looked, otherwise there is in underneath the
+     *         block checked.
+     */
     @Override
     public int getIndexOfBlock(Block block) {
         if (block == this) {
@@ -73,6 +84,11 @@ public class IfBlock extends CavityBlock {
         }
     }
 
+    /**
+     * Clone this block.
+     *
+     * @return A new if block which is not connected.
+     */
     @Override
     public Block clone() {
         return new IfBlock();
