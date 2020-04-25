@@ -30,7 +30,6 @@ public class ProgramArea {
 
     private Snapshot gameWorldStartSnapshot;
 
-
     private final CommandHistory history;
 
     public ProgramArea(GameWorld gameWorld, CommandHistory history) {

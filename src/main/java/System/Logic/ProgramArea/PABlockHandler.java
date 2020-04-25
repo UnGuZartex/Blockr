@@ -102,8 +102,9 @@ public class PABlockHandler {
      * @param block The block to add to the program area.
      */
     public void addToPA(Block block) {
+        programArea.addProgramResetCommand();
+
         if (!hasReachedMaxBlocks()) {
-            programArea.addProgramResetCommand();
             programArea.addProgram(block);
             Update();
         }
