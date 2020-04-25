@@ -10,6 +10,10 @@ import System.BlockStructure.Functionality.CavityFunctionality;
  */
 public class WhileBlock extends CavityBlock {
 
+    /**
+     * A variable referring to whether or not this block has been passed while
+     * looking for the block by index.
+     */
     private boolean passed;
 
     /**
@@ -21,6 +25,14 @@ public class WhileBlock extends CavityBlock {
         super(new CavityFunctionality());
     }
 
+    /**
+     * Get the block at the given index.
+     *
+     * @param index The index of the block to get.
+     *
+     * @return The block at the index. First is in the cavity counted and
+     *         then is under the cavity counted.
+     */
     @Override
     public Block getBlockAtIndex(int index) {
         if (index == 0) {
@@ -41,6 +53,15 @@ public class WhileBlock extends CavityBlock {
         }
     }
 
+    /**
+     * Get the index of the given block.
+     *
+     * @param block The block to get the index of.
+     *
+     * @return The index of the given block. If this block has a cavity, then
+     *         is in the cavity looked, otherwise there is in underneath the
+     *         block checked.
+     */
     public int getIndexOfBlock(Block block) {
         if (block == this) {
             return 0;

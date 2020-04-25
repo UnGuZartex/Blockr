@@ -150,6 +150,13 @@ class ProgramTest {
     }
 
     @Test
+    void isExecuting() {
+        assertFalse(validProgram.isExecuting());
+        validProgram.executeStep(level);
+        assertTrue(validProgram.isExecuting());
+    }
+
+    @Test
     void isValidProgram() {
         assertTrue(validProgram.isValidProgram());
         assertFalse(invalidProgram.isValidProgram());

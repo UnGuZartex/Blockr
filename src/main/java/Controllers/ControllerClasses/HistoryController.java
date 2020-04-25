@@ -2,16 +2,21 @@ package Controllers.ControllerClasses;
 
 import System.Logic.CommandHistory;
 import System.Logic.ProgramArea.ProgramArea;
-import System.Logic.ProgramArea.ResetProgramCommand;
-import System.Logic.ProgramArea.RunProgramCommand;
 import Utility.Command;
 
 /**
  * Controller used for handling the history of ui commands.
  */
 public class HistoryController {
-    private CommandHistory history;
-    private ProgramArea programArea;
+
+    /**
+     * Variable referring to the history of this history controller.
+     */
+    private final CommandHistory history;
+    /**
+     * Variable referring to the program area of this history controller.
+     */
+    private final ProgramArea programArea;
 
     /**
      * Create a new history controller with a given command history.
