@@ -101,8 +101,6 @@ public class GUIBlockHandler {
             blockPositions.add(entry.getKey().getPosition());
             paletteIndices.add(entry.getValue());
         }
-
-        System.out.println("block data set");
     }
 
     /**
@@ -173,7 +171,7 @@ public class GUIBlockHandler {
                     draggedBlock = palette.getNewBlock(draggedBlockIndex);
                     draggedBlocks = new ArrayList<>(List.of(draggedBlock));
                     blockSourcePanel = palette;
-                    programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, draggedBlockIndex));
+                    programArea.setTemporaryBlockPair(new AbstractMap.SimpleEntry<>(draggedBlock, draggedBlockIndex));
                 }
                 else {
                     draggedBlock = programArea.getBlocks().stream().filter(b -> b.contains(x, y)).reduce((first, second) -> second).get();
@@ -197,7 +195,7 @@ public class GUIBlockHandler {
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
         draggedBlocks = new ArrayList<>(List.of(draggedBlock));
         blockSourcePanel = palette;
-        programArea.setTemporaryBlock(new AbstractMap.SimpleEntry<>(draggedBlock, paletteIndex));
+        programArea.setTemporaryBlockPair(new AbstractMap.SimpleEntry<>(draggedBlock, paletteIndex));
         dragDelta = new Position(0, 0);
 
         handleMouseDragged(pos.getX(), pos.getY());
@@ -237,7 +235,7 @@ public class GUIBlockHandler {
                 draggedBlocks.get(0).resetHeight();
             }
 
-            programArea.setTemporaryBlock(null);
+            programArea.setTemporaryBlockPair(null);
             draggedBlocks = null;
         }
     }
