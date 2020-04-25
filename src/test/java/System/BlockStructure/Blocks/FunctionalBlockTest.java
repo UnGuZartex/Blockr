@@ -111,11 +111,6 @@ class FunctionalBlockTest {
 
     @Test
     void getIndexOfBlock_invalidBlock() {
-        //  blockConnectedTopBottom
-        //     ^
-        //  blockConnectedTopBottom
-        //     ^
-        //  blockConnectedTop
         assertEquals(-1, blockNotConnected.getIndexOfBlock(blockConnectedTop));
     }
 
