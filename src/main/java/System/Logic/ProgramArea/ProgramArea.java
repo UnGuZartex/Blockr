@@ -154,8 +154,13 @@ public class ProgramArea {
         if (programs.size() == 1) {
             Program program = programs.get(0);
 
-            if (program.isValidProgram()) {
+            if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
+            }
+        }
+        else {
+            for (Program program : programs) {
+                program.resetProgram();
             }
         }
     }
@@ -183,7 +188,7 @@ public class ProgramArea {
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
      */
-    public void resetProgram() {
+    protected void resetProgram() {
         for (Program program : programs) {
             program.resetProgram();
         }

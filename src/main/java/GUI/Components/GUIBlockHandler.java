@@ -95,7 +95,6 @@ public class GUIBlockHandler {
 
         programArea.getBlocks().sort((o1, o2) -> {
             int comparison = Integer.compare(o1.getY(), o2.getY());
-            System.out.println(comparison);
             return (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
         });
 

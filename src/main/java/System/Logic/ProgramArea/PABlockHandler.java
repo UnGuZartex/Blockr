@@ -103,6 +103,7 @@ public class PABlockHandler {
      */
     public void addToPA(Block block) {
         if (!hasReachedMaxBlocks()) {
+            programArea.addProgramResetCommand();
             programArea.addProgram(block);
             Update();
         }
@@ -125,6 +126,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
+        programArea.addProgramResetCommand();
         programArea.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
         programArea.addHighestAsProgram(block);
@@ -144,6 +146,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void disconnectInPA(Block block) {
+        programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.addProgram(block);
         Update();
@@ -159,6 +162,7 @@ public class PABlockHandler {
      * @effect An update is done.
      */
     public void deleteProgram(Block block) {
+        programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
         Update();
@@ -182,8 +186,10 @@ public class PABlockHandler {
      * @effect The program area listeners are notified about
      *         the max blocks state.
      */
+    /**
+     * TODO commentaar
+     */
     private void Update() {
-        programArea.resetProgram();
         notifyMaxBlocksReached();
     }
 
