@@ -97,6 +97,7 @@ public class GUIBlockHandler {
             int comparison = Integer.compare(o1.getY(), o2.getY());
             return (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
         });
+        Collections.reverse(programArea.getBlocks());
 
         for (GUIBlock block : programArea.getBlocks()) {
             Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
