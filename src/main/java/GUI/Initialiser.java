@@ -73,7 +73,7 @@ public class Initialiser {
 
         for (Predicate predicate : gameWorldType.getAllPredicates()) {
             GUIPaletteBlocks.add(new GUIConditionalBlock(predicate.getName(), 0, 0));
-            systemPaletteBlocks.add(new StatementBlock(new PredicateFunctionality(predicate)));
+            systemPaletteBlocks.add(new PredicateBlock(new PredicateFunctionality(predicate)));
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {

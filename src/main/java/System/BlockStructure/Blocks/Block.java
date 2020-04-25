@@ -162,7 +162,21 @@ public abstract class Block {
      */
     public abstract Block clone();
 
+    /**
+     * Get the block at the given index.
+     *
+     * @param index The index to get the block from.
+     *
+     * @return The block which is at the given index in the structure of this block.
+     */
     public abstract Block getBlockAtIndex(int index);
 
+    /**
+     * Get the index of the given block.
+     *
+     * @param block The block to get the index off.
+     *
+     * @return The index of the given block in the structure of this block.
+     */
     public abstract int getIndexOfBlock(Block block);
 }

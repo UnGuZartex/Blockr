@@ -9,7 +9,12 @@ import System.BlockStructure.Functionality.NotFunctionality;
  */
 public class NotBlock extends OperationalBlock {
 
-    public <B extends OperationalBlock> NotBlock() {
+    /**
+     * Initialise a new not block.
+     *
+     * @effect Calls super constructor with a new functionality and 1 sub connector.
+     */
+    public NotBlock() {
         super(new NotFunctionality(), 1);
     }
 

@@ -4,15 +4,13 @@ import GameWorld.Cell;
 import GameWorld.CellType;
 import GameWorld.Grid;
 import GameWorld.Level;
+import GameWorldAPI.GameWorld.Result;
 import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import RobotCollection.Robot.Direction;
 import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.GridPosition;
-import System.BlockStructure.Blocks.FunctionalBlock;
-import System.BlockStructure.Blocks.IfBlock;
-import System.BlockStructure.Blocks.NotBlock;
-import System.BlockStructure.Blocks.OperationalBlock;
+import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.NotFunctionality;
@@ -70,26 +68,16 @@ class ProgramTest {
     }
 
     @Test
-    void executeStep_InvalidProgram() {
-        assertThrows(IllegalStateException.class, () -> { invalidProgram.executeStep(); });
+    void program_invalidStart() {
+        assertThrows(IllegalArgumentException.class, () -> new Program(null));
     }
 
     @Test
-    void executeStep_ProgramFinished() {
-        validProgram.executeStep();
-        validProgram.executeStep();
-        assertTrue(validProgram.isFinished());
-        validProgram.executeStep();
-    }
-
-    @Test
-    void isFinished() {
-        assertFalse(validProgram.isFinished());
-        assertFalse(invalidProgram.isFinished());
-        validProgram.executeStep();
-        assertFalse(validProgram.isFinished());
-        validProgram.executeStep();
-        assertTrue(validProgram.isFinished());
+    void isValidStartBlock() {
+        assertTrue(Program.isValidStartBlock(moveForwardComplete));
+        assertTrue(Program.isValidStartBlock(new WhileBlock(new CavityFunctionality(level))));
+        assertTrue(Program.isValidStartBlock(not));
+        assertFalse(Program.isValidStartBlock(null));
     }
 
     @Test
@@ -110,6 +98,48 @@ class ProgramTest {
     }
 
     @Test
+    void getLastResult() {
+        assertEquals(Program.DEFAULT_RESULT, validProgram.getLastResult());
+        Result result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+        result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+        result = validProgram.executeStep();
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void executeStep_InvalidProgram() {
+        assertThrows(IllegalStateException.class, () -> invalidProgram.executeStep());
+    }
+
+    @Test
+    void executeStep_ProgramFinished() {
+        validProgram.executeStep();
+        Result result = validProgram.executeStep();
+        assertTrue(validProgram.isFinished());
+        assertEquals(result, validProgram.executeStep());
+    }
+
+    @Test
+    void executeStep_ProgramNotFinished() {
+        assertEquals(Result.SUCCESS, validProgram.executeStep());
+        assertEquals(moveForwardComplete, validProgram.getCurrentBlock());
+        assertEquals(Result.END, validProgram.executeStep());
+        assertNull(validProgram.getCurrentBlock());
+    }
+
+    @Test
+    void isFinished() {
+        assertFalse(validProgram.isFinished());
+        assertFalse(invalidProgram.isFinished());
+        validProgram.executeStep();
+        assertFalse(validProgram.isFinished());
+        validProgram.executeStep();
+        assertTrue(validProgram.isFinished());
+    }
+
+    @Test
     void isValidProgram() {
         assertTrue(validProgram.isValidProgram());
         assertFalse(invalidProgram.isValidProgram());
@@ -122,6 +152,70 @@ class ProgramTest {
     }
 
     @Test
+<<<<<<< HEAD
+    void isExecuting() {
+        assertFalse(validProgram.isExecuting());
+        validProgram.executeStep();
+        assertTrue(validProgram.isExecuting());
+        validProgram.executeStep();
+        assertTrue(validProgram.isExecuting());
+    }
+
+    @Test
+    void undoProgram_actionDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.undoProgram();
+        assertEquals(block.getClass(), validProgram.getCurrentBlock().getClass());
+        assertEquals(block.getFunctionality().getClass(), validProgram.getCurrentBlock().getFunctionality().getClass());
+        assertEquals(block.getFunctionality().getGameWorld(), validProgram.getCurrentBlock().getFunctionality().getGameWorld());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void undoProgram_noActionDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.executeStep();
+        validProgram.undoProgram();
+        assertEquals(block, validProgram.getCurrentBlock());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void redoProgram_noUndoDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.redoProgram();
+        assertEquals(block, validProgram.getCurrentBlock());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void redoProgram_undoDone() {
+        validProgram.executeStep();
+        Block block = validProgram.getCurrentBlock();
+        Result result = validProgram.getLastResult();
+        validProgram.undoProgram();
+        validProgram.redoProgram();
+        assertEquals(block.getClass(), validProgram.getCurrentBlock().getClass());
+        assertEquals(block.getFunctionality().getClass(), validProgram.getCurrentBlock().getFunctionality().getClass());
+        assertEquals(block.getFunctionality().getGameWorld(), validProgram.getCurrentBlock().getFunctionality().getGameWorld());
+        assertEquals(result, validProgram.getLastResult());
+    }
+
+    @Test
+    void resetProgram() {
+        validProgram.executeStep();
+        validProgram.executeStep();
+        validProgram.resetProgram();
+        assertEquals(validProgram.getStartBlock(), validProgram.getCurrentBlock());
+        assertEquals(Program.DEFAULT_RESULT, validProgram.getLastResult());
+    }
+=======
     void getSizeOfBlock() {
         assertEquals(1, Program.getSizeOfBlock(moveForwardComplete));
         assertEquals(2, Program.getSizeOfBlock(turnLeftComplete));

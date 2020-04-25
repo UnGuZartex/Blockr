@@ -16,7 +16,7 @@ public abstract class ConditionalBlock extends Block {
     /**
      * Variable referring to the main connector of this conditional block.
      */
-    protected final MainConnector mainConnector;
+    private final MainConnector mainConnector;
 
     /**
      * Initialise a new conditional block with given functionality.
@@ -65,7 +65,6 @@ public abstract class ConditionalBlock extends Block {
         return mainConnector;
     }
 
-
     /**
      * Checks whether this conditional block has proper connections.
      *
@@ -80,13 +79,29 @@ public abstract class ConditionalBlock extends Block {
         return super.hasProperConnections();
     }
 
+    /**
+     * Get the block at the given index.
+     *
+     * @param index The index to get the block at.
+     *
+     * @throws IllegalStateException
+     *         Always, this method may not be called for conditional blocks.
+     */
     @Override
-    public Block getBlockAtIndex(int index) {
-        return null;
+    public Block getBlockAtIndex(int index) throws IllegalStateException {
+        throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
+    /**
+     * Get the index of the given block in the structure of this block.
+     *
+     * @param block The block to get the index off.
+     *
+     * @throws IllegalStateException
+     *         Always, this method may not be called for conditional blocks.
+     */
     @Override
-    public int getIndexOfBlock(Block block) {
-        return -1;
+    public int getIndexOfBlock(Block block) throws IllegalStateException {
+        throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 }

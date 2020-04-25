@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * A class to keep track of the palette.
  *
+ * @invar The blocks in the palette must be valid at all time.
+ *        | isValidBlocks(paletteBlocks)
+ *
  * @author Alpha-team
  */
 public class Palette {
@@ -23,15 +26,25 @@ public class Palette {
      * @post the palette blocks are set to the given list of blocks.
      *
      * @throws IllegalArgumentException
-     *         when the given palette block list is null.
+     *         If the given blocks are not valid.
      */
-    public Palette (List<Block> paletteBlocks) throws IllegalArgumentException {
-
-        if (paletteBlocks == null) {
-            throw new IllegalArgumentException("The given palette block list is null.");
+    public Palette(List<Block> paletteBlocks) throws IllegalArgumentException {
+        if (!isValidBlockList(paletteBlocks)) {
+            throw new IllegalArgumentException("The given palette blocks are invalid!");
         }
-
         this.paletteBlocks = paletteBlocks;
+    }
+
+    /**
+     * Checks whether or not the given blocks are valid for a palette.
+     *
+     * @param blocks The blocks to check.
+     *
+     * @return True if and only if the given blocks are effective, there is at
+     *         least one block in the list and it doesn't contain null.
+     */
+    public static boolean isValidBlockList(List<Block> blocks) {
+        return blocks != null && blocks.size() > 0 && !blocks.contains(null);
     }
 
     /**
@@ -39,17 +52,15 @@ public class Palette {
      *
      * @param index The index of the block in the palette list to create and return.
      *
-     * @return The block at the given index
+     * @return A clone of the block at the given index
      *
      * @throws IndexOutOfBoundsException
      *         when the given index for the block to choose is out of bounds.
      */
     public Block getNewBlock(int index) throws IndexOutOfBoundsException {
-
         if (index < 0 || index >= paletteBlocks.size()) {
             throw new IndexOutOfBoundsException("The given index for the block to choose is out of bounds!");
         }
-
         return paletteBlocks.get(index).clone();
     }
 }

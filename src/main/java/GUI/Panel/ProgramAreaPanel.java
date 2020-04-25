@@ -17,13 +17,12 @@ import java.util.List;
  *
  * @author ALpha-team
  */
-public class ProgramAreaPanel extends GamePanel implements ProgramListener {
+public class ProgramAreaPanel extends GamePanel implements ProgramListener { // TODO commentaar + testing
 
     /**
      * Variable referring to the blocks in the program area panel.
      */
-    private List<Map.Entry<GUIBlock, Integer>> blocks = new ArrayList<>();
-
+    private final List<Map.Entry<GUIBlock, Integer>> blocks = new ArrayList<>();
     /**
      * Variable referring to the block that is currently being dragged from the palette
      * and may or may not end up inside the program area.
@@ -38,16 +37,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Variable referring to the connection controller.
      */
-    private ConnectionController connectionController;
+    private final ConnectionController connectionController;
 
     /**
      * Variable referring to the game state.
      */
     protected String gameState = "";
 
-    /**
-     * TODO commentaar
-     */
     /**
      * Initialise a new program area panel with given corner, dimensions and controller.
      *
@@ -82,12 +78,11 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Add a block to the program area.
      *
-     * @param block The block to add to the program area.
-     * @param
+     * @param index The index of the block to add.
      *
      * @effect TODO commentaar
      */
-    public void addTemporaryBlockToProgramArea(int index) {
+    public void addTemporaryBlockToProgramArea(int index) throws IllegalStateException {
 
         if (temporaryBlock == null) {
             throw new IllegalStateException("");
@@ -126,11 +121,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @post All given blocks are deleted from the program area.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
-        for (Map.Entry<GUIBlock, Integer> entry : new ArrayList<>(blocks)) {
-            if (GUIBlocks.contains(entry.getKey())) {
-                blocks.remove(entry);
-            }
-        }
+        blocks.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
 
         for (GUIBlock block : GUIBlocks) {
             blockHandlerController.deleteFromPA(block);

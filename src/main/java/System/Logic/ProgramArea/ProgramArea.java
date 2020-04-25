@@ -21,16 +21,15 @@ public class ProgramArea {
      * Variable referring to the programs in this program area.
      */
     private final ArrayList<Program> programs = new ArrayList<>();
-
     /**
-     * Variable referring to the observer of this class.
-     * This observer will notify listeners about the events of the program.
+     * Variable referring to the program event manager.
      */
     private final ProgramEventManager observer = new ProgramEventManager();
 
     private final GameWorld gameWorld;
 
     private Snapshot gameWorldStartSnapshot;
+
 
     private final CommandHistory history;
 
@@ -97,8 +96,31 @@ public class ProgramArea {
     }
 
     /**
-     * Execute a program step if possible.
+     * Add a new program to this program area with given start block.
      *
+<<<<<<< HEAD
+     * @param startBlock The start block for the new program.
+     *
+     * @effect A new program with given start block is added to this program area if it
+     *         is not connected through it's main connector.
+     * @effect If the given block is connected through it's main connector, the highest
+     *         block is added to the program area.
+     *
+     * @throws IllegalArgumentException
+     *         If the given start block is not effective.
+     */
+    public void addProgram(Block startBlock) throws IllegalArgumentException {
+        if (startBlock == null) {
+            throw new IllegalArgumentException("The start block can't be null");
+        }
+        if (startBlock.getMainConnector().isConnected()) {
+            addHighestAsProgram(startBlock);
+        } else if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
+            programs.add(new Program(startBlock));
+        }
+    }
+
+    /**
      * @effect If there is only one program in this program area and that program is valid,
      *         then the current program executes for one step.
      * @effect The observer notifies its listeners that the amount of programs is too high
@@ -156,14 +178,11 @@ public class ProgramArea {
         notifyProgramState();
     }
 
-    /**
+    /** TODO commentaar
      * Reset all programs to their initial state.
      *
      * @effect Each program in the programs list is reset.
      * @effect The observer notifies its listeners that the program has been reset.
-     */
-    /**
-     * TODO commentaar
      */
     public void resetProgram() {
         for (Program program : programs) {
@@ -175,31 +194,27 @@ public class ProgramArea {
     }
 
     /**
-     * Add a new program to this program area with given start block.
+     * Add the highest block in the block structure of the given block as a program.
      *
-     * @param startBlock The start block for the new program.
-     *
-     * @post A new program with given start block is added to this program area.
+     * @param block The given block.
      *
      * @throws IllegalArgumentException
-     *         If the given start block is not effective.
+     *         If the given block is not effective.
      */
-    public void addProgram(Block startBlock) {
-        if (startBlock == null) {
-            throw new IllegalArgumentException("Block can't be null");
+    public void addHighestAsProgram(Block block) throws IllegalArgumentException {
+        if (block == null) {
+            throw new IllegalArgumentException("The block can't be null");
         }
-        if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
-            programs.add(new Program(startBlock));
-        }
+        addProgram(getHighestBlock(block));
     }
 
     /**
      * Delete the program from this program area which has the given block
      * as starting block. If no such program exists, nothing happens.
      *
-     * @post The program with the given startblock is deleted from this program area.
-     *
      * @param blockToDelete The starting block for the program to delete.
+     *
+     * @post The program with the given start block is deleted from this program area.
      */
     public void deleteProgram(Block blockToDelete) {
         programs.stream()
@@ -221,13 +236,23 @@ public class ProgramArea {
         return sum;
     }
 
-    /**
-     * Add the highest block in the block structure of the given block as a program.
+
+
+    /** TODO
+     * Reset all programs to their initial state.
      *
-     * @param block The given block.
+     * @effect Each program in the programs list is reset.
+     * @effect The observer notifies its listeners that the program has been reset.
      */
-    public void addHighestAsProgram(Block block) {
-        addProgram(getHighestBlock(block));
+    public void resetProgram(boolean command) {
+        if (!command) {
+            for (Program program : programs) {
+                program.resetProgram();
+            }
+        }
+        else if (programs.size() == 1) {
+            history.execute(new ResetProgramCommand(this));
+        }
     }
 
     protected void notifyProgramState() {

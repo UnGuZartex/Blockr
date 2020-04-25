@@ -12,9 +12,7 @@ import System.BlockStructure.Blocks.OperationalBlock;
 public class NotFunctionality extends ConditionalBlockFunctionality<OperationalBlock> {
 
     /**
-     * Evaluate this not functionality on the given gameWorld and set the evaluation
-     * of this functionality to the inverse of the evaluation of the block connected
-     * to this functionality.
+     * Evaluate this not functionality on the given gameWorld.
      *
      * @post Set the evaluation of this functionality to the inverse of the evaluation
      *       of the functionality of the block of this functionality.

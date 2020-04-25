@@ -2,7 +2,6 @@ package System.BlockStructure.Functionality;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
-import GameWorldAPI.History.Snapshot;
 
 /**
  * An abstract class for functionality's which can be attached to a block.

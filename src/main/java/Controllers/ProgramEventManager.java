@@ -14,7 +14,7 @@ public class ProgramEventManager {
     /**
      * Variable referring to the listeners of this program observer
      */
-    private List<ProgramListener> listeners = new ArrayList<>();
+    private final List<ProgramListener> listeners = new ArrayList<>();
 
     /**
      * Subscribe a given program listener to this observer
