@@ -95,13 +95,17 @@ public class GUIBlockHandler {
 
         programArea.getBlocks().sort((o1, o2) -> {
             int comparison = Integer.compare(o1.getY(), o2.getY());
-            return (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
+            comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
+            System.out.println(" {" + o1.getPosition().getX() + ", " + o1.getPosition().getY() + "} {" + o2.getPosition().getX() + ", " + o2.getPosition().getY() + "}" + " :" + comparison);
+            return comparison;
         });
-        Collections.reverse(programArea.getBlocks());
+        //Collections.reverse(programArea.getBlocks());
 
         for (GUIBlock block : programArea.getBlocks()) {
             Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
                     .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
+            //System.out.println(entry.getValue() + " {" + entry.getKey().getPosition().getX() + ", " + entry.getKey().getPosition().getY() + "}");
+            System.out.println("block: " + " {" + block.getPosition().getX() + ", " + block.getPosition().getY() + "}");
             blockPositions.add(entry.getKey().getPosition());
             paletteIndices.add(entry.getValue());
         }
