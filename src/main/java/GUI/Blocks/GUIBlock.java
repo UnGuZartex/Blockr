@@ -22,7 +22,7 @@ public abstract class GUIBlock implements IGUIBlock {
      */
     protected int height, width, x, y;
     /**
-     * Variable referring to the main connnector of this block.
+     * Variable referring to the main connector of this block.
      */
     protected GUIConnector mainConnector;
     /**
@@ -124,7 +124,7 @@ public abstract class GUIBlock implements IGUIBlock {
      *
      * @post The coordinates of this block are set to the given coordinates.
      * @post All rectangles in this block are translated to the given position.
-     * @post All main connector is translated to the given position.
+     * @post All main connectors is translated to the given position.
      * @post The sub connector and its connected blocks are translated.
      */
     public void setPosition(int x, int y) {
@@ -361,7 +361,7 @@ public abstract class GUIBlock implements IGUIBlock {
     protected abstract void setShapes();
 
     /**
-     * Check whether or not the any sub connector collides with the main connector.
+     * Check whether the any sub connector collides with the main connector.
      *
      * @param subConnectors The sub connectors to check.
      * @param mainConnector The main connector to check.
