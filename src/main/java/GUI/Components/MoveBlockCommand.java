@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 public class MoveBlockCommand implements Command
 {
-    private Position start, end;
+    private final Position start, end;
     private final GUIBlockHandler guiBlockHandler;
     private Snapshot GUIBlocksSnapshot;
 
