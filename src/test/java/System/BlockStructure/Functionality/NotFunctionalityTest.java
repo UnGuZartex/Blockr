@@ -19,13 +19,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class NotFunctionalityTest { // TODO miss opnieuw + beter?
+class NotFunctionalityTest {
 
 
     private NotFunctionality functionality;
     private OperationalBlock notBlock, block1, block2;
     private PredicateBlock wallInFrontBlock;
-    private ConnectionHandler connectionHandler;
 
     private Level levelUpOnBlankBeforeWall, levelDownOnGoalBeforeBlank,
             levelLeftOnGoalBeforeGoal, levelRightOnBlankBeforeWall;
@@ -110,7 +109,7 @@ class NotFunctionalityTest { // TODO miss opnieuw + beter?
         wallInFrontBlock = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
         notBlock = new NotBlock();
-        connectionHandler = new ConnectionHandler();
+        ConnectionHandler connectionHandler = new ConnectionHandler();
         connectionHandler.connect(wallInFrontBlock, notBlock.getSubConnectorAt(0));
 
         functionality = new NotFunctionality();

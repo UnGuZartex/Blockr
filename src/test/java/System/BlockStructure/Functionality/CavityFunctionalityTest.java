@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CavityFunctionalityTest { // TODO miss opnieuw?
+class CavityFunctionalityTest {
 
     CavityFunctionality ifFunc;
     IfBlock if1, block;

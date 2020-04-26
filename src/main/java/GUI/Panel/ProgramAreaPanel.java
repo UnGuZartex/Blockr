@@ -28,23 +28,19 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Variable referring to the blocks in the program area panel with their palette index.
      */
     private final List<Map.Entry<GUIBlock, Integer>> blockPairs = new ArrayList<>();
-
     /**
      * Variable referring to the block that is currently being dragged from the palette
      * and may or may not end up inside the program area.
      */
     private Map.Entry<GUIBlock, Integer> temporaryBlockPair;
-
     /**
      * Variable referring to the program controller.
      */
-    private BlockHandlerController blockHandlerController;
-
+    private final BlockHandlerController blockHandlerController;
     /**
      * Variable referring to the connection controller.
      */
     private final ConnectionController connectionController;
-
     /**
      * Variable referring to the game state.
      */
@@ -108,15 +104,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *         when the temporary block pair is already contained in the program area.
      */
     public void addTemporaryBlockToProgramArea() throws IllegalStateException {
-
         if (temporaryBlockPair == null) {
             throw new IllegalStateException("There is no temporary block available!");
         }
-
         if (blockPairs.contains(temporaryBlockPair)) {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
-
         blockPairs.add(temporaryBlockPair);
         blockHandlerController.addBlockToPA(temporaryBlockPair.getKey(), temporaryBlockPair.getValue());
     }
@@ -137,6 +130,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @param GUIBlock The block to disconnect.
      *
+     * @pre The given block must be in the program area.
+     *
      * @effect The block is disconnected from the program area
      * @effect The program is reset.
      */
@@ -150,12 +145,14 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @param GUIBlocks The blocks to delete from the program area.
      *
+     * @pre The given blocks must be in the program area.
+     *
      * @post All given blocks are deleted from the program area block pair list.
      * @effect All given blocks are internally deleted from the program area.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         blockPairs.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
-        GUIBlocks.forEach(x -> blockHandlerController.deleteFromPA(x));
+        GUIBlocks.forEach(blockHandlerController::deleteFromPA);
     }
 
     /**
@@ -218,7 +215,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
             case SUCCESS:
                 changeBlockColors(Color.orange);
                 gameState = "YOU LOSE!  :(";
-
                 break;
         }
     }
@@ -256,7 +252,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void onProgramInvalid() {
         changeBlockColors(Color.red);
-        gameState = "INVALID PROGRAM";
+        gameState = "INVALID PROGRAM!";
     }
 
     /**
@@ -272,7 +268,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Paint this panel.
      *
      * @param g The given graphics.
-     * @library library The image library.
+     * @param library The image library.
      *
      * @effect The program area background is drawn.
      * @effect The program area blocks are drawn.
@@ -289,6 +285,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Draw all the blocks in the program area + the temporary block if it's currently set.
      *
      * @param g The graphics to draw the blocks with.
+     *
+     * @effect Each block in the program area and the temporary block (if any exists) is drawn.
      */
     private void drawBlocks(Graphics g) {
         blockPairs.forEach(x -> x.getKey().paint(g));
