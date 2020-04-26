@@ -17,6 +17,13 @@ import java.util.*;
  * A class used to handle the movement of GUI blocks between the
  * palette and program area panels.
  *
+ * @invar The palette panel of this gui block handler may not be null.
+ *        | palette != null
+ * @invar The program area panel of this gui block handler may not be null.
+ *        | programArea != null
+ * @invar The history controller of this gui block handler may not be null.
+ *        | historyController != null
+ *
  * @author Alpha-team
  */
 public class GUIBlockHandler {
@@ -25,47 +32,38 @@ public class GUIBlockHandler {
      * Variable referring to the palette panel.
      */
     private final PalettePanel palette;
-
     /**
      * Variable referring to the program area panel.
      */
     private final ProgramAreaPanel programArea;
-
     /**
      * Variable referring to the panel where the current dragged block was first moved from.
      */
     private GamePanel blockSourcePanel;
-
     /**
      * Variable referring to the blocks connected to the current dragged block.
      */
     private List<GUIBlock> draggedBlocks;
-
     /**
      * Variable referring to the last valid positions of the current dragged blocks.
      */
     private List<Position> lastValidPositions;
-
     /**
      * Variable referring to the relation between the mouse and the current dragged block.
      */
     private Position dragDelta;
-
     /**
      * Variable referring to the mouse position where a mouse interaction first happened.
      */
     private Position startPosition;
-
     /**
      * Variable referring to the history controller in this gui block handler.
      */
     private final HistoryController historyController;
-
     /**
      * Variable referring to the block position data in the gui block handler.
      */
     private List<Position> blockPositions = new ArrayList<>();
-
     /**
      * Variable referring to the palette indices data in the gui block handler.
      */
@@ -82,8 +80,24 @@ public class GUIBlockHandler {
      * @post The current palette panel is set to the given palette panel.
      * @post The current program area panel is set to the given program area panel.
      * @post The current history controller is set to the given controller.
+     *
+     * @throws IllegalArgumentException
+     *         When the given palette is not effective.
+     * @throws IllegalArgumentException
+     *         When the given program area is not effective.
+     * @throws IllegalArgumentException
+     *         When the given history controller is not effective.
      */
-    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) {
+    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) throws IllegalArgumentException {
+        if (palette == null) {
+            throw new IllegalArgumentException("The given palette is not effective!");
+        }
+        if (programArea == null) {
+            throw new IllegalArgumentException("The given program area is not effective!");
+        }
+        if (historyController == null) {
+            throw new IllegalArgumentException("The given history controller is not effective!");
+        }
         this.palette = palette;
         this.programArea = programArea;
         this.historyController = historyController;
@@ -154,11 +168,9 @@ public class GUIBlockHandler {
     public void loadSnapshot(Snapshot snapshot) {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
-
         for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
             addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
-
         collectBlockData();
     }
 
@@ -212,7 +224,10 @@ public class GUIBlockHandler {
     }
 
     /**
+     * Collect the data of all the blocks.
      *
+     * @effect The block positions is set to the positions of the gui blocks in the program area.
+     * @effect The palette indices are set to the indices of the blocks in the program area.
      */
     private void collectBlockData() {
         blockPositions = new ArrayList<>();
@@ -381,12 +396,10 @@ public class GUIBlockHandler {
          * Variable referring to the stored block positions currently set in the gui block handler.
          */
         private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
-
         /**
          * Variable referring to the stored palette indices currently set in the gui block handler.
          */
         private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
-
         /**
          * Variable referring to the creation time of this snapshot.
          */
