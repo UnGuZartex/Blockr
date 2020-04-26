@@ -29,6 +29,7 @@ public class ProgramEventManager {
 
     /**
      * Unsubscribe a given program listener from this observer
+     *
      * @param listener the given program listener
      *
      * @post The given listener is removed from the current listeners.
