@@ -104,12 +104,15 @@ public class PABlockHandler {
      * @effect Program reset command is added to the program area.
      * @effect The given block is added to the program area.
      * @effect listeners are notified whether max blocks are reached.
+     *
+     * @throws IllegalStateException
+     *         When max blocks has been reached.
      */
-    public void addToPA(Block block) {
+    public void addToPA(Block block) throws IllegalStateException {
 
         if (hasReachedMaxBlocks()) {
-            throw new IllegalArgumentException("Max blocks has been reached. " +
-                    "This block can' be added to the program area anymore.");
+            throw new IllegalStateException("Max blocks has been reached. " +
+                    "This block can't be added to the program area anymore.");
         }
 
         programArea.addProgramResetCommand();
