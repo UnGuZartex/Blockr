@@ -1,7 +1,5 @@
 package Utility;
 
-import java.util.Comparator;
-
 /**
  * A class for positions with x,y coordinates
  *
@@ -51,7 +49,7 @@ public class Position {
     }
 
     /**
-     * Get the distance between this position and the given position.
+     * Get the distance between this position, and the given position.
      *
      * @param other The position to compute the distance to.
      *

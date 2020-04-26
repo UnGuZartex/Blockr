@@ -22,18 +22,22 @@ public class PABlockHandler {
      * Variable referring to the palette state in this program area block handler.
      */
     private final Palette palette;
+
     /**
      * Variable referring to the program area in this program area block handler.
      */
     private final ProgramArea programArea;
+
     /**
      * Variable referring to the connection handler in this program area block handler.
      */
     private final ConnectionHandler connectionHandler = new ConnectionHandler();
+
     /**
      * Variable referring to the max amount of blocks that may be used.
      */
     private int maxBlocks = 10;
+
     /**
      * Variable referring to the program area listeners.
      */
@@ -105,7 +109,7 @@ public class PABlockHandler {
 
         if (!hasReachedMaxBlocks()) {
             programArea.addProgram(block);
-            Update();
+            notifyMaxBlocksReached();
         }
     }
 
@@ -130,7 +134,7 @@ public class PABlockHandler {
         programArea.deleteProgram(block);
         connectionHandler.connect(block, subConnector);
         programArea.addHighestAsProgram(block);
-        Update();
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -149,7 +153,7 @@ public class PABlockHandler {
         programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.addProgram(block);
-        Update();
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -165,7 +169,7 @@ public class PABlockHandler {
         programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
-        Update();
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -174,15 +178,6 @@ public class PABlockHandler {
      */
     protected void setMaxBlocks(int maxBlocks) {
         this.maxBlocks = maxBlocks;
-    }
-
-    /**
-     * Update the amount of blocks used in the program area.
-     * @effect The program area listeners are notified about
-     *         the max blocks state.
-     */
-    private void Update() {
-        notifyMaxBlocksReached();
     }
 
     /**

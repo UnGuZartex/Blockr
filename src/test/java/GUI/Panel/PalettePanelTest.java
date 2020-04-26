@@ -41,7 +41,7 @@ class PalettePanelTest {
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
 
-        panel = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator));
     }
 
     @AfterEach
