@@ -14,10 +14,12 @@ public abstract class ProgramCommand implements Command {
      * Variable referring to the program area this program command executes on.
      */
     protected final ProgramArea programArea;
+
     /**
      * Variable referring to the snapshot of the program to keep track of.
      */
     private Snapshot programSnapShot;
+
     /**
      * Variable referring to the snapshot of the game world to keep track of.
      */
@@ -60,7 +62,7 @@ public abstract class ProgramCommand implements Command {
      *
      * @effect Load the snapshot of the program in the program of the program area.
      * @effect Load the snapshot of the game world in the game world of the program area.
-     * @effect Notify the porgram area that the program state has changed.
+     * @effect Notify the program area that the program state has changed.
      */
     @Override
     public void undo() {
