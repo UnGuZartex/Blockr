@@ -15,19 +15,25 @@ import java.util.List;
  * A class for the panel of the program area. This panel can listen
  * to the program.
  *
+ * @invar The program area panel must contain a valid block handler controller at all time.
+ *        | blockHandlerController != null
+ * @invar The program area panel must contain a valid connection controller at all time.
+ *        | connectionController != null
+ *
  * @author ALpha-team
  */
-public class ProgramAreaPanel extends GamePanel implements ProgramListener { // TODO commentaar + testing
+public class ProgramAreaPanel extends GamePanel implements ProgramListener {
 
     /**
-     * Variable referring to the blocks in the program area panel.
+     * Variable referring to the blocks in the program area panel with their palette index.
      */
-    private final List<Map.Entry<GUIBlock, Integer>> blocks = new ArrayList<>();
+    private final List<Map.Entry<GUIBlock, Integer>> blockPairs = new ArrayList<>();
+
     /**
      * Variable referring to the block that is currently being dragged from the palette
      * and may or may not end up inside the program area.
      */
-    private GUIBlock temporaryBlock;
+    private Map.Entry<GUIBlock, Integer> temporaryBlockPair;
 
     /**
      * Variable referring to the program controller.
@@ -54,50 +60,76 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      * @param blockHandlerController The program controller used to handle program actions.
      * @param connectionController The connection controller used to handle connections.
      *
-     * @effect Calls the super constructor with given coordinates and dimensions.
-     * @effect Subscribes this panel as a listener to the panel.
-     *
      * @post The program controller of this panel is set to the given program controller.
      * @post The connection controller of this panel is set to the given connection controller.
+     *
+     * @effect Calls the super constructor with given coordinates and dimensions.
+     *
+     * @throws IllegalArgumentException
+     *         when the given block handler controller is null.
+     * @throws IllegalArgumentException
+     *         when the given connection controller is null.
      */
     public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController,
-                ConnectionController connectionController) {
+                ConnectionController connectionController) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
+
+        if (blockHandlerController == null) {
+            throw new IllegalArgumentException("The given block handler controller is null.");
+        }
+
+        if (connectionController == null) {
+            throw new IllegalArgumentException("The given connection controller is null.");
+        }
+
         this.blockHandlerController = blockHandlerController;
         this.connectionController = connectionController;
     }
 
     /**
-     * TODO wegkrijgen?
-     * @return
+     * Return the connection controller.
+     *
+     * @return the connection controller.
      */
     public ConnectionController getConnectionController() {
         return connectionController;
     }
 
     /**
-     * Add a block to the program area.
+     * Add the current temporary block to the program area.
      *
-     * @param index The index of the block to add.
+     * @post The current temporary block pair is added to the list of block pairs.
      *
-     * @effect TODO commentaar
+     * @effect The temporary block is added to the program area internally.
+     *
+     * @throws IllegalStateException
+     *         when there is no temporary block available.
+     * @throws IllegalArgumentException
+     *         when the temporary block pair is already contained in the program area.
      */
-    public void addTemporaryBlockToProgramArea(int index) throws IllegalStateException {
+    public void addTemporaryBlockToProgramArea() throws IllegalStateException {
 
-        if (temporaryBlock == null) {
-            throw new IllegalStateException("");
+        if (temporaryBlockPair == null) {
+            throw new IllegalStateException("There is no temporary block available!");
         }
 
-        if (blocks.contains(temporaryBlock)) {
+        if (blockPairs.contains(temporaryBlockPair)) {
             throw new IllegalStateException("Can't add a block that is already in the program area to the program area.");
         }
 
-        blocks.add(0, new AbstractMap.SimpleEntry<>(temporaryBlock, index));
-        blockHandlerController.addBlockToPA(temporaryBlock, index);
+        blockPairs.add(temporaryBlockPair);
+        blockHandlerController.addBlockToPA(temporaryBlockPair.getKey(), temporaryBlockPair.getValue());
     }
 
-    public void setTemporaryBlock(GUIBlock block) {
-        temporaryBlock = block;
+    /**
+     * Set the temporary block pair to a new pair.
+     *
+     * @param blockPair The given block pair.
+     *
+     * @post The current temporary block pair is set to the given block pair.
+     */
+    public void setTemporaryBlockPair(Map.Entry<GUIBlock, Integer> blockPair) {
+        temporaryBlockPair = blockPair;
     }
 
     /**
@@ -118,14 +150,12 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      *
      * @param GUIBlocks The blocks to delete from the program area.
      *
-     * @post All given blocks are deleted from the program area.
+     * @post All given blocks are deleted from the program area block pair list.
+     * @effect All given blocks are internally deleted from the program area.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
-        blocks.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
-
-        for (GUIBlock block : GUIBlocks) {
-            blockHandlerController.deleteFromPA(block);
-        }
+        blockPairs.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
+        GUIBlocks.forEach(x -> blockHandlerController.deleteFromPA(x));
     }
 
     /**
@@ -134,22 +164,22 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      * @return All the blocks in the program area.
      */
     public List<GUIBlock> getBlocks() {
-
         List<GUIBlock> blocks = new ArrayList<>();
-
-        for (Map.Entry<GUIBlock, Integer> entry : this.blocks) {
-            blocks.add(entry.getKey());
-        }
-
+        blockPairs.forEach(x -> blocks.add(x.getKey()));
         return blocks;
     }
 
+    /**
+     * Return a new list containing all block pairs.
+     *
+     * @return a new list containing all block pairs.
+     */
     public List<Map.Entry<GUIBlock, Integer>> getBlockPairs() {
-        return new ArrayList<>(blocks);
+        return new ArrayList<>(blockPairs);
     }
 
     /**
-     * Set the order to draw the blocks properly.
+     * Change the order of the blocks to draw them properly.
      *
      * @param highestLayerBlocks The block which should be drawn on top.
      *
@@ -160,11 +190,11 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
         List<Map.Entry<GUIBlock, Integer>> blocksCopy = new ArrayList<>();
 
         for (GUIBlock block : highestLayerBlocks) {
-            blocksCopy.add(blocks.stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null));
+            blocksCopy.add(blockPairs.stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null));
         }
 
-        blocks.removeAll(blocksCopy);
-        blocks.addAll(blocksCopy);
+        blockPairs.removeAll(blocksCopy);
+        blockPairs.addAll(blocksCopy);
     }
 
     /**
@@ -235,9 +265,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
      * @param color The new color for the blocks.
      */
     private void changeBlockColors(Color color) {
-        for (Map.Entry<GUIBlock, Integer> entry : blocks) {
-            entry.getKey().setColor(color);
-        }
+        blockPairs.forEach(x -> x.getKey().setColor(color));
     }
 
     /**
@@ -258,22 +286,17 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener { // 
     }
 
     /**
-     * Draw all the blocks in the program area + the temporary block if it isn't null.
+     * Draw all the blocks in the program area + the temporary block if it's currently set.
      *
      * @param g The graphics to draw the blocks with.
      */
     private void drawBlocks(Graphics g) {
-        for (Map.Entry<GUIBlock, Integer> entry : blocks) {
-            entry.getKey().paint(g);
-        }
-
-        if (temporaryBlock != null) {
-            temporaryBlock.paint(g);
-        }
+        blockPairs.forEach(x -> x.getKey().paint(g));
+        if (temporaryBlockPair != null) temporaryBlockPair.getKey().paint(g);
     }
 
     /**
-     * Draw the gamestate of this panel.
+     * Draw the game state of this panel.
      *
      * @param g The graphics to draw the game state with.
      */

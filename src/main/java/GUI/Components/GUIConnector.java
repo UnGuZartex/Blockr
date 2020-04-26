@@ -17,14 +17,17 @@ public class GUIConnector {
      * Variable referring to the collision circle of this connector.
      */
     private final CollisionCircle collisionCircle;
+
     /**
      * Variable referring to the parent block of this connector.
      */
     private final GUIBlock parentBlock;
+
     /**
      * Variable referring to the connected connector to this connector.
      */
     private GUIConnector connectedConnector;
+
     /**
      * Variable referring to the default radius of a connector.
      */
@@ -133,7 +136,6 @@ public class GUIConnector {
         } else {
             return null;
         }
-
     }
 
     /**

@@ -84,7 +84,7 @@ class FunctionalBlockTest {
 
     @Test
     void getBlockAtIndex_negativeIndex() {
-        assertThrows(IllegalArgumentException.class, () -> blockConnectedTop.getBlockAtIndex(-1));
+        assertNull(blockConnectedTop.getBlockAtIndex(-1));
     }
 
     @Test

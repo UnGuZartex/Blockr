@@ -9,7 +9,7 @@ import java.awt.*;
  * A class for representing the game world panel.
  *
  * @invar The game world panel must contain a valid game world at all time.
- *        | isValidGameWorld(gameWorld)
+ *        | gameWorld != null
  *
  * @author Alpha-team
  */
@@ -31,34 +31,19 @@ public class GameWorldPanel extends GamePanel {
      *
      * @post Set the game world of this panel to the given game world.
      *
-     * @effect Calls super constructor with the given coordinates and dimensions.
+     * @effect Calls the super constructor with the given coordinates and dimensions.
      *
      * @throws IllegalArgumentException
-     *         If the given game world is not valid.
+     *         If the given game world is null.
      */
     public GameWorldPanel(GameWorld gameWorld, int cornerX, int cornerY, int width, int height) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
-        if (!isValidGameWorld(gameWorld)) {
-            throw new IllegalArgumentException("The given game world is not valid!");
-        }
-        this.gameWorld = gameWorld;
-    }
 
-    /**
-     * Checks whether or not the given game world is valid.
-     *
-     * @param gameWorld The game world to check.
-     *
-     * @return True if and only if the given game world is not null.
-=======
-     *
-     * @post The current game world is set to the given game world.
-     *
-     * @effect Calls the super constructor with the given position and dimensions.
->>>>>>> b2ed5d8aecfa994c58c41603357365bcf8d9f443
-     */
-    public static boolean isValidGameWorld(GameWorld gameWorld) {
-        return gameWorld != null;
+        if (gameWorld == null) {
+            throw new IllegalArgumentException("The given game world is null!");
+        }
+
+        this.gameWorld = gameWorld;
     }
 
     /**
@@ -68,6 +53,7 @@ public class GameWorldPanel extends GamePanel {
      * @param library library The image library.
      *
      * @effect The game world is drawn.
+     * @effect The panel background is drawn.
      */
     @Override
     public void paint(Graphics g, ImageLibrary library) {

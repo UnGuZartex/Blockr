@@ -22,7 +22,7 @@ public abstract class GUIBlock implements IGUIBlock {
      */
     protected int height, width, x, y;
     /**
-     * Variable referring to the main connnector of this block.
+     * Variable referring to the main connector of this block.
      */
     protected GUIConnector mainConnector;
     /**
@@ -124,7 +124,7 @@ public abstract class GUIBlock implements IGUIBlock {
      *
      * @post The coordinates of this block are set to the given coordinates.
      * @post All rectangles in this block are translated to the given position.
-     * @post All main connector is translated to the given position.
+     * @post All main connectors is translated to the given position.
      * @post The sub connector and its connected blocks are translated.
      */
     public void setPosition(int x, int y) {
@@ -200,7 +200,7 @@ public abstract class GUIBlock implements IGUIBlock {
     }
 
     /**
-     * Checks whether or not the given coordinates are in any rectangle.
+     * Checks whether the given coordinates are in any rectangle.
      *
      * @param x The x coordinate to check.
      * @param y The y coordinate to check.
@@ -213,7 +213,7 @@ public abstract class GUIBlock implements IGUIBlock {
     }
 
     /**
-     * Checks whether or not this block is inside the given area.
+     * Checks whether this block is inside the given area.
      *
      * @param area The area to check if this block is inside it.
      *
@@ -224,8 +224,8 @@ public abstract class GUIBlock implements IGUIBlock {
     }
 
     /**
-     * Checks whether or not any connector and sub connector of this block
-     * and the given block collide.
+     * Checks whether any connector and sub connector of this block
+     * collide with the given block.
      *
      * @param other The other block to check collision with.
      *
@@ -239,20 +239,16 @@ public abstract class GUIBlock implements IGUIBlock {
      * The current dragged block or set of blocks this block is in is being connected with a given
      * static block, if possible.
      *
-     * @param other The given static block
+     * @param other The given static block.
      *
-     * @post The height of this block and its connected set of blocks is changed accordingly.
-     * @post The position of this block set is changed accordingly to the type of completed connection.
-     *
-     * @effect The main connector of this block is connected to a sub connector of the given static block, if possible.
-     * @effect A sub connector of this block is connected to the main connector of the given static block, if possible.
-     * @effect The height of the given static block and its connected set of blocks is changed accordingly.
+     * @effect The height of this block and the static block and the connected set of blocks is changed accordingly.
+     * @effect The position of this block set is changed accordingly to the type of completed connection.
      * @effect The position of the static block set is changed accordingly to the type of completed connection.
+     * @effect A valid colliding connector of this block is connected to a valid colliding connector
+     *         of the static block, if possible.
      *
-     * @throws IllegalArgumentException When the given block does not have a colliding connector
-     */
-    /**
-     * TODO commentaar
+     * @throws IllegalArgumentException
+     *         when the given block does not have a colliding connector.
      */
     public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
         GUIConnector intersectingConnectorSub;
@@ -365,7 +361,7 @@ public abstract class GUIBlock implements IGUIBlock {
     protected abstract void setShapes();
 
     /**
-     * Check whether or not the any sub connector collides with the main connector.
+     * Check whether the any sub connector collides with the main connector.
      *
      * @param subConnectors The sub connectors to check.
      * @param mainConnector The main connector to check.

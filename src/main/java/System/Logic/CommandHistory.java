@@ -21,6 +21,7 @@ public class CommandHistory {
      */
     public void execute(Command command) {
         command.execute();
+        System.out.println("executing command " + undoStack.size() + "\n");
         undoStack.push(command);
         redoStack.clear();
     }
@@ -40,6 +41,7 @@ public class CommandHistory {
     public void undo() {
         if (undoStack.isEmpty()) return;
         Command command = undoStack.pop();
+        System.out.println("undoing command " + undoStack.size());
         command.undo();
         redoStack.push(command);
     }
