@@ -69,7 +69,7 @@ public abstract class ConditionalBlock extends Block {
      * Checks whether this conditional block has proper connections.
      *
      * @return False if the main connector is not connected, otherwise return
-     *         if parent block of this conditional block has a proper connections.
+     *         if parent block of this conditional block has the proper connections.
      */
     @Override
     public boolean hasProperConnections() {

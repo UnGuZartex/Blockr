@@ -37,7 +37,7 @@ public class MainConnector extends Connector {
      * @throws IllegalArgumentException
      *         If the given connector is already connected.
      * @throws IllegalArgumentException
-     *         If the given connector can not be a connector.
+     *         If the given connector cannot be a connector.
      */
     public void connect(SubConnector subConnector) throws IllegalStateException, IllegalArgumentException  {
 

@@ -118,7 +118,7 @@ public abstract class Connector {
     }
 
     /**
-     * Disconnect this connector from it's connector.
+     * Disconnect this connector from its connected connector.
      *
      * @throws IllegalStateException
      *         If this connector is not connected to a connector.

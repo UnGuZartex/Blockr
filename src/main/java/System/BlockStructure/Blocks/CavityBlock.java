@@ -74,7 +74,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     /**
-     * Checks whether or not this cavity block has a next block.
+     * Checks whether this cavity block has a next block.
      *
      * @return True if and only if there is a block connected to the proper
      *         sub connector. If the evaluation of this block's functionality
@@ -92,7 +92,7 @@ public abstract class CavityBlock extends FunctionalBlock {
     }
 
     /**
-     * Checks whether or not this cavity block has proper connections.
+     * Checks whether this cavity block has proper connections.
      *
      * @return True if and only if this connector has a condition connected to it
      *         which has proper connections, and if there is a cavity connected,
@@ -127,7 +127,7 @@ public abstract class CavityBlock extends FunctionalBlock {
      * If the condition is true, the next block is the first in the cavity, otherwise, the next block
      * is the first block under the while.
      *
-     * @return The next block to execute
+     * @return The next block to execute.
      */
     @Override
     public Block getNext() {

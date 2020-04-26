@@ -212,7 +212,12 @@ public class GUIBlockHandler {
     }
 
     /**
+     * Collect the current block data.
      *
+     * @post The block positions are set to an ordered list of the current
+     *       positions of the blocks in the program area.
+     * @post The palette indices are set to the indices of the blocks whom
+     *       positions are in the block positions list.
      */
     private void collectBlockData() {
         blockPositions = new ArrayList<>();
