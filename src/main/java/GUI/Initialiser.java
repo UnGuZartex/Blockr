@@ -26,22 +26,65 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class used to initialise the project.
+ */
 public class Initialiser {
 
+    /**
+     * Variable used to hold the initialised game world.
+     */
     private GameWorld gameWorld;
-    private HashMap<GUIBlock, Block> defaultBlocks = new HashMap<>();
+
+    /**
+     * Variable used to hold the initialised system palette blocks.
+     */
     private List<Block> systemPaletteBlocks = new ArrayList<>();
+
+    /**
+     * Variable used to hold the initialized gui palette blocks.
+     */
     private List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
 
+    /**
+     * Variable referring to the default blocks that are always present in the system.
+     */
+    private HashMap<GUIBlock, Block> defaultBlocks = new HashMap<>() {{
+        put(new GUICavityBlock("If", 0, 0), new IfBlock());
+        put(new GUICavityBlock("While", 0, 0), new WhileBlock());
+        put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
+    }};
 
-    public Initialiser() throws NoSuchMethodException, IllegalAccessException, InstantiationException, IOException, InvocationTargetException, ClassNotFoundException {
+    /**
+     * Create a new initialiser.
+     *
+     * @post The current game world is set to the loaded game world.
+     *
+     * @effect The default blocks are initialised.
+     * @effect The system/gui palettes are initialised.
+     *
+     * @throws Exception
+     *         When there was an exception thrown during the
+     *         initialisation of some components.
+     */
+    public Initialiser() throws Exception {
         JarLoader loader = new JarLoader();
         GameWorldType gameWorldType = loader.load();
         gameWorld = gameWorldType.createNewGameWorld();
-        initialiseDefaultBlocks();
-        initialisePalettesAndGameWorld(gameWorldType);
+        initialisePalettes(gameWorldType);
     }
 
+    /**
+     * Create a new Blockr canvas.
+     *
+     * @effect The canvas panels are set based on the initialised data.
+     *
+     * @return The Blockr canvas.
+     *
+     * @throws IOException
+     *         When an image could not be loaded while
+     *         creating the image library.
+     */
     public BlockrCanvas createNewCanvas() throws IOException {
 
         CommandHistory history = new CommandHistory();
@@ -58,13 +101,20 @@ public class Initialiser {
         return canvas;
     }
 
-    private void initialiseDefaultBlocks() {
-        defaultBlocks.put(new GUICavityBlock("If", 0, 0), new IfBlock());
-        defaultBlocks.put(new GUICavityBlock("While", 0, 0), new WhileBlock());
-        defaultBlocks.put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
-    }
-
-    private void initialisePalettesAndGameWorld(GameWorldType gameWorldType) {
+    /**
+     * The system/gui palettes are initialised with a given
+     * game world type.
+     *
+     * @param gameWorldType The given game world type.
+     *
+     * @post The gui palette blocks list is filled with the default
+     *       gui blocks together with the additional blocks generated from
+     *       the available predicates and actions in the game world.
+     * @post The system palette blocks list is filled with the default
+     *       system blocks together with the additional blocks generated from
+     *       the available predicates and actions in the game world.
+     */
+    private void initialisePalettes(GameWorldType gameWorldType) {
 
         for (Action action : gameWorldType.getAllActions()) {
             GUIPaletteBlocks.add(new GUIFunctionalBlock(action.getName(), 0, 0));
@@ -82,6 +132,14 @@ public class Initialiser {
         }
     }
 
+    /**
+     * Initialise the image library.
+     *
+     * @return The newly created image library.
+     *
+     * @throws IOException
+     *         When an image could not be loaded.
+     */
     private ImageLibrary initialiseImageLibrary() throws IOException {
         ImageLoader imageLoader = new ImageLoader();
         imageLoader.loadDirectoryImages("Blockr");

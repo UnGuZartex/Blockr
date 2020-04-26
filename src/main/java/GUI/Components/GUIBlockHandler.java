@@ -60,10 +60,12 @@ public class GUIBlockHandler {
      * Variable referring to the history controller in this gui block handler.
      */
     private final HistoryController historyController;
+
     /**
      * Variable referring to the block position data in the gui block handler.
      */
     private List<Position> blockPositions = new ArrayList<>();
+
     /**
      * Variable referring to the palette indices data in the gui block handler.
      */
@@ -396,6 +398,8 @@ public class GUIBlockHandler {
          * Variable referring to the stored block positions currently set in the gui block handler.
          */
         private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
+
+      
         /**
          * Variable referring to the stored palette indices currently set in the gui block handler.
          */

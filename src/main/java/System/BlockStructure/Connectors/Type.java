@@ -8,7 +8,7 @@ package System.BlockStructure.Connectors;
 public enum Type {
     PLUG {
         /**
-         * Checks whether or not a plug can connect with the given type.
+         * Checks whether a plug can connect with the given type.
          *
          * @param otherType The type to check.
          *
@@ -21,7 +21,7 @@ public enum Type {
     },
     SOCKET {
         /**
-         * Checks whether or not a socket can connect with the given type.
+         * Checks whether a socket can connect with the given type.
          *
          * @param otherType The type to check.
          *
@@ -34,7 +34,7 @@ public enum Type {
     };
 
     /**
-     * Checks whether or not this type can connect with the given
+     * Checks whether this type can connect with the given
      * connector type.
      *
      * @param otherType The type to check.

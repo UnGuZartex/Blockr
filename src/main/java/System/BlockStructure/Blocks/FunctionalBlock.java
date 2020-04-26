@@ -15,7 +15,7 @@ import System.BlockStructure.Functionality.BlockFunctionality;
 public class FunctionalBlock extends Block {
 
     /**
-     * Variable referring to the mainconnector of this block.
+     * Variable referring to the main connector of this block.
      */
     private final MainConnector mainConnector;
 
@@ -26,7 +26,7 @@ public class FunctionalBlock extends Block {
      *
      * @param functionality The functionality for this functionality block.
      *
-     * @effect Calls super constructor with given functionality
+     * @effect Calls the super constructor with given functionality
      * @effect Set the main connector to a new connector which is facing up
      *         and has the socket type.
      * @effect Add a new sub connector to the sub connector list facing down
