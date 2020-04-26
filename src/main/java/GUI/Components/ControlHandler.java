@@ -25,8 +25,14 @@ public class ControlHandler {
      * @param historyController The given history controller.
      *
      * @post The current history controller is set to the given controller.
+     *
+     * @throws IllegalArgumentException
+     *         When the given history controller is not effective.
      */
-    public ControlHandler(HistoryController historyController) {
+    public ControlHandler(HistoryController historyController) throws IllegalArgumentException {
+        if (historyController == null) {
+            throw new IllegalArgumentException("The given history controller is not effective!");
+        }
         this.historyController = historyController;
     }
 

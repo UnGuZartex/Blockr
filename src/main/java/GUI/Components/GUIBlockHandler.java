@@ -59,7 +59,7 @@ public class GUIBlockHandler {
     /**
      * Variable referring to the history controller in this gui block handler.
      */
-    private HistoryController historyController;
+    private final HistoryController historyController;
 
     /**
      * Variable referring to the block position data in the gui block handler.
