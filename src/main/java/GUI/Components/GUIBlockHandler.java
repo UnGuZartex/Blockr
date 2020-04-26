@@ -61,6 +61,9 @@ public class GUIBlockHandler {
      */
     private HistoryController historyController;
 
+    private List<Position> blockPositions = new ArrayList<>();
+    private List<Integer> paletteIndices = new ArrayList<>();
+
     /**
      * Create a new gui block handler with a given palette and program area panel.
      *
@@ -120,9 +123,11 @@ public class GUIBlockHandler {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
 
-        for (int i = 0; i < guiSnapshot.blockPositions.size(); i++) {
-            addPaletteBlockToProgramArea(guiSnapshot.blockPositions.get(i), guiSnapshot.paletteIndices.get(i));
+        for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
+            addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
+
+        collectBlockData();
     }
 
     /**
@@ -175,6 +180,25 @@ public class GUIBlockHandler {
         }
     }
 
+    private void collectBlockData() {
+        blockPositions = new ArrayList<>();
+        paletteIndices = new ArrayList<>();
+
+        List<GUIBlock> blocks = programArea.getBlocks();
+        blocks.sort((o1, o2) -> {
+            int comparison = Integer.compare(o1.getY(), o2.getY());
+            comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
+            return comparison;
+        });
+
+        for (GUIBlock block : blocks) {
+            Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
+                    .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
+            blockPositions.add(entry.getKey().getPosition());
+            paletteIndices.add(entry.getValue());
+        }
+    }
+
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
 
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
@@ -222,6 +246,7 @@ public class GUIBlockHandler {
 
             programArea.setTemporaryBlockPair(null);
             draggedBlocks = null;
+            collectBlockData();
         }
     }
 
@@ -297,24 +322,8 @@ public class GUIBlockHandler {
 
     private final class GUIBlockHandlerSnapshot implements Snapshot {
 
-        private final List<Position> blockPositions = new ArrayList<>();
-        private final List<Integer> paletteIndices = new ArrayList<>();
-
-        public GUIBlockHandlerSnapshot() {
-            List<GUIBlock> blocks = programArea.getBlocks();
-            blocks.sort((o1, o2) -> {
-                int comparison = Integer.compare(o1.getY(), o2.getY());
-                comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
-                return comparison;
-            });
-
-            for (GUIBlock block : blocks) {
-                Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()
-                        .stream().filter(x -> x.getKey().equals(block)).findAny().orElse(null);
-                blockPositions.add(entry.getKey().getPosition());
-                paletteIndices.add(entry.getValue());
-            }
-        }
+        private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
+        private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
 
         @Override
         public String getName() {
