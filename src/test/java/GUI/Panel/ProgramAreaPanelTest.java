@@ -221,7 +221,7 @@ class ProgramAreaPanelTest {
 
     @Test
     void deleteBlockFromProgramArea() {
-        // TODO
+        // TODO test delete
     }
 
     @Test
@@ -304,7 +304,7 @@ class ProgramAreaPanelTest {
 
     @Test
     void setBlockDrawLayerFirst() {
-        // TODO
+        // TODO test first layer
     }
 
     @Test
@@ -420,9 +420,45 @@ class ProgramAreaPanelTest {
 
     @Test
     void onTooManyPrograms() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(Color.white, block0.getColor());
+        assertEquals(Color.white, block1.getColor());
+        assertEquals("", panel.gameState);
+
+        panel.onTooManyPrograms();
+
+        assertEquals(Color.red, block0.getColor());
+        assertEquals(Color.red, block1.getColor());
+        assertEquals("TOO MANY PROGRAMS!", panel.gameState);
     }
 
     @Test
     void onProgramInvalid() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(Color.white, block0.getColor());
+        assertEquals(Color.white, block1.getColor());
+        assertEquals("", panel.gameState);
+
+        panel.onProgramInvalid();
+
+        assertEquals(Color.red, block0.getColor());
+        assertEquals(Color.red, block1.getColor());
+        assertEquals("INVALID PROGRAM!", panel.gameState);
     }
 }

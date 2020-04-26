@@ -252,7 +252,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     @Override
     public void onProgramInvalid() {
         changeBlockColors(Color.red);
-        gameState = "INVALID PROGRAM";
+        gameState = "INVALID PROGRAM!";
     }
 
     /**
