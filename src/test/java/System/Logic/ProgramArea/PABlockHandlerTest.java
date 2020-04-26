@@ -6,6 +6,7 @@ import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Blocks.IfBlock;
+import System.BlockStructure.Blocks.WhileBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.Logic.CommandHistory;
 import org.junit.jupiter.api.AfterEach;
@@ -55,8 +56,6 @@ class PABlockHandlerTest {
         assertTrue(handler.hasProperNbBlocks());
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
         assertTrue(handler.hasProperNbBlocks());
-        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
-        assertTrue(handler.hasProperNbBlocks());
     }
 
     @Test
@@ -73,6 +72,14 @@ class PABlockHandlerTest {
     }
 
     @Test
+    void addToPA_maxBlocksReached() {
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
+        assertThrows(IllegalStateException.class, () -> handler.addToPA(new WhileBlock()));
+    }
+
+    @Test
     void addToPA() {
         assertEquals(0, handler.getPA().getAllBlocksCount());
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
@@ -80,8 +87,6 @@ class PABlockHandlerTest {
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
         assertEquals(2, handler.getPA().getAllBlocksCount());
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
-        assertEquals(3, handler.getPA().getAllBlocksCount());
-        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
         assertEquals(3, handler.getPA().getAllBlocksCount());
     }
 
@@ -136,12 +141,12 @@ class PABlockHandlerTest {
             handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
             assertEquals(i+1, handler.getPA().getAllBlocksCount());
         }
-        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
+        assertThrows(IllegalStateException.class, () -> handler.addToPA(new WhileBlock()));
         assertEquals(MAX_BLOCKS, handler.getPA().getAllBlocksCount());
 
         handler.setMaxBlocks(MAX_BLOCKS + 1);
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
         assertEquals(MAX_BLOCKS + 1, handler.getPA().getAllBlocksCount());
+        assertThrows(IllegalStateException.class, () -> handler.addToPA(new WhileBlock()));
     }
-
 }

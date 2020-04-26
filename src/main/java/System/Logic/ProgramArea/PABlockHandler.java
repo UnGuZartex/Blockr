@@ -99,18 +99,25 @@ public class PABlockHandler {
      * Add the given block to the program area and update if the
      * max number has not been reached yet.
      *
-     * @post The given block is added to the program area if the
-     *       maximum number of blocks hasn't been reached.
-     *
      * @param block The block to add to the program area.
+     *
+     * @effect Program reset command is added to the program area.
+     * @effect The given block is added to the program area.
+     * @effect listeners are notified whether max blocks are reached.
+     *
+     * @throws IllegalStateException
+     *         When max blocks has been reached.
      */
-    public void addToPA(Block block) {
-        programArea.addProgramResetCommand();
+    public void addToPA(Block block) throws IllegalStateException {
 
-        if (!hasReachedMaxBlocks()) {
-            programArea.addProgram(block);
-            notifyMaxBlocksReached();
+        if (hasReachedMaxBlocks()) {
+            throw new IllegalStateException("Max blocks has been reached. " +
+                    "This block can't be added to the program area anymore.");
         }
+
+        programArea.addProgramResetCommand();
+        programArea.addProgram(block);
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -123,11 +130,12 @@ public class PABlockHandler {
      * @pre The given sub connector should be from a block which is in the program area..
      * @pre The given sub connector should be able to connect to the main connector of the given block.
      *
+     * @effect Program reset command is added to the program area.
      * @effect The given block is deleted as a program in the program area.
      * @effect The two blocks are connected.
      * @effect The root block of the newly connected block structure is added as a program,
      *         if it isn't already.
-     * @effect An update is done.
+     * @effect listeners are notified whether max blocks are reached.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
         programArea.addProgramResetCommand();
@@ -145,9 +153,10 @@ public class PABlockHandler {
      *
      * @pre The given block must be in the program area.
      *
+     * @effect Program reset command is added to the program area.
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is added as a program.
-     * @effect An update is done.
+     * @effect listeners are notified whether max blocks are reached.
      */
     public void disconnectInPA(Block block) {
         programArea.addProgramResetCommand();
@@ -161,9 +170,10 @@ public class PABlockHandler {
      *
      * @param block The starting block of the program to delete.
      *
+     * @effect Program reset command is added to the program area.
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is deleted from the program area.
-     * @effect An update is done.
+     * @effect listeners are notified whether max blocks are reached.
      */
     public void deleteProgram(Block block) {
         programArea.addProgramResetCommand();

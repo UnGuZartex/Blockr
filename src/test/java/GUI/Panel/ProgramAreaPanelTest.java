@@ -204,7 +204,7 @@ class ProgramAreaPanelTest {
         panel.addTemporaryBlockToProgramArea();
 
         block0.setPosition(100, 250);
-        block1.setPosition(100, 250 + 70);
+        block1.setPosition(100, 250 + block0.getHeight());
         block0.connectWithStaticBlock(block1, panel.getConnectionController());
 
         assertNotNull(programArea.getProgram());
@@ -220,8 +220,187 @@ class ProgramAreaPanelTest {
     }
 
     @Test
-    void deleteBlockFromProgramArea() {
-        // TODO test delete
+    void deleteBlockFromProgramArea_noBlock() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(4, panel.getBlockPairs().size());
+
+        panel.deleteBlockFromProgramArea( new ArrayList<>());
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(4, panel.getBlockPairs().size());
+    }
+
+    @Test
+    void deleteBlockFromProgramArea_oneBlock() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(4, panel.getBlockPairs().size());
+
+        panel.deleteBlockFromProgramArea( new ArrayList<>(Collections.singletonList(block1)));
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(3, panel.getBlockPairs().size());
+    }
+
+    @Test
+    void deleteBlockFromProgramArea_multipleBlocks() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(4, panel.getBlockPairs().size());
+
+        panel.deleteBlockFromProgramArea( new ArrayList<>(Arrays.asList(block1, block3)));
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertEquals(2, panel.getBlockPairs().size());
+    }
+
+    @Test
+    void deleteBlockFromProgramArea_connectedBlocks() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        block0.setPosition(100, 250);
+        block1.setPosition(100, 250 + block0.getHeight());
+        block0.connectWithStaticBlock(block1, panel.getConnectionController());
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        block2.setPosition(300, 250);
+        block3.setPosition(300, 250 + block2.getHeight());
+        block2.connectWithStaticBlock(block3, panel.getConnectionController());
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(4, panel.getBlockPairs().size());
+
+        panel.deleteBlockFromProgramArea( new ArrayList<>(Collections.singletonList(block1)));
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair2));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(3, panel.getBlockPairs().size());
+
+        panel.deleteBlockFromProgramArea( new ArrayList<>(Collections.singletonList(block2)));
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair3));
+        assertEquals(2, panel.getBlockPairs().size());
+    }
+
+    @Test
+    void deleteBlockFromProgramArea_blockNotInProgramArea() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertNull(programArea.getProgram());
+        assertTrue(panel.getBlockPairs().contains(blockPair0));
+        assertTrue(panel.getBlockPairs().contains(blockPair1));
+        assertEquals(2, panel.getBlockPairs().size());
+
+        assertThrows(IllegalArgumentException.class, () -> panel.deleteBlockFromProgramArea( new ArrayList<>(Collections.singletonList(palette.getNewBlock(0)))));
     }
 
     @Test
@@ -303,8 +482,109 @@ class ProgramAreaPanelTest {
     }
 
     @Test
-    void setBlockDrawLayerFirst() {
-        // TODO test first layer
+    void setBlockDrawLayerFirst_noElements() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(block0, panel.getBlocks().get(0));
+        assertEquals(block1, panel.getBlocks().get(1));
+        assertEquals(block2, panel.getBlocks().get(2));
+        assertEquals(block3, panel.getBlocks().get(3));
+
+        panel.setBlockDrawLayerFirst(new ArrayList<>());
+
+        assertEquals(block0, panel.getBlocks().get(0));
+        assertEquals(block1, panel.getBlocks().get(1));
+        assertEquals(block2, panel.getBlocks().get(2));
+        assertEquals(block3, panel.getBlocks().get(3));
+    }
+
+    @Test
+    void setBlockDrawLayerFirst_oneElements() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(block0, panel.getBlocks().get(0));
+        assertEquals(block1, panel.getBlocks().get(1));
+        assertEquals(block2, panel.getBlocks().get(2));
+        assertEquals(block3, panel.getBlocks().get(3));
+
+        panel.setBlockDrawLayerFirst(new ArrayList<>(Collections.singletonList(block1)));
+
+        assertEquals(block0, panel.getBlocks().get(0));
+        assertEquals(block1, panel.getBlocks().get(3));
+        assertEquals(block2, panel.getBlocks().get(1));
+        assertEquals(block3, panel.getBlocks().get(2));
+    }
+
+    @Test
+    void setBlockDrawLayerFirst_multipleElements() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block2 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair2 = new AbstractMap.SimpleEntry<>(block2, 2);
+        panel.setTemporaryBlockPair(blockPair2);
+        panel.addTemporaryBlockToProgramArea();
+
+        GUIBlock block3 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair3 = new AbstractMap.SimpleEntry<>(block3, 3);
+        panel.setTemporaryBlockPair(blockPair3);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(block0, panel.getBlocks().get(0));
+        assertEquals(block1, panel.getBlocks().get(1));
+        assertEquals(block2, panel.getBlocks().get(2));
+        assertEquals(block3, panel.getBlocks().get(3));
+
+        panel.setBlockDrawLayerFirst(new ArrayList<>(Arrays.asList(block1, block0)));
+
+        assertEquals(block0, panel.getBlocks().get(3));
+        assertEquals(block1, panel.getBlocks().get(2));
+        assertEquals(block2, panel.getBlocks().get(0));
+        assertEquals(block3, panel.getBlocks().get(1));
+
     }
 
     @Test
