@@ -19,10 +19,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
-import System.Logic.ProgramArea.ProgramArea;
-import System.Logic.ProgramArea.ResetProgramCommand;
-import System.Logic.ProgramArea.RunProgramCommand;
+import System.Logic.ProgramArea.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,6 +80,16 @@ class HistoryControllerTest {
         notBlock = null;
         whileBlock = null;
         ifBlock = null;
+    }
+
+    @Test
+    void historyController_invalidHistory() {
+        assertThrows(IllegalArgumentException.class, () -> new HistoryController(null, programArea));
+    }
+
+    @Test
+    void historyController_invalidProgramArea() {
+        assertThrows(IllegalArgumentException.class, () -> new HistoryController(history, null));
     }
 
     @Test

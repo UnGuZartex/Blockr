@@ -5,10 +5,19 @@ import java.util.Stack;
 /**
  * Class used for handling project history.
  * This class holds two stacks of commands for dynamic history management.
+ *
+ * @author Alhpa-team
  */
 public class CommandHistory {
-    private Stack<Command> undoStack = new Stack<>();
-    private Stack<Command> redoStack = new Stack<>();
+
+    /**
+     * Variable referring to the undo stack for this command history.
+     */
+    private final Stack<Command> undoStack = new Stack<>();
+    /**
+     * Variable referring to the redo stack for this command history.
+     */
+    private final Stack<Command> redoStack = new Stack<>();
 
     /**
      * Execute a given command and add it to history.
@@ -21,7 +30,6 @@ public class CommandHistory {
      */
     public void execute(Command command) {
         command.execute();
-        System.out.println("executing command " + undoStack.size() + "\n");
         undoStack.push(command);
         redoStack.clear();
     }
@@ -41,7 +49,6 @@ public class CommandHistory {
     public void undo() {
         if (undoStack.isEmpty()) return;
         Command command = undoStack.pop();
-        System.out.println("undoing command " + undoStack.size());
         command.undo();
         redoStack.push(command);
     }

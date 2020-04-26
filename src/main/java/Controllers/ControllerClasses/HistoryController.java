@@ -6,6 +6,12 @@ import Utility.Command;
 
 /**
  * Controller used for handling the history of ui commands.
+ *
+ * @invar The history controller must have an effective command history at all time.
+ *        | history != null
+ * @invar The history controller must have an effective program area at all time.
+ *        | programArea != null
+ * @author Alhpa-team
  */
 public class HistoryController {
 
@@ -21,14 +27,24 @@ public class HistoryController {
     /**
      * Create a new history controller with a given command history.
      *
-     * @param history The given command history.
+     * @param history The command history for this controller.
+     * @param programArea The program area for this controller.
      *
-     * @post The current command history is set to the given history.
+     * @post The command history is set to the given history.
+     * @post The program area is set to the given program area.
+     *
+     * @throws IllegalArgumentException
+     *         When the given history is not effective.
+     * @throws IllegalArgumentException
+     *         When the given program area is not effective.
      */
-    /**
-     * TODO invar?
-     */
-    public HistoryController(CommandHistory history, ProgramArea programArea) {
+    public HistoryController(CommandHistory history, ProgramArea programArea) throws IllegalArgumentException {
+        if (history == null) {
+            throw new IllegalArgumentException("The given history is null!");
+        }
+        if (programArea == null) {
+            throw new IllegalArgumentException("The given program area is null!");
+        }
         this.history = history;
         this.programArea = programArea;
     }
