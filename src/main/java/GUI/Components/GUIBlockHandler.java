@@ -61,19 +61,27 @@ public class GUIBlockHandler {
      */
     private HistoryController historyController;
 
+    /**
+     * Variable referring to the block position data in the gui block handler.
+     */
     private List<Position> blockPositions = new ArrayList<>();
+
+    /**
+     * Variable referring to the palette indices data in the gui block handler.
+     */
     private List<Integer> paletteIndices = new ArrayList<>();
 
     /**
-     * Create a new gui block handler with a given palette and program area panel.
+     * Create a new gui block handler with a given palette, program area panel and
+     * history controller.
      *
      * @param palette The given palette panel.
      * @param programArea The given program area panel.
+     * @param historyController The given history controller.
      *
      * @post The current palette panel is set to the given palette panel.
      * @post The current program area panel is set to the given program area panel.
-     *
-     * @param historyController TODO
+     * @post The current history controller is set to the given controller.
      */
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) {
         this.palette = palette;
@@ -81,6 +89,16 @@ public class GUIBlockHandler {
         this.historyController = historyController;
     }
 
+    /**
+     * Handle a new incoming mouse event with a given id, x and y coordinate.
+     *
+     * @param id The given mouse event id.
+     * @param x The given mouse x-coordinate.
+     * @param y The given mouse y-coordinate.
+     *
+     * @effect the history controller executes a block move command, if the mouse is released.
+     * @effect The mouse event is handled without command if the mouse is in another state than released.
+     */
     public void handleMouseEventPre(int id, int x, int y) {
         if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
             historyController.execute(new MoveBlockCommand(startPosition, new Position(x, y), this));
@@ -93,13 +111,13 @@ public class GUIBlockHandler {
     /**
      * Handle the current mouse event with the given id, x and y coordinate.
      *
-     * @param id the given mouse event id
-     * @param x the given mouse x-coordinate
-     * @param y the given mouse y-coordinate
+     * @param id The given mouse event id.
+     * @param x The given mouse x-coordinate.
+     * @param y The given mouse y-coordinate.
      *
      * @effect The mouse event is handled accordingly depending on the given id.
      */
-    public void handleMouseEvent(int id, int x, int y) {
+    protected void handleMouseEvent(int id, int x, int y) {
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);
@@ -115,10 +133,24 @@ public class GUIBlockHandler {
         }
     }
 
+    /**
+     * Create a new gui block handler snapshot.
+     *
+     * @return A new gui block handler snapshot.
+     */
     public Snapshot createSnapshot() {
         return new GUIBlockHandlerSnapshot();
     }
 
+    /**
+     * Load a gui block handler snapshot.
+     *
+     * @param snapshot The given gui block handler snapshot.
+     *
+     * @effect The program area deletes the current blocks from the program area panel.
+     * @effect New blocks are added to the program area, based on the snapshot data.
+     * @effect New block data is collected.
+     */
     public void loadSnapshot(Snapshot snapshot) {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
@@ -142,7 +174,6 @@ public class GUIBlockHandler {
      * @post The last valid position of the dragged block is set accordingly.
      * @post The source panel where the dragged block came from is set accordingly.
      * @post The start position is set.
-     * @post The block data is set.
      *
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
@@ -180,6 +211,9 @@ public class GUIBlockHandler {
         }
     }
 
+    /**
+     *
+     */
     private void collectBlockData() {
         blockPositions = new ArrayList<>();
         paletteIndices = new ArrayList<>();
@@ -199,6 +233,21 @@ public class GUIBlockHandler {
         }
     }
 
+    /**
+     * Add a new block from the palette to the program area panel with a given
+     * block position, and a palette index.
+     *
+     * @param pos The given position.
+     * @param paletteIndex The given palette index.
+     *
+     * @post The dragged blocks are set to a new block generated from the
+     *       given palette index.
+     * @post The drag delta is set to 0 to ensure valid block movement.
+     *
+     * @effect A temporary block pair is set in the program area
+     * @effect Dragging the mouse is simulated.
+     * @effect Releasing the mouse is simulated.
+     */
     private void addPaletteBlockToProgramArea(Position pos, int paletteIndex) {
 
         GUIBlock draggedBlock = palette.getNewBlock(paletteIndex);
@@ -215,7 +264,7 @@ public class GUIBlockHandler {
      * Handle the event where the mouse is released depending on
      * where the mouse was pressed the first time and where it was released.
      *
-     * @post The list of dragged blocks is reset.
+     * @post The dragged blocks list is reset.
      *
      * @effect The temporary block in the program area is reset.
      * @effect If the dragged block is placed on an illegal position, the block is set to its
@@ -224,6 +273,7 @@ public class GUIBlockHandler {
      * @effect If the dragged block is dragged to the program area, the event is handled accordingly.
      * @effect If the dragged block was dragged from the program area to the palette, the program area disconnects
      *         and deletes the block from the program area.
+     * @effect New block data is collected.
      */
     private void handleMouseReleased() {
         if (draggedBlocks != null) {
@@ -320,9 +370,19 @@ public class GUIBlockHandler {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 
+    /**
+     * A private inner class for gui block handler snapshots.
+     */
     private final class GUIBlockHandlerSnapshot implements Snapshot {
 
+        /**
+         * Variable referring to the stored block positions currently set in the gui block handler.
+         */
         private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
+
+        /**
+         * Variable referring to the stored palette indices currently set in the gui block handler.
+         */
         private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
 
         /**

@@ -215,6 +215,8 @@ public class ProgramArea {
      * @effect If there is 1 program in the program area which is valid and executing,
      *         a new program reset command is executed on the command history with
      *         this program area.
+     * @effect Notify the program area listeners that the program is in its default state if
+     *         there are no programs or too many programs in the program area.
      */
     public void addProgramResetCommand() {
         if (programs.size() == 1) {
@@ -223,6 +225,9 @@ public class ProgramArea {
             if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
             }
+        }
+        else {
+            observer.notifyProgramInDefaultState();
         }
     }
 
