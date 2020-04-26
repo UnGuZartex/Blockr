@@ -325,14 +325,29 @@ public class GUIBlockHandler {
         private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
         private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
 
+        /**
+         * Variable referring to the creation time of this snapshot.
+         */
+        private final LocalDateTime creationTime = LocalDateTime.now();
+
+        /**
+         * Get the name of this snapshot.
+         *
+         * @return the name of this snapshot.
+         */
         @Override
         public String getName() {
-            return null;
+            return "GUIBlockHandler snapshot " + this;
         }
 
+        /**
+         * Get the snapshot date.
+         *
+         * @return The the time this snapshot was initialised.
+         */
         @Override
         public LocalDateTime getSnapshotDate() {
-            return null;
+            return creationTime;
         }
     }
 }
