@@ -8,7 +8,18 @@ import java.net.URL;
 
 public class JarLoader {
 
-    public GameWorldType load() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    /**
+     * The current jar present in the project is loaded.
+     *
+     * @effect The gameWorldJar system property is set accordingly.
+     *
+     * @return The game world type present in the jar.
+     *
+     * @throws Exception
+     *         When the jar couldn't be loaded due to problems regarding whether the jar was not found, the
+     *         root class was not found or the root class failed initialisation.
+     */
+    public GameWorldType load() throws Exception {
         Class c = Class.forName(System.getProperty("GameWorldRootClass"));
         URL location = c.getResource('/' + c.getName().replace('.', '/') + ".class");
         String[] url = location.toString().split("/");

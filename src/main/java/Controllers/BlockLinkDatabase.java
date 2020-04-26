@@ -31,7 +31,6 @@ public class BlockLinkDatabase {
         if (!currentBlocks.containsKey(block)) {
             throw new IllegalArgumentException("The given graphical block is not linked to any system block.");
         }
-
         return currentBlocks.get(block);
     }
 
