@@ -292,6 +292,46 @@ class GUIBlockHandlerTest {
     }
 
     @Test
+    void handleMouseEvent_connectedBlocks() {
+        assertEquals(0, programAreaPanel.getBlocks().size());
+        assertNull(programArea.getProgram());
+
+        guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25));
+        assertEquals(1, programAreaPanel.getBlocks().size());
+        assertNotNull(programArea.getProgram());
+
+        int yPos = (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight();
+        guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight());
+        assertEquals(2, programAreaPanel.getBlocks().size());
+        assertNotNull(programArea.getProgram());
+
+        guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight());
+        assertEquals(3, programAreaPanel.getBlocks().size());
+        assertNotNull(programArea.getProgram());
+
+        GUIBlock top = programAreaPanel.getBlocks().get(0);
+        GUIBlock middle = programAreaPanel.getBlocks().get(1);
+        GUIBlock bottom = programAreaPanel.getBlocks().get(2);
+
+        assertEquals(3, top.getConnectedBlocks().size());
+        assertEquals(2, middle.getConnectedBlocks().size());
+        assertEquals(1, bottom.getConnectedBlocks().size());
+
+        guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, CORNER_X_PA + WIDTH/2, yPos);
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, yPos + 100);
+
+        assertEquals(3, programAreaPanel.getBlocks().size());
+        assertNull(programArea.getProgram());
+
+        assertEquals(1, top.getConnectedBlocks().size());
+        assertEquals(2, middle.getConnectedBlocks().size());
+        assertEquals(1, bottom.getConnectedBlocks().size());
+    }
+
+    @Test
     void snapshot_backToPalette() {
         Snapshot snapshot = guiBlockHandler.createSnapshot();
 
