@@ -145,8 +145,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      *
      * @param GUIBlocks The blocks to delete from the program area.
      *
-     * @pre The given blocks must be in the program area.
-     *
      * @post All given blocks are deleted from the program area block pair list.
      * @effect All given blocks are internally deleted from the program area.
      */
@@ -179,6 +177,8 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * Change the order of the blocks to draw them properly.
      *
      * @param highestLayerBlocks The block which should be drawn on top.
+     *
+     * @pre The given blocks must all be in the program area.
      *
      * @post The blocks which should be drawn last are put at the end
      *       of the blocks list.
