@@ -267,6 +267,7 @@ public class GUIBlockHandler {
      * @post The dragged blocks list is reset.
      *
      * @effect The temporary block in the program area is reset.
+     * @effect The program area is notified that the program is in its default state again.
      * @effect If the dragged block is placed on an illegal position, the block is set to its
      *         last known location, and the height of the structure containing the block is reset
      *         to before the block was disconnected.
@@ -295,6 +296,7 @@ public class GUIBlockHandler {
             }
 
             programArea.setTemporaryBlockPair(null);
+            programArea.onProgramDefaultState();
             draggedBlocks = null;
             collectBlockData();
         }
