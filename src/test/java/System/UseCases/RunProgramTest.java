@@ -382,6 +382,30 @@ public class RunProgramTest {
         stateCheck(null, Result.END, 1,2,Direction.DOWN);
     }
 
+    // End before program end
+    @Test
+    void turnLeft_moveForward_end_moveForward() {
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock moveForward2 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(turnLeft);
+        paBlockHandler.connectToExistingBlock(moveForward, turnLeft.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward2, moveForward.getSubConnectorAt(0));
+
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward2, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward2, Result.END, 1,2,Direction.DOWN);
+    }
+
     @Test
     void multiplePrograms() {
         FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
