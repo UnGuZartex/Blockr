@@ -174,7 +174,9 @@ public abstract class Block {
     public void terminate() { // TODO use terminate in subclasses
         isTerminated = true;
         for (SubConnector subConnector : subConnectors) {
-            subConnector.getConnectedBlock().terminate();
+            if (subConnector.isConnected()) {
+                subConnector.getConnectedBlock().terminate();
+            }
         }
     }
 
