@@ -78,6 +78,7 @@ public class BlockHandlerController {
         Block toDelete = blockDatabase.getBlockFromGUIBlock(block);
         blockDatabase.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
+        
     }
 
     /**

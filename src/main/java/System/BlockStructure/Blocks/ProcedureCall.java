@@ -4,7 +4,7 @@ import System.BlockStructure.Functionality.DummyFunctionality;
 
 public class ProcedureCall extends FunctionalBlock {
 
-    private ProcedureBlock procedure;
+    private final ProcedureBlock procedure;
 
     public ProcedureCall(ProcedureBlock procedure) {
         super(new DummyFunctionality());
@@ -14,15 +14,20 @@ public class ProcedureCall extends FunctionalBlock {
 
     @Override
     public boolean hasNext() {
-        return procedure != null;
+        if (procedure != null) {
+            return !procedure.isTerminated();
+        }
+        return false;
     }
 
     @Override
     public Block getNext() {
-        procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-        return procedure;
+        if (hasNext()) {
+            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
+            return procedure;
+        }
+        return null;
     }
-
 
     @Override
     public Block clone() {

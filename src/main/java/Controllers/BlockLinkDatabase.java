@@ -74,6 +74,8 @@ public class BlockLinkDatabase {
      *       linked system block is removed.
      */
     public void removeBlock(IGUIBlock block) {
+        Block systemBlock = getBlockFromGUIBlock(block);
+        systemBlock.terminate();
         currentBlocks.remove(block);
     }
 }

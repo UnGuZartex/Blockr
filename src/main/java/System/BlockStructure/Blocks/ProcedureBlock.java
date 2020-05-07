@@ -38,4 +38,9 @@ public class ProcedureBlock extends Block {
     public int getIndexOfBlock(Block block) {
         return getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block) + 1;
     }
+
+    @Override
+    public boolean isLegalExtraStaringBlock() {
+        return true;
+    }
 }
