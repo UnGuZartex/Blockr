@@ -59,7 +59,10 @@ public class ProcedureCall extends FunctionalBlock {
             }
             System.out.println(returnBlock);
             if (returnBlock == null) {
-                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - procedure.searchBlock(this));
+                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - procedure.getIndexOfBlock(this));
+            }
+            else {
+                return returnBlock;
             }
         }
         if (getReturnToBlock() == null) {
@@ -77,7 +80,7 @@ public class ProcedureCall extends FunctionalBlock {
             return 0;
         }
         if (hasNext()) {
-            int index = 1 + procedure.searchBlock(block);
+            int index = 1 + procedure.getIndexOfBlock(block);
             if (getSubConnectorAt(0).isConnected()) {
                 getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
             }

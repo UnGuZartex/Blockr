@@ -47,7 +47,7 @@ public class ProcedureBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(null);
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
         }
         if (getReturnToBlock() == null) {
@@ -65,7 +65,7 @@ public class ProcedureBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(null);
             return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
         }
         if (getReturnToBlock() == null) {
@@ -79,15 +79,5 @@ public class ProcedureBlock extends Block {
         return false;
     }
 
-    public int searchBlock(Block block) {
-        if (block == null) {
-            return -1;
-        }
-        if (block == this) {
-            return 1;
-        }
-        Block nextBlock = getSubConnectorAt(0).getConnectedBlock();
-        nextBlock.setReturnToBlock(null);
-        return 2 + nextBlock.getIndexOfBlock(block);
-    }
+
 }
