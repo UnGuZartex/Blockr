@@ -222,9 +222,22 @@ public class ProgramArea {
                 history.execute(new RunProgramCommand(this));
             }
         }
-        else if (programs.size() > 1) {
+        else if (getAmountOfValidPrograms() > 1) {
             observer.notifyTooManyPrograms();
         }
+        else {
+            observer.notifyProgramInvalid();
+        }
+    }
+
+    private int getAmountOfValidPrograms() {
+        int total = 0;
+        for (Program p : programs) {
+            if (p.getStartBlock().isIllegalExtraStartingBlock()) {
+                total += 1;
+            }
+        }
+        return total;
     }
 
     /**

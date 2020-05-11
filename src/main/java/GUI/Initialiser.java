@@ -52,7 +52,7 @@ public class Initialiser {
         put(new GUICavityBlock("If", 0, 0), new IfBlock());
         put(new GUICavityBlock("While", 0, 0), new WhileBlock());
         put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
-        put(new GUICavityBlock("Def",0,0), new ProcedureBlock());
+        put(new GUIProcedureBlock("Def",0,0, 0), new ProcedureBlock());
     }};
 
     /**
