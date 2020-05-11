@@ -1,6 +1,5 @@
 package GUI.Panel;
 
-import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIFunctionalBlock;
@@ -30,8 +29,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     private boolean reachedMaxBlocks;
 
-    private BlockHandlerController blockHandlerController;
-
     /**
      * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
      *
@@ -49,7 +46,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * @throws IllegalArgumentException
      *         when the given list doesn't contain at least one block.
      */
-    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks, BlockHandlerController controller) throws IllegalArgumentException {
+    public PalettePanel(int cornerX, int cornerY, int width, int height, List<GUIBlock> blocks) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
 
         if (!areValidBlocks(blocks)) {
@@ -57,7 +54,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         }
 
         this.blocks = blocks;
-        this.blockHandlerController = controller;
         setBlockPositions();
     }
 
@@ -154,7 +150,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     @Override
     public void onProcedureCreated() {
         GUIFunctionalBlock caller = new GUIFunctionalBlock("Caller", 0, 0);
-        blockHandlerController.addCallerToPalette(caller);
         blocks.add(caller);
         setBlockPositions();
     }

@@ -120,7 +120,7 @@ public class PABlockHandler {
         programArea.addProgram(block);
         notifyMaxBlocksReached();
         if (block instanceof ProcedureBlock) {
-            palette.lastProcedure = (ProcedureBlock) block;
+            palette.createCaller((ProcedureBlock) block);
             notifyProcedureCreated();
         }
     }

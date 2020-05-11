@@ -82,7 +82,7 @@ class BlockHandlerControllerTest {
 
         controller = new BlockHandlerController(converter, paBlockHandler);
 
-        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)),controller);
+        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
 
         blockIf = new IfBlock();
         blockPredicate = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));

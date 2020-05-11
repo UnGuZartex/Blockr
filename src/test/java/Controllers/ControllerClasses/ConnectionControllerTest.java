@@ -82,7 +82,7 @@ class ConnectionControllerTest {
 
         connectionController = new ConnectionController(converter, paBlockHandler);
 
-        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)), new BlockHandlerController(converter,paBlockHandler));
+        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
 
         blockIf = new IfBlock();
         blockPredicate = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));

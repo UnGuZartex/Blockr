@@ -56,7 +56,7 @@ class PalettePanelTest {
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
-        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator), blockHandlerController);
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator));
     }
 
     @AfterEach
@@ -75,7 +75,7 @@ class PalettePanelTest {
 
     @Test
     void palettePanel_invalidBlocks() {
-        assertThrows(IllegalArgumentException.class, () -> new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Collections.emptyList()), blockHandlerController));
+        assertThrows(IllegalArgumentException.class, () -> new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Collections.emptyList())));
     }
 
     @Test

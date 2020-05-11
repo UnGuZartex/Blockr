@@ -63,7 +63,7 @@ class IGUISystemBlockLinkTest {
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
-        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)), blockHandlerController);
+        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
 
         block0 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
         block1 = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));

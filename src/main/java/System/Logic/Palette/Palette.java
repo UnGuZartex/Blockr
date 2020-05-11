@@ -18,7 +18,6 @@ public class Palette {
      */
     private final List<Block> paletteBlocks;
 
-    public ProcedureBlock lastProcedure;
 
     /**
      * Create a new palette with the given blocks as available palette blocks.
@@ -66,7 +65,7 @@ public class Palette {
         return paletteBlocks.get(index).clone();
     }
 
-    public Block createCaller() {
+    public Block createCaller(ProcedureBlock lastProcedure) {
         Block toReturn = new ProcedureCall(lastProcedure);
         paletteBlocks.add(toReturn);
         return toReturn;
