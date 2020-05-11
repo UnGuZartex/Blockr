@@ -18,10 +18,10 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BlockLinkDatabaseTest {
+class IGUISystemBlockLinkTest {
 
     GameWorldType type;
-    BlockLinkDatabase converter;
+    IGUI_System_BlockLink converter;
     GUIBlock cavity, functional, conditional, operator;
     String cavityName, functionalName, conditionalName, operatorName;
     int cornerX, cornerY, width, height;
@@ -35,7 +35,7 @@ class BlockLinkDatabaseTest {
     @BeforeEach
     void setUp() {
         type = new LevelInitializer();
-        converter = new BlockLinkDatabase();
+        converter = new IGUI_System_BlockLink();
 
         random = new Random();
         cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;

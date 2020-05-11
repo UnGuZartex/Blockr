@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.IGUI_System_BlockLink;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.ProgramArea.PABlockHandler;
@@ -20,7 +20,7 @@ public class BlockHandlerController {
     /**
      * Variable referring to the block data base of this block handler controller.
      */
-    private final BlockLinkDatabase blockDatabase;
+    private final IGUI_System_BlockLink blockDatabase;
     /**
      * Variable referring to the block handler of the block handler controller.
      */
@@ -40,7 +40,7 @@ public class BlockHandlerController {
      * @throws IllegalArgumentException
      *         When the given pa block handler is not effective.
      */
-    public BlockHandlerController(BlockLinkDatabase blockDatabase, PABlockHandler blockHandler) throws IllegalArgumentException {
+    public BlockHandlerController(IGUI_System_BlockLink blockDatabase, PABlockHandler blockHandler) throws IllegalArgumentException {
         if (blockDatabase == null) {
             throw new IllegalArgumentException("The given block database is not effective!");
         }

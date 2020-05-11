@@ -1,6 +1,6 @@
 package GUI.Components;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.IGUI_System_BlockLink;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
@@ -40,7 +40,7 @@ class GUIBlockHandlerTest {
     static final int WIDTH = 400, HEIGHT = 800;
     BlockHandlerController blockHandlerController;
     ConnectionController connectionController;
-    BlockLinkDatabase converter;
+    IGUI_System_BlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -71,7 +71,7 @@ class GUIBlockHandlerTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new BlockLinkDatabase();
+        converter = new IGUI_System_BlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";
