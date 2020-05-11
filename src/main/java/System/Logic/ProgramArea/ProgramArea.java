@@ -95,7 +95,7 @@ public class ProgramArea {
     public int getAllBlocksCount() {
         int sum = 0;
         for (Program program : programs) {
-            sum += program.getSize();
+                sum += program.getSize();
         }
         return sum;
     }
@@ -166,7 +166,7 @@ public class ProgramArea {
         if (startBlock == null) {
             throw new IllegalArgumentException("The start block can't be null");
         }
-        if (startBlock.getMainConnector().isConnected()) {
+        if (startBlock.getMainConnector() != null && startBlock.getMainConnector().isConnected()) {
             addHighestAsProgram(startBlock);
         } else if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
             programs.add(new Program(startBlock));
@@ -318,11 +318,11 @@ public class ProgramArea {
      *         block of the block connected to the main connector.
      */
     private Block getHighestBlock(Block block) {
-        if (block.getMainConnector().isConnected()) {
-            return getHighestBlock(block.getMainConnector().getConnectedBlock());
+        if (block.getMainConnector() != null) {
+            if (block.getMainConnector().isConnected()) {
+                return getHighestBlock(block.getMainConnector().getConnectedBlock());
+            }
         }
-        else {
-            return block;
-        }
+        return block;
     }
 }

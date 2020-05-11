@@ -1,12 +1,16 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Connectors.MainConnector;
+import System.BlockStructure.Connectors.Orientation;
+import System.BlockStructure.Connectors.SubConnector;
+import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
 public class ProcedureBlock extends Block {
 
-    protected ProcedureBlock() {
+    public ProcedureBlock() {
         super(new DummyFunctionality());
+        getSubConnectors().add(new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG));
     }
 
     @Override
