@@ -1,6 +1,9 @@
 package GUI.Panel;
 
+import Controllers.ControllerClasses.BlockHandlerController;
+import Controllers.IGUI_System_BlockLink;
 import GUI.Blocks.*;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,10 @@ class PalettePanelTest {
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     GUIBlock cavity, functional, conditional, operator;
     String cavityName, functionalName, conditionalName, operatorName;
+    BlockHandlerController blockHandlerController;
+    IGUI_System_BlockLink converter;
+    PABlockHandler paBlockHandler;
+
 
     @BeforeEach
     void setUp() {
@@ -41,7 +48,9 @@ class PalettePanelTest {
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
 
-        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator));
+        blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
+
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator), blockHandlerController);
     }
 
     @AfterEach
@@ -60,7 +69,7 @@ class PalettePanelTest {
 
     @Test
     void palettePanel_invalidBlocks() {
-        assertThrows(IllegalArgumentException.class, () -> new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Collections.emptyList())));
+        assertThrows(IllegalArgumentException.class, () -> new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Collections.emptyList()), blockHandlerController));
     }
 
     @Test

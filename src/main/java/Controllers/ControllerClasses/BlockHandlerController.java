@@ -91,4 +91,9 @@ public class BlockHandlerController {
         Block highlightedBlock = blockHandler.getPA().getNextBlockInProgram();
         return (highlightedBlock != null) ? blockDatabase.getGUIBlockFromBlock(highlightedBlock) : null;
     }
+
+    public void addCallerToPalette(IGUIBlock caller) {
+        Block block = blockHandler.getPalette().createCaller();
+        blockDatabase.addBlockPair(caller, block);
+    }
 }

@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramAreaListener;
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.ProcedureBlock;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.Palette.Palette;
 
@@ -118,6 +119,16 @@ public class PABlockHandler {
         programArea.addProgramResetCommand();
         programArea.addProgram(block);
         notifyMaxBlocksReached();
+        if (block instanceof ProcedureBlock) {
+            palette.lastProcedure = (ProcedureBlock) block;
+            notifyProcedureCreated();
+        }
+    }
+
+    private void notifyProcedureCreated() {
+        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureCreated();
+        }
     }
 
     /**
@@ -233,5 +244,9 @@ public class PABlockHandler {
      */
     private boolean hasReachedMaxBlocks() {
         return programArea.getAllBlocksCount() >= maxBlocks;
+    }
+
+    public Palette getPalette() {
+        return this.palette;
     }
 }

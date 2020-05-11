@@ -1,5 +1,6 @@
 package Controllers;
 
+import Controllers.ControllerClasses.BlockHandlerController;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorldType.GameWorldType;
@@ -7,6 +8,7 @@ import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,8 @@ class IGUISystemBlockLinkTest {
     PalettePanel palette;
     Block block0, block1, block2;
     IGUIBlock guiBlock0, guiBlock1, guiBlock2;
+    PABlockHandler paBlockHandler;
+    BlockHandlerController blockHandlerController;
 
     @BeforeEach
     void setUp() {
@@ -53,7 +57,9 @@ class IGUISystemBlockLinkTest {
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
 
-        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
+        blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
+
+        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)), blockHandlerController);
 
         block0 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
         block1 = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));

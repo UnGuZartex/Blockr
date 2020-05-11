@@ -18,6 +18,8 @@ public class Palette {
      */
     private final List<Block> paletteBlocks;
 
+    public ProcedureBlock lastProcedure;
+
     /**
      * Create a new palette with the given blocks as available palette blocks.
      *
@@ -62,5 +64,11 @@ public class Palette {
             throw new IndexOutOfBoundsException("The given index for the block to choose is out of bounds!");
         }
         return paletteBlocks.get(index).clone();
+    }
+
+    public Block createCaller() {
+        Block toReturn = new ProcedureCall(lastProcedure);
+        paletteBlocks.add(toReturn);
+        return toReturn;
     }
 }

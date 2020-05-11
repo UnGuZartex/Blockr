@@ -25,7 +25,12 @@ public class ProcedureBlock extends Block {
 
     @Override
     public Block getNext() {
-        return getSubConnectorAt(0).getConnectedBlock();
+        if (hasNext()) {
+            Block nextBlock = getSubConnectorAt(0).getConnectedBlock();
+            nextBlock.setReturnToBlock(getReturnToBlock());
+            return nextBlock;
+        }
+        return getReturnToBlock();
     }
 
     @Override
@@ -35,12 +40,38 @@ public class ProcedureBlock extends Block {
 
     @Override
     public Block getBlockAtIndex(int index) {
-        return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+        if (index < 0) {
+            return null;
+        }
+        if (index == 0) {
+            return this;
+        }
+        if (getSubConnectorAt(0).isConnected()) {
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
+            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+        }
+        if (getReturnToBlock() == null) {
+            return null;
+        }
+        return getReturnToBlock().getBlockAtIndex(index - 1);
     }
 
     @Override
     public int getIndexOfBlock(Block block) {
-        return getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block) + 1;
+        if (block == null) {
+            return -1;
+        }
+        if (block == this) {
+            return 0;
+        }
+        if (getSubConnectorAt(0).isConnected()) {
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
+            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+        }
+        if (getReturnToBlock() == null) {
+            return -1;
+        }
+        return 1 + getReturnToBlock().getIndexOfBlock(block);
     }
 
     @Override

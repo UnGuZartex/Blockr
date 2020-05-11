@@ -50,7 +50,7 @@ public class BlockrCanvas extends CanvasWindow {
     }
 
     public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw, HistoryController historyController, PABlockHandler paBlockHandler) {
-        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks, blockHandlerController);
         paBlockHandler.subscribe(palettePanel);
 
         programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, blockHandlerController, connectionController);

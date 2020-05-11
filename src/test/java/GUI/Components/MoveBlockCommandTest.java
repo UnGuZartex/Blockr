@@ -93,7 +93,7 @@ class MoveBlockCommandTest {
         connectionController = new ConnectionController(converter, paBlockHandler);
 
         panel = new ProgramAreaPanel(cornerX, cornerY, width, height, blockHandlerController, connectionController);
-        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
+        palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)), blockHandlerController);
 
         manager = new ProgramEventManager();
         manager.subscribe(panel);

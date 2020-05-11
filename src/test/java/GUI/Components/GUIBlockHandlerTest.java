@@ -87,7 +87,7 @@ class GUIBlockHandlerTest {
         connectionController = new ConnectionController(converter, paBlockHandler);
 
         programAreaPanel = new ProgramAreaPanel(CORNER_X_PA, CORNER_Y_PA, WIDTH, HEIGHT, blockHandlerController, connectionController);
-        palette = new PalettePanel(CORNER_X_PALETTE, CORNER_Y_PALETTE, WIDTH, HEIGHT, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
+        palette = new PalettePanel(CORNER_X_PALETTE, CORNER_Y_PALETTE, WIDTH, HEIGHT, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)), blockHandlerController);
 
         manager = new ProgramEventManager();
         manager.subscribe(programAreaPanel);
