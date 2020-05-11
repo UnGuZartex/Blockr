@@ -10,7 +10,7 @@ import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.Actions.TurnRightAction;

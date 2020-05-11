@@ -1,6 +1,6 @@
 package GUI.Components;
 
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import Utility.Command;
 import Utility.Position;
 

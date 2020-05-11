@@ -6,7 +6,7 @@ import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.GamePanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import Utility.Position;
 
 import java.awt.event.MouseEvent;

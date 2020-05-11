@@ -4,7 +4,7 @@ import Controllers.ProgramEventManager;
 import Controllers.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.CommandHistory;
 
