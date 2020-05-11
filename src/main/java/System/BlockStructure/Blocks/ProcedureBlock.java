@@ -78,4 +78,16 @@ public class ProcedureBlock extends Block {
     public boolean isIllegalExtraStartingBlock() {
         return false;
     }
+
+    public int searchBlock(Block block) {
+        if (block == null) {
+            return -1;
+        }
+        if (block == this) {
+            return 1;
+        }
+        Block nextBlock = getSubConnectorAt(0).getConnectedBlock();
+        nextBlock.setReturnToBlock(null);
+        return 2 + nextBlock.getIndexOfBlock(block);
+    }
 }

@@ -13,6 +13,11 @@ public class ProcedureCall extends FunctionalBlock {
 
 
     @Override
+    public boolean hasProperConnections() {
+        return !hasNext() || (procedure.hasProperConnections() && getSubConnectorAt(0).getConnectedBlock().hasProperConnections());
+    }
+
+    @Override
     public boolean hasNext() {
         if (procedure != null) {
             return !procedure.isTerminated();
@@ -23,14 +28,24 @@ public class ProcedureCall extends FunctionalBlock {
     @Override
     public Block getNext() {
         if (hasNext()) {
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
+            setReturnToOfNext();
             return procedure;
         }
         return getReturnToBlock();
     }
 
+    private void setReturnToOfNext() {
+        if (getSubConnectorAt(0).isConnected()) {
+            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+        } else {
+            procedure.setReturnToBlock(getReturnToBlock());
+        }
+    }
+
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index) { //TODO HIER IETS FIXEN
+
         if (index < 0) {
             return null;
         }
@@ -38,8 +53,14 @@ public class ProcedureCall extends FunctionalBlock {
             return this;
         }
         if (hasNext()) {
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-            return procedure.getBlockAtIndex(index - 1);
+            Block returnBlock = procedure.getBlockAtIndex(index - 1);
+            if (getSubConnectorAt(0).isConnected()) {
+                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+            }
+            System.out.println(returnBlock);
+            if (returnBlock == null) {
+                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - procedure.searchBlock(this));
+            }
         }
         if (getReturnToBlock() == null) {
             return null;
@@ -48,6 +69,7 @@ public class ProcedureCall extends FunctionalBlock {
 
     @Override
     public int getIndexOfBlock(Block block) {
+
         if (block == null) {
             return -1;
         }
@@ -55,8 +77,11 @@ public class ProcedureCall extends FunctionalBlock {
             return 0;
         }
         if (hasNext()) {
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-            return 1 + procedure.getIndexOfBlock(block);
+            int index = 1 + procedure.searchBlock(block);
+            if (getSubConnectorAt(0).isConnected()) {
+                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+            }
+            return  index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block) ;
         }
         if (getReturnToBlock() == null) {
             return -1;
