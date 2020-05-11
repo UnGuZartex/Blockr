@@ -40,7 +40,7 @@ public class ProcedureBlock extends Block {
     }
 
     @Override
-    public boolean isLegalExtraStaringBlock() {
-        return true;
+    public boolean isIllegalExtraStartingBlock() {
+        return false;
     }
 }

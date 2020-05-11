@@ -184,7 +184,7 @@ public abstract class Block {
         return isTerminated;
     }
 
-    public boolean isLegalExtraStaringBlock() {
-        return false;
+    public boolean isIllegalExtraStartingBlock() {
+        return true;
     }
 }

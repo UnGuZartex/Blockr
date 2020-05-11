@@ -78,7 +78,7 @@ public class ProgramArea {
     public Program getProgram() {
         if (hasExecutablePrograms()) {
             for (Program program : programs) {
-                if (!program.getStartBlock().isLegalExtraStaringBlock()) {
+                if (program.getStartBlock().isIllegalExtraStartingBlock()) {
                     return program;
                 }
             }
@@ -103,7 +103,7 @@ public class ProgramArea {
     public boolean hasExecutablePrograms() {
         boolean passedMainProgram = false;
         for (Program program : programs) {
-            if (!program.getStartBlock().isLegalExtraStaringBlock()) {
+            if (program.getStartBlock().isIllegalExtraStartingBlock()) {
                 if (passedMainProgram) {
                     return false;
                 } else {
