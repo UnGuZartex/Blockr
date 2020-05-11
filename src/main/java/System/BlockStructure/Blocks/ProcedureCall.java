@@ -44,7 +44,7 @@ public class ProcedureCall extends FunctionalBlock {
     }
 
     @Override
-    public Block getBlockAtIndex(int index) { //TODO HIER IETS FIXEN
+    public Block getBlockAtIndex(int index) {
 
         if (index < 0) {
             return null;
@@ -71,7 +71,7 @@ public class ProcedureCall extends FunctionalBlock {
         return getReturnToBlock().getBlockAtIndex(index - 1);    }
 
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block) { //TODO HIER IETS FIXEN
 
         if (block == null) {
             return -1;
@@ -83,8 +83,13 @@ public class ProcedureCall extends FunctionalBlock {
             int index = 1 + procedure.getIndexOfBlock(block);
             if (getSubConnectorAt(0).isConnected()) {
                 getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+            if (index >= procedure.getIndexOfBlock(this)) {
+                return 2 + index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
             }
-            return  index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block) ;
+            else {
+                return 1 + index;
+            }
+            }
         }
         if (getReturnToBlock() == null) {
             return -1;
