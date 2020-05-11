@@ -3,6 +3,8 @@ package GUI.Panel;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.IGUI_System_BlockLink;
 import GUI.Blocks.*;
+import System.BlockStructure.Blocks.FunctionalBlock;
+import System.BlockStructure.Functionality.DummyFunctionality;
 import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +49,10 @@ class PalettePanelTest {
         functional = new GUIFunctionalBlock(functionalName, 0,0);
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
+
+        converter = new IGUI_System_BlockLink();
+
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), null);
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
