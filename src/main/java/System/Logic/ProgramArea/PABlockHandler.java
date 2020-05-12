@@ -191,6 +191,9 @@ public class PABlockHandler {
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
         notifyMaxBlocksReached();
+        if (block instanceof ProcedureBlock) {
+            palette.deleteCaller((ProcedureBlock) block);
+        }
     }
 
     /**
