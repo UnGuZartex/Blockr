@@ -20,7 +20,7 @@ public class ProcedureCall extends FunctionalBlock {
     @Override
     public boolean hasNext() {
         if (procedure != null) {
-            return !procedure.isTerminated();
+            return !procedure.isTerminated() && !procedure.isPassed();
         }
         return false;
     }
@@ -78,7 +78,6 @@ public class ProcedureCall extends FunctionalBlock {
             Block backup = procedure.getReturnToBlock();
             procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
             int toReturn = 1 + procedure.getIndexOfBlock(block);
-            System.out.println(toReturn);
             procedure.setReturnToBlock(backup);
             return toReturn;
         }

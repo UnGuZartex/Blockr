@@ -8,6 +8,8 @@ import System.BlockStructure.Functionality.DummyFunctionality;
 
 public class ProcedureBlock extends Block {
 
+
+
     private boolean passed;
 
     public ProcedureBlock() {
@@ -59,14 +61,12 @@ public class ProcedureBlock extends Block {
         if (index == 0) {
             return this;
         }
-        if (!passed) {
-            if (getSubConnectorAt(0).isConnected()) {
-                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-                passed = true;
-                Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
-                passed = false;
-                return toReturn;
-            }
+        if (getSubConnectorAt(0).isConnected()) {
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+            passed = true;
+            Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+            passed = false;
+            return toReturn;
         }
         if (getReturnToBlock() == null) {
             return null;
@@ -82,14 +82,12 @@ public class ProcedureBlock extends Block {
         if (block == this) {
             return 0;
         }
-        if (!passed) {
-            if (getSubConnectorAt(0).isConnected()) {
-                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-                passed = true;
-                int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
-                passed = false;
-                return toReturn;
-            }
+        if (getSubConnectorAt(0).isConnected()) {
+            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+            passed = true;
+            int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            passed = false;
+            return toReturn;
         }
         if (getReturnToBlock() == null) {
             return -1;
@@ -103,4 +101,7 @@ public class ProcedureBlock extends Block {
     }
 
 
+    public boolean isPassed() {
+        return passed;
+    }
 }
