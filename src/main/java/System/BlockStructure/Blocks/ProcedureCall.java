@@ -63,7 +63,7 @@ public class ProcedureCall extends FunctionalBlock {
     }
 
     @Override
-    public int getIndexOfBlock(Block block) { //TODO HIER IETS FIXEN
+    public int getIndexOfBlock(Block block) {
 
         if (block == null) {
             return -1;
