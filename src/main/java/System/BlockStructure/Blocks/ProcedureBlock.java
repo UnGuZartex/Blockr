@@ -8,9 +8,22 @@ import System.BlockStructure.Functionality.DummyFunctionality;
 
 public class ProcedureBlock extends Block {
 
+    private boolean passed;
+
     public ProcedureBlock() {
         super(new DummyFunctionality());
         getSubConnectors().add(new SubConnector(this, Orientation.FACING_DOWN, Type.PLUG));
+    }
+
+    @Override
+    public boolean hasProperConnections() {
+        if (!passed) {
+            passed = true;
+            boolean result = super.hasProperConnections();
+            passed = false;
+            return result;
+        }
+        return true;
     }
 
     @Override
@@ -46,9 +59,14 @@ public class ProcedureBlock extends Block {
         if (index == 0) {
             return this;
         }
-        if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+        if (!passed) {
+            if (getSubConnectorAt(0).isConnected()) {
+                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+                passed = true;
+                Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+                passed = false;
+                return toReturn;
+            }
         }
         if (getReturnToBlock() == null) {
             return null;
@@ -64,9 +82,14 @@ public class ProcedureBlock extends Block {
         if (block == this) {
             return 0;
         }
-        if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+        if (!passed) {
+            if (getSubConnectorAt(0).isConnected()) {
+                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
+                passed = true;
+                int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+                passed = false;
+                return toReturn;
+            }
         }
         if (getReturnToBlock() == null) {
             return -1;
