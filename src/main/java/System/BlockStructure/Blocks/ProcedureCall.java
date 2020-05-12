@@ -39,7 +39,9 @@ public class ProcedureCall extends FunctionalBlock {
             procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
             getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
         } else {
-            procedure.setReturnToBlock(getReturnToBlock());
+            if (getReturnToBlock() != procedure.getReturnToBlock()) {
+                procedure.setReturnToBlock(getReturnToBlock());
+            }
         }
     }
 
