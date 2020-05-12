@@ -29,6 +29,8 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     private boolean reachedMaxBlocks;
 
+    private GUIBlock lastCreated;
+
     /**
      * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
      *
@@ -88,7 +90,8 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         if (index < 0 || index >= blocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
-        return blocks.get(index).clone();
+        lastCreated = blocks.get(index).clone();
+        return lastCreated;
     }
 
     /**
@@ -149,7 +152,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
 
     @Override
     public void onProcedureCreated() {
-        GUIFunctionalBlock caller = new GUIFunctionalBlock("Caller", 0, 0);
+        GUIFunctionalBlock caller = new GUIFunctionalBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
         blocks.add(caller);
         setBlockPositions();
     }
