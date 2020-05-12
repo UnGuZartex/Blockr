@@ -16,4 +16,6 @@ public interface ProgramAreaListener {
     void onMaxBlocksReached(boolean reachedMaxBlocks);
 
     void onProcedureCreated();
+
+    void onProcedureDeleted(int index);
 }

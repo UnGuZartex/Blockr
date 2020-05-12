@@ -192,7 +192,14 @@ public class PABlockHandler {
         programArea.deleteProgram(block);
         notifyMaxBlocksReached();
         if (block instanceof ProcedureBlock) {
-            palette.deleteCaller((ProcedureBlock) block);
+            int index = palette.deleteCaller((ProcedureBlock) block);
+            notifyProcedureDeleted(index);
+        }
+    }
+
+    private void notifyProcedureDeleted(int index) {
+        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureDeleted(index);
         }
     }
 

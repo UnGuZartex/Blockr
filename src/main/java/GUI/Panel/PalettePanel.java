@@ -3,12 +3,9 @@ package GUI.Panel;
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIFunctionalBlock;
-import GameWorldAPI.Utility.Snapshot;
 import Images.ImageLibrary;
 
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -160,6 +157,12 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         setBlockPositions();
     }
 
+    @Override
+    public void onProcedureDeleted(int index) {
+        blocks.remove(index);
+        setBlockPositions();
+    }
+
     /**
      * Set the positions of the blocks in the palette.
      *
@@ -186,46 +189,5 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
             totalHeight += block.getHeight();
         }
         return totalHeight;
-    }
-
-    public Snapshot createSnapshot() {
-        return new GUIPaletteSnapshot();
-    }
-
-    public void loadSnapshot(Snapshot paletteSnapshot) {
-        GUIPaletteSnapshot PSnapshot = (GUIPaletteSnapshot) paletteSnapshot;
-        this.blocks = PSnapshot.paletteSnapshot;
-        setBlockPositions();
-    }
-
-    private final class GUIPaletteSnapshot implements Snapshot {
-        /**
-         * Variable referring to the stored palette indices currently set in the gui block handler.
-         */
-        private final List<GUIBlock> paletteSnapshot = new ArrayList<>(blocks);
-        /**
-         * Variable referring to the creation time of this snapshot.
-         */
-        private final LocalDateTime creationTime = LocalDateTime.now();
-
-        /**
-         * Get the name of this snapshot.
-         *
-         * @return the name of this snapshot.
-         */
-        @Override
-        public String getName() {
-            return "GUIBlockHandler snapshot " + this;
-        }
-
-        /**
-         * Get the snapshot date.
-         *
-         * @return The the time this snapshot was initialised.
-         */
-        @Override
-        public LocalDateTime getSnapshotDate() {
-            return creationTime;
-        }
     }
 }

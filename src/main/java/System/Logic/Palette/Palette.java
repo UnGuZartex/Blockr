@@ -77,7 +77,15 @@ public class Palette {
         procedureCallList.add(new ProcedureCall(lastProcedure));
     }
 
-    public void deleteCaller(ProcedureBlock lastProcedure) {
-        procedureCallList.removeIf(caller -> caller.getProcedure() == lastProcedure);
+    public int deleteCaller(ProcedureBlock lastProcedure) {
+        int index = 0;
+        for (ProcedureCall call : procedureCallList) {
+            if (call.getProcedure() == lastProcedure) {
+                break;
+            }
+            index++;
+        }
+        procedureCallList.remove(index);
+        return index + paletteBlocks.size();
     }
 }

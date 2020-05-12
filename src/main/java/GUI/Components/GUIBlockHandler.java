@@ -170,7 +170,6 @@ public class GUIBlockHandler {
     public void loadSnapshot(Snapshot snapshot) {
         GUIBlockHandlerSnapshot guiSnapshot = (GUIBlockHandlerSnapshot) snapshot;
         programArea.deleteBlockFromProgramArea(programArea.getBlocks());
-        palette.loadSnapshot(guiSnapshot.paletteSnapshot);
         for (int i = 0; i < guiSnapshot.blockPositionsSnapshot.size(); i++) {
             addPaletteBlockToProgramArea(guiSnapshot.blockPositionsSnapshot.get(i), guiSnapshot.paletteIndicesSnapshot.get(i));
         }
@@ -395,7 +394,6 @@ public class GUIBlockHandler {
      */
     private final class GUIBlockHandlerSnapshot implements Snapshot {
 
-        private final Snapshot paletteSnapshot = palette.createSnapshot();
         /**
          * Variable referring to the stored block positions currently set in the gui block handler.
          */
