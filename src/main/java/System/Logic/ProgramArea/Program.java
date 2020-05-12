@@ -2,7 +2,7 @@ package System.Logic.ProgramArea;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
@@ -73,7 +73,13 @@ public class Program {
      * @return True if and only if the given block is effective.
      */
     public static boolean isValidStartBlock(Block block) {
-        return block != null && !block.getMainConnector().isConnected();
+        if (block != null) {
+            if (block.getMainConnector() != null) {
+                return !block.getMainConnector().isConnected();
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

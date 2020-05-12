@@ -43,6 +43,9 @@ public class IfBlock extends CavityBlock {
      */
     @Override
     public Block getBlockAtIndex(int index) {
+        if (index < 0) {
+            return null;
+        }
         if (index == 0) {
             return this;
         }
@@ -69,6 +72,9 @@ public class IfBlock extends CavityBlock {
      */
     @Override
     public int getIndexOfBlock(Block block) {
+        if (block == null) {
+            return -1;
+        }
         if (block == this) {
             return 0;
         }

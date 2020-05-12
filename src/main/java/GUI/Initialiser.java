@@ -1,6 +1,6 @@
 package GUI;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.IGUI_System_BlockLink;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.BlockHandlerController;
@@ -20,7 +20,6 @@ import System.Logic.ProgramArea.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +52,7 @@ public class Initialiser {
         put(new GUICavityBlock("If", 0, 0), new IfBlock());
         put(new GUICavityBlock("While", 0, 0), new WhileBlock());
         put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
+        put(new GUIProcedureBlock("Def",0,0, 0), new ProcedureBlock());
     }};
 
     /**
@@ -91,7 +91,7 @@ public class Initialiser {
         ProgramArea programArea = new ProgramArea(gameWorld, history);
         HistoryController historyController = new HistoryController(history, programArea);
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
-        BlockLinkDatabase converter = new BlockLinkDatabase();
+        IGUI_System_BlockLink converter = new IGUI_System_BlockLink();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),

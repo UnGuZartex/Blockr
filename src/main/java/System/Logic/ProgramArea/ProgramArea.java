@@ -4,7 +4,7 @@ import Controllers.ProgramEventManager;
 import Controllers.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import System.BlockStructure.Blocks.Block;
 import System.Logic.CommandHistory;
 
@@ -76,8 +76,12 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if (programs.size() == 1) {
-            return programs.get(0);
+        if (hasExecutablePrograms()) {
+            for (Program program : programs) {
+                if (program.getStartBlock().isIllegalExtraStartingBlock()) {
+                    return program;
+                }
+            }
         }
         return null;
     }
@@ -91,9 +95,23 @@ public class ProgramArea {
     public int getAllBlocksCount() {
         int sum = 0;
         for (Program program : programs) {
-            sum += program.getSize();
+                sum += program.getSize();
         }
         return sum;
+    }
+
+    public boolean hasExecutablePrograms() {
+        boolean passedMainProgram = false;
+        for (Program program : programs) {
+            if (program.getStartBlock().isIllegalExtraStartingBlock()) {
+                if (passedMainProgram) {
+                    return false;
+                } else {
+                    passedMainProgram = true;
+                }
+            }
+        }
+        return passedMainProgram;
     }
 
     /**
@@ -125,7 +143,7 @@ public class ProgramArea {
      *         of that program is returned, otherwise null is returned.
      */
     public Block getNextBlockInProgram() {
-        if (programs.size() == 1) {
+        if (hasExecutablePrograms()) {
             return getProgram().getCurrentBlock();
         }
         return null;
@@ -148,7 +166,7 @@ public class ProgramArea {
         if (startBlock == null) {
             throw new IllegalArgumentException("The start block can't be null");
         }
-        if (startBlock.getMainConnector().isConnected()) {
+        if (startBlock.getMainConnector() != null && startBlock.getMainConnector().isConnected()) {
             addHighestAsProgram(startBlock);
         } else if (programs.stream().noneMatch(p -> p.getStartBlock().equals(startBlock))) {
             programs.add(new Program(startBlock));
@@ -196,7 +214,7 @@ public class ProgramArea {
      *         program area.
      */
     public void addProgramRunCommand() {
-        if (programs.size() == 1) {
+        if (hasExecutablePrograms()) {
             Program program = getProgram();
             if (!program.isValidProgram()) {
                 observer.notifyProgramInvalid();
@@ -204,9 +222,22 @@ public class ProgramArea {
                 history.execute(new RunProgramCommand(this));
             }
         }
-        else if (programs.size() > 1) {
+        else if (getAmountOfValidPrograms() > 1) {
             observer.notifyTooManyPrograms();
         }
+        else {
+            observer.notifyProgramInvalid();
+        }
+    }
+
+    private int getAmountOfValidPrograms() {
+        int total = 0;
+        for (Program p : programs) {
+            if (p.getStartBlock().isIllegalExtraStartingBlock()) {
+                total += 1;
+            }
+        }
+        return total;
     }
 
     /**
@@ -219,8 +250,8 @@ public class ProgramArea {
      *         there are no programs or too many programs in the program area.
      */
     public void addProgramResetCommand() {
-        if (programs.size() == 1) {
-            Program program = programs.get(0);
+        if (hasExecutablePrograms()) {
+            Program program = getProgram();
 
             if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));
@@ -244,7 +275,7 @@ public class ProgramArea {
      *         When the program in the program area is not valid.
      */
     protected void runProgramStep() throws IllegalStateException {
-        if (programs.size() != 1) {
+        if (!hasExecutablePrograms()) {
             throw new IllegalStateException("A program step cannot be executed while there are multiple programs!");
         }
         if (!getProgram().isValidProgram()) {
@@ -279,7 +310,7 @@ public class ProgramArea {
      *         If There isn't 1 program in the program area.
      */
     protected void notifyProgramState() {
-        if (programs.size() != 1) {
+        if (!hasExecutablePrograms()) {
             throw new IllegalStateException("There is not just 1 program in the program area!");
         }
       
@@ -300,11 +331,11 @@ public class ProgramArea {
      *         block of the block connected to the main connector.
      */
     private Block getHighestBlock(Block block) {
-        if (block.getMainConnector().isConnected()) {
-            return getHighestBlock(block.getMainConnector().getConnectedBlock());
+        if (block.getMainConnector() != null) {
+            if (block.getMainConnector().isConnected()) {
+                return getHighestBlock(block.getMainConnector().getConnectedBlock());
+            }
         }
-        else {
-            return block;
-        }
+        return block;
     }
 }

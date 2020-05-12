@@ -1,27 +1,31 @@
 package Controllers;
 
+import Controllers.ControllerClasses.BlockHandlerController;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.DummyFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
+import System.Logic.ProgramArea.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BlockLinkDatabaseTest {
+class IGUISystemBlockLinkTest {
 
     GameWorldType type;
-    BlockLinkDatabase converter;
+    IGUI_System_BlockLink converter;
     GUIBlock cavity, functional, conditional, operator;
     String cavityName, functionalName, conditionalName, operatorName;
     int cornerX, cornerY, width, height;
@@ -31,11 +35,13 @@ class BlockLinkDatabaseTest {
     PalettePanel palette;
     Block block0, block1, block2;
     IGUIBlock guiBlock0, guiBlock1, guiBlock2;
+    PABlockHandler paBlockHandler;
+    BlockHandlerController blockHandlerController;
 
     @BeforeEach
     void setUp() {
         type = new LevelInitializer();
-        converter = new BlockLinkDatabase();
+        converter = new IGUI_System_BlockLink();
 
         random = new Random();
         cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
@@ -52,6 +58,10 @@ class BlockLinkDatabaseTest {
         functional = new GUIFunctionalBlock(functionalName, 0,0);
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
+
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), null);
+
+        blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
         palette = new PalettePanel(cornerX, cornerY, width, height, new ArrayList<>(Arrays.asList(cavity, functional, conditional, operator)));
 

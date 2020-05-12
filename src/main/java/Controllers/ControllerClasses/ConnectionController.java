@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.IGUI_System_BlockLink;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
@@ -22,7 +22,7 @@ public class ConnectionController {
     /**
      * Variable referring to the block link database of this controller.
      */
-    private final BlockLinkDatabase converter;
+    private final IGUI_System_BlockLink converter;
     /**
      * Variable referring to the pa block handler of this controller.
      */
@@ -42,7 +42,7 @@ public class ConnectionController {
      * @throws IllegalArgumentException
      *         When the given block handler is not effective.
      */
-    public ConnectionController(BlockLinkDatabase converter, PABlockHandler blockHandler) throws IllegalArgumentException {
+    public ConnectionController(IGUI_System_BlockLink converter, PABlockHandler blockHandler) throws IllegalArgumentException {
         if (converter == null) {
             throw new IllegalArgumentException("The given converter is not effective!");
         }

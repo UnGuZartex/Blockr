@@ -6,7 +6,7 @@ import GameWorld.Grid;
 import GameWorld.Level;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.LevelInitializer;

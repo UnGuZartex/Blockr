@@ -36,7 +36,7 @@ public abstract class GUIBlock implements IGUIBlock {
     /**
      * Variable referring to the id of this block.
      */
-    protected final String name;
+    protected String name;
 
     /**
      * Initialise a new GUI block with given name and coordinates.
@@ -141,8 +141,10 @@ public abstract class GUIBlock implements IGUIBlock {
         }
 
         // Translate main connector
-        CollisionCircle circle = mainConnector.getCollisionCircle();
-        circle.translate(deltaX, deltaY);
+        if (mainConnector != null) {
+            CollisionCircle circle = mainConnector.getCollisionCircle();
+            circle.translate(deltaX, deltaY);
+        }
 
         // Translate the rectangles
         for (CollisionRectangle blockRectangle : blockRectangles) {
@@ -192,7 +194,9 @@ public abstract class GUIBlock implements IGUIBlock {
         for (GUIConnector connector: subConnectors) {
             connector.getCollisionCircle().paint(g);
         }
-        mainConnector.getCollisionCircle().paint(g);
+        if (mainConnector != null) {
+            mainConnector.getCollisionCircle().paint(g);
+        }
         for (CollisionRectangle blockRectangle : blockRectangles) {
             blockRectangle.paint(g);
         }
@@ -311,7 +315,9 @@ public abstract class GUIBlock implements IGUIBlock {
      *       is not connected anymore.
      */
     public void disconnectMainConnector() {
-        mainConnector.disconnect();
+        if (mainConnector != null) {
+            mainConnector.disconnect();
+        }
     }
 
     /**
@@ -371,14 +377,20 @@ public abstract class GUIBlock implements IGUIBlock {
      *         then null is returned.
      */
     private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
-        if (mainConnector.isConnected()) {
-            return null;
-        }
-        for (GUIConnector connector : subConnectors) {
-            if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
-                return connector;
+        if (mainConnector != null) {
+            if (mainConnector.isConnected()) {
+                return null;
+            }
+            for (GUIConnector connector : subConnectors) {
+                if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
+                    return connector;
+                }
             }
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -1,6 +1,6 @@
 package GUI.Components;
 
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import Utility.Command;
 import Utility.Position;
 
@@ -24,10 +24,12 @@ public class MoveBlockCommand implements Command
      * Variable referring to the start and end position of the mouse given to this command.
      */
     private final Position start, end;
+
     /**
      * Variable referring to the linked gui block handler.
      */
     private final GUIBlockHandler guiBlockHandler;
+
     /**
      * Variable referring to the stored gui block snapshot.
      */

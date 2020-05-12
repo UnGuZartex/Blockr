@@ -1,6 +1,8 @@
 package System.Logic.Palette;
 
 import System.BlockStructure.Blocks.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +19,9 @@ public class Palette {
      * Variable referring to the blocks in the palette.
      */
     private final List<Block> paletteBlocks;
+
+    private final List<ProcedureCall> procedureCallList = new ArrayList<>();
+
 
     /**
      * Create a new palette with the given blocks as available palette blocks.
@@ -58,9 +63,29 @@ public class Palette {
      *         when the given index for the block to choose is out of bounds.
      */
     public Block getNewBlock(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= paletteBlocks.size()) {
+        if (index < 0 || index >= (paletteBlocks.size() + procedureCallList.size())) {
             throw new IndexOutOfBoundsException("The given index for the block to choose is out of bounds!");
         }
+        if (index >= paletteBlocks.size()) {
+            index %= paletteBlocks.size();
+            return procedureCallList.get(index);
+        }
         return paletteBlocks.get(index).clone();
+    }
+
+    public void createCaller(ProcedureBlock lastProcedure) {
+        procedureCallList.add(new ProcedureCall(lastProcedure));
+    }
+
+    public int deleteCaller(ProcedureBlock lastProcedure) {
+        int index = 0;
+        for (ProcedureCall call : procedureCallList) {
+            if (call.getProcedure() == lastProcedure) {
+                break;
+            }
+            index++;
+        }
+        procedureCallList.remove(index);
+        return index + paletteBlocks.size();
     }
 }

@@ -26,7 +26,9 @@ public abstract class Block {
     /**
      * Variable referring to all the sub connectors of this block.
      */
-    private final List<SubConnector> subConnector = new ArrayList<>();
+    private final List<SubConnector> subConnectors = new ArrayList<>();
+
+    protected boolean isTerminated;
 
     /**
      * Initialise a new block with given functionality
@@ -64,7 +66,7 @@ public abstract class Block {
      * @return The sub connectors of this block.
      */
     protected List<SubConnector> getSubConnectors() {
-        return subConnector;
+        return subConnectors;
     }
 
     /**
@@ -75,7 +77,7 @@ public abstract class Block {
      * @return The sub connector of this block at the given index.
      */
     public SubConnector getSubConnectorAt(int index) {
-        return subConnector.get(index);
+        return subConnectors.get(index);
     }
 
     /**
@@ -84,7 +86,7 @@ public abstract class Block {
      * @return The number of sub connectors.
      */
     public int getNbSubConnectors() {
-        return subConnector.size();
+        return subConnectors.size();
     }
 
     /**
@@ -120,7 +122,9 @@ public abstract class Block {
      * @post The return to block is set to the given block.
      */
     protected void setReturnToBlock(Block returnToBlock) {
-        this.returnToBlock = returnToBlock;
+        if (returnToBlock != this) {
+            this.returnToBlock = returnToBlock;
+        }
     }
 
     /**
@@ -168,4 +172,21 @@ public abstract class Block {
      * @return The index of the given block in the structure of this block.
      */
     public abstract int getIndexOfBlock(Block block);
+
+    public void terminate() { // TODO use terminate in subclasses
+        isTerminated = true;
+        for (SubConnector subConnector : subConnectors) {
+            if (subConnector.isConnected()) {
+                subConnector.getConnectedBlock().terminate();
+            }
+        }
+    }
+
+    public boolean isTerminated() {
+        return isTerminated;
+    }
+
+    public boolean isIllegalExtraStartingBlock() {
+        return true;
+    }
 }

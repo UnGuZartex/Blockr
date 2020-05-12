@@ -1,6 +1,6 @@
 package System.Logic.ProgramArea;
 
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import Utility.Command;
 
 /**
