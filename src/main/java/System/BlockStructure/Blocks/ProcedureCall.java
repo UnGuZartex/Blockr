@@ -14,7 +14,7 @@ public class ProcedureCall extends FunctionalBlock {
 
     @Override
     public boolean hasProperConnections() {
-        return !hasNext() || (procedure.hasProperConnections() && getSubConnectorAt(0).getConnectedBlock().hasProperConnections());
+        return !hasNext() || (procedure.hasProperConnections() && (!getSubConnectorAt(0).isConnected() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections()));
     }
 
     @Override
