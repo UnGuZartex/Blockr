@@ -80,11 +80,11 @@ public class ProcedureCall extends FunctionalBlock {
             return 0;
         }
         if (hasNext()) {
-            int index = 1 + procedure.getIndexOfBlock(block);
+            int index = procedure.getIndexOfBlock(block);
             if (getSubConnectorAt(0).isConnected()) {
                 getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-            if (index >= procedure.getIndexOfBlock(this)) {
-                return 2 + index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            if (index >= procedure.getIndexOfBlock(this) + 2) {
+                return 1 + index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
             }
             else {
                 return 1 + index;
