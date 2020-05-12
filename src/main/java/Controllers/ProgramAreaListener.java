@@ -14,4 +14,8 @@ public interface ProgramAreaListener {
      * @param reachedMaxBlocks the given boolean indicating if the number of max blocks in the program area is reached.
      */
     void onMaxBlocksReached(boolean reachedMaxBlocks);
+
+    void onProcedureCreated();
+
+    void onProcedureDeleted(int index);
 }

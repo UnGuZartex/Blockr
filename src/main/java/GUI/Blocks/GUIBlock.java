@@ -389,4 +389,8 @@ public abstract class GUIBlock implements IGUIBlock {
         }
         return null;
     }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -251,7 +251,7 @@ public class ProgramArea {
      */
     public void addProgramResetCommand() {
         if (hasExecutablePrograms()) {
-            Program program = programs.get(0);
+            Program program = getProgram();
 
             if (program.isValidProgram() && program.isExecuting()) {
                 history.execute(new ResetProgramCommand(this));

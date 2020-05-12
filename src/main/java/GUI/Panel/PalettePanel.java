@@ -2,6 +2,7 @@ package GUI.Panel;
 
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
+import GUI.Blocks.GUIFunctionalBlock;
 import Images.ImageLibrary;
 
 import java.awt.*;
@@ -21,12 +22,14 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     /**
      * Variables referring to the blocks in this palette.
      */
-    private final List<GUIBlock> blocks;
+    private List<GUIBlock> blocks;
 
     /**
      * Variable indicating if the max amount of blocks is reached in the program area.
      */
     private boolean reachedMaxBlocks;
+
+    private GUIBlock lastCreated;
 
     /**
      * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
@@ -87,7 +90,8 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         if (index < 0 || index >= blocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
-        return blocks.get(index).clone();
+        lastCreated = blocks.get(index).clone();
+        return lastCreated;
     }
 
     /**
@@ -144,6 +148,19 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     @Override
     public void onMaxBlocksReached(boolean reachedMaxBlocks) {
         this.reachedMaxBlocks = reachedMaxBlocks;
+    }
+
+    @Override
+    public void onProcedureCreated() {
+        GUIFunctionalBlock caller = new GUIFunctionalBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
+        blocks.add(caller);
+        setBlockPositions();
+    }
+
+    @Override
+    public void onProcedureDeleted(int index) {
+        blocks.remove(index);
+        setBlockPositions();
     }
 
     /**

@@ -122,7 +122,9 @@ public abstract class Block {
      * @post The return to block is set to the given block.
      */
     protected void setReturnToBlock(Block returnToBlock) {
-        this.returnToBlock = returnToBlock;
+        if (returnToBlock != this) {
+            this.returnToBlock = returnToBlock;
+        }
     }
 
     /**
