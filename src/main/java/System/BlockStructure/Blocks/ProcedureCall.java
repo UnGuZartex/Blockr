@@ -88,4 +88,7 @@ public class ProcedureCall extends FunctionalBlock {
         return new ProcedureCall(procedure);
     }
 
+    public ProcedureBlock getProcedure() {
+        return procedure;
+    }
 }

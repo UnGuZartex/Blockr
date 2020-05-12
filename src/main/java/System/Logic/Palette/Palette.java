@@ -76,4 +76,8 @@ public class Palette {
     public void createCaller(ProcedureBlock lastProcedure) {
         procedureCallList.add(new ProcedureCall(lastProcedure));
     }
+
+    public void deleteCaller(ProcedureBlock lastProcedure) {
+        procedureCallList.removeIf(caller -> caller.getProcedure() == lastProcedure);
+    }
 }
