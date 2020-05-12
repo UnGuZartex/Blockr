@@ -53,22 +53,17 @@ public class ProcedureCall extends FunctionalBlock {
             return this;
         }
         if (hasNext()) {
-            Block returnBlock = procedure.getBlockAtIndex(index - 1);
-            if (getSubConnectorAt(0).isConnected()) {
-                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-            }
-            System.out.println(returnBlock);
-            if (returnBlock == null) {
-                return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - procedure.getIndexOfBlock(this));
-            }
-            else {
-                return returnBlock;
-            }
+            Block backup = procedure.getReturnToBlock();
+            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
+            Block toReturn = procedure.getBlockAtIndex(index-1);
+            procedure.setReturnToBlock(backup);
+            return toReturn;
         }
         if (getReturnToBlock() == null) {
             return null;
         }
-        return getReturnToBlock().getBlockAtIndex(index - 1);    }
+        return getReturnToBlock().getBlockAtIndex(index - 1);
+    }
 
     @Override
     public int getIndexOfBlock(Block block) { //TODO HIER IETS FIXEN
@@ -80,16 +75,12 @@ public class ProcedureCall extends FunctionalBlock {
             return 0;
         }
         if (hasNext()) {
-            int index = procedure.getIndexOfBlock(block);
-            if (getSubConnectorAt(0).isConnected()) {
-                getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-            if (index >= procedure.getIndexOfBlock(this) + 2) {
-                return 1 + index + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
-            }
-            else {
-                return 1 + index;
-            }
-            }
+            Block backup = procedure.getReturnToBlock();
+            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
+            int toReturn = 1 + procedure.getIndexOfBlock(block);
+            System.out.println(toReturn);
+            procedure.setReturnToBlock(backup);
+            return toReturn;
         }
         if (getReturnToBlock() == null) {
             return -1;
