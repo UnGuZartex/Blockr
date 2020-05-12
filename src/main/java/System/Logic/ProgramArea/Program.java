@@ -73,13 +73,7 @@ public class Program {
      * @return True if and only if the given block is effective.
      */
     public static boolean isValidStartBlock(Block block) {
-        if (block != null) {
-            if (block.getMainConnector() != null) {
-                return !block.getMainConnector().isConnected();
-            }
-            return true;
-        }
-        return false;
+        return block != null && !block.isConnectedOnMain();
     }
 
     /**

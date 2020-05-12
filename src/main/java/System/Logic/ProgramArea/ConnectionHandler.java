@@ -58,10 +58,8 @@ public class ConnectionHandler {
      *       if the connector was connected.
      */
     public void disconnect(Block toDisconnect) {
-        if (toDisconnect.getMainConnector() != null) {
-            if (toDisconnect.getMainConnector().isConnected()) {
-                toDisconnect.getMainConnector().disconnect();
-            }
+        if (toDisconnect.isConnectedOnMain()) {
+            toDisconnect.getMainConnector().disconnect();
         }
     }
 }

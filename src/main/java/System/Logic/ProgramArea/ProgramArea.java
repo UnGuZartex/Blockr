@@ -331,10 +331,8 @@ public class ProgramArea {
      *         block of the block connected to the main connector.
      */
     private Block getHighestBlock(Block block) {
-        if (block.getMainConnector() != null) {
-            if (block.getMainConnector().isConnected()) {
-                return getHighestBlock(block.getMainConnector().getConnectedBlock());
-            }
+        if (block.isConnectedOnMain()) {
+            return getHighestBlock(block.getMainConnector().getConnectedBlock());
         }
         return block;
     }
