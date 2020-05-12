@@ -59,10 +59,7 @@ public class ProcedureCall extends FunctionalBlock {
             procedure.setReturnToBlock(backup);
             return toReturn;
         }
-        if (getReturnToBlock() == null) {
-            return null;
-        }
-        return getReturnToBlock().getBlockAtIndex(index - 1);
+        return super.getBlockAtIndex(index);
     }
 
     @Override
@@ -81,10 +78,7 @@ public class ProcedureCall extends FunctionalBlock {
             procedure.setReturnToBlock(backup);
             return toReturn;
         }
-        if (getReturnToBlock() == null) {
-            return -1;
-        }
-        return 1 + getReturnToBlock().getIndexOfBlock(block);
+        return super.getIndexOfBlock(block);
     }
 
     @Override
