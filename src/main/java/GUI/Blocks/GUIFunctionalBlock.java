@@ -59,10 +59,10 @@ public class GUIFunctionalBlock extends GUIBlock {
      *         return this height + the additional height of its connected block otherwise.
      */
     @Override
-    public int getHeight() {
+    public int getTotalHeight() {
 
         if (lowerSubConnector.isConnected()) {
-            return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+            return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
         }
 
         return height;

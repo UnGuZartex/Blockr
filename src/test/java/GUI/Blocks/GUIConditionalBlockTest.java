@@ -54,7 +54,7 @@ class GUIConditionalBlockTest {
 
     @Test
     void getHeight() {
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
     }
 
     @Test
@@ -83,13 +83,13 @@ class GUIConditionalBlockTest {
     @Test
     void changeHeight() {
         cond1.changeHeight(5, block);
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
     }
 
     @Test
     void setShapes() {
         cond1.setShapes();
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
         assertEquals(GUIConditionalBlock.DEFAULT_WIDTH, cond1.getWidth());
         assertEquals(0, cond1.subConnectors.size());
         assertEquals(1, cond1.blockRectangles.size());

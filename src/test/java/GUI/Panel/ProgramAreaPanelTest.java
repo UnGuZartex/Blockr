@@ -204,7 +204,7 @@ class ProgramAreaPanelTest {
         panel.addTemporaryBlockToProgramArea();
 
         block0.setPosition(100, 250);
-        block1.setPosition(100, 250 + block0.getHeight());
+        block1.setPosition(100, 250 + block0.getTotalHeight());
         block0.connectWithStaticBlock(block1, panel.getConnectionController());
 
         assertNotNull(programArea.getProgram());
@@ -343,7 +343,7 @@ class ProgramAreaPanelTest {
         panel.addTemporaryBlockToProgramArea();
 
         block0.setPosition(100, 250);
-        block1.setPosition(100, 250 + block0.getHeight());
+        block1.setPosition(100, 250 + block0.getTotalHeight());
         block0.connectWithStaticBlock(block1, panel.getConnectionController());
 
         GUIBlock block2 = palette.getNewBlock(0);
@@ -357,7 +357,7 @@ class ProgramAreaPanelTest {
         panel.addTemporaryBlockToProgramArea();
 
         block2.setPosition(300, 250);
-        block3.setPosition(300, 250 + block2.getHeight());
+        block3.setPosition(300, 250 + block2.getTotalHeight());
         block2.connectWithStaticBlock(block3, panel.getConnectionController());
 
         assertNull(programArea.getProgram());

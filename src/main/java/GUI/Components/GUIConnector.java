@@ -126,6 +126,15 @@ public class GUIConnector {
     }
 
     /**
+     * Get the connector connected to this connector.
+     *
+     * @return the connector connected to this connector.
+     */
+    public GUIConnector getConnectedConnector() {
+        return connectedConnector;
+    }
+
+    /**
      * Get the connected parent block to this GUI Connector.
      *
      * @return The parent block of the connected connector.

@@ -301,14 +301,14 @@ class GUIBlockHandlerTest {
         assertEquals(1, programAreaPanel.getBlocks().size());
         assertNotNull(programArea.getProgram());
 
-        int yPos = (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight();
+        int yPos = (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getTotalHeight();
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
-        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight());
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getTotalHeight());
         assertEquals(2, programAreaPanel.getBlocks().size());
         assertNotNull(programArea.getProgram());
 
         guiBlockHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
-        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getHeight());
+        guiBlockHandler.handleMouseEventPre(MouseEvent.MOUSE_RELEASED, CORNER_X_PA + WIDTH/2, (int) (CORNER_Y_PA + HEIGHT*0.25) + programAreaPanel.getBlocks().get(0).getTotalHeight());
         assertEquals(3, programAreaPanel.getBlocks().size());
         assertNotNull(programArea.getProgram());
 

@@ -92,7 +92,7 @@ public abstract class GUIBlock implements IGUIBlock {
      * @return the total height of the block structure this block is connected to, starting
      * from this block.
      */
-    public int getHeight() {
+    public int getTotalHeight() {
         return height;
     }
 
@@ -173,21 +173,28 @@ public abstract class GUIBlock implements IGUIBlock {
         return subConnectors.indexOf(subConnector);
     }
 
-    public void removeInBetween(ConnectionController controller) { //TODO FIX CAVITY HEIGHT HIER
+    /**
+     * TODO commentaar
+     * @param controller
+     */
+    public void removeInBetween(ConnectionController controller) {
         if (mainConnector != null) {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
-            disconnectMainConnector();
-            List<GUIBlock> blocks = getConnectedBlocks();
-            for (GUIBlock block : blocks) {
-                if (block != this) {
-                    block.disconnectMainConnector();
-                    if (controller.isValidConnection(block, upperBlock, 0)) {
-                        int x = upperBlock.getX();
-                        int y = upperBlock.getY() + upperBlock.height;
-                        block.setPosition(x, y);
-                        block.mainConnector.connect(upperBlock.subConnectors.get(0));
-                        controller.connectBlocks(block, upperBlock,0);
-                        upperBlock.changeHeight(-this.getHeight(), upperBlock);
+            GUIBlock downBlock = getConnectedBlocks().get(1);
+
+            if (upperBlock != null) {
+                changeHeight(-height, this);
+                GUIConnector sub = mainConnector.getConnectedConnector();
+                int subIndex = upperBlock.getConnectorIndex(sub);
+                disconnectMainConnector();
+
+                if (downBlock != null)
+                {
+                    downBlock.disconnectMainConnector();
+                    if (controller.isValidConnection(downBlock, upperBlock, subIndex)) {
+                        downBlock.setPosition(getX(), getY());
+                        downBlock.mainConnector.connect(sub);
+                        controller.connectBlocks(downBlock, upperBlock, subIndex);
                     }
                 }
             }
@@ -315,7 +322,7 @@ public abstract class GUIBlock implements IGUIBlock {
                 toChange.setPosition(x, y);
                 main.mainConnector.connect(intersectingConnectorSub);
                 connectionController.connectBlocks(main, sub, sub.getConnectorIndex(intersectingConnectorSub));
-                toChange.changeHeight(main.getHeight(), main);
+                toChange.changeHeight(main.getTotalHeight(), main);
             }
         }
     }
@@ -325,7 +332,7 @@ public abstract class GUIBlock implements IGUIBlock {
      * as if the current block and its connected sub-blocks where added to the block structure.
      */
     public void resetHeight() {
-        changeHeight(getHeight(), this);
+        changeHeight(getTotalHeight(), this);
     }
 
     /**
@@ -333,7 +340,7 @@ public abstract class GUIBlock implements IGUIBlock {
      * as if the current block and its connected sub-blocks where removed from the block structure.
      */
     public void disconnectHeight() {
-        changeHeight(-getHeight(), this);
+        changeHeight(-getTotalHeight(), this);
     }
 
     /**
