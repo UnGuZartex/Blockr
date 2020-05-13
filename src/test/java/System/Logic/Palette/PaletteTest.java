@@ -2,10 +2,7 @@ package System.Logic.Palette;
 
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
-import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.FunctionalBlock;
-import System.BlockStructure.Blocks.NotBlock;
-import System.BlockStructure.Blocks.WhileBlock;
+import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +19,7 @@ class PaletteTest {
     Block block0, block1, block2, block;
     ArrayList<Block> blocks;
     GameWorldType type;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -29,9 +27,10 @@ class PaletteTest {
         block0 = new WhileBlock();
         block1 = new NotBlock();
         block2 = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
-
+        procedure = new ProcedureBlock();
         blocks = new ArrayList<>(Arrays.asList(block0, block1, block2));
         palette = new Palette(blocks);
+        palette.createCaller(procedure);
     }
 
     @AfterEach
@@ -90,11 +89,41 @@ class PaletteTest {
         assertEquals(blocks.get(2).getClass(), block.getClass());
         assertEquals(blocks.get(2).getFunctionality(), block.getFunctionality());
         assertEquals(blocks.get(2).getFunctionality().getClass(), block.getFunctionality().getClass());
+
+        block = palette.getNewBlock(3);
+        assertEquals(procedure, ((ProcedureCall)block).getProcedure());
     }
 
     @Test
     void getNewBlock_invalidIndex() {
         assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size()));
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size() + 1)); // +1 for the caller
+    }
+
+    @Test
+    void createCaller() {
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(4));
+        ProcedureBlock block = new ProcedureBlock();
+        palette.createCaller(block);
+        Block caller = palette.getNewBlock(4);
+        assertEquals(block, ((ProcedureCall)caller).getProcedure());
+    }
+
+    @Test
+    void deleteCaller() {
+        ProcedureBlock procedure1 = new ProcedureBlock();
+        ProcedureBlock procedure2 = new ProcedureBlock();
+        palette.createCaller(procedure1);
+        palette.createCaller(procedure2);
+
+        assertEquals(2, palette.deleteCaller(procedure2));
+        assertEquals(0, palette.deleteCaller(procedure));
+        assertEquals(0, palette.deleteCaller(procedure1));
+    }
+
+    @Test
+    void deleteCaller_notInPalette() {
+        ProcedureBlock procedure1 = new ProcedureBlock();
+        assertThrows(IllegalArgumentException.class, () -> palette.deleteCaller(procedure1));
     }
 }

@@ -19,7 +19,9 @@ public class Palette {
      * Variable referring to the blocks in the palette.
      */
     private final List<Block> paletteBlocks;
-
+    /**
+     * Variable referring to the list of procedure call blocks in this palette.
+     */
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
 
     /**
@@ -56,10 +58,11 @@ public class Palette {
      *
      * @param index The index of the block in the palette list to create and return.
      *
-     * @return A clone of the block at the given index
+     * @return A clone of the block at the given index, such that it seems that the palette blocks
+     *         and call list are added as one list.
      *
      * @throws IndexOutOfBoundsException
-     *         when the given index for the block to choose is out of bounds.
+     *         If the given index is smaller than 0 or greater than the number of blocks in this palette.
      */
     public Block getNewBlock(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= (paletteBlocks.size() + procedureCallList.size())) {
@@ -72,20 +75,39 @@ public class Palette {
         return paletteBlocks.get(index).clone();
     }
 
+    /**
+     * Create a caller for the given procedure block.
+     *
+     * @param lastProcedure The procedure to create a caller for.
+     *
+     * @effect A procedure call is added to the palette for the given procedure.
+     */
     public void createCaller(ProcedureBlock lastProcedure) {
         procedureCallList.add(new ProcedureCall(lastProcedure));
     }
 
-    public int deleteCaller(ProcedureBlock lastProcedure) {
+    /**
+     * Delete the call block for the given procedure block in this palette.
+     *
+     * @param lastProcedure The procedure to delete the call block for.
+     *
+     * @effect The call of the given procedure is removed from the palette.
+     *
+     * @return The index at which the call was found.
+     *
+     * @throws IllegalArgumentException
+     *         If no call block for the given procedure exists in this palette.
+     */
+    public int deleteCaller(ProcedureBlock lastProcedure) throws IllegalArgumentException {
         int index = 0;
         for (ProcedureCall call : procedureCallList) {
             if (call.getProcedure() == lastProcedure) {
-                break;
+                procedureCallList.get(index).terminate();
+                procedureCallList.remove(index);
+                return index;
             }
             index++;
         }
-        procedureCallList.get(index).terminate();
-        procedureCallList.remove(index);
-        return index;
+        throw new IllegalArgumentException("No call for the given procedure exists!");
     }
 }
