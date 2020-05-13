@@ -191,12 +191,13 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight()) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
         for (GUIBlock block : blocks) {
-            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 4, currentHeight);
+            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 8, currentHeight);
             currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
         }
 
+        currentHeight = freeHeightPerBlock;
         for (GUIBlock block : GUICallerblocks) {
-            block.setPosition((panelRectangle.getWidth() - 3*block.getWidth()) / 4, currentHeight);
+            block.setPosition((panelRectangle.getWidth() - 2*block.getWidth()), currentHeight);
             currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
         }
     }

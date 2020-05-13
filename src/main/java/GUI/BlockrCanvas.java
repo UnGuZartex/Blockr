@@ -18,8 +18,8 @@ import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
 
-    public static final double PALETTE_WIDTH_RATIO = 0.1;
-    public static final double PROGRAM_AREA_WIDTH_RATIO = 0.5;
+    public static final double PALETTE_WIDTH_RATIO = 0.2;
+    public static final double PROGRAM_AREA_WIDTH_RATIO = 0.4;
     public static final double GAME_WORLD_WIDTH_RATIO = 0.4;
 
     private PalettePanel palettePanel;
