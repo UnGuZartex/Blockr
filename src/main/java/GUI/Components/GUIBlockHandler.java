@@ -134,6 +134,7 @@ public class GUIBlockHandler {
      * @effect The mouse event is handled accordingly depending on the given id.
      */
     protected void handleMouseEvent(int id, int x, int y) {
+        programArea.update();
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 handleMousePressed(x, y);

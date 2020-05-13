@@ -91,10 +91,10 @@ public class GUICavityBlock extends GUIBlock {
      *         connected block to the lower sub connector, if any is connected.
      */
     @Override
-    public int getHeight() {
+    public int getTotalHeight() {
         if (lowerSubConnector != null) {
             if (lowerSubConnector.isConnected()) {
-                return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+                return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
             }
 
         }

@@ -47,7 +47,7 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
     public void onEvent(String Event) {
         switch(Event) {
             case "ProcedureDel":
-                deleteProcedure();
+                terminate();
                 break;
             case "Updated":
                 update();
@@ -55,11 +55,6 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
             default:
         }
 
-    }
-
-    private void deleteProcedure() {
-        this.mainConnector.disconnect();
-        this.subConnectors.get(0).disconnect();
     }
 
     public void unSubscribe(BlockListener listener) {
