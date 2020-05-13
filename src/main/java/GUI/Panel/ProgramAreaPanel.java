@@ -316,6 +316,7 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
             if (block.getKey().isTerminated()) {
                 blockPairs.remove(block);
                 blockHandlerController.deleteFromPA(block.getKey());
+                block.getKey().removeInBetween(connectionController);
             }
         }
     }

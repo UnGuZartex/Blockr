@@ -173,6 +173,27 @@ public abstract class GUIBlock implements IGUIBlock {
         return subConnectors.indexOf(subConnector);
     }
 
+    public void removeInBetween(ConnectionController controller) { //TODO FIX CAVITY HEIGHT HIER
+        if (mainConnector != null) {
+            GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
+            disconnectMainConnector();
+            List<GUIBlock> blocks = getConnectedBlocks();
+            for (GUIBlock block : blocks) {
+                if (block != this) {
+                    block.disconnectMainConnector();
+                    if (controller.isValidConnection(block, upperBlock, 0)) {
+                        int x = upperBlock.getX();
+                        int y = upperBlock.getY() + upperBlock.height;
+                        block.setPosition(x, y);
+                        block.mainConnector.connect(upperBlock.subConnectors.get(0));
+                        controller.connectBlocks(block, upperBlock,0);
+                        upperBlock.changeHeight(-this.getHeight(), upperBlock);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Translate the position of this block with the given amount
      *
