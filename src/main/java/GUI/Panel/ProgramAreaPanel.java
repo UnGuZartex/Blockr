@@ -310,4 +310,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         g.drawString(gameState, panelRectangle.getX(), 100);
         g.setFont(currentFont);
     }
+
+    public void update() {
+        for (Map.Entry<GUIBlock, Integer> block : new ArrayList<>(blockPairs)) {
+            if (block.getKey().isTerminated()) {
+                blockPairs.remove(block);
+                blockHandlerController.deleteFromPA(block.getKey());
+            }
+        }
+    }
 }

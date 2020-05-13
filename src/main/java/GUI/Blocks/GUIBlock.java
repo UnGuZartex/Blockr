@@ -405,4 +405,8 @@ public abstract class GUIBlock implements IGUIBlock {
     public void terminate() {
         this.terminated = true;
     }
+
+    public boolean isTerminated() {
+        return terminated;
+    }
 }
