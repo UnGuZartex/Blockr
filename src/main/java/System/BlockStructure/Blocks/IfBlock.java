@@ -71,7 +71,7 @@ public class IfBlock extends CavityBlock {
      *         block checked.
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block)  {
         if (block == null) {
             return -1;
         }

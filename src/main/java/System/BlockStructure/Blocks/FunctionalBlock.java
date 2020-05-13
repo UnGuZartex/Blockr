@@ -96,11 +96,13 @@ public class FunctionalBlock extends Block {
      *
      * @param index The index of the block to get.
      *
-     * @return The block at the given index in the linked link structure. If the
-     *         given index is out of range, or the index is illegal, null is returned.
+     * @return The block at the given index in the linked link structure.
+     *
+     * @throws IllegalArgumentException
+     *         If no block can be found at the given index
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index) throws IllegalArgumentException {
         if (index < 0) {
             return null;
         }
@@ -112,7 +114,7 @@ public class FunctionalBlock extends Block {
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
         }
         if (getReturnToBlock() == null) {
-            return null;
+            throw new IllegalArgumentException("No block can be find at the given index!");
         }
         return getReturnToBlock().getBlockAtIndex(index - 1);
     }
@@ -124,12 +126,13 @@ public class FunctionalBlock extends Block {
      *
      * @pre The given block may not be connected through the main connector of this block.
      *
-     * @return The index of the given block in the structure of this block. If the
-     *         given block is null, or the block does not exist inside the connected
-     *         block structure, null is returned.
+     * @return The index of the given block in the structure of this block.
+     *
+     * @throws IllegalArgumentException
+     *         If the given block can't be found
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block) throws IllegalArgumentException {
         if (block == null) {
             return -1;
         }
@@ -141,7 +144,7 @@ public class FunctionalBlock extends Block {
             return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
         }
         if (getReturnToBlock() == null) {
-            return -1;
+            throw new IllegalArgumentException("Can't find the given block!");
         }
         return 1 + getReturnToBlock().getIndexOfBlock(block);
     }

@@ -299,7 +299,7 @@ class IfBlockTest {
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertNull(if1.getBlockAtIndex(5));
+        assertThrows(IllegalArgumentException.class, () -> if1.getBlockAtIndex(5));
     }
 
     @Test

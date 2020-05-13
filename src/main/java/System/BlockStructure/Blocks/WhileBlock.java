@@ -67,7 +67,7 @@ public class WhileBlock extends CavityBlock {
      */
     public int getIndexOfBlock(Block block) {
         if (block == null) {
-            return -1;
+           return -1;
         }
         if (block == this) {
             return 0;

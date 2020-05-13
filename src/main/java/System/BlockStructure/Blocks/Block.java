@@ -139,7 +139,6 @@ public abstract class Block {
         }
     }
 
-    // TODO use terminate in subclasses
     /**
      * Terminate this block.
      *

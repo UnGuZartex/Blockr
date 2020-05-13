@@ -95,10 +95,10 @@ class FunctionalBlockTest {
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertNull(blockConnectedTop.getBlockAtIndex(1));
-        assertNull(blockNotConnected.getBlockAtIndex(1));
-        assertNull(blockConnectedBottom.getBlockAtIndex(3));
-        assertNull(blockConnectedTopBottom.getBlockAtIndex(2));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedTop.getBlockAtIndex(1));
+        assertThrows(IllegalArgumentException.class, () -> blockNotConnected.getBlockAtIndex(1));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedBottom.getBlockAtIndex(3));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedTopBottom.getBlockAtIndex(2));
     }
 
     @Test
@@ -123,7 +123,11 @@ class FunctionalBlockTest {
 
     @Test
     void getIndexOfBlock_invalidBlock() {
-        assertEquals(-1, blockNotConnected.getIndexOfBlock(blockConnectedTop));
+        assertThrows(IllegalArgumentException.class, () -> blockNotConnected.getIndexOfBlock(blockConnectedTop));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedBottom.getIndexOfBlock(blockNotConnected));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedTopBottom.getIndexOfBlock(blockNotConnected));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedTop.getIndexOfBlock(blockNotConnected));
+        assertThrows(IllegalArgumentException.class, () -> blockConnectedTop.getIndexOfBlock(blockConnectedTopBottom));
     }
 
     @Test
