@@ -2,10 +2,11 @@ package GUI.Panel;
 
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
-import GUI.Blocks.GUIFunctionalBlock;
+import GUI.Blocks.GUICallerBlock;
 import Images.ImageLibrary;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * Variables referring to the blocks in this palette.
      */
     private List<GUIBlock> blocks;
+
+    private List<GUICallerBlock> GUICallerblocks = new ArrayList<>();
+
 
     /**
      * Variable indicating if the max amount of blocks is reached in the program area.
@@ -87,10 +91,16 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         if (reachedMaxBlocks) {
             throw new IllegalStateException("The max amount of blocks has been reached!");
         }
-        if (index < 0 || index >= blocks.size()) {
+        if (index < 0 || index >= blocks.size()+GUICallerblocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
-        lastCreated = blocks.get(index).clone();
+        if (index >= blocks.size()) {
+            index %= blocks.size();
+            lastCreated = GUICallerblocks.get(index).clone();
+        }
+        else {
+            lastCreated = blocks.get(index).clone();
+        }
         return lastCreated;
     }
 
@@ -104,7 +114,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * @return the index of the block colliding with the given x and y coordinates, -1 otherwise.
      */
     public int getSelectedBlockIndex(int x, int y) {
-         return blocks.indexOf(blocks.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
+        List<GUIBlock> combined = new ArrayList<>(blocks);
+        combined.addAll(GUICallerblocks);
+         return combined.indexOf(combined.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
     }
 
     /**
@@ -130,8 +142,10 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * @effect All blocks inside the panel are drawn.
      */
     private void drawBlocks(Graphics g) {
+        List<GUIBlock> combined = new ArrayList<>(blocks);
+        combined.addAll(GUICallerblocks);
         if (!reachedMaxBlocks) {
-            for (GUIBlock block : blocks) {
+            for (GUIBlock block : combined) {
                 block.paint(g);
             }
         }
@@ -152,14 +166,19 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
 
     @Override
     public void onProcedureCreated() {
-        GUIFunctionalBlock caller = new GUIFunctionalBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
-        blocks.add(caller);
+        GUICallerBlock caller = new GUICallerBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
+        GUICallerblocks.add(caller);
         setBlockPositions();
     }
 
     @Override
     public void onProcedureDeleted(int index) {
-        blocks.remove(index);
+        int counter = index;
+        while (counter < GUICallerblocks.size()) {
+            GUICallerblocks.get(counter).onProcedureDeleted();
+            counter++;
+        }
+        GUICallerblocks.remove(index);
         setBlockPositions();
     }
 
@@ -171,9 +190,13 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     private void setBlockPositions() {
         int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight()) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
-
         for (GUIBlock block : blocks) {
-            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 2, currentHeight);
+            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 4, currentHeight);
+            currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
+        }
+
+        for (GUIBlock block : GUICallerblocks) {
+            block.setPosition((panelRectangle.getWidth() - 3*block.getWidth()) / 4, currentHeight);
             currentHeight = currentHeight + block.getHeight() + freeHeightPerBlock;
         }
     }

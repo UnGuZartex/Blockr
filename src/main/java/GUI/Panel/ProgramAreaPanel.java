@@ -149,6 +149,11 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @effect All given blocks are internally deleted from the program area.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
+        for (Map.Entry<GUIBlock, Integer> block : blockPairs) {
+            if (GUIBlocks.contains(block.getKey())) {
+                block.getKey().terminate();
+            }
+        }
         blockPairs.removeIf(entry -> GUIBlocks.contains(entry.getKey()));
         GUIBlocks.forEach(blockHandlerController::deleteFromPA);
     }

@@ -68,7 +68,7 @@ public class Palette {
         }
         if (index >= paletteBlocks.size()) {
             index %= paletteBlocks.size();
-            return procedureCallList.get(index);
+            return procedureCallList.get(index).clone();
         }
         return paletteBlocks.get(index).clone();
     }
@@ -86,6 +86,6 @@ public class Palette {
             index++;
         }
         procedureCallList.remove(index);
-        return index + paletteBlocks.size();
+        return index;
     }
 }

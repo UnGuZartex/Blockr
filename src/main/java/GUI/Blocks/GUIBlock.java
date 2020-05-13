@@ -38,6 +38,8 @@ public abstract class GUIBlock implements IGUIBlock {
      */
     protected String name;
 
+    private boolean terminated;
+
     /**
      * Initialise a new GUI block with given name and coordinates.
      *
@@ -111,8 +113,10 @@ public abstract class GUIBlock implements IGUIBlock {
      * @post Every rectangle in this block has the given color.
      */
     public void setColor(Color color) {
-        for (CollisionRectangle rectangle : blockRectangles) {
-            rectangle.setColor(color);
+        if (!terminated) {
+            for (CollisionRectangle rectangle : blockRectangles) {
+                rectangle.setColor(color);
+            }
         }
     }
 
@@ -128,32 +132,34 @@ public abstract class GUIBlock implements IGUIBlock {
      * @post The sub connector and its connected blocks are translated.
      */
     public void setPosition(int x, int y) {
-        int deltaX = x - this.x;
-        int deltaY = y - this.y;
+        if (!terminated) {
+            int deltaX = x - this.x;
+            int deltaY = y - this.y;
 
-        // Translate the sub connectors
-        for (GUIConnector connector: subConnectors) {
-            CollisionCircle circle = connector.getCollisionCircle();
-            circle.translate(deltaX, deltaY);
-            if (connector.isConnected()) {
-                connector.getConnectedGUIBlock().translate(deltaX, deltaY);
+            // Translate the sub connectors
+            for (GUIConnector connector : subConnectors) {
+                CollisionCircle circle = connector.getCollisionCircle();
+                circle.translate(deltaX, deltaY);
+                if (connector.isConnected()) {
+                    connector.getConnectedGUIBlock().translate(deltaX, deltaY);
+                }
             }
-        }
 
-        // Translate main connector
-        if (mainConnector != null) {
-            CollisionCircle circle = mainConnector.getCollisionCircle();
-            circle.translate(deltaX, deltaY);
-        }
+            // Translate main connector
+            if (mainConnector != null) {
+                CollisionCircle circle = mainConnector.getCollisionCircle();
+                circle.translate(deltaX, deltaY);
+            }
 
-        // Translate the rectangles
-        for (CollisionRectangle blockRectangle : blockRectangles) {
-            blockRectangle.translate(deltaX, deltaY);
-        }
+            // Translate the rectangles
+            for (CollisionRectangle blockRectangle : blockRectangles) {
+                blockRectangle.translate(deltaX, deltaY);
+            }
 
-        // Set the coordinates.
-        this.x = x;
-        this.y = y;
+            // Set the coordinates.
+            this.x = x;
+            this.y = y;
+        }
     }
 
     /**
@@ -191,16 +197,18 @@ public abstract class GUIBlock implements IGUIBlock {
      * @effect The name of this block is painted.
      */
     public void paint(Graphics g) {
-        for (GUIConnector connector: subConnectors) {
-            connector.getCollisionCircle().paint(g);
+        if (!terminated) {
+            for (GUIConnector connector : subConnectors) {
+                connector.getCollisionCircle().paint(g);
+            }
+            if (mainConnector != null) {
+                mainConnector.getCollisionCircle().paint(g);
+            }
+            for (CollisionRectangle blockRectangle : blockRectangles) {
+                blockRectangle.paint(g);
+            }
+            g.drawString(name, this.x + 2, this.y + 20);
         }
-        if (mainConnector != null) {
-            mainConnector.getCollisionCircle().paint(g);
-        }
-        for (CollisionRectangle blockRectangle : blockRectangles) {
-            blockRectangle.paint(g);
-        }
-        g.drawString(name, this.x + 2, this.y + 20);
     }
 
     /**
@@ -255,39 +263,39 @@ public abstract class GUIBlock implements IGUIBlock {
      *         when the given block does not have a colliding connector.
      */
     public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
-        GUIConnector intersectingConnectorSub;
-        Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
-        GUIBlock main, sub;
+        if (!terminated) {
+            GUIConnector intersectingConnectorSub;
+            Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
+            GUIBlock main, sub;
 
-        if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
-            main = this;
-            sub = other;
-            draggedBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
-            staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-        }
-        else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
-            main = other;
-            sub = this;
-            staticBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
-            draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-        }
-        else {
-            throw new IllegalArgumentException("Given block does not have a colliding connector!");
-        }
-
-        if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
-            GUIBlock toChange = other;
-            int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
-            int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
-            if (!mainConnector.isConnected()) {
-                toChange = this;
-                x = staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX());
-                y = staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY());
+            if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
+                main = this;
+                sub = other;
+                draggedBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
+                staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+            } else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
+                main = other;
+                sub = this;
+                staticBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
+                draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+            } else {
+                throw new IllegalArgumentException("Given block does not have a colliding connector!");
             }
-            toChange.setPosition(x, y);
-            main.mainConnector.connect(intersectingConnectorSub);
-            connectionController.connectBlocks(main, sub, sub.getConnectorIndex(intersectingConnectorSub));
-            toChange.changeHeight(main.getHeight(), main);
+
+            if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
+                GUIBlock toChange = other;
+                int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
+                int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
+                if (!mainConnector.isConnected()) {
+                    toChange = this;
+                    x = staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX());
+                    y = staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY());
+                }
+                toChange.setPosition(x, y);
+                main.mainConnector.connect(intersectingConnectorSub);
+                connectionController.connectBlocks(main, sub, sub.getConnectorIndex(intersectingConnectorSub));
+                toChange.changeHeight(main.getHeight(), main);
+            }
         }
     }
 
@@ -392,5 +400,9 @@ public abstract class GUIBlock implements IGUIBlock {
 
     public String getName() {
         return name;
+    }
+
+    public void terminate() {
+        this.terminated = true;
     }
 }
