@@ -2,6 +2,7 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramAreaListener;
 import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.IfBlock;
 import System.BlockStructure.Blocks.ProcedureBlock;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.Palette.Palette;
@@ -109,6 +110,8 @@ public class PABlockHandler {
      * @throws IllegalStateException
      *         When max blocks has been reached.
      */
+
+
     public void addToPA(Block block) throws IllegalStateException {
 
         if (hasReachedMaxBlocks()) {

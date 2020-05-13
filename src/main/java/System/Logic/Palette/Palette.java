@@ -22,7 +22,6 @@ public class Palette {
 
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
 
-
     /**
      * Create a new palette with the given blocks as available palette blocks.
      *
@@ -41,7 +40,7 @@ public class Palette {
     }
 
     /**
-     * Checks whether or not the given blocks are valid for a palette.
+     * Checks whether the given blocks are valid for a palette.
      *
      * @param blocks The blocks to check.
      *

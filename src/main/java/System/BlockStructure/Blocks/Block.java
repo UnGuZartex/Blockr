@@ -128,6 +128,16 @@ public abstract class Block {
     }
 
     /**
+     * Return whether the block is connected on a main connector.
+     *
+     * @return true when the block has a main connector and that connector is
+     *         connected, false otherwise.
+     */
+    public boolean isConnectedOnMain() {
+        return getMainConnector() != null && getMainConnector().isConnected();
+    }
+
+    /**
      * Get the main connector of this block.
      *
      * @return The main connector of this block.
