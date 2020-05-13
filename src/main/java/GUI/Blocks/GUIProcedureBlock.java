@@ -59,11 +59,10 @@ public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
 
     private void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureDeleted();
+            listener.onEvent("PrcedureDel");
         }
     }
 
-    @Override
     public void onProcedureDeleted() {
         currentDefNr--;
         this.name = name.split(" ")[0] + " " + currentDefNr;
@@ -79,4 +78,10 @@ public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
     }
 
 
+    @Override
+    public void onEvent(String Event) {
+        if (Event.equals("ProcedureDel")) {
+            onProcedureDeleted();
+        }
+    }
 }

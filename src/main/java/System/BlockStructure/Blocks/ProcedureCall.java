@@ -25,7 +25,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
 
     private void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureDeleted();
+            listener.onEvent("ProcedureDel");
         }
     }
 
@@ -111,7 +111,6 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
         return procedure;
     }
 
-    @Override
     public void onProcedureDeleted() {
         this.terminate();
         if (getMainConnector().isConnected()) {
@@ -128,5 +127,12 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
 
     public void subscribe(BlockListener listener) {
         listeners.add(listener);
+    }
+
+    @Override
+    public void onEvent(String Event) {
+        if (Event.equals("ProcedureDel")) {
+            onProcedureDeleted();
+        }
     }
 }
