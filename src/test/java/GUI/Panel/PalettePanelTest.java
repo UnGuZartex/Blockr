@@ -56,6 +56,7 @@ class PalettePanelTest {
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
+
         panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator));
     }
 
