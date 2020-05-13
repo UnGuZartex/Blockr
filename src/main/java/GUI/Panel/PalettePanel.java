@@ -91,7 +91,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         if (reachedMaxBlocks) {
             throw new IllegalStateException("The max amount of blocks has been reached!");
         }
-        if (index < 0 || index >= blocks.size()+GUICallerblocks.size()) {
+        if (index < 0 || index >= blocks.size() + GUICallerblocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
         if (index >= blocks.size()) {
