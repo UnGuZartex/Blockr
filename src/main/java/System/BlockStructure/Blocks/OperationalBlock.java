@@ -56,9 +56,15 @@ public abstract class OperationalBlock extends ConditionalBlock {
      *
      * @return The block connected at the sub connector at the index of the
      *         counter of this operational block.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated.
      */
     @Override
-    public Block getNext() {
+    public Block getNext() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
         counter %= getNbSubConnectors();
         return getSubConnectorAt(counter++).getConnectedBlock();
     }

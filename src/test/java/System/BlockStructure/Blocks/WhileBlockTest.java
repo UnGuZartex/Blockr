@@ -275,4 +275,32 @@ class WhileBlockTest {
         assertFalse(block.getSubConnectorAt(2).isConnected());
         assertFalse(block.getMainConnector().isConnected());
     }
+
+    @Test
+    void getBlockAtIndex_negativeIndex() {
+        assertNull(while1.getBlockAtIndex(-1));
+    }
+
+    @Test
+    void getBlockAtIndex_indexOutOfRange() {
+        assertNull(while1.getBlockAtIndex(5));
+    }
+
+    @Test
+    void getBlockAtIndex() {
+        assertEquals(while1, while1.getBlockAtIndex(0));
+        assertEquals(func1, while1.getBlockAtIndex(1));
+        assertEquals(func11, while1.getBlockAtIndex(2));
+        assertEquals(while1, while1.getBlockAtIndex(3));
+        assertEquals(func1Under, while1.getBlockAtIndex(4));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertEquals(0, while1.getIndexOfBlock(while1));
+        assertEquals(1, while1.getIndexOfBlock(func1));
+        assertEquals(2, while1.getIndexOfBlock(func11));
+        assertEquals(0, while1.getIndexOfBlock(while1));
+        assertEquals(4, while1.getIndexOfBlock(func1Under));
+    }
 }

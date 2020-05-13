@@ -50,6 +50,12 @@ class PredicateBlockTest {
     }
 
     @Test
+    void getNext_terminated() {
+        predicateConnected.terminate();
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getNext());
+    }
+
+    @Test
     void getSubConnectorAt() {
         assertThrows(IndexOutOfBoundsException.class, () -> predicateConnected.getSubConnectorAt(0));
         assertThrows(IndexOutOfBoundsException.class, () -> predicateNotConnected.getSubConnectorAt(0));

@@ -73,6 +73,12 @@ class FunctionalBlockTest {
     }
 
     @Test
+    void getNext_terminated() {
+        blockConnectedBottom.terminate();
+        assertThrows(IllegalStateException.class, () -> blockConnectedBottom.getNext());
+    }
+
+    @Test
     void cloneTest() {
         block = blockConnectedTopBottom.clone();
         assertNotEquals(block, blockConnectedTopBottom);
@@ -110,6 +116,12 @@ class FunctionalBlockTest {
     }
 
     @Test
+    void getBlockAtIndex_loop() {
+        blockConnectedTop.setReturnToBlock(blockConnectedBottom);
+        assertEquals(blockConnectedBottom, blockConnectedTop.getBlockAtIndex(1));
+    }
+
+    @Test
     void getIndexOfBlock_invalidBlock() {
         assertEquals(-1, blockNotConnected.getIndexOfBlock(blockConnectedTop));
     }
@@ -126,5 +138,50 @@ class FunctionalBlockTest {
 
         assertEquals(0, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTopBottom));
         assertEquals(1, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTop));
+    }
+
+    @Test
+    void terminate() {
+        assertFalse(blockConnectedTop.isTerminated());
+        assertFalse(blockConnectedBottom.isTerminated());
+        assertFalse(blockNotConnected.isTerminated());
+        assertFalse(blockConnectedTopBottom.isTerminated());
+
+        blockConnectedTopBottom.terminate();
+        blockNotConnected.terminate();
+
+        assertTrue(blockConnectedTop.isTerminated());
+        assertFalse(blockConnectedBottom.isTerminated());
+        assertTrue(blockNotConnected.isTerminated());
+        assertTrue(blockConnectedTopBottom.isTerminated());
+
+        blockConnectedBottom.terminate();
+
+        assertTrue(blockConnectedTop.isTerminated());
+        assertTrue(blockConnectedBottom.isTerminated());
+        assertTrue(blockNotConnected.isTerminated());
+        assertTrue(blockConnectedTopBottom.isTerminated());
+    }
+
+    @Test
+    void isIllegalExtraStartingBlock() {
+        assertTrue(blockConnectedTop.isIllegalExtraStartingBlock());
+        assertTrue(blockConnectedBottom.isIllegalExtraStartingBlock());
+        assertTrue(blockNotConnected.isIllegalExtraStartingBlock());
+        assertTrue(blockConnectedTopBottom.isIllegalExtraStartingBlock());
+    }
+
+    @Test
+    void setReturnToBlock() {
+        blockConnectedTop.setReturnToBlock(blockConnectedBottom);
+        assertEquals(blockConnectedBottom, blockConnectedTop.getReturnToBlock());
+        blockConnectedTop.setReturnToBlock(blockConnectedTop);
+        assertEquals(blockConnectedBottom, blockConnectedTop.getReturnToBlock());
+    }
+
+    @Test
+    void setReturnToBlock_terminated() {
+        blockConnectedBottom.terminate();
+        assertThrows(IllegalStateException.class, () -> blockConnectedBottom.setReturnToBlock(blockConnectedBottom));
     }
 }

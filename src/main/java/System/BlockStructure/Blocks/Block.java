@@ -17,18 +17,18 @@ public abstract class Block {
      * Variable referring to the last cavity visited
      */
     private Block returnToBlock;
-
     /**
      * Variable referring to the functionality of this block.
      */
     protected BlockFunctionality functionality;
-
     /**
      * Variable referring to all the sub connectors of this block.
      */
     private final List<SubConnector> subConnectors = new ArrayList<>();
-
-    protected boolean isTerminated;
+    /**
+     * Variable referring to whether or not this block is terminated or not.
+     */
+    private boolean isTerminated;
 
     /**
      * Initialise a new block with given functionality
@@ -51,6 +51,15 @@ public abstract class Block {
     }
 
     /**
+     * Check whether or not this block is terminated or not.
+     *
+     * @return True if and only if this block is terminated, otherwise false.
+     */
+    public boolean isTerminated() {
+        return isTerminated;
+    }
+
+    /**
      * Check whether this block has proper connections.
      *
      * @return True if and only if this block has no following up blocks
@@ -58,6 +67,25 @@ public abstract class Block {
      */
     public boolean hasProperConnections() {
         return !hasNext() || getNext().hasProperConnections();
+    }
+
+    /**
+     * Checks whether or not this block is an illegal extra starting block.
+     *
+     * @return Always true.
+     */
+    public boolean isIllegalExtraStartingBlock() {
+        return true;
+    }
+
+    /**
+     * Return whether the block is connected on a main connector.
+     *
+     * @return true when the block has a main connector and that connector is
+     *         connected, false otherwise.
+     */
+    public boolean isConnectedOnMain() {
+        return getMainConnector() != null && getMainConnector().isConnected();
     }
 
     /**
@@ -94,13 +122,36 @@ public abstract class Block {
      *
      * @effect The already ran variable is set to null.
      * @effect The connected blocks are reset.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated
      */
-    public void reset() {
+    public void reset() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
         setReturnToBlock(null);
         for(int i = 0; i < getSubConnectors().size(); i++) {
             if (getSubConnectors().get(i).isConnected()) {
                 Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
                 connectBlock.reset();
+            }
+        }
+    }
+
+    // TODO use terminate in subclasses
+    /**
+     * Terminate this block.
+     *
+     * @effect The blocks connected onto this blocks subconnectors are terminated.
+     *
+     * @post This block is terminated.
+     */
+    public void terminate() {
+        isTerminated = true;
+        for (SubConnector subConnector : subConnectors) {
+            if (subConnector.isConnected()) {
+                subConnector.getConnectedBlock().terminate();
             }
         }
     }
@@ -120,22 +171,19 @@ public abstract class Block {
      * @param returnToBlock The new return to block.
      *
      * @post The return to block is set to the given block.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated.
      */
-    protected void setReturnToBlock(Block returnToBlock) {
+    protected void setReturnToBlock(Block returnToBlock) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
         if (returnToBlock != this) {
             this.returnToBlock = returnToBlock;
         }
     }
 
-    /**
-     * Return whether the block is connected on a main connector.
-     *
-     * @return true when the block has a main connector and that connector is
-     *         connected, false otherwise.
-     */
-    public boolean isConnectedOnMain() {
-        return getMainConnector() != null && getMainConnector().isConnected();
-    }
 
     /**
      * Get the main connector of this block.
@@ -182,21 +230,4 @@ public abstract class Block {
      * @return The index of the given block in the structure of this block.
      */
     public abstract int getIndexOfBlock(Block block);
-
-    public void terminate() { // TODO use terminate in subclasses
-        isTerminated = true;
-        for (SubConnector subConnector : subConnectors) {
-            if (subConnector.isConnected()) {
-                subConnector.getConnectedBlock().terminate();
-            }
-        }
-    }
-
-    public boolean isTerminated() {
-        return isTerminated;
-    }
-
-    public boolean isIllegalExtraStartingBlock() {
-        return true;
-    }
 }

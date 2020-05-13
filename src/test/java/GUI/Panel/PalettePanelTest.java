@@ -24,7 +24,7 @@ class PalettePanelTest {
     int cornerX, cornerY, width, height;
     Random random;
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
-    static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
+    static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 400, MAX_HEIGHT = 800;
     GUIBlock cavity, functional, conditional, operator;
     String cavityName, functionalName, conditionalName, operatorName;
     BlockHandlerController blockHandlerController;

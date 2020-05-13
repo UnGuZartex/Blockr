@@ -74,6 +74,12 @@ class NotBlockTest {
     }
 
     @Test
+    void getNext_terminated() {
+        notNoConnections.terminate();
+        assertThrows(IllegalStateException.class, () -> notNoConnections.getNext());
+    }
+
+    @Test
     void hasProperConnections() {
         assertTrue(notFullConnected.hasProperConnections());
         assertFalse(notOnlyPredicate.hasProperConnections());

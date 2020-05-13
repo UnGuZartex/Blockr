@@ -217,6 +217,12 @@ class IfBlockTest {
     }
 
     @Test
+    void getNext_terminated() {
+        if1.terminate();
+        assertThrows(IllegalStateException.class, () -> if1.getNext());
+    }
+
+    @Test
     void hasProperConnections() {
         assertTrue(if1.hasProperConnections());
         assertFalse(if2.hasProperConnections());
@@ -224,7 +230,6 @@ class IfBlockTest {
         assertFalse(if4.hasProperConnections());
         assertTrue(if5.hasProperConnections());
     }
-
 
     @Test
     void getNbSubConnectors() {
@@ -257,6 +262,16 @@ class IfBlockTest {
     }
 
     @Test
+    void terminate() {
+        if1.terminate();
+        assertTrue(if1.isTerminated());
+        assertTrue(func1.isTerminated());
+        assertTrue(func11.isTerminated());
+        assertTrue(func1Under.isTerminated());
+        assertTrue(cond1.isTerminated());
+    }
+
+    @Test
     void reset() {
         if1.reset();
         assertNull(if1.getReturnToBlock());
@@ -264,5 +279,48 @@ class IfBlockTest {
         assertNull(func11.getReturnToBlock());
         assertNull(func1Under.getReturnToBlock());
         assertNull(cond1.getReturnToBlock());
+    }
+
+    @Test
+    void reset_terminated() {
+        if1.terminate();
+        assertTrue(if1.isTerminated());
+        assertThrows(IllegalStateException.class, () -> if1.reset());
+        assertThrows(IllegalStateException.class, () -> func1.reset());
+        assertThrows(IllegalStateException.class, () -> func11.reset());
+        assertThrows(IllegalStateException.class, () -> func1Under.reset());
+        assertThrows(IllegalStateException.class, () -> cond1.reset());
+    }
+
+    @Test
+    void getBlockAtIndex_negativeIndex() {
+        assertNull(if1.getBlockAtIndex(-1));
+    }
+
+    @Test
+    void getBlockAtIndex_indexOutOfRange() {
+        assertNull(if1.getBlockAtIndex(5));
+    }
+
+    @Test
+    void getBlockAtIndex() {
+        assertEquals(if1, if1.getBlockAtIndex(0));
+        assertEquals(func1, if1.getBlockAtIndex(1));
+        assertEquals(func11, if1.getBlockAtIndex(2));
+        assertEquals(func1Under, if1.getBlockAtIndex(3));
+
+        assertEquals(if5, if5.getBlockAtIndex(0));
+        assertEquals(func5Under, if5.getBlockAtIndex(1));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertEquals(0, if1.getIndexOfBlock(if1));
+        assertEquals(1, if1.getIndexOfBlock(func1));
+        assertEquals(2, if1.getIndexOfBlock(func11));
+        assertEquals(3, if1.getIndexOfBlock(func1Under));
+
+        assertEquals(0, if5.getIndexOfBlock(if5));
+        assertEquals(1, if5.getIndexOfBlock(func5Under));
     }
 }

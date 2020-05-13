@@ -78,8 +78,8 @@ public abstract class CavityBlock extends FunctionalBlock {
      *
      * @return True if and only if there is a block connected to the proper
      *         sub connector. If the evaluation of this block's functionality
-     *         if true, then the cavity sub connector is checked, otherwise
-     *         is the default sub connector checked.
+     *         is true, then the cavity sub connector is checked, otherwise
+     *         is the super has next function called.
      */
     @Override
     public boolean hasNext() {
@@ -87,7 +87,7 @@ public abstract class CavityBlock extends FunctionalBlock {
             return getCavitySubConnector().isConnected();
         }
         else {
-            return getSubConnectorAt(0).isConnected();
+            return super.hasNext();
         }
     }
 
@@ -128,9 +128,15 @@ public abstract class CavityBlock extends FunctionalBlock {
      * is the first block under the while.
      *
      * @return The next block to execute.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated.
      */
     @Override
-    public Block getNext() {
+    public Block getNext() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
         if (getFunctionality().getEvaluation()) {
             if (hasNext()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
@@ -139,7 +145,6 @@ public abstract class CavityBlock extends FunctionalBlock {
             }
             return getNewReturnBlock();
         }
-
         return super.getNext();
     }
 

@@ -49,9 +49,15 @@ public abstract class ConditionalBlock extends Block {
      * Get the next block of a conditional block.
      *
      * @return Null cause a conditional block has no next block in general.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated.
      */
     @Override
-    public Block getNext() {
+    public Block getNext() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
         return null;
     }
 
