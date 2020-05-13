@@ -31,17 +31,35 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
         notifyProcedureDeleted();
     }
 
-    private void notifyProcedureDeleted() {
+    public void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureDeleted();
+            listener.onEvent("ProcedureDel");
+        }
+    }
+
+    public void notifyUpdated() {
+        for (BlockListener listener : new ArrayList<>(listeners)) {
+            listener.onEvent("Updated");
         }
     }
 
     @Override
-    public void onProcedureDeleted() {
-        procedureNr--;
-        this.name = name.split(" ")[0] + " " + procedureNr;
-        notifyProcedureDeleted();
+    public void onEvent(String Event) {
+        switch(Event) {
+            case "ProcedureDel":
+                deleteProcedure();
+                break;
+            case "Updated":
+                update();
+                break;
+            default:
+        }
+
+    }
+
+    private void deleteProcedure() {
+        this.mainConnector.disconnect();
+        this.subConnectors.get(0).disconnect();
     }
 
     public void unSubscribe(BlockListener listener) {
@@ -57,5 +75,10 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
         GUICallerBlock toReturn = new GUICallerBlock(this.name, x, y);
         this.subscribe(toReturn);
         return toReturn;
+    }
+
+    public void update() {
+        procedureNr--;
+        this.name = name.split(" ")[0] + " " + procedureNr;
     }
 }

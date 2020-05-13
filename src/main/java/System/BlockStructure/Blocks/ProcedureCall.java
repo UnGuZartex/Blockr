@@ -1,16 +1,33 @@
 package System.BlockStructure.Blocks;
 
+import Controllers.BlockListener;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
-public class ProcedureCall extends FunctionalBlock {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProcedureCall extends FunctionalBlock implements BlockListener {
 
     private final ProcedureBlock procedure;
+
+    private final List<BlockListener> listeners = new ArrayList<>();
 
     public ProcedureCall(ProcedureBlock procedure) {
         super(new DummyFunctionality());
         this.procedure = procedure;
     }
 
+    @Override
+    public void terminate() {
+        super.terminate();
+        notifyProcedureDeleted();
+    }
+
+    private void notifyProcedureDeleted() {
+        for (BlockListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureDeleted();
+        }
+    }
 
     @Override
     public boolean hasProperConnections() {
@@ -85,10 +102,31 @@ public class ProcedureCall extends FunctionalBlock {
 
     @Override
     public Block clone() {
-        return new ProcedureCall(procedure);
+        ProcedureCall toReturn = new ProcedureCall(procedure);
+        this.subscribe(toReturn);
+        return toReturn;
     }
 
     public ProcedureBlock getProcedure() {
         return procedure;
+    }
+
+    @Override
+    public void onProcedureDeleted() {
+        this.terminate();
+        if (getMainConnector().isConnected()) {
+            getMainConnector().disconnect();
+        }
+        if (getSubConnectorAt(0).isConnected()) {
+            getSubConnectorAt(0).getConnectedBlock().getMainConnector().disconnect();
+        }
+    }
+
+    public void unSubscribe(BlockListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void subscribe(BlockListener listener) {
+        listeners.add(listener);
     }
 }

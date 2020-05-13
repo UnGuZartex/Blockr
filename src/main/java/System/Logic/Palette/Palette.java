@@ -84,6 +84,7 @@ public class Palette {
             }
             index++;
         }
+        procedureCallList.get(index).terminate();
         procedureCallList.remove(index);
         return index;
     }

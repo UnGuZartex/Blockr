@@ -175,9 +175,10 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     public void onProcedureDeleted(int index) {
         int counter = index;
         while (counter < GUICallerblocks.size()) {
-            GUICallerblocks.get(counter).onProcedureDeleted();
+            GUICallerblocks.get(counter).notifyUpdated();
             counter++;
         }
+        GUICallerblocks.get(index).notifyProcedureDeleted();
         GUICallerblocks.remove(index);
         setBlockPositions();
     }
