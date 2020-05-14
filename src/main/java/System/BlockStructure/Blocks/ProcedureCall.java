@@ -198,6 +198,13 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
         return super.getIndexOfBlock(block);
     }
 
+    /**
+     * Clone this block.
+     *
+     * @return A new call block with the same procedure as this block.
+     *
+     * @effect The clone is subscribed to this block.
+     */
     @Override
     public Block clone() {
         ProcedureCall toReturn = new ProcedureCall(procedure);
