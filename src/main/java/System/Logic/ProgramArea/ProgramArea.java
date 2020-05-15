@@ -76,14 +76,17 @@ public class ProgramArea {
      *         is null returned.
      */
     public Program getProgram() {
-        if (hasExecutablePrograms()) {
-            for (Program program : programs) {
-                if (program.getStartBlock().isIllegalExtraStartingBlock()) {
-                    return program;
-                }
+        if (!hasExecutablePrograms()) {
+            return null;
+        }
+        int index = 0;
+        for (int i = 0; i < programs.size(); i++) {
+            if (programs.get(i).getStartBlock().isIllegalExtraStartingBlock()) {
+                index = i;
+                break;
             }
         }
-        return null;
+        return programs.get(index);
     }
 
     /**
@@ -100,6 +103,12 @@ public class ProgramArea {
         return sum;
     }
 
+    /**
+     * Checks whether or not this program area has executable programs.
+     *
+     * @return True if and only if exact 1 program in the program area has
+     *         an illegal extra starting block, false in all other cases.
+     */
     public boolean hasExecutablePrograms() {
         boolean passedMainProgram = false;
         for (Program program : programs) {
@@ -230,10 +239,15 @@ public class ProgramArea {
         }
     }
 
+    /**
+     * Get the total amount of valid programs.
+     *
+     * @return The total amount of programs which have an illegal extra start block.
+     */
     private int getAmountOfValidPrograms() {
         int total = 0;
-        for (Program p : programs) {
-            if (p.getStartBlock().isIllegalExtraStartingBlock()) {
+        for (Program program : programs) {
+            if (program.getStartBlock().isIllegalExtraStartingBlock()) {
                 total += 1;
             }
         }

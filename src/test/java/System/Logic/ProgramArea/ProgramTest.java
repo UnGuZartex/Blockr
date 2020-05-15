@@ -19,6 +19,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProgramTest {
@@ -215,5 +217,20 @@ class ProgramTest {
         validProgram.loadSnapshot(snapshot);
         assertEquals(Result.END, validProgram.getLastResult());
         assertNull(validProgram.getCurrentBlock());
+    }
+
+    @Test
+    void snapshot_getName() {
+        Snapshot snapshot = validProgram.createSnapshot();
+        assertEquals("Program snapshot " + snapshot, snapshot.getName());
+    }
+
+    @Test
+    void snapshot_getSnapshotDate() {
+        LocalDateTime dateBefore = LocalDateTime.now().minusSeconds(1);
+        Snapshot snapshot = validProgram.createSnapshot();
+        LocalDateTime dateAfter = LocalDateTime.now().plusSeconds(1);
+        assertTrue(dateBefore.isBefore(snapshot.getSnapshotDate()));
+        assertTrue(dateAfter.isAfter(snapshot.getSnapshotDate()));
     }
 }
