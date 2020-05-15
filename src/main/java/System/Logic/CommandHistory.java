@@ -13,7 +13,7 @@ public class CommandHistory {
     /**
      * Variable referring to the undo stack for this command history.
      */
-    private final Stack<Command> undoStack = new Stack<>();
+    protected final Stack<Command> undoStack = new Stack<>();
     /**
      * Variable referring to the redo stack for this command history.
      */
@@ -27,8 +27,14 @@ public class CommandHistory {
      * @effect The command is executed.
      * @effect The command is pushed on the undo stack.
      * @effect The redo stack is cleared.
+     *
+     * @throws IllegalArgumentException
+     *         If the given command is not effective.
      */
-    public void execute(Command command) {
+    public void execute(Command command) throws IllegalArgumentException {
+        if (command == null) {
+            throw new IllegalArgumentException("The given command may not be null!");
+        }
         command.execute();
         undoStack.push(command);
         redoStack.clear();
