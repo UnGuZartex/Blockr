@@ -63,9 +63,15 @@ public abstract class ProgramCommand implements Command {
      * @effect Load the snapshot of the program in the program of the program area.
      * @effect Load the snapshot of the game world in the game world of the program area.
      * @effect Notify the program area that the program state has changed.
+     *
+     * @throws IllegalStateException
+     *         If no snapshots where made. 
      */
     @Override
-    public void undo() {
+    public void undo() throws IllegalStateException {
+        if (programSnapShot == null && gameWorldSnapshot == null) {
+            throw new IllegalStateException("No snapshots were made!");
+        }
         programArea.getProgram().loadSnapshot(programSnapShot);
         programArea.getGameWorld().loadSnapshot(gameWorldSnapshot);
         programArea.notifyProgramState();
