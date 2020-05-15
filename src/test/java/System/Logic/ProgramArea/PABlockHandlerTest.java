@@ -1,19 +1,23 @@
 package System.Logic.ProgramArea;
 
+import Controllers.ControllerClasses.BlockHandlerController;
+import Controllers.IGUI_System_BlockLink;
+import GUI.Blocks.*;
+import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
-import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.FunctionalBlock;
-import System.BlockStructure.Blocks.IfBlock;
-import System.BlockStructure.Blocks.WhileBlock;
+import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.DummyFunctionality;
 import System.Logic.CommandHistory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,22 +28,88 @@ class PABlockHandlerTest {
     private static final int MAX_BLOCKS = 3;
     GameWorldType type;
     GameWorld gameWorld;
+    Block block;
+
+    PalettePanel panel;
+    int cornerX, cornerY, width, height;
+    Random random;
+    static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
+    static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 400, MAX_HEIGHT = 800;
+    GUIBlock procedure, functional, conditional, operator;
+    String procedureName, functionalName, conditionalName, operatorName;
+    BlockHandlerController blockHandlerController;
+    IGUI_System_BlockLink converter;
+    PABlockHandler paBlockHandler;
 
     @BeforeEach
     void setUp() {
         type = new LevelInitializer();
         gameWorld = type.createNewGameWorld();
         programArea = new ProgramArea(gameWorld, new CommandHistory());
-        handler = new PABlockHandler(Collections.singletonList(new IfBlock()), programArea);
+        block = new ProcedureBlock();
+        handler = new PABlockHandler(Collections.singletonList(block), programArea);
         handler.setMaxBlocks(MAX_BLOCKS);
+
+        random = new Random();
+        cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        cornerY = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
+        width = random.nextInt(MAX_WIDTH + 1 - MIN_WIDTH) + MIN_WIDTH;
+        height = random.nextInt(MAX_HEIGHT + 1 - MIN_HEIGHT) + MIN_HEIGHT;
+
+        procedureName = "Def";
+        functionalName = "functional";
+        conditionalName = "conditional";
+        operatorName = "operator";
+
+        procedure = new GUIProcedureBlock(procedureName, 0,0, 0);
+        functional = new GUIFunctionalBlock(functionalName, 0,0);
+        conditional = new GUIConditionalBlock(conditionalName, 0,0);
+        operator = new GUIOperatorBlock(operatorName, 0,0);
+
+        converter = new IGUI_System_BlockLink();
+
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), programArea);
+
+        blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
+
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(procedure, functional, conditional, operator));
+
+        handler.subscribe(panel);
     }
 
     @AfterEach
     void tearDown() {
-        handler = null;
-        programArea = null;
         type = null;
         gameWorld = null;
+        handler = null;
+        programArea = null;
+
+        random = null;
+        procedureName = null;
+        functionalName = null;
+        conditionalName = null;
+        operatorName = null;
+        procedure = null;
+        functional = null;
+        conditional = null;
+        operator = null;
+        panel = null;
+    }
+
+    @Test
+    void paBlockHandler_invalidProgramArea() {
+        assertThrows(IllegalArgumentException.class, () -> new PABlockHandler(Collections.singletonList(block), null));
+    }
+
+    @Test
+    void isValidProgramArea() {
+        assertTrue(PABlockHandler.isValidProgramArea(programArea));
+        assertFalse(PABlockHandler.isValidProgramArea(null));
+    }
+
+    @Test
+    void getPalette() {
+        assertEquals(block.getClass(), handler.getPalette().getNewBlock(0).getClass());
     }
 
     @Test
@@ -60,7 +130,7 @@ class PABlockHandlerTest {
 
     @Test
     void getFromPalette() {
-        assertTrue(handler.getFromPalette(0) instanceof IfBlock);
+        assertEquals(block.getClass(), handler.getFromPalette(0).getClass());
     }
 
     @Test
@@ -88,6 +158,16 @@ class PABlockHandlerTest {
         assertEquals(2, handler.getPA().getAllBlocksCount());
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
         assertEquals(3, handler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void addToPA_procedure() {
+        panel.getNewBlock(0);
+        assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
+        ProcedureBlock block = new ProcedureBlock();
+        handler.addToPA(block);
+        ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
+        assertEquals(block, call.getProcedure());
     }
 
     @Test
@@ -135,6 +215,17 @@ class PABlockHandlerTest {
     }
 
     @Test
+    void deleteProgram_procedure() {
+        panel.getNewBlock(0);
+        ProcedureBlock block = new ProcedureBlock();
+        handler.addToPA(block);
+        ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
+        assertEquals(block, call.getProcedure());
+        handler.deleteProgram(block);
+        assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
+    }
+
+    @Test
     void setMaxBlocks() {
         for (int i = 0; i < MAX_BLOCKS; i++) {
             assertEquals(i, handler.getPA().getAllBlocksCount());
@@ -148,5 +239,22 @@ class PABlockHandlerTest {
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
         assertEquals(MAX_BLOCKS + 1, handler.getPA().getAllBlocksCount());
         assertThrows(IllegalStateException.class, () -> handler.addToPA(new WhileBlock()));
+    }
+
+    @Test
+    void subscribedListener() {
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
+        assertThrows(IllegalStateException.class, () -> panel.getNewBlock(0));
+    }
+
+    @Test
+    void unsubscribedListener() {
+        handler.unSubscribe(panel);
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
+        handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
+        assertEquals(procedure.getClass(), panel.getNewBlock(0).getClass());
     }
 }

@@ -9,7 +9,9 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.DummyFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
+import System.Logic.CommandHistory;
 import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,11 +39,13 @@ class IGUISystemBlockLinkTest {
     IGUIBlock guiBlock0, guiBlock1, guiBlock2;
     PABlockHandler paBlockHandler;
     BlockHandlerController blockHandlerController;
+    ProgramArea programArea;
 
     @BeforeEach
     void setUp() {
         type = new LevelInitializer();
         converter = new IGUI_System_BlockLink();
+        programArea = new ProgramArea(type.createNewGameWorld(), new CommandHistory());
 
         random = new Random();
         cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
@@ -59,7 +63,7 @@ class IGUISystemBlockLinkTest {
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
 
-        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), null);
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), programArea);
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
@@ -95,6 +99,7 @@ class IGUISystemBlockLinkTest {
         guiBlock0 = null;
         guiBlock1 = null;
         guiBlock2 = null;
+        programArea = null;
     }
 
     @Test

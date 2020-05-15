@@ -2,7 +2,6 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramAreaListener;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.IfBlock;
 import System.BlockStructure.Blocks.ProcedureBlock;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.Palette.Palette;
@@ -13,6 +12,8 @@ import java.util.List;
 /**
  * A class to handle the blocks in the program area.
  *
+ * @invar The PA Block Handler must have a valid program area.
+ *        | isValidProgramArea(programArea)
  * @invar There must be a proper number of blocks in the program area.
  *        | hasProperNbBlocks()
  *
@@ -54,10 +55,36 @@ public class PABlockHandler {
      * @post The program area of this pa block handler is set to the given program area.
      *
      * @effect A new palette is initialized with the given list of blocks.
+     *
+     * @throws IllegalArgumentException
+     *         If the given program area is invalid.
      */
-    public PABlockHandler(List<Block> paletteBlocks, ProgramArea programArea) {
+    public PABlockHandler(List<Block> paletteBlocks, ProgramArea programArea) throws IllegalArgumentException {
+        if (!isValidProgramArea(programArea)) {
+            throw  new IllegalArgumentException("The given program area is not valid!");
+        }
         palette = new Palette(paletteBlocks);
         this.programArea = programArea;
+    }
+
+    /**
+     * Checks whether or not the given program area is valid or not.
+     *
+     * @param programArea The program area to check.
+     *
+     * @return True if and only if the given program area is effective.
+     */
+    public static boolean isValidProgramArea(ProgramArea programArea) {
+        return programArea != null;
+    }
+
+    /**
+     * Get the palette from this block handler.
+     *
+     * @return The palette from this block handler.
+     */
+    public Palette getPalette() {
+        return this.palette;
     }
 
     /**
@@ -106,31 +133,23 @@ public class PABlockHandler {
      * @effect Program reset command is added to the program area.
      * @effect The given block is added to the program area.
      * @effect listeners are notified whether max blocks are reached.
+     * @effect if the given block is a procedure block, then is a caller created
+     *         and added to the palette and a notification is made.
      *
      * @throws IllegalStateException
      *         When max blocks has been reached.
      */
-
-
     public void addToPA(Block block) throws IllegalStateException {
-
         if (hasReachedMaxBlocks()) {
             throw new IllegalStateException("Max blocks has been reached. " +
                     "This block can't be added to the program area anymore.");
         }
-
         programArea.addProgramResetCommand();
         programArea.addProgram(block);
         notifyMaxBlocksReached();
         if (block instanceof ProcedureBlock) {
             palette.createCaller((ProcedureBlock) block);
             notifyProcedureCreated();
-        }
-    }
-
-    private void notifyProcedureCreated() {
-        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureCreated();
         }
     }
 
@@ -200,20 +219,6 @@ public class PABlockHandler {
         }
     }
 
-    private void notifyProcedureDeleted(int index) {
-        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureDeleted(index);
-        }
-    }
-
-    /**
-     * Sets the max number of blocks of this PAHandler
-     * @param maxBlocks the amount of blocks to set
-     */
-    protected void setMaxBlocks(int maxBlocks) {
-        this.maxBlocks = maxBlocks;
-    }
-
     /**
      * Unsubscribe a given program area listener from this object.
      *
@@ -234,6 +239,14 @@ public class PABlockHandler {
      */
     public void unSubscribe(ProgramAreaListener listener) {
         listeners.remove(listener);
+    }
+
+    /**
+     * Sets the max number of blocks of this PAHandler
+     * @param maxBlocks the amount of blocks to set
+     */
+    protected void setMaxBlocks(int maxBlocks) {
+        this.maxBlocks = maxBlocks;
     }
 
     /**
@@ -259,7 +272,27 @@ public class PABlockHandler {
         return programArea.getAllBlocksCount() >= maxBlocks;
     }
 
-    public Palette getPalette() {
-        return this.palette;
+    /**
+     * Notify that a procedure is created to the listeners.
+     *
+     * @effect The onProcedureCreated event is called for aal listeners.
+     */
+    private void notifyProcedureCreated() {
+        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureCreated();
+        }
+    }
+
+    /**
+     * Notify that a procedure is deleted to the listeners.
+     *
+     * @param index The index of the call which was deleted.
+     *
+     * @effect The onProcedureDeleted event is called for the listeners with the given index.
+     */
+    private void notifyProcedureDeleted(int index) {
+        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureDeleted(index);
+        }
     }
 }

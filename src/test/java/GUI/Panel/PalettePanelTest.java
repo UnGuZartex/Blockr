@@ -3,9 +3,13 @@ package GUI.Panel;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.IGUI_System_BlockLink;
 import GUI.Blocks.*;
+import GameWorldAPI.GameWorldType.GameWorldType;
+import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.DummyFunctionality;
+import System.Logic.CommandHistory;
 import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,10 +34,14 @@ class PalettePanelTest {
     BlockHandlerController blockHandlerController;
     IGUI_System_BlockLink converter;
     PABlockHandler paBlockHandler;
-
+    GameWorldType type;
+    ProgramArea programArea;
 
     @BeforeEach
     void setUp() {
+        type = new LevelInitializer();
+        programArea = new ProgramArea(type.createNewGameWorld(), new CommandHistory());
+
         random = new Random();
         cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
         cornerY = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
@@ -52,7 +60,7 @@ class PalettePanelTest {
 
         converter = new IGUI_System_BlockLink();
 
-        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), null);
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), programArea);
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
@@ -62,6 +70,8 @@ class PalettePanelTest {
 
     @AfterEach
     void tearDown() {
+        type = null;
+        programArea = null;
         random = null;
         cavityName = null;
         functionalName = null;
