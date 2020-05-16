@@ -2,11 +2,7 @@ package System.UseCases;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldUtility.Actions.MoveForwardAction;
-import GameWorldUtility.Actions.TurnLeftAction;
-import GameWorldUtility.Actions.TurnRightAction;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Predicates.WallInFrontPredicate;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
@@ -38,10 +34,10 @@ public class AddBlockTest {
         type = new LevelInitializer();
         gameWorld = type.createNewGameWorld();
 
-        moveForward = new FunctionalBlock(new ActionFunctionality((MoveForwardAction) type.getAllActions().get(0)));
-        turnLeft = new FunctionalBlock(new ActionFunctionality((TurnLeftAction) type.getAllActions().get(1)));
-        turnRight = new FunctionalBlock(new ActionFunctionality((TurnRightAction) type.getAllActions().get(2)));
-        wallInFront = new PredicateBlock(new PredicateFunctionality((WallInFrontPredicate) type.getAllPredicates().get(0)));
+        moveForward = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))); // MoveForwardAction
+        turnLeft = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))); // TurnLeftAction
+        turnRight = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))); // TurnRightAction
+        wallInFront = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0))); // WallInFrontPredicate
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
