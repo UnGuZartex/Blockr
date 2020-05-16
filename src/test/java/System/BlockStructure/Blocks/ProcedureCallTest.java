@@ -191,7 +191,7 @@ class ProcedureCallTest {
 
     @Test
     void getBlockAtIndex_illegalIndex() {
-        assertThrows(IllegalArgumentException.class, () -> call.getBlockAtIndex(-1));
+        assertNull(call.getBlockAtIndex(-1));
     }
 
     @Test
@@ -214,7 +214,7 @@ class ProcedureCallTest {
 
     @Test
     void getIndexOfBlock_illegalBlock() {
-        assertThrows(IllegalArgumentException.class, () -> call.getIndexOfBlock(null));
+        assertEquals(-1, call.getIndexOfBlock(null));
     }
 
     @Test

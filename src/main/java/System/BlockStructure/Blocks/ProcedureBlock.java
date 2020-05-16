@@ -95,16 +95,11 @@ public class ProcedureBlock extends Block {
      * @param index The index to get the block from.
      *
      * @return The block at the given index.
-     *
-     * @throws IllegalArgumentException
-     *         If the given index is smaller than 0.
-     * @throws IllegalArgumentException
-     *         If no block can be found at the given index.
      */
     @Override
-    public Block getBlockAtIndex(int index) throws IllegalArgumentException {
+    public Block getBlockAtIndex(int index) {
         if (index < 0) {
-            throw new IllegalArgumentException("The given index is invalid!");
+            return null;
         }
         if (index == 0) {
             return this;
@@ -117,7 +112,7 @@ public class ProcedureBlock extends Block {
             return toReturn;
         }
         if (getReturnToBlock() == null) {
-            throw new IllegalArgumentException("No block can be found at the given index!");
+            return null;
         }
         return getReturnToBlock().getBlockAtIndex(index - 1);
     }
@@ -128,16 +123,11 @@ public class ProcedureBlock extends Block {
      * @param block The block to get the index off.
      *
      * @return The index of the given block.
-     *
-     * @throws IllegalArgumentException
-     *         If the given block is null.
-     * @throws IllegalArgumentException
-     *         If the given block can't be found.
      */
     @Override
-    public int getIndexOfBlock(Block block) throws IllegalArgumentException {
+    public int getIndexOfBlock(Block block) {
         if (block == null) {
-            throw new IllegalArgumentException("The given block is not effective!");
+            return -1;
         }
         if (block == this) {
             return 0;
@@ -150,7 +140,7 @@ public class ProcedureBlock extends Block {
             return toReturn;
         }
         if (getReturnToBlock() == null) {
-            throw new IllegalArgumentException("The given block can't be found!");
+            return -1;
         }
         return 1 + getReturnToBlock().getIndexOfBlock(block);
     }

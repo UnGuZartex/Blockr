@@ -124,15 +124,15 @@ class ProcedureBlockTest {
 
     @Test
     void getBlockAtIndex_negativeIndex() {
-        assertThrows(IllegalArgumentException.class, () -> procedure.getBlockAtIndex(-1));
+        assertNull(procedure.getBlockAtIndex(-1));
     }
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertThrows(IllegalArgumentException.class, () -> procedure.getBlockAtIndex(4));
-        assertThrows(IllegalArgumentException.class, () -> emptyProcedure.getBlockAtIndex(1));
-        assertThrows(IllegalArgumentException.class, () -> notCompleteProcedure.getBlockAtIndex(2));
-        assertThrows(IllegalArgumentException.class, () -> procedureRecursion.getBlockAtIndex(3));
+        assertNull(procedure.getBlockAtIndex(4));
+        assertNull(emptyProcedure.getBlockAtIndex(1));
+        assertNull(notCompleteProcedure.getBlockAtIndex(2));
+        assertNull(procedureRecursion.getBlockAtIndex(3));
     }
 
     @Test
@@ -157,14 +157,14 @@ class ProcedureBlockTest {
 
     @Test
     void getIndexOfBlock_invalidBlock() {
-        assertThrows(IllegalArgumentException.class, () -> procedure.getIndexOfBlock(null));
-        assertThrows(IllegalArgumentException.class, () -> procedure.getIndexOfBlock(cavity));
+        assertEquals(-1, procedure.getIndexOfBlock(null));
+        assertEquals(2, procedure.getIndexOfBlock(cavity));
     }
 
     @Test
     void getIndexOfBlock_noReturnToBlock() {
         emptyProcedure.setReturnToBlock(null);
-        assertThrows(IllegalArgumentException.class, () -> emptyProcedure.getIndexOfBlock(blockUnderCall));
+        assertEquals(-1, emptyProcedure.getIndexOfBlock(blockUnderCall));
     }
 
     @Test

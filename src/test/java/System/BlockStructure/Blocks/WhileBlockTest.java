@@ -283,7 +283,7 @@ class WhileBlockTest {
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertThrows(IllegalArgumentException.class, () -> while1.getBlockAtIndex(5));
+        assertNull(while1.getBlockAtIndex(5));
     }
 
     @Test

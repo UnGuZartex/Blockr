@@ -147,14 +147,11 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *
      * @return The block at the given index, if this block has a next block is in
      *         the procedure searched, otherwise is the super index used.
-     *
-     * @throws IllegalArgumentException
-     *         When the given index is smaller than 0.
      */
     @Override
-    public Block getBlockAtIndex(int index) throws IllegalArgumentException {
+    public Block getBlockAtIndex(int index)  {
         if (index < 0) {
-            throw new IllegalArgumentException("The index can't be smaller than 0!");
+            return null;
         }
         if (index == 0) {
             return this;
@@ -176,14 +173,11 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *
      * @return If this block has a next block, then is the default index used,
      *         otherwise is the super block searched.
-     *
-     * @throws IllegalArgumentException
-     *         When the given block is null.
      */
     @Override
-    public int getIndexOfBlock(Block block) throws IllegalArgumentException {
+    public int getIndexOfBlock(Block block)  {
         if (block == null) {
-            throw new IllegalArgumentException("The given block can't be null!");
+            return -1;
         }
         if (block == this) {
             return 0;
