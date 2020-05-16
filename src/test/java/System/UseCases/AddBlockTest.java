@@ -29,7 +29,7 @@ public class AddBlockTest {
     PABlockHandler paBlockHandler;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
 
     @BeforeEach
     void setUp() {
@@ -45,9 +45,9 @@ public class AddBlockTest {
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
+        procedure = new ProcedureBlock();
 
-
-        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
+        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
     }
 
     @AfterEach
@@ -62,6 +62,7 @@ public class AddBlockTest {
         notBlock = null;
         whileBlock = null;
         ifBlock = null;
+        procedure = null;
     }
 
     @Test
@@ -70,6 +71,7 @@ public class AddBlockTest {
         PredicateBlock statement = (PredicateBlock) paBlockHandler.getFromPalette(3);
         OperationalBlock operational = (NotBlock) paBlockHandler.getFromPalette(4);
         FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
 
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(cavity);
@@ -80,6 +82,8 @@ public class AddBlockTest {
         assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(functional);
         assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(procedure);
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 
     @Test
@@ -88,15 +92,17 @@ public class AddBlockTest {
         PredicateBlock statement = (PredicateBlock) paBlockHandler.getFromPalette(3);
         OperationalBlock operational = (NotBlock) paBlockHandler.getFromPalette(4);
         FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
 
+        connectionHandler.connect(functional, procedure.getSubConnectorAt(0));
         connectionHandler.connect(cavity, functional.getSubConnectorAt(0));
         connectionHandler.connect(statement, operational.getSubConnectorAt(0));
 
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
-        paBlockHandler.addToPA(functional);
-        assertEquals(2, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(procedure);
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(operational);
-        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 
     @Test
@@ -200,5 +206,59 @@ public class AddBlockTest {
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(functional2);
         assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void addHighest_procedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock functional3 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+
+        connectionHandler.connect(functional1, procedure.getSubConnectorAt(0));
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+        connectionHandler.connect(functional3, functional2.getSubConnectorAt(0));
+
+        assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(functional3);
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void addHighest_fromMiddle() {
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock functional3 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+        connectionHandler.connect(functional3, functional2.getSubConnectorAt(0));
+
+        assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(functional2);
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void getProcedureFromPalette() {
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(8));
+        ProcedureBlock procedure1 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(8));
+        paBlockHandler.addToPA(procedure1);
+        ProcedureCall call11 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call12 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        assertEquals(procedure1, call11.getProcedure());
+        assertEquals(procedure1, call12.getProcedure());
+        paBlockHandler.addToPA(call11);
+        paBlockHandler.addToPA(call12);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(9));
+        ProcedureBlock procedure2 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(9));
+        paBlockHandler.addToPA(procedure2);
+        ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(9);
+        assertEquals(procedure2, call2.getProcedure());
+        paBlockHandler.addToPA(call2);
+
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 }
