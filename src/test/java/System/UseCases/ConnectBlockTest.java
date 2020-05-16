@@ -2,11 +2,7 @@ package System.UseCases;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldUtility.Actions.MoveForwardAction;
-import GameWorldUtility.Actions.TurnLeftAction;
-import GameWorldUtility.Actions.TurnRightAction;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Predicates.WallInFrontPredicate;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
@@ -30,11 +26,13 @@ class ConnectBlockTest {
     PABlockHandler paBlockHandler;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
     FunctionalBlock functionalBlock;
     CavityBlock cavityBlock;
     OperationalBlock operationalBlock;
     PredicateBlock predicateBlock;
+    ProcedureBlock procedureBlock;
+    ProcedureCall callBlock;
     int initialNbBlocks;
 
     @BeforeEach
@@ -44,17 +42,16 @@ class ConnectBlockTest {
         type = new LevelInitializer();
         gameWorld = type.createNewGameWorld();
 
-        moveForward = new FunctionalBlock(new ActionFunctionality((MoveForwardAction) type.getAllActions().get(0)));
-        turnLeft = new FunctionalBlock(new ActionFunctionality((TurnLeftAction) type.getAllActions().get(1)));
-        turnRight = new FunctionalBlock(new ActionFunctionality((TurnRightAction) type.getAllActions().get(2)));
-        wallInFront = new PredicateBlock(new PredicateFunctionality((WallInFrontPredicate) type.getAllPredicates().get(0)));
+        moveForward = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))); // MoveForwardAction
+        turnLeft = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))); // TurnLeftAction
+        turnRight = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))); // TurnRightAction
+        wallInFront = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0))); // WallInFrontPredicate
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
+        procedure = new ProcedureBlock();
 
-
-        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
-
+        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
 
         functionalBlock = (FunctionalBlock) paBlockHandler.getFromPalette(0);
         paBlockHandler.addToPA(functionalBlock);
@@ -64,8 +61,12 @@ class ConnectBlockTest {
         paBlockHandler.addToPA(operationalBlock);
         predicateBlock = (PredicateBlock) paBlockHandler.getFromPalette(3);
         paBlockHandler.addToPA(predicateBlock);
+        procedureBlock = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedureBlock);
+        callBlock = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        paBlockHandler.addToPA(callBlock);
 
-        initialNbBlocks = 4;
+        initialNbBlocks = 6;
         assertEquals(initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
     }
 
@@ -85,6 +86,8 @@ class ConnectBlockTest {
         cavityBlock = null;
         operationalBlock = null;
         predicateBlock = null;
+        procedureBlock = null;
+        callBlock = null;
     }
 
     @Test
@@ -287,4 +290,79 @@ class ConnectBlockTest {
         assertEquals(functionalBlock, cavityBlock.getSubConnectorAt(0).getConnectedBlock());
     }
 
+    @Test
+    void singleBlock_functionalInProcedure() {
+        FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.connectToExistingBlock(functional, procedureBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 1, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(functional.getMainConnector().isConnected());
+        assertEquals(procedureBlock, functional.getMainConnector().getConnectedBlock());
+        assertEquals(functional, procedureBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
+
+    @Test
+    void singleBlock_cavityInProcedure() {
+        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(5);
+
+        paBlockHandler.connectToExistingBlock(cavity, procedureBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 1, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(cavity.getMainConnector().isConnected());
+        assertEquals(procedureBlock, cavity.getMainConnector().getConnectedBlock());
+        assertEquals(cavity, procedureBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
+
+    @Test
+    void multipleBlocks_inProcedure() {
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+
+        paBlockHandler.connectToExistingBlock(functional1, procedureBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 2, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(functional1.getMainConnector().isConnected());
+        assertEquals(procedureBlock, functional1.getMainConnector().getConnectedBlock());
+        assertEquals(functional1, procedureBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
+
+    @Test
+    void singleBlock_functionalToCall() {
+        FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.connectToExistingBlock(functional, callBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 1, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(functional.getMainConnector().isConnected());
+        assertEquals(callBlock, functional.getMainConnector().getConnectedBlock());
+        assertEquals(functional, callBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
+
+    @Test
+    void singleBlock_cavityToCall() {
+        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(5);
+
+        paBlockHandler.connectToExistingBlock(cavity, callBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 1, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(cavity.getMainConnector().isConnected());
+        assertEquals(callBlock, cavity.getMainConnector().getConnectedBlock());
+        assertEquals(cavity, callBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
+
+    @Test
+    void multipleBlocks_toCall() {
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+
+        paBlockHandler.connectToExistingBlock(functional1, callBlock.getSubConnectorAt(0));
+
+        assertEquals(initialNbBlocks + 2, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(functional1.getMainConnector().isConnected());
+        assertEquals(callBlock, functional1.getMainConnector().getConnectedBlock());
+        assertEquals(functional1, callBlock.getSubConnectorAt(0).getConnectedBlock());
+    }
 }
