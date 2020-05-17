@@ -2,6 +2,8 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for if blocks. These are cavity blocks which have a
  * cavity functionality. The cavity can only be ran 1 time.
@@ -98,5 +100,15 @@ public class IfBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new IfBlock();
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
+        if (getFunctionality().getEvaluation() && getCavitySubConnector().isConnected()) {
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        }
     }
 }

@@ -231,7 +231,5 @@ public abstract class Block {
      */
     public abstract int getIndexOfBlock(Block block);
 
-    public void pushNextBlocks(Stack<Block> stack) {
-        // TODO: make abstract and implement in subclasses
-    }
+    public abstract void pushNextBlocks(Stack<Block> stack);
 }

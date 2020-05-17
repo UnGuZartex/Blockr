@@ -5,6 +5,8 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
+import java.util.Stack;
+
 /**
  * An abstract class for conditional blocks. This is a block with a conditional
  * functionality.
@@ -109,5 +111,10 @@ public abstract class ConditionalBlock extends Block {
     @Override
     public int getIndexOfBlock(Block block) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        throw new IllegalStateException("Invalid call of pushing to stack in conditional!");
     }
 }

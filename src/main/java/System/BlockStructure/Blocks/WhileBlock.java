@@ -2,6 +2,8 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for while blocks. These are cavity blocks which have a
  * cavity functionality. The cavity can be repeated multiple times.
@@ -106,5 +108,17 @@ public class WhileBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new WhileBlock();
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getFunctionality().getEvaluation()) {
+            stack.push(this);
+            if (getCavitySubConnector().isConnected()) {
+                stack.push(getCavitySubConnector().getConnectedBlock());
+            }
+        } else if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
     }
 }

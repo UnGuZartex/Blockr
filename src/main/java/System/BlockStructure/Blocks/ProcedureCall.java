@@ -5,6 +5,7 @@ import System.BlockStructure.Functionality.DummyFunctionality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * A class for procedure calls which can call a procedure.
@@ -273,5 +274,13 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
                 procedure.setReturnToBlock(getReturnToBlock());
             }
         }
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
+        stack.push(procedure);
     }
 }

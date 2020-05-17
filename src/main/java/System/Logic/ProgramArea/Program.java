@@ -100,7 +100,7 @@ public class Program {
         if (executionStack.isEmpty()) {
             return null;
         } else {
-            return executionStack.firstElement();
+            return executionStack.peek();
         }
     }
 

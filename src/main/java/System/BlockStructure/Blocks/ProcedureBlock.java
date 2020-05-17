@@ -6,6 +6,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for procedure blocks.
  *
@@ -162,5 +164,12 @@ public class ProcedureBlock extends Block {
      */
     public boolean isPassed() {
         return passed;
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
     }
 }
