@@ -5,6 +5,7 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Functionality.BlockFunctionality;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * An abstract class for blocks with a functionality.
@@ -229,4 +230,8 @@ public abstract class Block {
      * @return The index of the given block in the structure of this block.
      */
     public abstract int getIndexOfBlock(Block block);
+
+    public void pushNextBlocks(Stack<Block> stack) {
+        // TODO: make abstract and implement in subclasses
+    }
 }

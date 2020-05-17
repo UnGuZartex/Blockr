@@ -7,6 +7,7 @@ import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
 import java.time.LocalDateTime;
+import java.util.Stack;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -34,7 +35,7 @@ public class Program {
     /**
      * Variable referring to the block which should be executed next.
      */
-    private Block currentBlock;
+    //private Block currentBlock;
 
     /**
      * Variable referring to the result of the last executed step in the program.
@@ -45,6 +46,9 @@ public class Program {
      * Variable referring to the execution state of the program.
      */
     private boolean isExecuting = false;
+
+    private Stack<Block> executionStack = new Stack<>();
+
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -62,7 +66,8 @@ public class Program {
             throw new IllegalArgumentException("The given start block is not valid!");
         }
         startBlock = start;
-        currentBlock = start;
+        executionStack.push(start);
+        // currentBlock = start;
     }
 
     /**
@@ -91,7 +96,12 @@ public class Program {
      * @return The block which should be executed currently.
      */
     public Block getCurrentBlock() {
-        return currentBlock;
+        //return currentBlock;
+        if (executionStack.isEmpty()) {
+            return null;
+        } else {
+            return executionStack.firstElement();
+        }
     }
 
     /**
@@ -122,8 +132,11 @@ public class Program {
         }
         if (!isFinished()) {
             isExecuting = true;
+
+            Block currentBlock = executionStack.pop();
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
-            currentBlock = currentBlock.getNext();
+            currentBlock.pushNextBlocks(executionStack);
+
         }
     }
 
@@ -154,7 +167,8 @@ public class Program {
      *         or if the last result of executing the program is not a SUCCESS.
      */
     public boolean isFinished() {
-        return currentBlock == null || lastResult != Result.SUCCESS;
+        return executionStack.isEmpty() || lastResult != Result.SUCCESS;
+        // return currentBlock == null || lastResult != Result.SUCCESS;
     }
 
     /**
@@ -175,7 +189,9 @@ public class Program {
      *       program is not executing anymore.
      */
     public void resetProgram() {
-        this.currentBlock = startBlock;
+        executionStack.clear();
+        executionStack.push(startBlock);
+//        this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
         isExecuting = false;
     }
@@ -221,7 +237,8 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        // currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        executionStack = programSnapshot.executionStackCopy;
         lastResult = programSnapshot.currentResult;
         isExecuting = programSnapshot.isExecutingNow;
     }
@@ -234,7 +251,10 @@ public class Program {
         /**
          * Variable referring to the index of the block to remember.
          */
-        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        // private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+
+        private final Stack<Block> executionStackCopy = (Stack<Block>) executionStack.clone();
+
 
         /**
          * Variable referring to the result to remember.

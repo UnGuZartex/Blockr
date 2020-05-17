@@ -6,6 +6,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
 
+import java.util.Stack;
+
 
 /**
  * A class for functional blocks. These are the most common blocks.
@@ -141,5 +143,12 @@ public class FunctionalBlock extends Block {
             return -1;
         }
         return 1 + getReturnToBlock().getIndexOfBlock(block);
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
     }
 }
