@@ -238,7 +238,7 @@ public class Program {
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
         // currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
-        executionStack = programSnapshot.executionStackCopy;
+        executionStack = programSnapshot.getBlockStack();
         lastResult = programSnapshot.currentResult;
         isExecuting = programSnapshot.isExecutingNow;
     }
@@ -253,7 +253,7 @@ public class Program {
          */
         // private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
 
-        private final Stack<Block> executionStackCopy = (Stack<Block>) executionStack.clone();
+        private final Stack<Integer> executionStackCopy = getIndexStack();
 
 
         /**
@@ -289,6 +289,24 @@ public class Program {
         @Override
         public LocalDateTime getSnapshotDate() {
             return creationTime;
+        }
+
+        public Stack<Integer> getIndexStack() {
+            Stack<Block> toConvert = (Stack<Block>) executionStack.clone();
+            Stack<Integer> indexStack = new Stack<>();
+            while (!toConvert.isEmpty()) {
+                indexStack.push(startBlock.getIndexOfBlock(toConvert.pop()));
+            }
+            return indexStack;
+        }
+
+        public Stack<Block> getBlockStack() {
+            Stack<Integer> toConvert = (Stack<Integer>) executionStackCopy.clone();
+            Stack<Block> blockStack = new Stack<>();
+            while (!toConvert.isEmpty()) {
+                blockStack.push(startBlock.getBlockAtIndex(toConvert.pop()));
+            }
+            return blockStack;
         }
     }
 }
