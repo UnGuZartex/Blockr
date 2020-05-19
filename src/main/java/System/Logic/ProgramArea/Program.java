@@ -124,7 +124,6 @@ public class Program {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
-            System.out.println(systemStack);
             isExecuting = true;
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock = currentBlock.getNext(systemStack);
@@ -278,6 +277,7 @@ public class Program {
             return creationTime;
         }
 
+        @SuppressWarnings("unchecked")
         public Stack<Integer> getIndexStack(Block startingpoint) {
             Stack<Block> toConvert = (Stack<Block>) systemStack.clone();
             Stack<Integer> indexStack = new Stack<>();
@@ -287,10 +287,9 @@ public class Program {
             return indexStack;
         }
 
+        @SuppressWarnings("unchecked")
         public Stack<Block> getBlockStack(Block startingpoint) {
             Stack<Integer> toConvert = (Stack<Integer>) indexStack.clone();
-            System.out.println("IntStack: " + toConvert);
-            System.out.println(startingpoint);
             Stack<Block> blockStack = new Stack<>();
             while (!toConvert.isEmpty()) {
                 blockStack.push(startingpoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
