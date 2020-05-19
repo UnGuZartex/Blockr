@@ -76,9 +76,8 @@ public class BlockHandlerController {
      */
     public void deleteFromPA(IGUIBlock block) {
         Block toDelete = blockDatabase.getBlockFromGUIBlock(block);
-        blockDatabase.removeBlock(block);
         blockHandler.deleteProgram(toDelete);
-        
+        blockDatabase.removeBlock(block);
     }
 
     /**
