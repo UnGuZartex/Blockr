@@ -8,6 +8,7 @@ import Utility.Position;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public abstract class GUIBlock implements IGUIBlock {
+public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
 
     /**
      * Variables referring to the width, height and coordinates of this GUI block.
@@ -38,6 +39,14 @@ public abstract class GUIBlock implements IGUIBlock {
      */
     protected String name;
 
+    /**
+     * TODO
+     */
+    protected boolean setFirst;
+
+    /**
+     * TODO
+     */
     private boolean terminated;
 
     /**
@@ -426,15 +435,46 @@ public abstract class GUIBlock implements IGUIBlock {
         return null;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public void terminate() {
         this.terminated = true;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public boolean isTerminated() {
         return terminated;
+    }
+
+    /**
+     * TODO comments
+     * @return
+     */
+    @Override
+    public int compareTo(GUIBlock other) {
+
+        if (this.setFirst) {
+            return (!other.setFirst) ? -1 : this.name.compareTo(other.name);
+        }
+        else if (other.setFirst) {
+            return 1;
+        }
+
+        int comparison = Integer.compare(this.getY(), other.getY());
+        comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
+        return comparison;
     }
 }

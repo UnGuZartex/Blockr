@@ -25,6 +25,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     private List<GUIBlock> blocks;
 
+    /**
+     * TODO Comments
+     */
     private List<GUICallerBlock> GUICallerblocks = new ArrayList<>();
 
 
@@ -33,6 +36,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     private boolean reachedMaxBlocks;
 
+    /**
+     * TODO Comments
+     */
     private GUIBlock lastCreated;
 
     /**
