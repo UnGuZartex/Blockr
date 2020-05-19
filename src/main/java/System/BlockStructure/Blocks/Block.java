@@ -129,7 +129,6 @@ public abstract class Block {
         if (isTerminated()) {
             throw new IllegalStateException("This block is terminated!");
         }
-        //setReturnToBlock(null);
         for(int i = 0; i < getSubConnectors().size(); i++) {
             if (getSubConnectors().get(i).isConnected()) {
                 Block connectBlock = getSubConnectors().get(i).getConnectedBlock();

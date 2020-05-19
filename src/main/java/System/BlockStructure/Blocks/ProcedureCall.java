@@ -182,8 +182,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
         }
         if (hasNext()) {
             setReturnToOfNext(systemStack);
-            int toReturn = 1 + procedure.getIndexOfBlock(block, systemStack);
-            return toReturn;
+            return 1 + procedure.getIndexOfBlock(block, systemStack);
         }
         return super.getIndexOfBlock(block,systemStack);
     }

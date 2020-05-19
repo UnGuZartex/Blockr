@@ -74,9 +74,7 @@ public class ProcedureBlock extends Block {
     @Override
     public Block getNext(Stack<Block> systemStack) {
         if (hasNext()) {
-            Block nextBlock = getSubConnectorAt(0).getConnectedBlock();
-            //nextBlock.setReturnToBlock(getReturnToBlock());
-            return nextBlock;
+            return getSubConnectorAt(0).getConnectedBlock();
         }
         if (!systemStack.isEmpty()) {
             return systemStack.pop();
