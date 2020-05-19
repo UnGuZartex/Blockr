@@ -158,10 +158,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
             return this;
         }
         if (hasNext()) {
-            //Block backup = procedure.getReturnToBlock();
-            //procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
             setReturnToOfNext(systemStack);
-            //procedure.setReturnToBlock(backup);
             return procedure.getBlockAtIndex(index-1, systemStack);
         }
         return super.getBlockAtIndex(index, systemStack);
@@ -184,11 +181,8 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
             return 0;
         }
         if (hasNext()) {
-            //Block backup = procedure.getReturnToBlock();
-            //procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
             setReturnToOfNext(systemStack);
             int toReturn = 1 + procedure.getIndexOfBlock(block, systemStack);
-            //procedure.setReturnToBlock(backup);
             return toReturn;
         }
         return super.getIndexOfBlock(block,systemStack);
