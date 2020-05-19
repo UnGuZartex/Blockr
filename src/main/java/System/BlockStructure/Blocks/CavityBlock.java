@@ -5,6 +5,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
+import java.util.Stack;
+
 /**
  * An abstract class for blocks which have a cavity. These blocks
  * also can have a condition connected to it.
@@ -102,19 +104,19 @@ public abstract class CavityBlock extends FunctionalBlock {
      *         returned.
      */
     @Override
-    public boolean hasProperConnections() {
+    public boolean hasProperConnections(Stack<Block> systemStack) {
         // Valid condition
-        if (getConditionalSubConnector().getConnectedBlock() == null || !getConditionalSubConnector().getConnectedBlock().hasProperConnections()) {
+        if (getConditionalSubConnector().getConnectedBlock() == null || !getConditionalSubConnector().getConnectedBlock().hasProperConnections(systemStack)) {
             return false;
         }
 
         // Valid cavity
-        if (getCavitySubConnector().getConnectedBlock() != null && !getCavitySubConnector().getConnectedBlock().hasProperConnections()) {
+        if (getCavitySubConnector().getConnectedBlock() != null && !getCavitySubConnector().getConnectedBlock().hasProperConnections(systemStack)) {
             return false;
         }
 
         // Valid blocks under the block
-        if (getSubConnectorAt(0).getConnectedBlock() != null && !getSubConnectorAt(0).getConnectedBlock().hasProperConnections()) {
+        if (getSubConnectorAt(0).getConnectedBlock() != null && !getSubConnectorAt(0).getConnectedBlock().hasProperConnections(systemStack)) {
             return false;
         }
 
@@ -133,19 +135,18 @@ public abstract class CavityBlock extends FunctionalBlock {
      *         If this block is terminated.
      */
     @Override
-    public Block getNext() throws IllegalStateException {
+    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
         if (isTerminated()) {
             throw new IllegalStateException("This block is terminated!");
         }
         if (getFunctionality().getEvaluation()) {
+            systemStack.push(getNewReturnBlock());
             if (hasNext()) {
-                Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                return nextBlock;
+                //nextBlock.setReturnToBlock(getNewReturnBlock());
+                return getCavitySubConnector().getConnectedBlock();
             }
-            return getNewReturnBlock();
         }
-        return super.getNext();
+        return super.getNext(systemStack);
     }
 
     /**

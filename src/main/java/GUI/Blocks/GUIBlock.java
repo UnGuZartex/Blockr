@@ -180,7 +180,11 @@ public abstract class GUIBlock implements IGUIBlock {
     public void removeInBetween(ConnectionController controller) {
         if (mainConnector != null) {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock downBlock = getConnectedBlocks().get(1);
+            GUIBlock downBlock = null;
+            if (getConnectedBlocks().size() > 1) {
+               downBlock = getConnectedBlocks().get(1);
+            }
+
 
             if (upperBlock != null) {
                 changeHeight(-height, this);

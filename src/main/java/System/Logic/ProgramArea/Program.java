@@ -7,6 +7,7 @@ import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
 import java.time.LocalDateTime;
+import java.util.Stack;
 
 /**
  * A class for a program to execute. A program only has a starting
@@ -45,6 +46,8 @@ public class Program {
      * Variable referring to the execution state of the program.
      */
     private boolean isExecuting = false;
+
+    private Stack<Block> systemStack = new Stack<>();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -121,9 +124,10 @@ public class Program {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
+            System.out.println(systemStack);
             isExecuting = true;
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
-            currentBlock = currentBlock.getNext();
+            currentBlock = currentBlock.getNext(systemStack);
         }
     }
 
@@ -134,7 +138,7 @@ public class Program {
      *         has proper connections.
      */
     public boolean isValidProgram() {
-        return startBlock.hasProperConnections();
+        return startBlock.hasProperConnections(new Stack<>());
     }
 
     /**
@@ -177,6 +181,7 @@ public class Program {
     public void resetProgram() {
         this.currentBlock = startBlock;
         this.lastResult = DEFAULT_RESULT;
+        systemStack.clear();
         isExecuting = false;
     }
 
@@ -221,9 +226,10 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex);
+        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex, new Stack<>());
         lastResult = programSnapshot.currentResult;
         isExecuting = programSnapshot.isExecutingNow;
+        systemStack = programSnapshot.getBlockStack(startBlock);
     }
 
     /**
@@ -234,8 +240,9 @@ public class Program {
         /**
          * Variable referring to the index of the block to remember.
          */
-        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock);
+        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock, new Stack<>());
 
+        private final Stack<Integer> indexStack = getIndexStack(startBlock);
         /**
          * Variable referring to the result to remember.
          */
@@ -269,6 +276,26 @@ public class Program {
         @Override
         public LocalDateTime getSnapshotDate() {
             return creationTime;
+        }
+
+        public Stack<Integer> getIndexStack(Block startingpoint) {
+            Stack<Block> toConvert = (Stack<Block>) systemStack.clone();
+            Stack<Integer> indexStack = new Stack<>();
+            while (!toConvert.isEmpty()) {
+                indexStack.push(startingpoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
+            }
+            return indexStack;
+        }
+
+        public Stack<Block> getBlockStack(Block startingpoint) {
+            Stack<Integer> toConvert = (Stack<Integer>) indexStack.clone();
+            System.out.println("IntStack: " + toConvert);
+            System.out.println(startingpoint);
+            Stack<Block> blockStack = new Stack<>();
+            while (!toConvert.isEmpty()) {
+                blockStack.push(startingpoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
+            }
+            return blockStack;
         }
     }
 }

@@ -4,6 +4,8 @@ import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import System.BlockStructure.Blocks.OperationalBlock;
 
+import java.util.Stack;
+
 /**
  * A class for the not functionality.
  *
@@ -21,7 +23,7 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      */
     @Override
     public Result evaluate(GameWorld gameWorld) {
-        BlockFunctionality functionality = block.getNext().getFunctionality();
+        BlockFunctionality functionality = block.getNext( new Stack<>()).getFunctionality();
         functionality.evaluate(gameWorld);
         evaluation = !functionality.getEvaluation();
         return Result.SUCCESS;
