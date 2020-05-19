@@ -142,17 +142,10 @@ public abstract class Block {
     /**
      * Terminate this block.
      *
-     * @effect The blocks connected onto this blocks subconnectors are terminated.
-     *
      * @post This block is terminated.
      */
     public void terminate() {
         isTerminated = true;
-        for (SubConnector subConnector : subConnectors) {
-            if (subConnector.isConnected()) {
-                subConnector.getConnectedBlock().terminate();
-            }
-        }
     }
 
     /**

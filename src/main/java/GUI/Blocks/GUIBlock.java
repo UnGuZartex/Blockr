@@ -1,5 +1,6 @@
 package GUI.Blocks;
 
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
@@ -186,10 +187,10 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * TODO commentaar
      * @param controller
      */
-    public void removeInBetween(ConnectionController controller) {
+    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockhandlerController) {
         if (mainConnector != null) {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock downBlock = getConnectedBlocks().get(1);
+            GUIBlock downBlock = subConnectors.get(0).getConnectedGUIBlock();
 
             if (upperBlock != null) {
                 changeHeight(-height, this);
@@ -200,12 +201,16 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
                 if (downBlock != null)
                 {
                     downBlock.disconnectMainConnector();
-                    if (controller.isValidConnection(downBlock, upperBlock, subIndex)) {
+                    if (connectionController.isValidConnection(downBlock, upperBlock, subIndex)) {
                         downBlock.setPosition(getX(), getY());
                         downBlock.mainConnector.connect(sub);
-                        controller.connectBlocks(downBlock, upperBlock, subIndex);
+                        connectionController.connectBlocks(downBlock, upperBlock, subIndex);
                     }
                 }
+            }
+
+            if (downBlock != null) {
+                blockhandlerController.addExistingBlockAsProgram(downBlock);
             }
         }
     }

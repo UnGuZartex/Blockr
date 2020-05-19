@@ -73,6 +73,9 @@ public class IGUI_System_BlockLink {
      * @post The link between the given graphical block and the
      *       linked system block is removed.
      */
+    /**
+     * TODO comments
+     */
     public void removeBlock(IGUIBlock block) {
         Block systemBlock = getBlockFromGUIBlock(block);
         systemBlock.terminate();
