@@ -270,13 +270,5 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
         if (getSubConnectorAt(0).isConnected()) {
             systemStack.push(getSubConnectorAt(0).getConnectedBlock());
         }
-        else {
-            systemStack.push(systemStack.peek());
-            //getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-//        } else {
-//            if (getReturnToBlock() != procedure.getReturnToBlock()) {
-//                procedure.setReturnToBlock(getReturnToBlock());
-//            }
-        }
     }
 }

@@ -110,7 +110,6 @@ public class ProcedureBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            //getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
             passed = true;
             Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
             passed = false;
@@ -142,7 +141,6 @@ public class ProcedureBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            //getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
             passed = true;
             int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
             passed = false;
