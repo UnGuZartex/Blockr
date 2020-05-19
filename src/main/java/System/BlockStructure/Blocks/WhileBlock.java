@@ -48,7 +48,6 @@ public class WhileBlock extends CavityBlock {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
                 systemStack.push(getNewReturnBlock());
-                //nextBlock.setReturnToBlock(getNewReturnBlock());
                 Block toReturn = nextBlock.getBlockAtIndex(index - 1, systemStack);
                 passed = false;
                 return toReturn;
@@ -80,7 +79,6 @@ public class WhileBlock extends CavityBlock {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
                 systemStack.push(getNewReturnBlock());
-                //nextBlock.setReturnToBlock(getNewReturnBlock());
                 int toReturn = nextBlock.getIndexOfBlock(block, systemStack);
                 passed = false;
                 return 1 + toReturn;

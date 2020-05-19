@@ -16,10 +16,6 @@ import java.util.Stack;
 //TODO VOOR ALLE BLOKKEN COMMENTAAR UPDATEN
 public abstract class Block {
 
-//    /**
-//     * Variable referring to the last cavity visited
-//     */
-//    private Block returnToBlock;
     /**
      * Variable referring to the functionality of this block.
      */
@@ -157,34 +153,6 @@ public abstract class Block {
             }
         }
     }
-
-//    /**
-//     * Get the return to block.
-//     *
-//     * @return The block to return to.
-//     */
-//    protected Block getReturnToBlock() {
-//        return returnToBlock;
-//    }
-
-//    /**
-//     * Set the return to block.
-//     *
-//     * @param returnToBlock The new return to block.
-//     *
-//     * @post The return to block is set to the given block.
-//     *
-//     * @throws IllegalStateException
-//     *         If this block is terminated.
-//     */
-//    protected void setReturnToBlock(Block returnToBlock) throws IllegalStateException {
-//        if (isTerminated()) {
-//            throw new IllegalStateException("This block is terminated!");
-//        }
-//        if (returnToBlock != this) {
-//            this.returnToBlock = returnToBlock;
-//        }
-//    }
 
 
     /**

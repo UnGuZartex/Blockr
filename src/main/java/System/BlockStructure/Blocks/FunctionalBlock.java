@@ -65,7 +65,6 @@ public class FunctionalBlock extends Block {
             throw new IllegalStateException("This block is terminated!");
         }
         if (hasNext()) {
-            //    nextBlock.setReturnToBlock(this.getReturnToBlock());
             return getSubConnectors().get(0).getConnectedBlock();
         }
         if (!systemStack.isEmpty()) {
@@ -111,7 +110,6 @@ public class FunctionalBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            //getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
             return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
         }
         if (!systemStack.isEmpty()) {
@@ -142,7 +140,6 @@ public class FunctionalBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            //getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
             return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
         }
         if (!systemStack.isEmpty()) {

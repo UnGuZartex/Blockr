@@ -140,9 +140,11 @@ public abstract class CavityBlock extends FunctionalBlock {
             throw new IllegalStateException("This block is terminated!");
         }
         if (getFunctionality().getEvaluation()) {
-            systemStack.push(getNewReturnBlock());
+            Block toPush = getNewReturnBlock();
+            if (toPush != null) {
+                systemStack.push(getNewReturnBlock());
+            }
             if (hasNext()) {
-                //nextBlock.setReturnToBlock(getNewReturnBlock());
                 return getCavitySubConnector().getConnectedBlock();
             }
         }

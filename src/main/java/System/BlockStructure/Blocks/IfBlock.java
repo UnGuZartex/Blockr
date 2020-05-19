@@ -33,7 +33,6 @@ public class IfBlock extends CavityBlock {
             return getSubConnectorAt(0).getConnectedBlock();
         }
         return null;
-        //return getReturnToBlock();
     }
 
     /**
@@ -55,7 +54,10 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                systemStack.push(getNewReturnBlock());
+                Block toPush = getNewReturnBlock();
+                if (toPush != null) {
+                    systemStack.push(getNewReturnBlock());
+                }
                 return nextBlock.getBlockAtIndex(index - 1, systemStack);
             }
             else {
@@ -84,8 +86,10 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                systemStack.push(getNewReturnBlock());
-                //nextBlock.setReturnToBlock(getNewReturnBlock());
+                Block toPush = getNewReturnBlock();
+                if (toPush != null) {
+                    systemStack.push(getNewReturnBlock());
+                }
                 return 1 + nextBlock.getIndexOfBlock(block, systemStack);
             }
             else {
