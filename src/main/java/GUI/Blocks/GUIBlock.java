@@ -328,7 +328,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
                 GUIBlock toChange = other;
                 int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
                 int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
-                if (!mainConnector.isConnected()) {
+                if (mainConnector!= null && !mainConnector.isConnected()) {
                     toChange = this;
                     x = staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX());
                     y = staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY());

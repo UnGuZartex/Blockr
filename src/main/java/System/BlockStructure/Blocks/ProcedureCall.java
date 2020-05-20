@@ -5,6 +5,7 @@ import System.BlockStructure.Functionality.DummyFunctionality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * A class for procedure calls which can call a procedure.
@@ -103,8 +104,8 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         (meaning either such block doesn't exist or has proper connections).
      */
     @Override
-    public boolean hasProperConnections() {
-        return !hasNext() || (procedure.hasProperConnections() && (!getSubConnectorAt(0).isConnected() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections()));
+    public boolean hasProperConnections(Stack<Block> systemStack) {
+        return !hasNext() || (procedure.hasProperConnections(systemStack) && (!getSubConnectorAt(0).isConnected() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections(systemStack)));
     }
 
     /**
@@ -129,15 +130,15 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         When this block is terminated
      */
     @Override
-    public Block getNext() throws IllegalStateException {
+    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
         if (isTerminated()) {
             throw new IllegalStateException("This block is terminated!");
         }
         if (hasNext()) {
-            setReturnToOfNext();
+            setReturnToOfNext(systemStack);
             return procedure;
         }
-        return getReturnToBlock();
+        return systemStack.pop();
     }
 
     /**
@@ -149,7 +150,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         the procedure searched, otherwise is the super index used.
      */
     @Override
-    public Block getBlockAtIndex(int index)  {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack)  {
         if (index < 0) {
             return null;
         }
@@ -157,13 +158,10 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
             return this;
         }
         if (hasNext()) {
-            Block backup = procedure.getReturnToBlock();
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-            Block toReturn = procedure.getBlockAtIndex(index-1);
-            procedure.setReturnToBlock(backup);
-            return toReturn;
+            setReturnToOfNext(systemStack);
+            return procedure.getBlockAtIndex(index-1, systemStack);
         }
-        return super.getBlockAtIndex(index);
+        return super.getBlockAtIndex(index, systemStack);
     }
 
     /**
@@ -175,7 +173,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         otherwise is the super block searched.
      */
     @Override
-    public int getIndexOfBlock(Block block)  {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack)  {
         if (block == null) {
             return -1;
         }
@@ -183,13 +181,10 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
             return 0;
         }
         if (hasNext()) {
-            Block backup = procedure.getReturnToBlock();
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-            int toReturn = 1 + procedure.getIndexOfBlock(block);
-            procedure.setReturnToBlock(backup);
-            return toReturn;
+            setReturnToOfNext(systemStack);
+            return 1 + procedure.getIndexOfBlock(block, systemStack);
         }
-        return super.getIndexOfBlock(block);
+        return super.getIndexOfBlock(block,systemStack);
     }
 
     /**
@@ -264,14 +259,17 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         different return to block then this call, then is the return to block of the procedure
      *         set to the return to block of this call.
      */
-    private void setReturnToOfNext() {
+    private void setReturnToOfNext(Stack<Block> systemStack) {
         if (getSubConnectorAt(0).isConnected()) {
-            procedure.setReturnToBlock(getSubConnectorAt(0).getConnectedBlock());
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
-        } else {
-            if (getReturnToBlock() != procedure.getReturnToBlock()) {
-                procedure.setReturnToBlock(getReturnToBlock());
-            }
+            systemStack.push(getSubConnectorAt(0).getConnectedBlock());
         }
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext() && getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
+        stack.push(procedure);
     }
 }

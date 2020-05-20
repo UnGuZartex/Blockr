@@ -6,6 +6,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for procedure blocks.
  *
@@ -35,9 +37,9 @@ public class ProcedureBlock extends Block {
      * @return The result of the super method hasProperConnections while passed is True.
      */
     @Override
-    public boolean hasProperConnections() {
+    public boolean hasProperConnections(Stack<Block> systemStack) {
         passed = true;
-        boolean result = super.hasProperConnections();
+        boolean result = super.hasProperConnections(systemStack);
         passed = false;
         return result;
     }
@@ -70,13 +72,14 @@ public class ProcedureBlock extends Block {
      *         does not have a next block, then the return to block of this block is returned.
      */
     @Override
-    public Block getNext() {
+    public Block getNext(Stack<Block> systemStack) {
         if (hasNext()) {
-            Block nextBlock = getSubConnectorAt(0).getConnectedBlock();
-            nextBlock.setReturnToBlock(getReturnToBlock());
-            return nextBlock;
+            return getSubConnectorAt(0).getConnectedBlock();
         }
-        return getReturnToBlock();
+        if (!systemStack.isEmpty()) {
+            return systemStack.pop();
+        }
+        return null;
     }
 
     /**
@@ -97,7 +100,7 @@ public class ProcedureBlock extends Block {
      * @return The block at the given index.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
         if (index < 0) {
             return null;
         }
@@ -105,16 +108,19 @@ public class ProcedureBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
             passed = true;
-            Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+            Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
             passed = false;
             return toReturn;
         }
-        if (getReturnToBlock() == null) {
-            return null;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            if (nextBlock == null) {
+                return null;
+            }
+            return nextBlock.getBlockAtIndex(index - 1, systemStack);
         }
-        return getReturnToBlock().getBlockAtIndex(index - 1);
+        return null;
     }
 
     /**
@@ -125,7 +131,7 @@ public class ProcedureBlock extends Block {
      * @return The index of the given block.
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
         if (block == null) {
             return -1;
         }
@@ -133,16 +139,19 @@ public class ProcedureBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(getReturnToBlock());
             passed = true;
-            int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
             passed = false;
             return toReturn;
         }
-        if (getReturnToBlock() == null) {
-            return -1;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            if (nextBlock == null) {
+                return -1;
+            }
+            return 1 + nextBlock.getIndexOfBlock(block, systemStack);
         }
-        return 1 + getReturnToBlock().getIndexOfBlock(block);
+        return -1;
     }
 
     /**
@@ -162,5 +171,12 @@ public class ProcedureBlock extends Block {
      */
     public boolean isPassed() {
         return passed;
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
     }
 }
