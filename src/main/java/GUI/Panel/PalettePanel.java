@@ -189,13 +189,14 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * @effect The blocks are set in the palette underneath each other.
      */
     private void setBlockPositions() {
-        int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight()) / (blocks.size() + 1);
+        int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(blocks)) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
         for (GUIBlock block : blocks) {
             block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 8, currentHeight);
             currentHeight = currentHeight + block.getTotalHeight() + freeHeightPerBlock;
         }
 
+        freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(GUICallerblocks)) / (GUICallerblocks.size() + 1);
         currentHeight = freeHeightPerBlock;
         for (GUIBlock block : GUICallerblocks) {
             block.setPosition((panelRectangle.getWidth() - 2*block.getWidth()), currentHeight);
@@ -208,9 +209,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      *
      * @return The sum of the heights of all the blocks in this palette.
      */
-    private int getTotalBlockHeight() {
+    private <T extends GUIBlock> int getTotalBlockHeight(List<T> blockList) {
         int totalHeight = 0;
-        for (GUIBlock block : blocks) {
+        for (GUIBlock block : blockList) {
             totalHeight += block.getTotalHeight();
         }
         return totalHeight;
