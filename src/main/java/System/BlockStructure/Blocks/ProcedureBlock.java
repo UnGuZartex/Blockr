@@ -124,7 +124,7 @@ public class ProcedureBlock extends Block {
         if (block == this) {
             return 0;
         }
-        if (getSubConnectorAt(0).isConnected()) {
+        if (hasNext()) {
             passed = true;
             int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
             passed = false;
@@ -150,14 +150,6 @@ public class ProcedureBlock extends Block {
         return false;
     }
 
-    /**
-     * Check whether or not this procedure is passed.
-     *
-     * @return True if this procedure is passed.
-     */
-    public boolean isPassed() {
-        return passed;
-    }
 
     @Override
     public void pushNextBlocks(Stack<Block> stack) {
