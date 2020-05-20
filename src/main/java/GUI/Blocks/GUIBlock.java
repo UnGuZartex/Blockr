@@ -1,5 +1,6 @@
 package GUI.Blocks;
 
+import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
@@ -8,6 +9,7 @@ import Utility.Position;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public abstract class GUIBlock implements IGUIBlock {
+public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
 
     /**
      * Variables referring to the width, height and coordinates of this GUI block.
@@ -38,6 +40,14 @@ public abstract class GUIBlock implements IGUIBlock {
      */
     protected String name;
 
+    /**
+     * TODO
+     */
+    protected boolean setFirst;
+
+    /**
+     * TODO
+     */
     private boolean terminated;
 
     /**
@@ -177,14 +187,10 @@ public abstract class GUIBlock implements IGUIBlock {
      * TODO commentaar
      * @param controller
      */
-    public void removeInBetween(ConnectionController controller) {
+    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockhandlerController) {
         if (mainConnector != null) {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock downBlock = null;
-            if (getConnectedBlocks().size() > 1) {
-               downBlock = getConnectedBlocks().get(1);
-            }
-
+            GUIBlock downBlock = subConnectors.get(0).getConnectedGUIBlock();
 
             if (upperBlock != null) {
                 changeHeight(-height, this);
@@ -195,12 +201,16 @@ public abstract class GUIBlock implements IGUIBlock {
                 if (downBlock != null)
                 {
                     downBlock.disconnectMainConnector();
-                    if (controller.isValidConnection(downBlock, upperBlock, subIndex)) {
+                    if (connectionController.isValidConnection(downBlock, upperBlock, subIndex)) {
                         downBlock.setPosition(getX(), getY());
                         downBlock.mainConnector.connect(sub);
-                        controller.connectBlocks(downBlock, upperBlock, subIndex);
+                        connectionController.connectBlocks(downBlock, upperBlock, subIndex);
                     }
                 }
+            }
+
+            if (downBlock != null) {
+                blockhandlerController.addExistingBlockAsProgram(downBlock);
             }
         }
     }
@@ -430,15 +440,46 @@ public abstract class GUIBlock implements IGUIBlock {
         return null;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public void terminate() {
         this.terminated = true;
     }
 
+    /**
+     * TODO comments
+     * @return
+     */
     public boolean isTerminated() {
         return terminated;
+    }
+
+    /**
+     * TODO comments
+     * @return
+     */
+    @Override
+    public int compareTo(GUIBlock other) {
+
+        if (this.setFirst) {
+            return (!other.setFirst) ? -1 : this.name.compareTo(other.name);
+        }
+        else if (other.setFirst) {
+            return 1;
+        }
+
+        int comparison = Integer.compare(this.getY(), other.getY());
+        comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
+        return comparison;
     }
 }

@@ -31,7 +31,7 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
         notifyProcedureDeleted();
     }
 
-    public void notifyProcedureDeleted() {
+    private void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
             listener.onEvent("ProcedureDel");
         }
