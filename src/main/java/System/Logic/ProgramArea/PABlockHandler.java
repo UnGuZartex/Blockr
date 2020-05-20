@@ -2,7 +2,6 @@ package System.Logic.ProgramArea;
 
 import Controllers.ProgramAreaListener;
 import System.BlockStructure.Blocks.Block;
-import System.BlockStructure.Blocks.ProcedureBlock;
 import System.BlockStructure.Connectors.SubConnector;
 import System.Logic.Palette.Palette;
 
@@ -152,10 +151,6 @@ public class PABlockHandler {
         programArea.addProgramResetCommand();
         programArea.addProgram(block);
         notifyMaxBlocksReached();
-        if (block instanceof ProcedureBlock) {
-            palette.createCaller((ProcedureBlock) block);
-            notifyProcedureCreated();
-        }
     }
 
     /**
@@ -218,10 +213,6 @@ public class PABlockHandler {
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
         notifyMaxBlocksReached();
-        if (block instanceof ProcedureBlock) {
-            int index = palette.deleteCaller((ProcedureBlock) block);
-            notifyProcedureDeleted(index);
-        }
     }
 
     /**
@@ -277,27 +268,4 @@ public class PABlockHandler {
         return programArea.getAllBlocksCount() >= maxBlocks;
     }
 
-    /**
-     * Notify that a procedure is created to the listeners.
-     *
-     * @effect The onProcedureCreated event is called for aal listeners.
-     */
-    private void notifyProcedureCreated() {
-        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureCreated();
-        }
-    }
-
-    /**
-     * Notify that a procedure is deleted to the listeners.
-     *
-     * @param index The index of the call which was deleted.
-     *
-     * @effect The onProcedureDeleted event is called for the listeners with the given index.
-     */
-    private void notifyProcedureDeleted(int index) {
-        for (ProgramAreaListener listener : new ArrayList<>(listeners)) {
-            listener.onProcedureDeleted(index);
-        }
-    }
 }

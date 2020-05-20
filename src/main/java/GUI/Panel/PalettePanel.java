@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import Controllers.PaletteListener;
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICallerBlock;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class PalettePanel extends GamePanel implements ProgramAreaListener {
+public class PalettePanel extends GamePanel implements ProgramAreaListener, PaletteListener {
 
     /**
      * Variables referring to the blocks in this palette.
@@ -170,24 +171,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         this.reachedMaxBlocks = reachedMaxBlocks;
     }
 
-    @Override
-    public void onProcedureCreated() {
-        GUICallerBlock caller = new GUICallerBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
-        GUICallerblocks.add(caller);
-        setBlockPositions();
-    }
-
-    @Override
-    public void onProcedureDeleted(int index) {
-        int counter = index;
-        while (counter < GUICallerblocks.size()) {
-            GUICallerblocks.get(counter).notifyUpdated();
-            counter++;
-        }
-        GUICallerblocks.get(index).terminate();
-        GUICallerblocks.remove(index);
-        setBlockPositions();
-    }
 
     /**
      * Set the positions of the blocks in the palette.
@@ -221,5 +204,24 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
             totalHeight += block.getTotalHeight();
         }
         return totalHeight;
+    }
+
+    @Override
+    public void procedureCreated() {
+        GUICallerBlock caller = new GUICallerBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
+        GUICallerblocks.add(caller);
+        setBlockPositions();
+    }
+
+    @Override
+    public void procedureDeleted(int index) {
+        int counter = index;
+        while (counter < GUICallerblocks.size()) {
+            GUICallerblocks.get(counter).notifyUpdated();
+            counter++;
+        }
+        GUICallerblocks.get(index).terminate();
+        GUICallerblocks.remove(index);
+        setBlockPositions();
     }
 }
