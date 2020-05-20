@@ -26,7 +26,8 @@ class ConnectBlockTest {
     PABlockHandler paBlockHandler;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
     FunctionalBlock functionalBlock;
     CavityBlock cavityBlock;
     OperationalBlock operationalBlock;
@@ -53,6 +54,7 @@ class ConnectBlockTest {
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
 
+        procedure.subscribe(paBlockHandler.getPalette());
         functionalBlock = (FunctionalBlock) paBlockHandler.getFromPalette(0);
         paBlockHandler.addToPA(functionalBlock);
         cavityBlock = (CavityBlock) paBlockHandler.getFromPalette(5);
