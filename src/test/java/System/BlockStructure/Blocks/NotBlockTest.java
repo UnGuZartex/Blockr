@@ -106,4 +106,9 @@ class NotBlockTest {
         assertThrows(IllegalStateException.class, () -> notOnlyCavity.getIndexOfBlock(block, new Stack<>()));
         assertThrows(IllegalStateException.class, () -> notNoConnections.getIndexOfBlock(block, new Stack<>()));
     }
+
+    @Test
+    void pushNextBlocks() {
+        assertThrows(IllegalStateException.class, () -> notNoConnections.pushNextBlocks(new Stack<>()));
+    }
 }

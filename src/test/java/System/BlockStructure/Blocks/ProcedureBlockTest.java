@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProcedureBlockTest {
 
+    Stack<Block> stack;
     GameWorldType type;
     ProcedureBlock emptyProcedure, procedure, notCompleteProcedure, procedureRecursion;
     Block block1, block2, block3, blockRecursion;
@@ -28,6 +29,8 @@ class ProcedureBlockTest {
 
     @BeforeEach
     void setUp() {
+        stack = new Stack<>();
+
         type = new LevelInitializer();
 
         procedure = new ProcedureBlock();
@@ -59,6 +62,7 @@ class ProcedureBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null; 
         type = null;
         procedure = null;
         emptyProcedure = null;
@@ -118,63 +122,63 @@ class ProcedureBlockTest {
 
     @Test
     void getBlockAtIndex_negativeIndex() {
-        assertNull(procedure.getBlockAtIndex(-1, new Stack<>()));
+        assertNull(procedure.getBlockAtIndex(-1, stack));
     }
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertNull(procedure.getBlockAtIndex(4, new Stack<>()));
-        assertNull(emptyProcedure.getBlockAtIndex(1, new Stack<>()));
-        assertNull(notCompleteProcedure.getBlockAtIndex(2, new Stack<>()));
-        assertNull(procedureRecursion.getBlockAtIndex(4, new Stack<>()));
+        assertNull(procedure.getBlockAtIndex(4, stack));
+        assertNull(emptyProcedure.getBlockAtIndex(1, stack));
+        assertNull(notCompleteProcedure.getBlockAtIndex(2, stack));
+        assertNull(procedureRecursion.getBlockAtIndex(4, stack));
     }
 
     @Test
     void getBlockAtIndex() {
-        assertEquals(procedure, procedure.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(block1, procedure.getBlockAtIndex(1, new Stack<>()));
-        assertEquals(block2, procedure.getBlockAtIndex(2, new Stack<>()));
-        assertEquals(block3, procedure.getBlockAtIndex(3, new Stack<>()));
+        assertEquals(procedure, procedure.getBlockAtIndex(0, stack));
+        assertEquals(block1, procedure.getBlockAtIndex(1, stack));
+        assertEquals(block2, procedure.getBlockAtIndex(2, stack));
+        assertEquals(block3, procedure.getBlockAtIndex(3, stack));
 
-        assertEquals(emptyProcedure, emptyProcedure.getBlockAtIndex(0, new Stack<>()));
+        assertEquals(emptyProcedure, emptyProcedure.getBlockAtIndex(0, stack));
 
-        assertEquals(notCompleteProcedure, notCompleteProcedure.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(cavity, notCompleteProcedure.getBlockAtIndex(1, new Stack<>()));
+        assertEquals(notCompleteProcedure, notCompleteProcedure.getBlockAtIndex(0, stack));
+        assertEquals(cavity, notCompleteProcedure.getBlockAtIndex(1, stack));
 
-        assertEquals(procedureRecursion, procedureRecursion.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(call, procedureRecursion.getBlockAtIndex(1, new Stack<>()));
-        assertEquals(procedureRecursion, procedureRecursion.getBlockAtIndex(2, new Stack<>()));
-        assertEquals(blockRecursion, procedureRecursion.getBlockAtIndex(3, new Stack<>()));
+        assertEquals(procedureRecursion, procedureRecursion.getBlockAtIndex(0, stack));
+        assertEquals(call, procedureRecursion.getBlockAtIndex(1, stack));
+        assertEquals(procedureRecursion, procedureRecursion.getBlockAtIndex(2, stack));
+        assertEquals(blockRecursion, procedureRecursion.getBlockAtIndex(3, stack));
 
-        assertEquals(procedureCall, procedureCall.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(procedureBlock, procedureCall.getBlockAtIndex(1, new Stack<>()));
-        assertEquals(blockUnderCall, procedureCall.getBlockAtIndex(2, new Stack<>()));
+        assertEquals(procedureCall, procedureCall.getBlockAtIndex(0, stack));
+        assertEquals(procedureBlock, procedureCall.getBlockAtIndex(1, stack));
+        assertEquals(blockUnderCall, procedureCall.getBlockAtIndex(2, stack));
     }
 
     @Test
     void getIndexOfBlock_invalidBlock() {
-        assertEquals(-1, procedure.getIndexOfBlock(null, new Stack<>()));
-        assertEquals(2, procedure.getIndexOfBlock(cavity, new Stack<>()));
+        assertEquals(-1, procedure.getIndexOfBlock(null, stack));
+        assertEquals(2, procedure.getIndexOfBlock(cavity, stack));
     }
 
     @Test
     void getIndexOfBlock() {
-        assertEquals(0, procedure.getIndexOfBlock(procedure, new Stack<>()));
-        assertEquals(1, procedure.getIndexOfBlock(block1, new Stack<>()));
-        assertEquals(2, procedure.getIndexOfBlock(block2, new Stack<>()));
-        assertEquals(3, procedure.getIndexOfBlock(block3, new Stack<>()));
+        assertEquals(0, procedure.getIndexOfBlock(procedure, stack));
+        assertEquals(1, procedure.getIndexOfBlock(block1, stack));
+        assertEquals(2, procedure.getIndexOfBlock(block2, stack));
+        assertEquals(3, procedure.getIndexOfBlock(block3, stack));
 
-        assertEquals(0, emptyProcedure.getIndexOfBlock(emptyProcedure, new Stack<>()));
+        assertEquals(0, emptyProcedure.getIndexOfBlock(emptyProcedure, stack));
 
-        assertEquals(0, notCompleteProcedure.getIndexOfBlock(notCompleteProcedure, new Stack<>()));
-        assertEquals(1, notCompleteProcedure.getIndexOfBlock(cavity, new Stack<>()));
+        assertEquals(0, notCompleteProcedure.getIndexOfBlock(notCompleteProcedure, stack));
+        assertEquals(1, notCompleteProcedure.getIndexOfBlock(cavity, stack));
 
-        assertEquals(0, procedureRecursion.getIndexOfBlock(procedureRecursion, new Stack<>()));
-        assertEquals(1, procedureRecursion.getIndexOfBlock(call, new Stack<>()));
+        assertEquals(0, procedureRecursion.getIndexOfBlock(procedureRecursion, stack));
+        assertEquals(1, procedureRecursion.getIndexOfBlock(call, stack));
 
-        assertEquals(2, procedureCall.getIndexOfBlock(blockUnderCall, new Stack<>()));
-        assertEquals(1, procedureCall.getIndexOfBlock(procedureBlock, new Stack<>()));
-        assertEquals(0, procedureCall.getIndexOfBlock(procedureCall, new Stack<>()));
+        assertEquals(2, procedureCall.getIndexOfBlock(blockUnderCall, stack));
+        assertEquals(1, procedureCall.getIndexOfBlock(procedureBlock, stack));
+        assertEquals(0, procedureCall.getIndexOfBlock(procedureCall, stack));
     }
 
     @Test
@@ -183,5 +187,18 @@ class ProcedureBlockTest {
         assertFalse(emptyProcedure.isIllegalExtraStartingBlock());
         assertFalse(notCompleteProcedure.isIllegalExtraStartingBlock());
         assertFalse(procedureRecursion.isIllegalExtraStartingBlock());
+    }
+
+    @Test
+    void pushNextBlocks_blockInProcedure() {
+        procedure.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(block1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlocks_noBlockInProcedure() {
+        emptyProcedure.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
     }
 }

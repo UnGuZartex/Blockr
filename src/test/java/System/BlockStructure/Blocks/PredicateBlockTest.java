@@ -84,4 +84,10 @@ class PredicateBlockTest {
         assertThrows(IllegalStateException.class, () -> predicateConnected.getIndexOfBlock(block, new Stack<>()));
         assertThrows(IllegalStateException.class, () -> predicateNotConnected.getIndexOfBlock(block, new Stack<>()));
     }
+
+    @Test
+    void pushNextBlocks() {
+        assertThrows(IllegalStateException.class, () -> predicateConnected.pushNextBlocks(new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.pushNextBlocks(new Stack<>()));
+    }
 }

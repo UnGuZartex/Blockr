@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProcedureCallTest {
 
+    Stack<Block> stack;
     ProcedureBlock procedure, procedureTop, procedureBottom;
     ProcedureCall call, callTop, callBottom, callClone;
     Block blockBottom, blockTop;
@@ -19,6 +20,7 @@ class ProcedureCallTest {
 
     @BeforeEach
     void setUp() {
+        stack = new Stack<>();
         procedure = new ProcedureBlock();
         procedureTop = new ProcedureBlock();
         procedureBottom = new ProcedureBlock();
@@ -38,6 +40,7 @@ class ProcedureCallTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
         procedure = null;
         procedureTop = null;
         procedureBottom = null;
@@ -158,48 +161,48 @@ class ProcedureCallTest {
 
     @Test
     void getBlockAtIndex_illegalIndex() {
-        assertNull(call.getBlockAtIndex(-1, new Stack<>()));
+        assertNull(call.getBlockAtIndex(-1, stack));
     }
 
     @Test
     void getBlockAtIndex_noNext() {
         procedureBottom.terminate();
         assertFalse(callBottom.hasNext());
-        assertEquals(callBottom, callBottom.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(blockBottom, callBottom.getBlockAtIndex(1, new Stack<>()));
+        assertEquals(callBottom, callBottom.getBlockAtIndex(0, stack));
+        assertEquals(blockBottom, callBottom.getBlockAtIndex(1, stack));
     }
 
     @Test
     void getBlockAtIndex() {
-        assertEquals(call, call.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(procedure, call.getBlockAtIndex(1, new Stack<>()));
+        assertEquals(call, call.getBlockAtIndex(0, stack));
+        assertEquals(procedure, call.getBlockAtIndex(1, stack));
 
-        assertEquals(callBottom, callBottom.getBlockAtIndex(0, new Stack<>()));
-        assertEquals(procedureBottom, callBottom.getBlockAtIndex(1, new Stack<>()));
-        assertEquals(blockBottom, callBottom.getBlockAtIndex(2, new Stack<>()));
+        assertEquals(callBottom, callBottom.getBlockAtIndex(0, stack));
+        assertEquals(procedureBottom, callBottom.getBlockAtIndex(1, stack));
+        assertEquals(blockBottom, callBottom.getBlockAtIndex(2, stack));
     }
 
     @Test
     void getIndexOfBlock_illegalBlock() {
-        assertEquals(-1, call.getIndexOfBlock(null, new Stack<>()));
+        assertEquals(-1, call.getIndexOfBlock(null, stack));
     }
 
     @Test
     void getIndexOfBlock_noNext() {
         procedureBottom.terminate();
         assertFalse(callBottom.hasNext());
-        assertEquals(0, callBottom.getIndexOfBlock(callBottom, new Stack<>()));
-        assertEquals(1, callBottom.getIndexOfBlock(blockBottom, new Stack<>()));
+        assertEquals(0, callBottom.getIndexOfBlock(callBottom, stack));
+        assertEquals(1, callBottom.getIndexOfBlock(blockBottom, stack));
     }
 
     @Test
     void getIndexOfBlock() {
-        assertEquals(0, call.getIndexOfBlock(call, new Stack<>()));
-        assertEquals(1, call.getIndexOfBlock(procedure, new Stack<>()));
+        assertEquals(0, call.getIndexOfBlock(call, stack));
+        assertEquals(1, call.getIndexOfBlock(procedure, stack));
 
-        assertEquals(0, callBottom.getIndexOfBlock(callBottom, new Stack<>()));
-        assertEquals(1, callBottom.getIndexOfBlock(procedureBottom, new Stack<>()));
-        assertEquals(2, callBottom.getIndexOfBlock(blockBottom, new Stack<>()));
+        assertEquals(0, callBottom.getIndexOfBlock(callBottom, stack));
+        assertEquals(1, callBottom.getIndexOfBlock(procedureBottom, stack));
+        assertEquals(2, callBottom.getIndexOfBlock(blockBottom, stack));
     }
 
     @Test
@@ -229,5 +232,20 @@ class ProcedureCallTest {
         assertTrue(callTop.isConnectedOnMain());
         callTop.onEvent("ProcedureDel");
         assertFalse(callTop.isConnectedOnMain());
+    }
+
+    @Test
+    void pushNextBlocks_noNext() {
+        call.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(procedure, stack.pop());
+    }
+
+    @Test
+    void pushNextBlocks_next() {
+        callBottom.pushNextBlocks(stack);
+        assertEquals(2, stack.size());
+        assertEquals(procedureBottom, stack.pop());
+        assertEquals(blockBottom, stack.pop());
     }
 }
