@@ -278,9 +278,14 @@ public class Program {
             return creationTime;
         }
 
-        @SuppressWarnings("unchecked")
+        /**
+         * TODO comments
+         * @param startingPoint
+         * @return
+         */
         public Stack<Integer> getIndexStack(Block startingPoint) {
-            Stack<Block> toConvert = (Stack<Block>) executionStack.clone();
+            Stack<Block> toConvert = new Stack<>();
+            toConvert.addAll(executionStack);
             Stack<Integer> indexStack = new Stack<>();
             while (!toConvert.isEmpty()) {
                 indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
@@ -288,9 +293,14 @@ public class Program {
             return indexStack;
         }
 
-        @SuppressWarnings("unchecked")
+        /**
+         * TODO comments
+         * @param startingPoint
+         * @return
+         */
         public Stack<Block> getBlockStack(Block startingPoint) {
-            Stack<Integer> toConvert = (Stack<Integer>) executionStackCopy.clone();
+            Stack<Integer> toConvert = new Stack<>();
+            toConvert.addAll(executionStackCopy);
             Stack<Block> blockStack = new Stack<>();
             while (!toConvert.isEmpty()) {
                 blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
