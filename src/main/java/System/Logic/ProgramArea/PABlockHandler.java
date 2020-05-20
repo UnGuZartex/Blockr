@@ -139,6 +139,11 @@ public class PABlockHandler {
      * @throws IllegalStateException
      *         When max blocks has been reached.
      */
+    /**
+     * TODO comments
+     * @param block
+     * @throws IllegalStateException
+     */
     public void addToPA(Block block) throws IllegalStateException {
         if (hasReachedMaxBlocks()) {
             throw new IllegalStateException("Max blocks has been reached. " +

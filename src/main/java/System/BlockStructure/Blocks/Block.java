@@ -3,20 +3,19 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Functionality.BlockFunctionality;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * An abstract class for blocks with a functionality.
  *
  * @author Alpha-team
  */
+//TODO VOOR ALLE BLOKKEN COMMENTAAR UPDATEN
 public abstract class Block {
 
-    /**
-     * Variable referring to the last cavity visited
-     */
-    private Block returnToBlock;
     /**
      * Variable referring to the functionality of this block.
      */
@@ -65,8 +64,8 @@ public abstract class Block {
      * @return True if and only if this block has no following up blocks
      *         or its next block has valid following up blocks.
      */
-    public boolean hasProperConnections() {
-        return !hasNext() || getNext().hasProperConnections();
+    public boolean hasProperConnections(Stack<Block> systemStack) {
+        return !hasNext() || getNext(systemStack).hasProperConnections(systemStack);
     }
 
     /**
@@ -130,7 +129,6 @@ public abstract class Block {
         if (isTerminated()) {
             throw new IllegalStateException("This block is terminated!");
         }
-        setReturnToBlock(null);
         for(int i = 0; i < getSubConnectors().size(); i++) {
             if (getSubConnectors().get(i).isConnected()) {
                 Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
@@ -142,45 +140,10 @@ public abstract class Block {
     /**
      * Terminate this block.
      *
-     * @effect The blocks connected onto this blocks subconnectors are terminated.
-     *
      * @post This block is terminated.
      */
     public void terminate() {
         isTerminated = true;
-        for (SubConnector subConnector : subConnectors) {
-            if (subConnector.isConnected()) {
-                subConnector.getConnectedBlock().terminate();
-            }
-        }
-    }
-
-    /**
-     * Get the return to block.
-     *
-     * @return The block to return to.
-     */
-    protected Block getReturnToBlock() {
-        return returnToBlock;
-    }
-
-    /**
-     * Set the return to block.
-     *
-     * @param returnToBlock The new return to block.
-     *
-     * @post The return to block is set to the given block.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated.
-     */
-    protected void setReturnToBlock(Block returnToBlock) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        if (returnToBlock != this) {
-            this.returnToBlock = returnToBlock;
-        }
     }
 
 
@@ -203,7 +166,7 @@ public abstract class Block {
      *
      * @return The block which should be executed after this block.
      */
-    public abstract Block getNext();
+    public abstract Block getNext(Stack<Block> systemStack);
 
     /**
      * Clone this block.
@@ -219,7 +182,7 @@ public abstract class Block {
      *
      * @return The block which is at the given index in the structure of this block.
      */
-    public abstract Block getBlockAtIndex(int index);
+    public abstract Block getBlockAtIndex(int index, Stack<Block> systemStack);
 
     /**
      * Get the index of the given block.
@@ -228,5 +191,7 @@ public abstract class Block {
      *
      * @return The index of the given block in the structure of this block.
      */
-    public abstract int getIndexOfBlock(Block block);
+    public abstract int getIndexOfBlock(Block block, Stack<Block> systemStack);
+
+    public abstract void pushNextBlocks(Stack<Block> stack);
 }

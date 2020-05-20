@@ -24,10 +24,18 @@ public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
      * @param y    The y coordinate for this block.
      * @effect Calls the super constructor with given parameters.
      */
+    /**
+     * TODO
+     * @param name
+     * @param x
+     * @param y
+     * @param startingNr
+     */
     public GUIProcedureBlock(String name, int x, int y, int startingNr) {
         super(name, x, y);
         this.currentDefNr = startingNr;
         this.name = name + " " + currentDefNr;
+        setFirst = true;
     }
 
 

@@ -316,12 +316,15 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         g.setFont(currentFont);
     }
 
+    /**
+     * TODO comments
+     */
     public void update() {
         for (Map.Entry<GUIBlock, Integer> block : new ArrayList<>(blockPairs)) {
             if (block.getKey().isTerminated()) {
                 blockPairs.remove(block);
                 blockHandlerController.deleteFromPA(block.getKey());
-                block.getKey().removeInBetween(connectionController);
+                block.getKey().removeInBetween(connectionController, blockHandlerController);
             }
         }
     }

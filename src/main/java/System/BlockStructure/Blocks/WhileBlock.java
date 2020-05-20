@@ -2,6 +2,8 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for while blocks. These are cavity blocks which have a
  * cavity functionality. The cavity can be repeated multiple times.
@@ -34,7 +36,7 @@ public class WhileBlock extends CavityBlock {
      *         then is under the cavity counted.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
         if (index < 0) {
             return null;
         }
@@ -45,13 +47,13 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                Block toReturn = nextBlock.getBlockAtIndex(index - 1);
+                systemStack.push(getNewReturnBlock());
+                Block toReturn = nextBlock.getBlockAtIndex(index - 1, systemStack);
                 passed = false;
                 return toReturn;
             }
             else {
-                return super.getBlockAtIndex(index);
+                return super.getBlockAtIndex(index, systemStack);
             }
         }
     }
@@ -65,7 +67,7 @@ public class WhileBlock extends CavityBlock {
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
         if (block == null) {
            return -1;
         }
@@ -76,13 +78,13 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                int toReturn = nextBlock.getIndexOfBlock(block);
+                systemStack.push(getNewReturnBlock());
+                int toReturn = nextBlock.getIndexOfBlock(block, systemStack);
                 passed = false;
                 return 1 + toReturn;
             }
             else {
-                return super.getIndexOfBlock(block);
+                return super.getIndexOfBlock(block, systemStack);
             }
         }
     }
@@ -106,5 +108,17 @@ public class WhileBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new WhileBlock();
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getFunctionality().getEvaluation()) {
+            stack.push(this);
+            if (getCavitySubConnector().isConnected()) {
+                stack.push(getCavitySubConnector().getConnectedBlock());
+            }
+        } else if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
     }
 }

@@ -2,6 +2,8 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
 
+import java.util.Stack;
+
 /**
  * A class for if blocks. These are cavity blocks which have a
  * cavity functionality. The cavity can only be ran 1 time.
@@ -30,7 +32,7 @@ public class IfBlock extends CavityBlock {
         if (getSubConnectorAt(0).isConnected()) {
             return getSubConnectorAt(0).getConnectedBlock();
         }
-        return getReturnToBlock();
+        return null;
     }
 
     /**
@@ -42,7 +44,7 @@ public class IfBlock extends CavityBlock {
      *         connected to any block.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
         if (index < 0) {
             return null;
         }
@@ -52,11 +54,14 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                return nextBlock.getBlockAtIndex(index - 1);
+                Block toPush = getNewReturnBlock();
+                if (toPush != null) {
+                    systemStack.push(getNewReturnBlock());
+                }
+                return nextBlock.getBlockAtIndex(index - 1, systemStack);
             }
             else {
-                return super.getBlockAtIndex(index);
+                return super.getBlockAtIndex(index, systemStack);
             }
         }
     }
@@ -71,7 +76,7 @@ public class IfBlock extends CavityBlock {
      *         block checked.
      */
     @Override
-    public int getIndexOfBlock(Block block)  {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack)  {
         if (block == null) {
             return -1;
         }
@@ -81,11 +86,14 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                return 1 + nextBlock.getIndexOfBlock(block);
+                Block toPush = getNewReturnBlock();
+                if (toPush != null) {
+                    systemStack.push(getNewReturnBlock());
+                }
+                return 1 + nextBlock.getIndexOfBlock(block, systemStack);
             }
             else {
-                return super.getIndexOfBlock(block);
+                return super.getIndexOfBlock(block, systemStack);
             }
         }
     }
@@ -98,5 +106,15 @@ public class IfBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new IfBlock();
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
+        if (getFunctionality().getEvaluation() && getCavitySubConnector().isConnected()) {
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        }
     }
 }

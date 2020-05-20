@@ -237,11 +237,7 @@ public class GUIBlockHandler {
         paletteIndices = new ArrayList<>();
 
         List<GUIBlock> blocks = programArea.getBlocks();
-        blocks.sort((o1, o2) -> {
-            int comparison = Integer.compare(o1.getY(), o2.getY());
-            comparison = (comparison == 0) ? Integer.compare(o1.getX(), o2.getX()) : comparison;
-            return comparison;
-        });
+        Collections.sort(blocks);
 
         for (GUIBlock block : blocks) {
             Map.Entry<GUIBlock, Integer> entry = programArea.getBlockPairs()

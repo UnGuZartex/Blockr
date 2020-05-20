@@ -81,6 +81,14 @@ public class BlockHandlerController {
     }
 
     /**
+     * TODO Comments
+     */
+    public void addExistingBlockAsProgram(IGUIBlock block) {
+        Block toAdd = blockDatabase.getBlockFromGUIBlock(block);
+        blockHandler.addToPA(toAdd);
+    }
+
+    /**
      * Get the block to highlight.
      *
      * @return The gui block which should be highlighted, if no such block

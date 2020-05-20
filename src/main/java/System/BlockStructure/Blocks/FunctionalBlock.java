@@ -6,6 +6,8 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
 
+import java.util.Stack;
+
 
 /**
  * A class for functional blocks. These are the most common blocks.
@@ -58,16 +60,17 @@ public class FunctionalBlock extends Block {
      *         If this block is terminated
      */
     @Override
-    public Block getNext() throws IllegalStateException {
+    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
         if (isTerminated()) {
             throw new IllegalStateException("This block is terminated!");
         }
         if (hasNext()) {
-            Block nextBlock = getSubConnectors().get(0).getConnectedBlock();
-            nextBlock.setReturnToBlock(this.getReturnToBlock());
-            return nextBlock;
+            return getSubConnectors().get(0).getConnectedBlock();
         }
-        return getReturnToBlock();
+        if (!systemStack.isEmpty()) {
+            return systemStack.pop();
+        }
+        return null;
     }
 
     /**
@@ -99,7 +102,7 @@ public class FunctionalBlock extends Block {
      * @return The block at the given index in the linked link structure.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
         if (index < 0) {
             return null;
         }
@@ -107,13 +110,16 @@ public class FunctionalBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
-            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
         }
-        if (getReturnToBlock() == null) {
-            return null;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            if (nextBlock == null) {
+                return null;
+            }
+            return nextBlock.getBlockAtIndex(index - 1, systemStack);
         }
-        return getReturnToBlock().getBlockAtIndex(index - 1);
+        return null;
     }
 
     /**
@@ -126,7 +132,7 @@ public class FunctionalBlock extends Block {
      * @return The index of the given block in the structure of this block.
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
         if (block == null) {
             return -1;
         }
@@ -134,12 +140,22 @@ public class FunctionalBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
-            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
         }
-        if (getReturnToBlock() == null) {
-            return -1;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            if (nextBlock == null) {
+                return -1;
+            }
+            return 1 + nextBlock.getIndexOfBlock(block, systemStack);
         }
-        return 1 + getReturnToBlock().getIndexOfBlock(block);
+        return -1;
+    }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
     }
 }
