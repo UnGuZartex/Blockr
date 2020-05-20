@@ -51,7 +51,6 @@ public class FunctionalBlock extends Block {
         return getSubConnectorAt(0).isConnected();
     }
 
-
     /**
      * Get a copy of this functional block.
      *

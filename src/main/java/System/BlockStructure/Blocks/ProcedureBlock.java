@@ -40,7 +40,7 @@ public class ProcedureBlock extends Block {
     public boolean hasProperConnections() {
         if (hasNext()) {
             passed = true;
-            boolean result = super.hasProperConnections();
+            boolean result = getSubConnectorAt(0).getConnectedBlock().hasProperConnections();
             passed = false;
             return result;
         }

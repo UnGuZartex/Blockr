@@ -117,27 +117,6 @@ public abstract class Block {
     }
 
     /**
-     * Reset this block and all its connected blocks.
-     *
-     * @effect The already ran variable is set to null.
-     * @effect The connected blocks are reset.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated
-     */
-    public void reset() throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        for(int i = 0; i < getSubConnectors().size(); i++) {
-            if (getSubConnectors().get(i).isConnected()) {
-                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
-                connectBlock.reset();
-            }
-        }
-    }
-
-    /**
      * Terminate this block.
      *
      * @post This block is terminated.
