@@ -112,4 +112,9 @@ public abstract class ConditionalBlock extends Block {
     public int getIndexOfBlock(Block block,  Stack<Block> systemStack) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        throw new IllegalStateException("Invalid call of pushing to stack in conditional!");
+    }
 }

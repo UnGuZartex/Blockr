@@ -199,4 +199,6 @@ public abstract class Block {
      * @return The index of the given block in the structure of this block.
      */
     public abstract int getIndexOfBlock(Block block, Stack<Block> systemStack);
+
+    public abstract void pushNextBlocks(Stack<Block> stack);
 }

@@ -109,4 +109,16 @@ public class WhileBlock extends CavityBlock {
     public Block clone() {
         return new WhileBlock();
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getFunctionality().getEvaluation()) {
+            stack.push(this);
+            if (getCavitySubConnector().isConnected()) {
+                stack.push(getCavitySubConnector().getConnectedBlock());
+            }
+        } else if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
+    }
 }

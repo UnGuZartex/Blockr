@@ -35,7 +35,7 @@ public class Program {
     /**
      * Variable referring to the block which should be executed next.
      */
-    private Block currentBlock;
+    //private Block currentBlock;
 
     /**
      * Variable referring to the result of the last executed step in the program.
@@ -47,7 +47,7 @@ public class Program {
      */
     private boolean isExecuting = false;
 
-    private Stack<Block> systemStack = new Stack<>();
+    private Stack<Block> executionStack = new Stack<>();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -65,7 +65,7 @@ public class Program {
             throw new IllegalArgumentException("The given start block is not valid!");
         }
         startBlock = start;
-        currentBlock = start;
+        executionStack.push(start);
     }
 
     /**
@@ -94,7 +94,12 @@ public class Program {
      * @return The block which should be executed currently.
      */
     public Block getCurrentBlock() {
-        return currentBlock;
+        //return currentBlock;
+        if (executionStack.isEmpty()) {
+            return null;
+        } else {
+            return executionStack.peek();
+        }
     }
 
     /**
@@ -125,8 +130,10 @@ public class Program {
         }
         if (!isFinished()) {
             isExecuting = true;
+
+            Block currentBlock = executionStack.pop();
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
-            currentBlock = currentBlock.getNext(systemStack);
+            currentBlock.pushNextBlocks(executionStack);
         }
     }
 
@@ -157,7 +164,7 @@ public class Program {
      *         or if the last result of executing the program is not a SUCCESS.
      */
     public boolean isFinished() {
-        return currentBlock == null || lastResult != Result.SUCCESS;
+        return executionStack.isEmpty() || lastResult != Result.SUCCESS;
     }
 
     /**
@@ -178,7 +185,8 @@ public class Program {
      *       program is not executing anymore.
      */
     public void resetProgram() {
-        this.currentBlock = startBlock;
+        executionStack.clear();
+        executionStack.push(startBlock);
         this.lastResult = DEFAULT_RESULT;
         systemStack.clear();
         isExecuting = false;
@@ -225,10 +233,9 @@ public class Program {
      */
     public void loadSnapshot(Snapshot snapshot) {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
-        currentBlock = startBlock.getBlockAtIndex(programSnapshot.currentBlockIndex, new Stack<>());
+        executionStack = programSnapshot.getBlockStack(startBlock);
         lastResult = programSnapshot.currentResult;
         isExecuting = programSnapshot.isExecutingNow;
-        systemStack = programSnapshot.getBlockStack(startBlock);
     }
 
     /**
@@ -236,10 +243,7 @@ public class Program {
      */
     private class ProgramSnapshot implements Snapshot {
 
-        /**
-         * Variable referring to the index of the block to remember.
-         */
-        private final int currentBlockIndex = startBlock.getIndexOfBlock(currentBlock, new Stack<>());
+        private final Stack<Integer> executionStackCopy = getIndexStack(startBlock);
 
         private final Stack<Integer> indexStack = getIndexStack(startBlock);
         /**
@@ -278,21 +282,21 @@ public class Program {
         }
 
         @SuppressWarnings("unchecked")
-        public Stack<Integer> getIndexStack(Block startingpoint) {
-            Stack<Block> toConvert = (Stack<Block>) systemStack.clone();
+        public Stack<Integer> getIndexStack(Block startingPoint) {
+            Stack<Block> toConvert = (Stack<Block>) executionStack.clone();
             Stack<Integer> indexStack = new Stack<>();
             while (!toConvert.isEmpty()) {
-                indexStack.push(startingpoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
+                indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
             }
             return indexStack;
         }
 
         @SuppressWarnings("unchecked")
-        public Stack<Block> getBlockStack(Block startingpoint) {
-            Stack<Integer> toConvert = (Stack<Integer>) indexStack.clone();
+        public Stack<Block> getBlockStack(Block startingPoint) {
+            Stack<Integer> toConvert = (Stack<Integer>) executionStackCopy.clone();
             Stack<Block> blockStack = new Stack<>();
             while (!toConvert.isEmpty()) {
-                blockStack.push(startingpoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
+                blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
             }
             return blockStack;
         }

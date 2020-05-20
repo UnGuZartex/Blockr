@@ -172,4 +172,11 @@ public class ProcedureBlock extends Block {
     public boolean isPassed() {
         return passed;
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
+    }
 }

@@ -107,4 +107,14 @@ public class IfBlock extends CavityBlock {
     public Block clone() {
         return new IfBlock();
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getSubConnectorAt(0).getConnectedBlock());
+        }
+        if (getFunctionality().getEvaluation() && getCavitySubConnector().isConnected()) {
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        }
+    }
 }

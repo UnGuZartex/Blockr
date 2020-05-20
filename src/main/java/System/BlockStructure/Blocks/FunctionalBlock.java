@@ -151,4 +151,11 @@ public class FunctionalBlock extends Block {
         }
         return -1;
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
+    }
 }

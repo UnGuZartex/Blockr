@@ -264,4 +264,12 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
             systemStack.push(getSubConnectorAt(0).getConnectedBlock());
         }
     }
+
+    @Override
+    public void pushNextBlocks(Stack<Block> stack) {
+        if (hasNext()) {
+            stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
+        stack.push(procedure);
+    }
 }
