@@ -130,7 +130,6 @@ public class Program {
         }
         if (!isFinished()) {
             isExecuting = true;
-
             Block currentBlock = executionStack.pop();
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock.pushNextBlocks(executionStack);
