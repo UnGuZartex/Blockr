@@ -143,7 +143,7 @@ public class Program {
      *         has proper connections.
      */
     public boolean isValidProgram() {
-        return startBlock.hasProperConnections(new Stack<>());
+        return startBlock.hasProperConnections();
     }
 
     /**

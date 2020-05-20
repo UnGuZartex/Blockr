@@ -5,8 +5,6 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
-import java.util.Stack;
-
 /**
  * A class for operational blocks. These are blocks which have several
  * conditions in them and execute not, or ... operations on these.
@@ -53,23 +51,6 @@ public abstract class OperationalBlock extends ConditionalBlock {
         return getSubConnectorAt(counter).isConnected();
     }
 
-    /**
-     * Get the block at the sub connector of the counter. The counter is also updated.
-     *
-     * @return The block connected at the sub connector at the index of the
-     *         counter of this operational block.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated.
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        counter %= getNbSubConnectors();
-        return getSubConnectorAt(counter++).getConnectedBlock();
-    }
 
     /**
      * Check if this operational block has proper connections.
@@ -79,14 +60,14 @@ public abstract class OperationalBlock extends ConditionalBlock {
      *         of it's sub connectors have proper connections.
      */
     @Override
-    public boolean hasProperConnections(Stack<Block> systemStack) {
+    public boolean hasProperConnections() {
         if (!getMainConnector().isConnected()) {
             return false;
         }
         boolean toReturn = true;
         for (int i = 0; i < getNbSubConnectors(); i++) {
             if (getSubConnectorAt(i).isConnected()) {
-                toReturn = toReturn && getSubConnectorAt(i).getConnectedBlock().hasProperConnections(systemStack);
+                toReturn = toReturn && getSubConnectorAt(i).getConnectedBlock().hasProperConnections();
             }
             else {
                 return false;

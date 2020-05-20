@@ -47,21 +47,6 @@ public abstract class ConditionalBlock extends Block {
         return false;
     }
 
-    /**
-     * Get the next block of a conditional block.
-     *
-     * @return Null cause a conditional block has no next block in general.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated.
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        return null;
-    }
 
     /**
      * Get the main connector of this conditional block.
@@ -80,11 +65,11 @@ public abstract class ConditionalBlock extends Block {
      *         if parent block of this conditional block has the proper connections.
      */
     @Override
-    public boolean hasProperConnections(Stack<Block> systemStack) {
+    public boolean hasProperConnections() {
         if (!getMainConnector().isConnected()) {
             return false;
         }
-        return super.hasProperConnections(systemStack);
+        return super.hasProperConnections();
     }
 
     /**

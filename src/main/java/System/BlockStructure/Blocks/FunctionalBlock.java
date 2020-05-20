@@ -51,27 +51,6 @@ public class FunctionalBlock extends Block {
         return getSubConnectorAt(0).isConnected();
     }
 
-    /**
-     * Get the next block of this functional block.
-     *
-     * @return The block connected to the sub connector of this functional block.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        if (hasNext()) {
-            return getSubConnectors().get(0).getConnectedBlock();
-        }
-        if (!systemStack.isEmpty()) {
-            return systemStack.pop();
-        }
-        return null;
-    }
 
     /**
      * Get a copy of this functional block.
