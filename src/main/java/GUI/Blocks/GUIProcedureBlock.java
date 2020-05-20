@@ -13,8 +13,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
 
     private final List<BlockListener> listeners = new ArrayList<>();
 
-    private static List<Boolean> numberTaken = new ArrayList<>();
-
     /**
      * TODO
      * @param name
@@ -24,17 +22,8 @@ public class GUIProcedureBlock extends GUICavityBlock {
     public GUIProcedureBlock(String name, int x, int y, int startingNr) {
         super(name, x, y);
         this.currentDefNr = startingNr;
-        numberTaken.add(currentDefNr, Boolean.TRUE);
         this.name = name + " " + currentDefNr;
         setFirst = true;
-    }
-
-    private int getFirstNumber() {
-        int index = numberTaken.indexOf(Boolean.FALSE);
-        if (index == -1) {
-            return numberTaken.size();
-        }
-        return index;
     }
 
 
@@ -47,7 +36,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
     @Override
     public GUIBlock clone() {
         GUIProcedureBlock toReturn =  new GUIProcedureBlock(name.split(" ")[0], x, y, currentDefNr);
-        currentDefNr = getFirstNumber();
+        currentDefNr++;
         this.name = name.split(" ")[0] + " " + currentDefNr;
         return toReturn;
     }
@@ -55,7 +44,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
     @Override
     public void terminate() {
         super.terminate();
-        numberTaken.remove(currentDefNr);
     }
 
 
