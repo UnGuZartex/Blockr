@@ -36,7 +36,7 @@ public class WhileBlock extends CavityBlock {
      *         then is under the cavity counted.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
         if (index < 0) {
             return null;
         }
@@ -47,13 +47,13 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                Block toReturn = nextBlock.getBlockAtIndex(index - 1);
+                systemStack.push(getNewReturnBlock());
+                Block toReturn = nextBlock.getBlockAtIndex(index - 1, systemStack);
                 passed = false;
                 return toReturn;
             }
             else {
-                return super.getBlockAtIndex(index);
+                return super.getBlockAtIndex(index, systemStack);
             }
         }
     }
@@ -67,7 +67,7 @@ public class WhileBlock extends CavityBlock {
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
         if (block == null) {
            return -1;
         }
@@ -78,13 +78,13 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                int toReturn = nextBlock.getIndexOfBlock(block);
+                systemStack.push(getNewReturnBlock());
+                int toReturn = nextBlock.getIndexOfBlock(block, systemStack);
                 passed = false;
                 return 1 + toReturn;
             }
             else {
-                return super.getIndexOfBlock(block);
+                return super.getIndexOfBlock(block, systemStack);
             }
         }
     }

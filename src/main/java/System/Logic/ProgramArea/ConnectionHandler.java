@@ -3,6 +3,8 @@ package System.Logic.ProgramArea;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.SubConnector;
 
+import java.util.Stack;
+
 /**
  * A class to handle connections between different blocks.
  *
@@ -43,7 +45,7 @@ public class ConnectionHandler {
     private Block getLastBlock(Block main) {
         Block toReturn = main;
         while (toReturn.hasNext()) {
-            toReturn = toReturn.getNext();
+            toReturn = toReturn.getNext(new Stack<>());
         }
         return toReturn;
     }
