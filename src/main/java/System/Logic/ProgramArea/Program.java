@@ -188,7 +188,6 @@ public class Program {
         executionStack.clear();
         executionStack.push(startBlock);
         this.lastResult = DEFAULT_RESULT;
-        systemStack.clear();
         isExecuting = false;
     }
 
