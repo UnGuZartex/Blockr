@@ -201,13 +201,13 @@ public class ProcedureBlock extends Block {
      */
     private void notifyProcedureDeleted() {
         for (ProcedureListener listener : new ArrayList<>(listeners)) {
-            listener.procedureDeleted(this);
+            listener.onProcedureDeleted(this);
         }
     }
 
     private void notifyProcedureCreated(ProcedureBlock created) {
         for (ProcedureListener listener : new ArrayList<>(listeners)) {
-            listener.procedureCreated(created);
+            listener.onProcedureCreated(created);
         }
     }
 }

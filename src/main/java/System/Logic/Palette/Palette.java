@@ -136,13 +136,13 @@ public class Palette implements ProcedureListener {
         }
     }
     @Override
-    public void procedureDeleted(ProcedureBlock procedureBlock) {
+    public void onProcedureDeleted(ProcedureBlock procedureBlock) {
         int index = deleteCaller(procedureBlock);
         notifyProcedureDeleted(index);
     }
 
     @Override
-    public void procedureCreated(ProcedureBlock procedureBlock) {
+    public void onProcedureCreated(ProcedureBlock procedureBlock) {
         createCaller(procedureBlock);
         notifyProcedureCreated();
     }
