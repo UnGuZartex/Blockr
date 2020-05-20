@@ -243,7 +243,6 @@ public class Program {
 
         private final Stack<Integer> executionStackCopy = getIndexStack(startBlock);
 
-        private final Stack<Integer> indexStack = getIndexStack(startBlock);
         /**
          * Variable referring to the result to remember.
          */
