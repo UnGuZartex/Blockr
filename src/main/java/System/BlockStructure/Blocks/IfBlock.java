@@ -22,20 +22,6 @@ public class IfBlock extends CavityBlock {
     }
 
     /**
-     * Get the new return to block.
-     *
-     * @return If a block below this if is connected, that block, otherwise
-     *         the default return to block.
-     */
-    @Override
-    protected Block getNewReturnBlock() {
-        if (getSubConnectorAt(0).isConnected()) {
-            return getSubConnectorAt(0).getConnectedBlock();
-        }
-        return null;
-    }
-
-    /**
      * Get a clone of this block.
      *
      * @param index the index of the block to get.
@@ -54,9 +40,8 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                Block toPush = getNewReturnBlock();
-                if (toPush != null) {
-                    systemStack.push(getNewReturnBlock());
+                if (getSubConnectorAt(0).isConnected()) {
+                    systemStack.push(getSubConnectorAt(0).getConnectedBlock());
                 }
                 return nextBlock.getBlockAtIndex(index - 1, systemStack);
             }
@@ -86,9 +71,8 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                Block toPush = getNewReturnBlock();
-                if (toPush != null) {
-                    systemStack.push(getNewReturnBlock());
+                if (getSubConnectorAt(0).isConnected()) {
+                    systemStack.push(getSubConnectorAt(0).getConnectedBlock());
                 }
                 return 1 + nextBlock.getIndexOfBlock(block, systemStack);
             }

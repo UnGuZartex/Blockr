@@ -64,8 +64,8 @@ public abstract class Block {
      * @return True if and only if this block has no following up blocks
      *         or its next block has valid following up blocks.
      */
-    public boolean hasProperConnections(Stack<Block> systemStack) {
-        return !hasNext() || getNext(systemStack).hasProperConnections(systemStack);
+    public boolean hasProperConnections() {
+        return !hasNext() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections();
     }
 
     /**
@@ -160,13 +160,6 @@ public abstract class Block {
      * @return True if and only if this block has a next block.
      */
     public abstract boolean hasNext();
-
-    /**
-     * Get the block which should be executed after this block.
-     *
-     * @return The block which should be executed after this block.
-     */
-    public abstract Block getNext(Stack<Block> systemStack);
 
     /**
      * Clone this block.

@@ -104,8 +104,8 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *         (meaning either such block doesn't exist or has proper connections).
      */
     @Override
-    public boolean hasProperConnections(Stack<Block> systemStack) {
-        return !hasNext() || (procedure.hasProperConnections(systemStack) && (!getSubConnectorAt(0).isConnected() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections(systemStack)));
+    public boolean hasProperConnections() {
+        return !hasNext() || (procedure.hasProperConnections() && (!getSubConnectorAt(0).isConnected() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections()));
     }
 
     /**
@@ -115,31 +115,9 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      */
     @Override
     public boolean hasNext() {
-        return !procedure.isTerminated() && !procedure.isPassed();
+        return !procedure.isTerminated();
     }
 
-    /**
-     * Get the next block of this block.
-     *
-     * @return If this block has a next block, then the procedure is returned, otherwise the
-     *         return to block is returned.
-     *
-     * @effect If this block has a next block, then the next return to block is set.
-     *
-     * @throws IllegalStateException
-     *         When this block is terminated
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        if (hasNext()) {
-            setReturnToOfNext(systemStack);
-            return procedure;
-        }
-        return systemStack.pop();
-    }
 
     /**
      * Get the block at the given index.

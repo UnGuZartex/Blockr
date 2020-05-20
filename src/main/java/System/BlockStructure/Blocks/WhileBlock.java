@@ -47,7 +47,7 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                systemStack.push(getNewReturnBlock());
+                systemStack.push(this);
                 Block toReturn = nextBlock.getBlockAtIndex(index - 1, systemStack);
                 passed = false;
                 return toReturn;
@@ -78,7 +78,7 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                systemStack.push(getNewReturnBlock());
+                systemStack.push(this);
                 int toReturn = nextBlock.getIndexOfBlock(block, systemStack);
                 passed = false;
                 return 1 + toReturn;
@@ -87,16 +87,6 @@ public class WhileBlock extends CavityBlock {
                 return super.getIndexOfBlock(block, systemStack);
             }
         }
-    }
-
-    /**
-     * Get the new return to block for this block.
-     *
-     * @return This block.
-     */
-    @Override
-    protected Block getNewReturnBlock() {
-        return this;
     }
 
     /**

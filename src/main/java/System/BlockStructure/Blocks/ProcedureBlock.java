@@ -37,11 +37,14 @@ public class ProcedureBlock extends Block {
      * @return The result of the super method hasProperConnections while passed is True.
      */
     @Override
-    public boolean hasProperConnections(Stack<Block> systemStack) {
-        passed = true;
-        boolean result = super.hasProperConnections(systemStack);
-        passed = false;
-        return result;
+    public boolean hasProperConnections() {
+        if (hasNext()) {
+            passed = true;
+            boolean result = super.hasProperConnections();
+            passed = false;
+            return result;
+        }
+        return true;
     }
 
     /**
@@ -61,26 +64,9 @@ public class ProcedureBlock extends Block {
      */
     @Override
     public boolean hasNext() {
-        return getSubConnectorAt(0).isConnected();
+        return !passed && getSubConnectorAt(0).isConnected();
     }
 
-    /**
-     * Get the next block.
-     *
-     * @return If this block has a next block, then that block is returned and the return to
-     *         block of that block is set to the return to block of this block. If this block
-     *         does not have a next block, then the return to block of this block is returned.
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) {
-        if (hasNext()) {
-            return getSubConnectorAt(0).getConnectedBlock();
-        }
-        if (!systemStack.isEmpty()) {
-            return systemStack.pop();
-        }
-        return null;
-    }
 
     /**
      * Clone this block.
@@ -107,7 +93,7 @@ public class ProcedureBlock extends Block {
         if (index == 0) {
             return this;
         }
-        if (getSubConnectorAt(0).isConnected()) {
+        if (hasNext()) {
             passed = true;
             Block toReturn = getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
             passed = false;
@@ -138,7 +124,7 @@ public class ProcedureBlock extends Block {
         if (block == this) {
             return 0;
         }
-        if (getSubConnectorAt(0).isConnected()) {
+        if (hasNext()) {
             passed = true;
             int toReturn = 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
             passed = false;
@@ -164,14 +150,6 @@ public class ProcedureBlock extends Block {
         return false;
     }
 
-    /**
-     * Check whether or not this procedure is passed.
-     *
-     * @return True if this procedure is passed.
-     */
-    public boolean isPassed() {
-        return passed;
-    }
 
     @Override
     public void pushNextBlocks(Stack<Block> stack) {

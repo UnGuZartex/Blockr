@@ -5,8 +5,6 @@ import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
 
-import java.util.Stack;
-
 /**
  * An abstract class for blocks which have a cavity. These blocks
  * also can have a condition connected to it.
@@ -104,57 +102,23 @@ public abstract class CavityBlock extends FunctionalBlock {
      *         returned.
      */
     @Override
-    public boolean hasProperConnections(Stack<Block> systemStack) {
+    public boolean hasProperConnections() {
         // Valid condition
-        if (getConditionalSubConnector().getConnectedBlock() == null || !getConditionalSubConnector().getConnectedBlock().hasProperConnections(systemStack)) {
+        if (getConditionalSubConnector().getConnectedBlock() == null || !getConditionalSubConnector().getConnectedBlock().hasProperConnections()) {
             return false;
         }
 
         // Valid cavity
-        if (getCavitySubConnector().getConnectedBlock() != null && !getCavitySubConnector().getConnectedBlock().hasProperConnections(systemStack)) {
+        if (getCavitySubConnector().getConnectedBlock() != null && !getCavitySubConnector().getConnectedBlock().hasProperConnections()) {
             return false;
         }
 
         // Valid blocks under the block
-        if (getSubConnectorAt(0).getConnectedBlock() != null && !getSubConnectorAt(0).getConnectedBlock().hasProperConnections(systemStack)) {
+        if (getSubConnectorAt(0).getConnectedBlock() != null && !getSubConnectorAt(0).getConnectedBlock().hasProperConnections()) {
             return false;
         }
 
         // All connected blocks are valid
         return true;
     }
-
-    /**
-     * Get the next block to execute, this depends on the evaluation of the condition of this block.
-     * If the condition is true, the next block is the first in the cavity, otherwise, the next block
-     * is the first block under the while.
-     *
-     * @return The next block to execute.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated.
-     */
-    @Override
-    public Block getNext(Stack<Block> systemStack) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
-        if (getFunctionality().getEvaluation()) {
-            Block toPush = getNewReturnBlock();
-            if (toPush != null) {
-                systemStack.push(getNewReturnBlock());
-            }
-            if (hasNext()) {
-                return getCavitySubConnector().getConnectedBlock();
-            }
-        }
-        return super.getNext(systemStack);
-    }
-
-    /**
-     * Get the new return to block.
-     *
-     * @return The new block to return to. 
-     */
-    protected abstract Block getNewReturnBlock();
 }
