@@ -180,33 +180,13 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
     }
 
     /**
-     * Executes the corresponding procedure for the given event.
-     *
-     * @param event The event name.
-     *
-     * @effect If the given event name is "ProcedureDel", then is the on procedure
-     *         deleted action executed.
-     *
-     * @throws IllegalArgumentException
-     *         If the given event does not exist.
-     */
-    @Override
-    public void onEvent(String event) throws IllegalArgumentException {
-        if (event.equals("ProcedureDel")) {
-            onProcedureDeleted();
-        } else {
-            throw new IllegalArgumentException("The given event does not exist!");
-        }
-    }
-
-    /**
      * Notify that the procedure is deleted.
      *
      * @effect Call the event "ProcedureDel" for all the listeners
      */
     private void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onEvent("ProcedureDel");
+            listener.onProcedureDeleted();
         }
     }
 
@@ -217,7 +197,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      * @effect Disconnect the mainconnector of this block (if any block is connected)
      * @effect Disconnect the block at the first sub connector (if any block is connected)
      */
-    private void onProcedureDeleted() {
+    public void onProcedureDeleted() {
         this.terminate();
         if (getMainConnector().isConnected()) {
             getMainConnector().disconnect();

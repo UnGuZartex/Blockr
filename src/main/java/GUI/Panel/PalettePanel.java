@@ -215,11 +215,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener, Pale
 
     @Override
     public void procedureDeleted(int index) {
-        int counter = index;
-        while (counter < GUICallerblocks.size()) {
-            GUICallerblocks.get(counter).notifyUpdated();
-            counter++;
-        }
         GUICallerblocks.get(index).terminate();
         GUICallerblocks.remove(index);
         setBlockPositions();
