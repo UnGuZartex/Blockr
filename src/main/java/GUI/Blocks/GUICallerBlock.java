@@ -42,7 +42,7 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
         terminate();
     }
 
-    public void unSubscribe(BlockListener listener) {
+    public void unsubscribe(BlockListener listener) {
         listeners.remove(listener);
     }
 
