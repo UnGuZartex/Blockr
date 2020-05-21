@@ -24,7 +24,8 @@ class DisconnectBlockTest {
     ConnectionHandler connectionHandler;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     PABlockHandler paBlockHandler;
     FunctionalBlock functionalBlockUp, functionalBlockUnder, functionalBlockIn;
@@ -57,7 +58,9 @@ class DisconnectBlockTest {
         ifBlock = new IfBlock();
         procedure = new ProcedureBlock();
 
+
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
+
 
         functionalBlockUp = (FunctionalBlock) paBlockHandler.getFromPalette(0);
         functionalBlockUnder = (FunctionalBlock) paBlockHandler.getFromPalette(1);
@@ -107,6 +110,7 @@ class DisconnectBlockTest {
 //                                                    ---
 
         paBlockHandlerProcedures = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandlerProcedures.getPalette());
         procedure1 = (ProcedureBlock) paBlockHandlerProcedures.getFromPalette(7);
         paBlockHandlerProcedures.addToPA(procedure1);
         procedure2 = (ProcedureBlock) paBlockHandlerProcedures.getFromPalette(7);

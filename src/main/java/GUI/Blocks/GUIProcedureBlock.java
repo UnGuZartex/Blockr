@@ -5,39 +5,33 @@ import GUI.Components.GUIConnector;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
+public class GUIProcedureBlock extends GUICavityBlock {
 
-    private int currentDefNr;
-
+    private static List<Boolean> takenProcedureNumbers = new ArrayList<>();
+    private static int currentPriority = Integer.MAX_VALUE;
     private final List<BlockListener> listeners = new ArrayList<>();
+    private int procedureNr;
 
-    private GUIProcedureBlock previousClone;
-
-
-    /**
-     * Initialise a new cavity block with given name and coordinates.
-     *
-     * @param name The name for this procedure block.
-     * @param x    The x coordinate for this block.
-     * @param y    The y coordinate for this block.
-     * @effect Calls the super constructor with given parameters.
-     */
     /**
      * TODO
      * @param name
      * @param x
      * @param y
-     * @param startingNr
      */
-    public GUIProcedureBlock(String name, int x, int y, int startingNr) {
-        super(name, x, y);
-        this.currentDefNr = startingNr;
-        this.name = name + " " + currentDefNr;
-        setFirst = true;
+    public GUIProcedureBlock(int x, int y, int procedureNr) {
+        super("Def " + procedureNr, x, y);
+        this.procedureNr = procedureNr;
+        priority = currentPriority--;
     }
 
+    public GUIProcedureBlock(String name, int x, int y) {
+        super(name, x, y);
+        priority = currentPriority--;
+    }
 
     @Override
     protected void setConnectors() {
@@ -47,37 +41,20 @@ public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
 
     @Override
     public GUIBlock clone() {
-        GUIProcedureBlock toReturn =  new GUIProcedureBlock(name.split(" ")[0], x, y, currentDefNr);
-        toReturn.subscribe(this);
-        if (previousClone != null) {
-            previousClone.unSubscribe(this);
-            previousClone.subscribe(toReturn);
-        }
-        previousClone = toReturn;
-        currentDefNr++;
-        this.name = name.split(" ")[0] + " " + currentDefNr;
-        return toReturn;
+        return new GUIProcedureBlock(x, y, getNewProcedureNumber());
     }
 
     @Override
     public void terminate() {
         super.terminate();
-        notifyProcedureDeleted();
-    }
+        takenProcedureNumbers.set(procedureNr - 1, false);
 
-    private void notifyProcedureDeleted() {
-        for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onEvent("ProcedureDel");
+        if (procedureNr == takenProcedureNumbers.size()) {
+            takenProcedureNumbers.remove(takenProcedureNumbers.size() - 1);
         }
     }
 
-    public void onProcedureDeleted() {
-        currentDefNr--;
-        this.name = name.split(" ")[0] + " " + currentDefNr;
-        notifyProcedureDeleted();
-    }
-
-    public void unSubscribe(BlockListener listener) {
+    public void unsubscribe(BlockListener listener) {
         listeners.remove(listener);
     }
 
@@ -85,11 +62,22 @@ public class GUIProcedureBlock extends GUICavityBlock implements BlockListener {
         listeners.add(listener);
     }
 
+    private int getNewProcedureNumber() {
+        int currentIndex = -1;
 
-    @Override
-    public void onEvent(String Event) {
-        if (Event.equals("ProcedureDel")) {
-            onProcedureDeleted();
+        for (int i = 0; i < takenProcedureNumbers.size(); i++) {
+            if (!takenProcedureNumbers.get(i)) {
+                takenProcedureNumbers.set(i, true);
+                currentIndex = i;
+                break;
+            }
         }
+
+        if (currentIndex == -1) {
+            takenProcedureNumbers.add(true);
+            return takenProcedureNumbers.size();
+        }
+
+        return currentIndex + 1;
     }
 }

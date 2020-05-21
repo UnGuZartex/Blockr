@@ -1,6 +1,10 @@
 package System.Logic.Palette;
 
-import System.BlockStructure.Blocks.*;
+import Controllers.PaletteListener;
+import Controllers.ProcedureListener;
+import System.BlockStructure.Blocks.Block;
+import System.BlockStructure.Blocks.ProcedureBlock;
+import System.BlockStructure.Blocks.ProcedureCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +17,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class Palette {
+public class Palette implements ProcedureListener {
 
     /**
      * Variable referring to the blocks in the palette.
@@ -23,6 +27,11 @@ public class Palette {
      * Variable referring to the list of procedure call blocks in this palette.
      */
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
+
+    /**
+     * Variable referring to all the listeners of this palette.
+     */
+    private final List<PaletteListener> listeners = new ArrayList<>();
 
     /**
      * Create a new palette with the given blocks as available palette blocks.
@@ -109,5 +118,40 @@ public class Palette {
             index++;
         }
         throw new IllegalArgumentException("No call for the given procedure exists!");
+    }
+
+    /**
+     * Notify that the procedure is deleted.
+     * TODO UPDATE ALL COMMENTS UNDER THIS
+     */
+    private void notifyProcedureDeleted(int index) {
+        for (PaletteListener listener : new ArrayList<>(listeners)) {
+            listener.procedureDeleted(index);
+        }
+    }
+
+    private void notifyProcedureCreated() {
+        for (PaletteListener listener : new ArrayList<>(listeners)) {
+            listener.procedureCreated();
+        }
+    }
+    @Override
+    public void onProcedureDeleted(ProcedureBlock procedureBlock) {
+        int index = deleteCaller(procedureBlock);
+        notifyProcedureDeleted(index);
+    }
+
+    @Override
+    public void onProcedureCreated(ProcedureBlock procedureBlock) {
+        createCaller(procedureBlock);
+        notifyProcedureCreated();
+    }
+
+    public void subscribe(PaletteListener listener) {
+        listeners.add(listener);
+    }
+
+    public void unsubscribe(PaletteListener listener) {
+        listeners.remove(listener);
     }
 }

@@ -25,7 +25,8 @@ public class AddBlockTest {
     PABlockHandler paBlockHandler;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -44,6 +45,7 @@ public class AddBlockTest {
         procedure = new ProcedureBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandler.getPalette());
     }
 
     @AfterEach
@@ -238,7 +240,6 @@ public class AddBlockTest {
     void getProcedureFromPalette() {
         assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(8));
         ProcedureBlock procedure1 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
-        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(8));
         paBlockHandler.addToPA(procedure1);
         ProcedureCall call11 = (ProcedureCall) paBlockHandler.getFromPalette(8);
         ProcedureCall call12 = (ProcedureCall) paBlockHandler.getFromPalette(8);
@@ -249,7 +250,6 @@ public class AddBlockTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(9));
         ProcedureBlock procedure2 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
-        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(9));
         paBlockHandler.addToPA(procedure2);
         ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(9);
         assertEquals(procedure2, call2.getProcedure());

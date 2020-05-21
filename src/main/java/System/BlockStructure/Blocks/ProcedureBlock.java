@@ -1,11 +1,14 @@
 package System.BlockStructure.Blocks;
 
+import Controllers.ProcedureListener;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -19,6 +22,11 @@ public class ProcedureBlock extends Block {
      * A boolean to check whether or not this procedure has been passed.
      */
     private boolean passed;
+
+    /**
+     * Variable referring to all the listeners of this block.
+     */
+    private final List<ProcedureListener> listeners = new ArrayList<>();
 
     /**
      * Initialise a new Procedure Block.
@@ -75,7 +83,21 @@ public class ProcedureBlock extends Block {
      */
     @Override
     public Block clone() {
-        return new ProcedureBlock();
+        ProcedureBlock toReturn = new ProcedureBlock();
+        for (ProcedureListener listener:listeners) {
+            toReturn.subscribe(listener);
+        }
+        notifyProcedureCreated(toReturn);
+        return toReturn;
+    }
+
+    /**
+     * TODO func
+     */
+    @Override
+    public void terminate() {
+        notifyProcedureDeleted();
+        super.terminate();
     }
 
     /**
@@ -149,6 +171,40 @@ public class ProcedureBlock extends Block {
     public void pushNextBlocks(Stack<Block> stack) {
         if (hasNext()) {
             stack.push(getSubConnectors().get(0).getConnectedBlock());
+        }
+    }
+
+    /**
+     * Subscribe the given listener as a listener of this block.
+     *
+     * @param listener The listener to subscribe.
+     */
+    public void subscribe(ProcedureListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Unsubscribe the given listener as a listener of this block.
+     *
+     * @param listener The listener to unsubscribe.
+     */
+    public void unSubscribe(ProcedureListener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Notify that the procedure is deleted.
+     * TODO UPDATE ALL COMMENTS UNDER THIS
+     */
+    private void notifyProcedureDeleted() {
+        for (ProcedureListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureDeleted(this);
+        }
+    }
+
+    private void notifyProcedureCreated(ProcedureBlock created) {
+        for (ProcedureListener listener : new ArrayList<>(listeners)) {
+            listener.onProcedureCreated(created);
         }
     }
 }

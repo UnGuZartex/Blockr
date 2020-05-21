@@ -22,7 +22,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     /**
      * Variables referring to the width, height and coordinates of this GUI block.
      */
-    protected int height, width, x, y;
+    protected int height, width, x, y, priority;
     /**
      * Variable referring to the main connector of this block.
      */
@@ -39,11 +39,6 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * Variable referring to the id of this block.
      */
     protected String name;
-
-    /**
-     * TODO
-     */
-    protected boolean setFirst;
 
     /**
      * TODO
@@ -142,34 +137,32 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @post The sub connector and its connected blocks are translated.
      */
     public void setPosition(int x, int y) {
-        if (!terminated) {
-            int deltaX = x - this.x;
-            int deltaY = y - this.y;
+        int deltaX = x - this.x;
+        int deltaY = y - this.y;
 
-            // Translate the sub connectors
-            for (GUIConnector connector : subConnectors) {
-                CollisionCircle circle = connector.getCollisionCircle();
-                circle.translate(deltaX, deltaY);
-                if (connector.isConnected()) {
-                    connector.getConnectedGUIBlock().translate(deltaX, deltaY);
-                }
+        // Translate the sub connectors
+        for (GUIConnector connector : subConnectors) {
+            CollisionCircle circle = connector.getCollisionCircle();
+            circle.translate(deltaX, deltaY);
+            if (connector.isConnected()) {
+                connector.getConnectedGUIBlock().translate(deltaX, deltaY);
             }
-
-            // Translate main connector
-            if (mainConnector != null) {
-                CollisionCircle circle = mainConnector.getCollisionCircle();
-                circle.translate(deltaX, deltaY);
-            }
-
-            // Translate the rectangles
-            for (CollisionRectangle blockRectangle : blockRectangles) {
-                blockRectangle.translate(deltaX, deltaY);
-            }
-
-            // Set the coordinates.
-            this.x = x;
-            this.y = y;
         }
+
+        // Translate main connector
+        if (mainConnector != null) {
+            CollisionCircle circle = mainConnector.getCollisionCircle();
+            circle.translate(deltaX, deltaY);
+        }
+
+        // Translate the rectangles
+        for (CollisionRectangle blockRectangle : blockRectangles) {
+            blockRectangle.translate(deltaX, deltaY);
+        }
+
+        // Set the coordinates.
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -470,15 +463,8 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      */
     @Override
     public int compareTo(GUIBlock other) {
-
-        if (this.setFirst) {
-            return (!other.setFirst) ? -1 : this.name.compareTo(other.name);
-        }
-        else if (other.setFirst) {
-            return 1;
-        }
-
-        int comparison = Integer.compare(this.getY(), other.getY());
+        int comparison = Integer.compare(other.priority, this.priority);
+        comparison = (comparison == 0) ? Integer.compare(this.getY(), other.getY()) : comparison;
         comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
         return comparison;
     }

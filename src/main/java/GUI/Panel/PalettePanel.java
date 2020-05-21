@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import Controllers.PaletteListener;
 import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICallerBlock;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class PalettePanel extends GamePanel implements ProgramAreaListener {
+public class PalettePanel extends GamePanel implements ProgramAreaListener, PaletteListener {
 
     /**
      * Variables referring to the blocks in this palette.
@@ -26,9 +27,9 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
     private List<GUIBlock> blocks;
 
     /**
-     * TODO Comments
+     * TODO KIJK IN DEZE KLASSE ALLE COMMENTS NA!!!!!!!!
      */
-    private List<GUICallerBlock> GUICallerblocks = new ArrayList<>();
+    private List<GUICallerBlock> callerBlocks = new ArrayList<>();
 
 
     /**
@@ -40,6 +41,8 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      * TODO Comments
      */
     private GUIBlock lastCreated;
+
+    private int columns = 2;
 
     /**
      * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
@@ -66,7 +69,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         }
 
         this.blocks = blocks;
-        setBlockPositions();
+        setBlockPositions(blocks, 1);
     }
 
     /**
@@ -97,12 +100,14 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         if (reachedMaxBlocks) {
             throw new IllegalStateException("The max amount of blocks has been reached!");
         }
-        if (index < 0 || index >= blocks.size() + GUICallerblocks.size()) {
+
+        if (index < 0 || index >= blocks.size() + callerBlocks.size()) {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
+
         if (index >= blocks.size()) {
             index %= blocks.size();
-            lastCreated = GUICallerblocks.get(index).clone();
+            lastCreated = callerBlocks.get(index).clone();
         }
         else {
             lastCreated = blocks.get(index).clone();
@@ -121,7 +126,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     public int getSelectedBlockIndex(int x, int y) {
         List<GUIBlock> combined = new ArrayList<>(blocks);
-        combined.addAll(GUICallerblocks);
+        combined.addAll(callerBlocks);
          return combined.indexOf(combined.stream().filter(b -> b.contains(x, y)).findFirst().orElse(null));
     }
 
@@ -149,7 +154,7 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      */
     private void drawBlocks(Graphics g) {
         List<GUIBlock> combined = new ArrayList<>(blocks);
-        combined.addAll(GUICallerblocks);
+        combined.addAll(callerBlocks);
         if (!reachedMaxBlocks) {
             for (GUIBlock block : combined) {
                 block.paint(g);
@@ -170,42 +175,20 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
         this.reachedMaxBlocks = reachedMaxBlocks;
     }
 
-    @Override
-    public void onProcedureCreated() {
-        GUICallerBlock caller = new GUICallerBlock("Call " + lastCreated.getName().split(" ")[1], 0, 0);
-        GUICallerblocks.add(caller);
-        setBlockPositions();
-    }
-
-    @Override
-    public void onProcedureDeleted(int index) {
-        int counter = index;
-        while (counter < GUICallerblocks.size()) {
-            GUICallerblocks.get(counter).notifyUpdated();
-            counter++;
-        }
-        GUICallerblocks.get(index).terminate();
-        GUICallerblocks.remove(index);
-        setBlockPositions();
-    }
-
     /**
      * Set the positions of the blocks in the palette.
      *
      * @effect The blocks are set in the palette underneath each other.
      */
-    private void setBlockPositions() {
+
+
+
+    private <T extends GUIBlock> void setBlockPositions(List<T> blocks, int column) {
         int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(blocks)) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
+        int panelWidth = panelRectangle.getWidth() / columns;
         for (GUIBlock block : blocks) {
-            block.setPosition((panelRectangle.getWidth() - block.getWidth()) / 8, currentHeight);
-            currentHeight = currentHeight + block.getTotalHeight() + freeHeightPerBlock;
-        }
-
-        freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(GUICallerblocks)) / (GUICallerblocks.size() + 1);
-        currentHeight = freeHeightPerBlock;
-        for (GUIBlock block : GUICallerblocks) {
-            block.setPosition((panelRectangle.getWidth() - 2*block.getWidth()), currentHeight);
+            block.setPosition((panelWidth * (column - 1)) + (panelWidth - block.getWidth()) / 2, currentHeight);
             currentHeight = currentHeight + block.getTotalHeight() + freeHeightPerBlock;
         }
     }
@@ -215,11 +198,31 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener {
      *
      * @return The sum of the heights of all the blocks in this palette.
      */
+    /**
+     * TODO comments
+     * @param blockList
+     * @param <T>
+     * @return
+     */
     private <T extends GUIBlock> int getTotalBlockHeight(List<T> blockList) {
         int totalHeight = 0;
         for (GUIBlock block : blockList) {
             totalHeight += block.getTotalHeight();
         }
         return totalHeight;
+    }
+
+    @Override
+    public void procedureCreated() {
+        GUICallerBlock caller = new GUICallerBlock(0, 0, Integer.valueOf(lastCreated.getName().split(" ")[1]));
+        callerBlocks.add(caller);
+        setBlockPositions(callerBlocks, 2);
+    }
+
+    @Override
+    public void procedureDeleted(int index) {
+        callerBlocks.get(index).terminate();
+        callerBlocks.remove(index);
+        setBlockPositions(callerBlocks, 2);
     }
 }

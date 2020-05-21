@@ -28,7 +28,7 @@ class PABlockHandlerTest {
     private static final int MAX_BLOCKS = 3;
     GameWorldType type;
     GameWorld gameWorld;
-    Block block;
+    ProcedureBlock block;
 
     PalettePanel panel;
     int cornerX, cornerY, width, height;
@@ -61,7 +61,7 @@ class PABlockHandlerTest {
         conditionalName = "conditional";
         operatorName = "operator";
 
-        procedure = new GUIProcedureBlock(procedureName, 0,0, 0);
+        procedure = new GUIProcedureBlock("New Def", 0,0);
         functional = new GUIFunctionalBlock(functionalName, 0,0);
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
@@ -75,6 +75,9 @@ class PABlockHandlerTest {
         panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(procedure, functional, conditional, operator));
 
         handler.subscribe(panel);
+
+        block.subscribe(handler.getPalette());
+
     }
 
     @AfterEach
@@ -164,7 +167,7 @@ class PABlockHandlerTest {
     void addToPA_procedure() {
         panel.getNewBlock(0);
         assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
-        ProcedureBlock block = new ProcedureBlock();
+        Block block = handler.getFromPalette(0);
         handler.addToPA(block);
         ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
         assertEquals(block, call.getProcedure());
@@ -217,10 +220,11 @@ class PABlockHandlerTest {
     @Test
     void deleteProgram_procedure() {
         panel.getNewBlock(0);
-        ProcedureBlock block = new ProcedureBlock();
+        Block block = handler.getFromPalette(0);
         handler.addToPA(block);
         ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
         assertEquals(block, call.getProcedure());
+        block.terminate();
         handler.deleteProgram(block);
         assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
     }

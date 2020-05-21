@@ -19,10 +19,9 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
      * @param y    The y coordinate for this block.
      * @effect Calls super constructor with given parameters.
      */
-    public GUICallerBlock(String name, int x, int y) {
-        super(name, x, y);
-        procedureNr = Integer.parseInt(name.split(" ")[1]);
-        this.name = name.split(" ")[0] + " " + procedureNr;
+    public GUICallerBlock(int x, int y, int procedureNr) {
+        super("Call " + procedureNr, x, y);
+        this.procedureNr = procedureNr;
     }
 
     @Override
@@ -33,31 +32,16 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
 
     private void notifyProcedureDeleted() {
         for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onEvent("ProcedureDel");
-        }
-    }
-
-    public void notifyUpdated() {
-        for (BlockListener listener : new ArrayList<>(listeners)) {
-            listener.onEvent("Updated");
+            listener.onProcedureDeleted();
         }
     }
 
     @Override
-    public void onEvent(String Event) {
-        switch(Event) {
-            case "ProcedureDel":
-                terminate();
-                break;
-            case "Updated":
-                update();
-                break;
-            default:
-        }
-
+    public void onProcedureDeleted() {
+        terminate();
     }
 
-    public void unSubscribe(BlockListener listener) {
+    public void unsubscribe(BlockListener listener) {
         listeners.remove(listener);
     }
 
@@ -67,13 +51,8 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
 
     @Override
     public GUIBlock clone() {
-        GUICallerBlock toReturn = new GUICallerBlock(this.name, x, y);
+        GUICallerBlock toReturn = new GUICallerBlock(x, y, procedureNr);
         this.subscribe(toReturn);
         return toReturn;
-    }
-
-    public void update() {
-        procedureNr--;
-        this.name = name.split(" ")[0] + " " + procedureNr;
     }
 }

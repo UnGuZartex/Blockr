@@ -45,6 +45,9 @@ public class Initialiser {
      */
     private List<GUIBlock> GUIPaletteBlocks = new ArrayList<>();
 
+
+    private final ProcedureBlock systemDefTemplate = new ProcedureBlock();
+
     /**
      * Variable referring to the default blocks that are always present in the system.
      */
@@ -52,7 +55,7 @@ public class Initialiser {
         put(new GUICavityBlock("If", 0, 0), new IfBlock());
         put(new GUICavityBlock("While", 0, 0), new WhileBlock());
         put(new GUIOperatorBlock("Not", 0, 0), new NotBlock());
-        put(new GUIProcedureBlock("Def",0,0, 0), new ProcedureBlock());
+        put(new GUIProcedureBlock("New Def",0,0), systemDefTemplate);
     }};
 
     /**
@@ -91,6 +94,7 @@ public class Initialiser {
         ProgramArea programArea = new ProgramArea(gameWorld, history);
         HistoryController historyController = new HistoryController(history, programArea);
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
+        systemDefTemplate.subscribe(blockHandler.getPalette());
         IGUI_System_BlockLink converter = new IGUI_System_BlockLink();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
@@ -127,8 +131,8 @@ public class Initialiser {
         }
 
         for (Map.Entry<GUIBlock, Block> entry : defaultBlocks.entrySet()) {
-            GUIPaletteBlocks.add(entry.getKey().clone());
-            systemPaletteBlocks.add(entry.getValue().clone());
+            GUIPaletteBlocks.add(entry.getKey());
+            systemPaletteBlocks.add(entry.getValue());
         }
     }
 
