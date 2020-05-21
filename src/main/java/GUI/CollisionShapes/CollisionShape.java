@@ -35,7 +35,7 @@ public abstract class CollisionShape {
      * @throws IllegalArgumentException
      *         If the given color is null.
      */
-    protected CollisionShape(int x, int y, Color color) {
+    protected CollisionShape(int x, int y, Color color) throws IllegalArgumentException {
 
         if (color == null) {
             throw new IllegalArgumentException("Given color is null!");

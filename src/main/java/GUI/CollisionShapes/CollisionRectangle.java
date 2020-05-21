@@ -36,7 +36,7 @@ public class CollisionRectangle extends CollisionShape {
      * @throws IllegalArgumentException
      *         If the given height is illegal.
      */
-    public CollisionRectangle(int x, int y, int width, int height, Color color) {
+    public CollisionRectangle(int x, int y, int width, int height, Color color) throws IllegalArgumentException {
         super(x, y, color);
 
         if (width <= 0) {

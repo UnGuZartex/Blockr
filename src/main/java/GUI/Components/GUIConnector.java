@@ -141,7 +141,7 @@ public class GUIConnector {
      * @throws IllegalArgumentException
      *         If the given connector is already connected.
      */
-    public void connect(GUIConnector other, boolean alignMaster) {
+    public void connect(GUIConnector other, boolean alignMaster) throws IllegalArgumentException, IllegalStateException {
 
         if (other == null) {
             throw new IllegalArgumentException("Given connector is null!");
@@ -199,7 +199,7 @@ public class GUIConnector {
      * @throws IllegalStateException
      *         If this connector is already connected.
      */
-    private void connectAsSlave(GUIConnector other) {
+    private void connectAsSlave(GUIConnector other) throws IllegalArgumentException, IllegalStateException {
 
         if (other == null) {
             throw new IllegalArgumentException("The given connector is null!");
