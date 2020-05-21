@@ -1,6 +1,6 @@
 package System.BlockStructure.Blocks;
 
-import Controllers.BlockListener;
+import Controllers.CallListener;
 import System.BlockStructure.Functionality.DummyFunctionality;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Stack;
  *
  * @author Alpha-team
  */
-public class ProcedureCall extends FunctionalBlock implements BlockListener {
+public class ProcedureCall extends FunctionalBlock implements CallListener {
 
     /**
      * Variable referring to the procedure this call refers to.
@@ -24,7 +24,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
     /**
      * Variable referring to all the listeners of this block.
      */
-    private final List<BlockListener> listeners = new ArrayList<>();
+    private final List<CallListener> listeners = new ArrayList<>();
 
     /**
      * Initialise a new procedure call.
@@ -71,7 +71,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *
      * @param listener The listener to subscribe.
      */
-    public void subscribe(BlockListener listener) {
+    public void subscribe(CallListener listener) {
         listeners.add(listener);
     }
 
@@ -80,7 +80,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      *
      * @param listener The listener to unsubscribe.
      */
-    public void unSubscribe(BlockListener listener) {
+    public void unSubscribe(CallListener listener) {
         listeners.remove(listener);
     }
 
@@ -185,7 +185,7 @@ public class ProcedureCall extends FunctionalBlock implements BlockListener {
      * @effect Call the event "ProcedureDel" for all the listeners
      */
     private void notifyProcedureDeleted() {
-        for (BlockListener listener : new ArrayList<>(listeners)) {
+        for (CallListener listener : new ArrayList<>(listeners)) {
             listener.onProcedureDeleted();
         }
     }

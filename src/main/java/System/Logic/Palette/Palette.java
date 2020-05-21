@@ -27,7 +27,6 @@ public class Palette implements ProcedureListener {
      * Variable referring to the list of procedure call blocks in this palette.
      */
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
-
     /**
      * Variable referring to all the listeners of this palette.
      */
@@ -84,57 +83,8 @@ public class Palette implements ProcedureListener {
         return paletteBlocks.get(index).clone();
     }
 
-    /**
-     * Create a caller for the given procedure block.
-     *
-     * @param lastProcedure The procedure to create a caller for.
-     *
-     * @effect A procedure call is added to the palette for the given procedure.
-     */
-    public void createCaller(ProcedureBlock lastProcedure) {
-        procedureCallList.add(new ProcedureCall(lastProcedure));
-    }
 
-    /**
-     * Delete the call block for the given procedure block in this palette.
-     *
-     * @param lastProcedure The procedure to delete the call block for.
-     *
-     * @effect The call of the given procedure is removed from the palette.
-     *
-     * @return The index at which the call was found.
-     *
-     * @throws IllegalArgumentException
-     *         If no call block for the given procedure exists in this palette.
-     */
-    public int deleteCaller(ProcedureBlock lastProcedure) throws IllegalArgumentException {
-        int index = 0;
-        for (ProcedureCall call : procedureCallList) {
-            if (call.getProcedure() == lastProcedure) {
-                procedureCallList.get(index).terminate();
-                procedureCallList.remove(index);
-                return index;
-            }
-            index++;
-        }
-        throw new IllegalArgumentException("No call for the given procedure exists!");
-    }
-
-    /**
-     * Notify that the procedure is deleted.
-     * TODO UPDATE ALL COMMENTS UNDER THIS
-     */
-    private void notifyProcedureDeleted(int index) {
-        for (PaletteListener listener : new ArrayList<>(listeners)) {
-            listener.procedureDeleted(index);
-        }
-    }
-
-    private void notifyProcedureCreated() {
-        for (PaletteListener listener : new ArrayList<>(listeners)) {
-            listener.procedureCreated();
-        }
-    }
+    // TODO UPDATE ALL COMMENTS UNDER THIS
     @Override
     public void onProcedureDeleted(ProcedureBlock procedureBlock) {
         int index = deleteCaller(procedureBlock);
@@ -153,5 +103,53 @@ public class Palette implements ProcedureListener {
 
     public void unsubscribe(PaletteListener listener) {
         listeners.remove(listener);
+    }
+
+    /**
+     * Create a caller for the given procedure block.
+     *
+     * @param lastProcedure The procedure to create a caller for.
+     *
+     * @effect A procedure call is added to the palette for the given procedure.
+     */
+    private void createCaller(ProcedureBlock lastProcedure) {
+        procedureCallList.add(new ProcedureCall(lastProcedure));
+    }
+
+    /**
+     * Delete the call block for the given procedure block in this palette.
+     *
+     * @param lastProcedure The procedure to delete the call block for.
+     *
+     * @effect The call of the given procedure is removed from the palette.
+     *
+     * @return The index at which the call was found.
+     *
+     * @throws IllegalArgumentException
+     *         If no call block for the given procedure exists in this palette.
+     */
+    private int deleteCaller(ProcedureBlock lastProcedure) throws IllegalArgumentException {
+        int index = 0;
+        for (ProcedureCall call : procedureCallList) {
+            if (call.getProcedure() == lastProcedure) {
+                procedureCallList.get(index).terminate();
+                procedureCallList.remove(index);
+                return index;
+            }
+            index++;
+        }
+        throw new IllegalArgumentException("No call for the given procedure exists!");
+    }
+
+    private void notifyProcedureDeleted(int index) {
+        for (PaletteListener listener : new ArrayList<>(listeners)) {
+            listener.procedureDeleted(index);
+        }
+    }
+
+    private void notifyProcedureCreated() {
+        for (PaletteListener listener : new ArrayList<>(listeners)) {
+            listener.procedureCreated();
+        }
     }
 }

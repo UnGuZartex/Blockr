@@ -1,6 +1,6 @@
 package Controllers;
 
-public interface BlockListener {
+public interface CallListener {
 
     void onProcedureDeleted();
 }

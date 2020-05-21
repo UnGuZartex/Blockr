@@ -1,19 +1,17 @@
 package GUI.Blocks;
 
-import Controllers.BlockListener;
+import Controllers.CallListener;
 import GUI.Components.GUIConnector;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GUIProcedureBlock extends GUICavityBlock {
 
     private static List<Boolean> takenProcedureNumbers = new ArrayList<>();
     private static int currentPriority = Integer.MAX_VALUE;
-    private final List<BlockListener> listeners = new ArrayList<>();
+    private final List<CallListener> listeners = new ArrayList<>();
     private int procedureNr;
 
     /**
@@ -54,11 +52,11 @@ public class GUIProcedureBlock extends GUICavityBlock {
         }
     }
 
-    public void unsubscribe(BlockListener listener) {
+    public void unsubscribe(CallListener listener) {
         listeners.remove(listener);
     }
 
-    public void subscribe(BlockListener listener) {
+    public void subscribe(CallListener listener) {
         listeners.add(listener);
     }
 

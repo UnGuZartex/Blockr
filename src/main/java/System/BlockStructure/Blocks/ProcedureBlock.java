@@ -75,7 +75,6 @@ public class ProcedureBlock extends Block {
         return !passed && getSubConnectorAt(0).isConnected();
     }
 
-
     /**
      * Clone this block.
      *
