@@ -8,6 +8,7 @@ import Images.ImageLibrary;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -184,10 +185,12 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener, Pale
 
 
     private <T extends GUIBlock> void setBlockPositions(List<T> blocks, int column) {
+        List<T> sortedBlocks = new ArrayList<>(blocks);
+        sortedBlocks.sort(Comparator.comparing(GUIBlock::getName));
         int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(blocks)) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
         int panelWidth = panelRectangle.getWidth() / columns;
-        for (GUIBlock block : blocks) {
+        for (GUIBlock block : sortedBlocks) {
             block.setPosition((panelWidth * (column - 1)) + (panelWidth - block.getWidth()) / 2, currentHeight);
             currentHeight = currentHeight + block.getTotalHeight() + freeHeightPerBlock;
         }
