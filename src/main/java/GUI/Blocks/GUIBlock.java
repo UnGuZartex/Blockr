@@ -20,7 +20,7 @@ import java.util.List;
 public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
 
     /**
-     * Variables referring to the width, height and coordinates of this GUI block.
+     * Variables referring to the width, height, coordinates and priority of this block.
      */
     protected int height, width, x, y, priority;
     /**
@@ -41,7 +41,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     protected String name;
 
     /**
-     * TODO
+     * Variable indicating if this block is terminated.
      */
     private boolean terminated;
 

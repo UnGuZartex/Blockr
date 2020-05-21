@@ -71,7 +71,7 @@ public class CollisionRectangle extends CollisionShape {
     }
 
     /**
-     * Checks whether or not a given rectangle is contained in this
+     * Checks whether a given rectangle is contained in this
      * rectangle.
      *
      * @param other The rectangle to check.
@@ -84,13 +84,13 @@ public class CollisionRectangle extends CollisionShape {
     }
 
     /**
-     * Check whether or not the given coordinates are contained into this
+     * Check whether the given coordinates are contained into this
      * collision rectangle.
      *
      * @param x The x coordinate of the point to check.
      * @param y The y coordinate of the point to check.
      *
-     * @return True if and only if the the given x coordinate is between the x
+     * @return True if and only if the given x coordinate is between the x
      *         coordinate of this rectangle and the collision with, and the y
      *         coordinate is between the y coordinate of this rectangle and the
      *         height of this rectangle.

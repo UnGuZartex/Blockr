@@ -142,7 +142,7 @@ public abstract class CollisionShape {
     public abstract void paintNonFill(Graphics g);
 
     /**
-     * Checks whether or not the given coordinates are contained in
+     * Checks whether the given coordinates are contained in
      * this collision shape.
      *
      * @param x The x coordinate of the point to check.
