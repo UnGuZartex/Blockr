@@ -65,7 +65,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
 
     private int getNewProcedureNumber() {
         int currentIndex = -1;
-        System.out.println(takenProcedureNumbers);
 
         for (int i = 0; i < takenProcedureNumbers.size(); i++) {
             if (takenProcedureNumbers.get(i) == false) {
