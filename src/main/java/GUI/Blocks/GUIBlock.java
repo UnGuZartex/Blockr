@@ -185,20 +185,20 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
             GUIBlock downBlock = subConnectors.get(0).getConnectedGUIBlock();
 
+            if (downBlock != null) {
+                downBlock.disconnectMainConnector();
+            }
+
             if (upperBlock != null) {
                 changeHeight(-height, this);
                 GUIConnector sub = mainConnector.getConnectedConnector();
                 int subIndex = upperBlock.getConnectorIndex(sub);
                 disconnectMainConnector();
 
-                if (downBlock != null)
-                {
-                    downBlock.disconnectMainConnector();
-                    if (connectionController.isValidConnection(downBlock, upperBlock, subIndex)) {
-                        downBlock.setPosition(getX(), getY());
-                        downBlock.mainConnector.connect(sub);
-                        connectionController.connectBlocks(downBlock, upperBlock, subIndex);
-                    }
+                if (downBlock != null && connectionController.isValidConnection(downBlock, upperBlock, subIndex)) {
+                    downBlock.setPosition(getX(), getY());
+                    downBlock.mainConnector.connect(sub);
+                    connectionController.connectBlocks(downBlock, upperBlock, subIndex);
                 }
             }
 
