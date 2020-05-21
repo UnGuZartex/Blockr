@@ -168,13 +168,13 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
         if (mainConnector != null) {
             GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
             GUIBlock downBlock = subConnectors.get(0).getConnectedGUIBlock();
+            disconnectHeight();
 
             if (downBlock != null) {
                 downBlock.disconnectMainConnector();
             }
 
             if (upperBlock != null) {
-                changeHeight(-height, this);
                 GUIConnector sub = mainConnector.getConnectedConnector();
                 int subIndex = upperBlock.getConnectorIndex(sub);
                 disconnectMainConnector();
@@ -265,12 +265,11 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * static block, if possible.
      *
      * @param other The given static block.
+     * @param connectionController The given connection controller.
      *
-     * @effect The height of this block and the static block and the connected set of blocks is changed accordingly.
-     * @effect The position of this block set is changed accordingly to the type of completed connection.
-     * @effect The position of the static block set is changed accordingly to the type of completed connection.
      * @effect A valid colliding connector of this block is connected to a valid colliding connector
      *         of the static block, if possible.
+     * @effect The colliding connectors are connected in the system through the connection controller.
      *
      * @throws IllegalArgumentException
      *         when the given block does not have a colliding connector.
@@ -278,36 +277,21 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
         if (!terminated) {
             GUIConnector intersectingConnectorSub;
-            Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
             GUIBlock main, sub;
 
             if ((intersectingConnectorSub = findValidSubConnector(other.subConnectors, mainConnector)) != null) {
                 main = this;
                 sub = other;
-                draggedBlockConnectorPosition = main.mainConnector.getPosition();
-                staticBlockConnectorPosition = intersectingConnectorSub.getPosition();
             } else if ((intersectingConnectorSub = findValidSubConnector(subConnectors, other.mainConnector)) != null) {
                 main = other;
                 sub = this;
-                staticBlockConnectorPosition = main.mainConnector.getPosition();
-                draggedBlockConnectorPosition = intersectingConnectorSub.getPosition();
             } else {
                 throw new IllegalArgumentException("Given block does not have a colliding connector!");
             }
 
             if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
-                GUIBlock toChange = other;
-                int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
-                int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
-                if (!mainConnector.isConnected()) {
-                    toChange = this;
-                    x = staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX());
-                    y = staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY());
-                }
-                toChange.setPosition(x, y);
                 main.mainConnector.connect(intersectingConnectorSub);
                 connectionController.connectBlocks(main, sub, sub.getConnectorIndex(intersectingConnectorSub));
-                toChange.changeHeight(main.getTotalHeight(), main);
             }
         }
     }
@@ -380,7 +364,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param heightDelta The given height difference.
      * @param previousBlock The previous block that called this method.
      */
-    protected abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
+    public abstract void changeHeight(int heightDelta, GUIBlock previousBlock);
 
     /**
      * Set the shapes of this block.

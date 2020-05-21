@@ -31,7 +31,7 @@ public class CollisionCircle extends CollisionShape {
     public CollisionCircle(int x, int y, int radius, Color color) throws IllegalArgumentException {
         super(x, y, color);
 
-        if (radius <= 0) {
+        if (radius < 0) {
             throw new IllegalArgumentException("The given radius is illegal.");
         }
 

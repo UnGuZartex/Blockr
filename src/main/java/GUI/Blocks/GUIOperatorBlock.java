@@ -58,7 +58,7 @@ public class GUIOperatorBlock extends GUIBlock {
      * @param previousBlock The previous block that called this method.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) { }
 
     /**
      * Set the shapes of this operator block.

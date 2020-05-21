@@ -43,7 +43,7 @@ public class GUIConditionalBlock extends GUIBlock {
      * @param previousBlock The previous block that called this method.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) { }
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) { }
 
     /**
      * Set the shapes of this conditional block.
