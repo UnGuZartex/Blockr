@@ -137,34 +137,32 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @post The sub connector and its connected blocks are translated.
      */
     public void setPosition(int x, int y) {
-        if (!terminated) {
-            int deltaX = x - this.x;
-            int deltaY = y - this.y;
+        int deltaX = x - this.x;
+        int deltaY = y - this.y;
 
-            // Translate the sub connectors
-            for (GUIConnector connector : subConnectors) {
-                CollisionCircle circle = connector.getCollisionCircle();
-                circle.translate(deltaX, deltaY);
-                if (connector.isConnected()) {
-                    connector.getConnectedGUIBlock().translate(deltaX, deltaY);
-                }
+        // Translate the sub connectors
+        for (GUIConnector connector : subConnectors) {
+            CollisionCircle circle = connector.getCollisionCircle();
+            circle.translate(deltaX, deltaY);
+            if (connector.isConnected()) {
+                connector.getConnectedGUIBlock().translate(deltaX, deltaY);
             }
-
-            // Translate main connector
-            if (mainConnector != null) {
-                CollisionCircle circle = mainConnector.getCollisionCircle();
-                circle.translate(deltaX, deltaY);
-            }
-
-            // Translate the rectangles
-            for (CollisionRectangle blockRectangle : blockRectangles) {
-                blockRectangle.translate(deltaX, deltaY);
-            }
-
-            // Set the coordinates.
-            this.x = x;
-            this.y = y;
         }
+
+        // Translate main connector
+        if (mainConnector != null) {
+            CollisionCircle circle = mainConnector.getCollisionCircle();
+            circle.translate(deltaX, deltaY);
+        }
+
+        // Translate the rectangles
+        for (CollisionRectangle blockRectangle : blockRectangles) {
+            blockRectangle.translate(deltaX, deltaY);
+        }
+
+        // Set the coordinates.
+        this.x = x;
+        this.y = y;
     }
 
     /**
