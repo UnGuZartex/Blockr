@@ -77,8 +77,6 @@ public class IGUI_System_BlockLink {
      * TODO comments
      */
     public void removeBlock(IGUIBlock block) {
-        Block systemBlock = getBlockFromGUIBlock(block);
-        systemBlock.terminate();
         currentBlocks.remove(block);
     }
 }

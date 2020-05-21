@@ -224,7 +224,6 @@ class PABlockHandlerTest {
         handler.addToPA(block);
         ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
         assertEquals(block, call.getProcedure());
-        block.terminate();
         handler.deleteProgram(block);
         assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
     }

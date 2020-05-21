@@ -212,6 +212,7 @@ public class PABlockHandler {
         programArea.addProgramResetCommand();
         connectionHandler.disconnect(block);
         programArea.deleteProgram(block);
+        block.terminate();
         notifyMaxBlocksReached();
     }
 
