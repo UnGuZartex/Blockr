@@ -47,7 +47,7 @@ public class CollisionCircle extends CollisionShape {
     }
 
     /**
-     * Check whether or not this circle intersects with the other circle.
+     * Check whether this circle intersects with the other circle.
      *
      * @param other The circle to check intersection with.
      *
@@ -59,7 +59,7 @@ public class CollisionCircle extends CollisionShape {
     }
 
     /**
-     * Check whether or not the given coordinates are contained in this circle.
+     * Check whether the given coordinates are contained in this circle.
      *
      * @param x The x coordinate of the point to check.
      * @param y The y coordinate of the point to check.

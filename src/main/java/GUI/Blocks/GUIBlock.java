@@ -9,7 +9,6 @@ import Utility.Position;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -133,32 +132,17 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      *
      * @post The coordinates of this block are set to the given coordinates.
      * @post All rectangles in this block are translated to the given position.
-     * @post All main connectors is translated to the given position.
-     * @post The sub connector and its connected blocks are translated.
+     * @post All sub connectors are translated to the given position.
+     * @post The main connector is translated to the given position.
      */
     public void setPosition(int x, int y) {
         int deltaX = x - this.x;
         int deltaY = y - this.y;
 
-        // Translate the sub connectors
-        for (GUIConnector connector : subConnectors) {
-            CollisionCircle circle = connector.getCollisionCircle();
-            circle.translate(deltaX, deltaY);
-            if (connector.isConnected()) {
-                connector.getConnectedGUIBlock().translate(deltaX, deltaY);
-            }
-        }
-
-        // Translate main connector
-        if (mainConnector != null) {
-            CollisionCircle circle = mainConnector.getCollisionCircle();
-            circle.translate(deltaX, deltaY);
-        }
-
-        // Translate the rectangles
-        for (CollisionRectangle blockRectangle : blockRectangles) {
-            blockRectangle.translate(deltaX, deltaY);
-        }
+        // Translate this block and the underlying blocks.
+        subConnectors.forEach(s -> s.translate(deltaX, deltaY, true));
+        if (mainConnector != null) mainConnector.translate(deltaX, deltaY, false);
+        blockRectangles.forEach(s -> s.translate(deltaX, deltaY));
 
         // Set the coordinates.
         this.x = x;
@@ -233,15 +217,9 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      */
     public void paint(Graphics g) {
         if (!terminated) {
-            for (GUIConnector connector : subConnectors) {
-                connector.getCollisionCircle().paint(g);
-            }
-            if (mainConnector != null) {
-                mainConnector.getCollisionCircle().paint(g);
-            }
-            for (CollisionRectangle blockRectangle : blockRectangles) {
-                blockRectangle.paint(g);
-            }
+            if (mainConnector != null) mainConnector.paint(g);
+            subConnectors.forEach(s -> s.paint(g));
+            blockRectangles.forEach(s -> s.paint(g));
             g.drawString(name, this.x + 2, this.y + 20);
         }
     }
@@ -279,7 +257,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @return True if and only if the two blocks have colliding connectors.
      */
     public boolean intersectsWithConnector(GUIBlock other) {
-        return findCollidingConnector(subConnectors, other.mainConnector) != null || findCollidingConnector(other.subConnectors, mainConnector) != null;
+        return findValidSubConnector(subConnectors, other.mainConnector) != null || findValidSubConnector(other.subConnectors, mainConnector) != null;
     }
 
     /**
@@ -303,16 +281,16 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
             Position staticBlockConnectorPosition, draggedBlockConnectorPosition;
             GUIBlock main, sub;
 
-            if ((intersectingConnectorSub = findCollidingConnector(other.subConnectors, mainConnector)) != null) {
+            if ((intersectingConnectorSub = findValidSubConnector(other.subConnectors, mainConnector)) != null) {
                 main = this;
                 sub = other;
-                draggedBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
-                staticBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
-            } else if ((intersectingConnectorSub = findCollidingConnector(subConnectors, other.mainConnector)) != null) {
+                draggedBlockConnectorPosition = main.mainConnector.getPosition();
+                staticBlockConnectorPosition = intersectingConnectorSub.getPosition();
+            } else if ((intersectingConnectorSub = findValidSubConnector(subConnectors, other.mainConnector)) != null) {
                 main = other;
                 sub = this;
-                staticBlockConnectorPosition = main.mainConnector.getCollisionCircle().getPosition();
-                draggedBlockConnectorPosition = intersectingConnectorSub.getCollisionCircle().getPosition();
+                staticBlockConnectorPosition = main.mainConnector.getPosition();
+                draggedBlockConnectorPosition = intersectingConnectorSub.getPosition();
             } else {
                 throw new IllegalArgumentException("Given block does not have a colliding connector!");
             }
@@ -321,7 +299,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
                 GUIBlock toChange = other;
                 int x = draggedBlockConnectorPosition.getX() + (toChange.getX() - staticBlockConnectorPosition.getX());
                 int y = draggedBlockConnectorPosition.getY() + (toChange.getY() - staticBlockConnectorPosition.getY());
-                if (mainConnector!= null && !mainConnector.isConnected()) {
+                if (!mainConnector.isConnected()) {
                     toChange = this;
                     x = staticBlockConnectorPosition.getX() + (getX() - draggedBlockConnectorPosition.getX());
                     y = staticBlockConnectorPosition.getY() + (getY() - draggedBlockConnectorPosition.getY());
@@ -410,24 +388,18 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     protected abstract void setShapes();
 
     /**
-     * Check whether the any sub connector collides with the main connector.
+     * Check whether any of the given sub connectors can connect with the main connector.
      *
-     * @param subConnectors The sub connectors to check.
-     * @param mainConnector The main connector to check.
+     * @param subConnectors The given sub connectors.
+     * @param mainConnector The given main connector.
      *
-     * @return The sub connector which collides with the given main connector. If no
-     *         such connector is found or if the main connector is already connected,
-     *         then null is returned.
+     * @return The sub connector which can connect with the given main connector. If no
+     *         such connector is found, null is returned.
      */
-    private GUIConnector findCollidingConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
-        if (mainConnector != null) {
-            if (mainConnector.isConnected()) {
-                return null;
-            }
-            for (GUIConnector connector : subConnectors) {
-                if (!connector.isConnected() && connector.getCollisionCircle().intersects(mainConnector.getCollisionCircle())) {
-                    return connector;
-                }
+    private GUIConnector findValidSubConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
+        for (GUIConnector connector : subConnectors) {
+            if (connector.canConnectWith(mainConnector)) {
+                return connector;
             }
         }
         return null;
