@@ -41,8 +41,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
 
     @Override
     public GUIBlock clone() {
-        GUIProcedureBlock toReturn = new GUIProcedureBlock(x, y, getNewProcedureNumber());
-        return toReturn;
+        return new GUIProcedureBlock(x, y, getNewProcedureNumber());
     }
 
     @Override
