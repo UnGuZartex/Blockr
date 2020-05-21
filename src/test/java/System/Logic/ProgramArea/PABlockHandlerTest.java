@@ -61,7 +61,7 @@ class PABlockHandlerTest {
         conditionalName = "conditional";
         operatorName = "operator";
 
-        procedure = new GUIProcedureBlock(procedureName, 0,0, 0);
+        procedure = new GUIProcedureBlock("New Def", 0,0);
         functional = new GUIFunctionalBlock(functionalName, 0,0);
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
