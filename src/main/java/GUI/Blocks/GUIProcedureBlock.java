@@ -78,8 +78,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
             takenProcedureNumbers.add(true);
             return takenProcedureNumbers.size();
         }
-
-        System.out.println(currentIndex);
+        
         return currentIndex + 1;
     }
 }
