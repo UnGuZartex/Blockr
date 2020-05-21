@@ -131,9 +131,9 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param y The new y coordinate for this block.
      *
      * @post The coordinates of this block are set to the given coordinates.
-     * @post All rectangles in this block are translated to the given position.
-     * @post All sub connectors are translated to the given position.
-     * @post The main connector is translated to the given position.
+     * @effect All rectangles in this block are translated to the given position.
+     * @effect All sub connectors are translated to the given position.
+     * @effect The main connector is translated to the given position.
      */
     public void setPosition(int x, int y) {
         int deltaX = x - this.x;

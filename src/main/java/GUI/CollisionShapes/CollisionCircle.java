@@ -22,9 +22,19 @@ public class CollisionCircle extends CollisionShape {
      * @param y The y coordinate for this collision circle.
      * @param radius The radius for this collision circle.
      * @param color The color for this collision circle.
+     *
+     * @post The radius of this circle is set to the given radius.
+     *
+     * @throws IllegalArgumentException
+     *         If the given radius is illegal.
      */
     public CollisionCircle(int x, int y, int radius, Color color) {
         super(x, y, color);
+
+        if (radius <= 0) {
+            throw new IllegalArgumentException("The given radius is illegal.");
+        }
+
         this.radius = radius;
     }
 

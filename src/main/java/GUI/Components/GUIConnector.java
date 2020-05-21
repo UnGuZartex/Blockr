@@ -141,7 +141,7 @@ public class GUIConnector {
      * @throws IllegalArgumentException
      *         If the given connector is already connected.
      */
-    public void connect(GUIConnector other) {
+    public void connect(GUIConnector other, boolean alignMaster) {
 
         if (other == null) {
             throw new IllegalArgumentException("Given connector is null!");
@@ -161,6 +161,13 @@ public class GUIConnector {
 
         connectedConnector = other;
         other.connectAsSlave(this);
+
+        if (alignMaster) {
+
+        }
+        else {
+
+        }
     }
 
     public void paint(Graphics g) {
@@ -175,7 +182,7 @@ public class GUIConnector {
     public void translate(int x, int y, boolean propagate) {
         collisionCircle.translate(x, y);
 
-        if (isConnected() && propagate) {
+        if (propagate && isConnected()) {
             getConnectedGUIBlock().translate(x, y);
         }
     }
@@ -203,6 +210,5 @@ public class GUIConnector {
         }
 
         connectedConnector = other;
-
     }
 }

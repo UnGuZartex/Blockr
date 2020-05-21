@@ -3,7 +3,7 @@ package GUI.CollisionShapes;
 import java.awt.*;
 
 /**
- * A closs for rectangles.
+ * A class for rectangles.
  *
  * @author Alpha-team
  */
@@ -27,9 +27,26 @@ public class CollisionRectangle extends CollisionShape {
      * @param width The width for this collision rectangle.
      * @param height The height for this collision rectangle.
      * @param color The color for this collision rectangle.
+     *
+     * @post The width of this rectangle is set to the given width.
+     * @post The height of this rectangle is set to the given height.
+     *
+     * @throws IllegalArgumentException
+     *         If the given width is illegal.
+     * @throws IllegalArgumentException
+     *         If the given height is illegal.
      */
     public CollisionRectangle(int x, int y, int width, int height, Color color) {
         super(x, y, color);
+
+        if (width <= 0) {
+            throw new IllegalArgumentException("The given width is illegal.");
+        }
+
+        if (height <= 0) {
+            throw new IllegalArgumentException("The given height is illegal.");
+        }
+
         this.width = width;
         this.height = height;
     }
