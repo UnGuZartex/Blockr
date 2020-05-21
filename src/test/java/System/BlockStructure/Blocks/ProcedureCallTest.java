@@ -217,24 +217,6 @@ class ProcedureCallTest {
     }
 
     @Test
-    void onEvent_invalidEvent() {
-        assertThrows(IllegalArgumentException.class, () -> call.onEvent("InvalidEventName"));
-    }
-
-    @Test
-    void onEvent() {
-        assertFalse(call.isTerminated());
-        assertFalse(callClone.isTerminated());
-        call.onEvent("ProcedureDel");
-        assertTrue(call.isTerminated());
-        assertTrue(callClone.isTerminated());
-
-        assertTrue(callTop.isConnectedOnMain());
-        callTop.onEvent("ProcedureDel");
-        assertFalse(callTop.isConnectedOnMain());
-    }
-
-    @Test
     void pushNextBlocks_noNext() {
         call.pushNextBlocks(stack);
         assertEquals(1, stack.size());
