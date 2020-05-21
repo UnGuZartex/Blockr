@@ -22,7 +22,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     /**
      * Variables referring to the width, height and coordinates of this GUI block.
      */
-    protected int height, width, x, y;
+    protected int height, width, x, y, priority;
     /**
      * Variable referring to the main connector of this block.
      */
@@ -39,11 +39,6 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * Variable referring to the id of this block.
      */
     protected String name;
-
-    /**
-     * TODO
-     */
-    protected boolean setFirst;
 
     /**
      * TODO
@@ -470,15 +465,8 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      */
     @Override
     public int compareTo(GUIBlock other) {
-
-        if (this.setFirst) {
-            return (!other.setFirst) ? -1 : this.name.compareTo(other.name);
-        }
-        else if (other.setFirst) {
-            return 1;
-        }
-
-        int comparison = Integer.compare(this.getY(), other.getY());
+        int comparison = Integer.compare(other.priority, this.priority);
+        comparison = (comparison == 0) ? Integer.compare(this.getY(), other.getY()) : comparison;
         comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
         return comparison;
     }

@@ -12,6 +12,7 @@ import java.util.List;
 public class GUIProcedureBlock extends GUICavityBlock {
 
     private static List<Boolean> takenProcedureNumbers = new ArrayList<>();
+    private static int currentPriority = Integer.MAX_VALUE;
     private final List<BlockListener> listeners = new ArrayList<>();
     private int procedureNr;
 
@@ -24,12 +25,12 @@ public class GUIProcedureBlock extends GUICavityBlock {
     public GUIProcedureBlock(int x, int y, int procedureNr) {
         super("Def " + procedureNr, x, y);
         this.procedureNr = procedureNr;
-        setFirst = true;
+        priority = currentPriority--;
     }
 
     public GUIProcedureBlock(String name, int x, int y) {
         super(name, x, y);
-        setFirst = true;
+        priority = currentPriority--;
     }
 
     @Override
