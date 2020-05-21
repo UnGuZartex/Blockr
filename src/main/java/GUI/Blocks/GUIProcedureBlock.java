@@ -67,7 +67,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
         int currentIndex = -1;
 
         for (int i = 0; i < takenProcedureNumbers.size(); i++) {
-            if (takenProcedureNumbers.get(i) == false) {
+            if (!takenProcedureNumbers.get(i)) {
                 takenProcedureNumbers.set(i, true);
                 currentIndex = i;
                 break;
@@ -78,7 +78,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
             takenProcedureNumbers.add(true);
             return takenProcedureNumbers.size();
         }
-        
+
         return currentIndex + 1;
     }
 }
