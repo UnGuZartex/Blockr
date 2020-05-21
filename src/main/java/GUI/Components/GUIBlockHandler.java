@@ -304,11 +304,9 @@ public class GUIBlockHandler {
                 programArea.disconnectInProgramArea(draggedBlocks.get(0));
                 programArea.deleteBlockFromProgramArea(draggedBlocks);
             }
-            else if (isInPanelAny(palette.getPanelRectangle(), draggedBlocks) && blockSourcePanel == palette) {
-                draggedBlocks.get(0).terminate();
-            }
             else {
                 draggedBlocks.get(0).setPosition(lastValidPositions.get(0).getX(), lastValidPositions.get(0).getY());
+                draggedBlocks.get(0).terminate();
                 draggedBlocks.get(0).resetHeight();
             }
 
