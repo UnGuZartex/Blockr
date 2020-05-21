@@ -91,6 +91,9 @@ public class ProcedureBlock extends Block {
         return toReturn;
     }
 
+    /**
+     * TODO func
+     */
     @Override
     public void terminate() {
         notifyProcedureDeleted();
