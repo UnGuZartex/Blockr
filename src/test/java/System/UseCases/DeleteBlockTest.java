@@ -267,6 +267,8 @@ public class DeleteBlockTest {
 
         paBlockHandler.deleteProgram(procedure);
 
+        procedure.terminate();
+
         assertEquals(1 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
     }
 }
