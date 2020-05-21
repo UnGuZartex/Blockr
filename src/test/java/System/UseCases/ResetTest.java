@@ -36,7 +36,8 @@ public class ResetTest {
     Grid grid;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +61,7 @@ public class ResetTest {
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
 
+        procedure.subscribe(paBlockHandler.getPalette());
         commandRun = new RunProgramCommand(paBlockHandler.getPA());
         commandReset = new ResetProgramCommand(paBlockHandler.getPA());
     }

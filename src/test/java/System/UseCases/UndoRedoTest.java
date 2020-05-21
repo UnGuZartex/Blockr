@@ -41,7 +41,8 @@ public class UndoRedoTest {
     Grid grid;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -66,6 +67,7 @@ public class UndoRedoTest {
         history = new CommandHistory();
         programArea = new ProgramArea(gameWorld, history);
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), programArea);
+        procedure.subscribe(paBlockHandler.getPalette());
         controller = new HistoryController(history, programArea);
     }
 

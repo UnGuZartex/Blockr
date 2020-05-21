@@ -51,7 +51,7 @@ public class DeleteBlockTest {
         procedure = new ProcedureBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
-
+        procedure.subscribe(paBlockHandler.getPalette());
 
         functionalBlockUp = (FunctionalBlock) paBlockHandler.getFromPalette(0);
         functionalBlockUnder = (FunctionalBlock) paBlockHandler.getFromPalette(1);

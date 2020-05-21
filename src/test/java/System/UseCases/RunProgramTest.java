@@ -40,7 +40,8 @@ public class RunProgramTest {
     Grid grid;
     GameWorldType type;
     GameWorld gameWorld;
-    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure;
+    Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +64,7 @@ public class RunProgramTest {
         procedure = new ProcedureBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandler.getPalette());
         command = new RunProgramCommand(paBlockHandler.getPA());
     }
 
