@@ -159,6 +159,7 @@ class ProcedureBlockTest {
     void getIndexOfBlock_invalidBlock() {
         assertEquals(-1, procedure.getIndexOfBlock(null, stack));
         assertEquals(2, procedure.getIndexOfBlock(cavity, stack));
+        assertEquals(-1, emptyProcedure.getIndexOfBlock(cavity, stack));
     }
 
     @Test
@@ -180,6 +181,7 @@ class ProcedureBlockTest {
         assertEquals(1, procedureCall.getIndexOfBlock(procedureBlock, stack));
         assertEquals(0, procedureCall.getIndexOfBlock(procedureCall, stack));
     }
+
 
     @Test
     void isIllegalExtraStartingBlock() {

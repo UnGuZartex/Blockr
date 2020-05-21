@@ -101,9 +101,6 @@ public class ProcedureBlock extends Block {
         }
         if (!systemStack.isEmpty()) {
             Block nextBlock = systemStack.pop();
-            if (nextBlock == null) {
-                return null;
-            }
             return nextBlock.getBlockAtIndex(index - 1, systemStack);
         }
         return null;
@@ -132,9 +129,6 @@ public class ProcedureBlock extends Block {
         }
         if (!systemStack.isEmpty()) {
             Block nextBlock = systemStack.pop();
-            if (nextBlock == null) {
-                return -1;
-            }
             return 1 + nextBlock.getIndexOfBlock(block, systemStack);
         }
         return -1;

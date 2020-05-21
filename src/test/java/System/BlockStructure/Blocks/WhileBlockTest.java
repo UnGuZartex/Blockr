@@ -268,6 +268,11 @@ class WhileBlockTest {
     }
 
     @Test
+    void getIndexOfBlock_invalidBlock() {
+        assertEquals(-1, while1.getIndexOfBlock(null, stack));
+    }
+
+    @Test
     void getIndexOfBlock() {
         assertEquals(0, while1.getIndexOfBlock(while1, stack));
         assertEquals(1, while1.getIndexOfBlock(func1, stack));

@@ -275,6 +275,11 @@ class IfBlockTest {
     }
 
     @Test
+    void getIndexOfBlock_invalidBlock() {
+        assertEquals(-1, if1.getIndexOfBlock(null, stack));
+    }
+
+    @Test
     void pushNextBlock_true_blockInCavity_blockUnder() {
         if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
         assertTrue(if1.getFunctionality().getEvaluation());
