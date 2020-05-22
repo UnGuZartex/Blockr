@@ -1,8 +1,7 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 /**
  * A class for while blocks. These are cavity blocks which have a
@@ -31,12 +30,13 @@ public class WhileBlock extends CavityBlock {
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block at the index. First is in the cavity counted and
      *         then is under the cavity counted.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -62,12 +62,13 @@ public class WhileBlock extends CavityBlock {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block. If this block has a cavity, then
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
            return -1;
         }
@@ -100,15 +101,21 @@ public class WhileBlock extends CavityBlock {
         return new WhileBlock();
     }
 
+    /**
+     * Push the next blocks to execute on the stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect If the functionality evaluates to True, then is first this block pushed and then the cavity,
+     *         otherwise are the default blocks pushed to the stack.
+     */
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
+    public void pushNextBlocks(ExecutionStack stack) {
         if (getFunctionality().getEvaluation()) {
             stack.push(this);
-            if (getCavitySubConnector().isConnected()) {
-                stack.push(getCavitySubConnector().getConnectedBlock());
-            }
-        } else if (getSubConnectorAt(0).isConnected()) {
-            stack.push(getSubConnectorAt(0).getConnectedBlock());
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        } else {
+            super.pushNextBlocks(stack);
         }
     }
 }

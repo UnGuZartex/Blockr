@@ -5,24 +5,23 @@ import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FunctionalBlockTest {
 
-    Stack<Block> stack;
+    ExecutionStack stack;
     GameWorldType type;
     FunctionalBlock blockConnectedTop, blockConnectedBottom, blockNotConnected, blockConnectedTopBottom;
     Block block;
 
     @BeforeEach
     void setUp() {
-        stack = new Stack<>();
+        stack = new ExecutionStack();
         type = new LevelInitializer();
         blockConnectedBottom = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
         blockConnectedTop = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1)));

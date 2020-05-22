@@ -4,18 +4,21 @@ import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.DummyFunctionality;
+import System.Logic.Palette.Palette;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProcedureBlockTest {
 
-    Stack<Block> stack;
+    ExecutionStack stack;
     GameWorldType type;
     ProcedureBlock emptyProcedure, procedure, notCompleteProcedure, procedureRecursion;
     Block block1, block2, block3, blockRecursion;
@@ -27,9 +30,13 @@ class ProcedureBlockTest {
     Block blockUnderCall;
     ProcedureCall procedureCall;
 
+    Palette palette;
+
     @BeforeEach
     void setUp() {
-        stack = new Stack<>();
+        palette = new Palette(new ArrayList<>(Arrays.asList(new WhileBlock(), new IfBlock())));
+
+        stack = new ExecutionStack();
 
         type = new LevelInitializer();
 
@@ -58,10 +65,13 @@ class ProcedureBlockTest {
         procedureCall = new ProcedureCall(procedureBlock);
         blockUnderCall = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
         handler.connect(blockUnderCall, procedureCall.getSubConnectorAt(0));
+
+        procedure.subscribe(palette);
     }
 
     @AfterEach
     void tearDown() {
+        procedure.unSubscribe(palette);
         stack = null; 
         type = null;
         procedure = null;
@@ -112,12 +122,14 @@ class ProcedureBlockTest {
 
     @Test
     void testClone() {
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(2));
         Block block = procedure.clone();
         assertNotEquals(block, procedure);
         assertNotEquals(block.getFunctionality(), procedure.getFunctionality());
         assertTrue(block instanceof ProcedureBlock);
         assertTrue(block.getFunctionality() instanceof DummyFunctionality);
         assertFalse(block.getSubConnectorAt(0).isConnected());
+        palette.getNewBlock(2);
     }
 
     @Test
@@ -202,5 +214,16 @@ class ProcedureBlockTest {
     void pushNextBlocks_noBlockInProcedure() {
         emptyProcedure.pushNextBlocks(stack);
         assertEquals(0, stack.size());
+    }
+
+    @Test
+    void terminate() {
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(2));
+        palette.onProcedureCreated(procedure);
+        palette.getNewBlock(2);
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(3));
+        procedure.terminate();
+        assertTrue(procedure.isTerminated());
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(2));
     }
 }

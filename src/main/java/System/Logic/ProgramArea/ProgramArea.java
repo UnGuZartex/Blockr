@@ -214,11 +214,11 @@ public class ProgramArea {
     /**
      * Add a program command to the command history stack.
      *
-     * @effect If there is more than 1 program area in the program, it is notified
+     * @effect If there is no executable program in the program area, it is notified
      *         to the observer.
-     * @effect If there is 1 program in this program area, and it is invalid, it is
+     * @effect If there is an executable program in this program area, and it is invalid, it is
      *         noticed to the observer.
-     * @effect If there is 1 program in the program area which is valid and not finished,
+     * @effect If there is an executable program in the program area which is valid and not finished,
      *         then is a new run program command executed in the command history with this
      *         program area.
      */
@@ -240,24 +240,9 @@ public class ProgramArea {
     }
 
     /**
-     * Get the total amount of valid programs.
-     *
-     * @return The total amount of programs which have an illegal extra start block.
-     */
-    private int getAmountOfValidPrograms() {
-        int total = 0;
-        for (Program program : programs) {
-            if (program.getStartBlock().isIllegalExtraStartingBlock()) {
-                total += 1;
-            }
-        }
-        return total;
-    }
-
-    /**
      * Add a program reset command.
      *
-     * @effect If there is 1 program in the program area which is valid and executing,
+     * @effect If there is an executable program in the program area which is valid and executing,
      *         a new program reset command is executed on the command history with
      *         this program area.
      * @effect Notify the program area listeners that the program is in its default state if
@@ -267,13 +252,28 @@ public class ProgramArea {
         if (hasExecutablePrograms()) {
             Program program = getProgram();
 
-            if (program.isValidProgram() && program.isExecuting()) {
+            if (program.isValidProgram() && program.isResettable()) {
                 history.execute(new ResetProgramCommand(this));
             }
         }
         else {
             observer.notifyProgramInDefaultState();
         }
+    }
+
+    /**
+     * Reset the program area.
+     *
+     * @effect Each program in the programs list is reset.
+     * @effect The initial snapshot of the game world is loaded.
+     * @effect The observer notifies its listeners that the program has been reset.
+     */
+    public void resetProgramArea() {
+        for (Program program : programs) {
+            program.resetProgram();
+        }
+        gameWorld.loadSnapshot(gameWorldStartSnapshot);
+        observer.notifyProgramInDefaultState();
     }
 
     /**
@@ -297,21 +297,6 @@ public class ProgramArea {
         }
         getProgram().executeStep(gameWorld);
         notifyProgramState();
-    }
-
-    /**
-     * Reset the program area.
-     *
-     * @effect Each program in the programs list is reset.
-     * @effect The initial snapshot of the game world is loaded.
-     * @effect The observer notifies its listeners that the program has been reset.
-     */
-    public void resetProgramArea() {
-        for (Program program : programs) {
-            program.resetProgram();
-        }
-        gameWorld.loadSnapshot(gameWorldStartSnapshot);
-        observer.notifyProgramInDefaultState();
     }
 
     /**
@@ -349,5 +334,20 @@ public class ProgramArea {
             return getHighestBlock(block.getMainConnector().getConnectedBlock());
         }
         return block;
+    }
+
+    /**
+     * Get the total amount of valid programs.
+     *
+     * @return The total amount of programs which have an illegal extra start block.
+     */
+    private int getAmountOfValidPrograms() {
+        int total = 0;
+        for (Program program : programs) {
+            if (program.getStartBlock().isIllegalExtraStartingBlock()) {
+                total += 1;
+            }
+        }
+        return total;
     }
 }

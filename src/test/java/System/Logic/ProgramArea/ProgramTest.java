@@ -153,9 +153,9 @@ class ProgramTest {
 
     @Test
     void isExecuting() {
-        assertFalse(validProgram.isExecuting());
+        assertFalse(validProgram.isResettable());
         validProgram.executeStep(level);
-        assertTrue(validProgram.isExecuting());
+        assertTrue(validProgram.isResettable());
     }
 
     @Test

@@ -4,8 +4,7 @@ import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 /**
  * An abstract class for conditional blocks. This is a block with a conditional
@@ -47,7 +46,6 @@ public abstract class ConditionalBlock extends Block {
         return false;
     }
 
-
     /**
      * Get the main connector of this conditional block.
      *
@@ -76,12 +74,13 @@ public abstract class ConditionalBlock extends Block {
      * Get the block at the given index.
      *
      * @param index The index to get the block at.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @throws IllegalStateException
      *         Always, this method may not be called for conditional blocks.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) throws IllegalStateException {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
@@ -89,17 +88,26 @@ public abstract class ConditionalBlock extends Block {
      * Get the index of the given block in the structure of this block.
      *
      * @param block The block to get the index off.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @throws IllegalStateException
      *         Always, this method may not be called for conditional blocks.
      */
     @Override
-    public int getIndexOfBlock(Block block,  Stack<Block> systemStack) throws IllegalStateException {
+    public int getIndexOfBlock(Block block,  ExecutionStack systemStack) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
+    /**
+     * Push the next blocks on the given stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @throws IllegalStateException
+     *         Always, this method may not be called for conditional blocks.
+     */
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
+    public void pushNextBlocks(ExecutionStack stack) throws IllegalStateException {
         throw new IllegalStateException("Invalid call of pushing to stack in conditional!");
     }
 }

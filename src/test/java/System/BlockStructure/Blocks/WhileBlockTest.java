@@ -13,17 +13,16 @@ import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class WhileBlockTest {
 
-    Stack<Block> stack;
+    ExecutionStack stack;
     WhileBlock while1, while2, while3, while4, while5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
@@ -42,7 +41,7 @@ class WhileBlockTest {
 
     @BeforeEach
     void setUp() {
-        stack = new Stack<>();
+        stack = new ExecutionStack();
         PositionUpOnBlankBeforeWall = new GridPosition(1,1);
         PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
         PositionLeftOnGoalBeforeGoal = new GridPosition(1,1);

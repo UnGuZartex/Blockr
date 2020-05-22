@@ -1,15 +1,15 @@
 package GUI.Blocks;
 
-import Controllers.BlockListener;
+import Controllers.CallListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener {
+public class GUICallerBlock extends GUIFunctionalBlock implements CallListener {
 
     private int procedureNr;
 
-    private final List<BlockListener> listeners = new ArrayList<>();
+    private final List<CallListener> listeners = new ArrayList<>();
 
     /**
      * Initialise a new functionality block with given name and coordinates
@@ -31,7 +31,7 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
     }
 
     private void notifyProcedureDeleted() {
-        for (BlockListener listener : new ArrayList<>(listeners)) {
+        for (CallListener listener : new ArrayList<>(listeners)) {
             listener.onProcedureDeleted();
         }
     }
@@ -41,11 +41,11 @@ public class GUICallerBlock extends GUIFunctionalBlock implements BlockListener 
         terminate();
     }
 
-    public void unsubscribe(BlockListener listener) {
+    public void unsubscribe(CallListener listener) {
         listeners.remove(listener);
     }
 
-    public void subscribe(BlockListener listener) {
+    public void subscribe(CallListener listener) {
         listeners.add(listener);
     }
 

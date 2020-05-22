@@ -33,11 +33,6 @@ public class Program {
     private final Block startBlock;
 
     /**
-     * Variable referring to the block which should be executed next.
-     */
-    //private Block currentBlock;
-
-    /**
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = DEFAULT_RESULT;
@@ -45,9 +40,12 @@ public class Program {
     /**
      * Variable referring to the execution state of the program.
      */
-    private boolean isExecuting = false;
+    private boolean isResettable = false;
 
-    private Stack<Block> executionStack = new Stack<>();
+    /**
+     * Variable referring to the execution stack.
+     */
+    private ExecutionStack executionStack = new ExecutionStack();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -55,7 +53,8 @@ public class Program {
      * @param start The start block for this program.
      *
      * @post The start block of this program is set to the given block.
-     * @post The current block of this program is set to the given block.
+     *
+     * @effect The start block is pushed to the execution stack.
      *
      * @throws IllegalArgumentException
      *         If the given block is no valid start block.
@@ -94,12 +93,7 @@ public class Program {
      * @return The block which should be executed currently.
      */
     public Block getCurrentBlock() {
-        //return currentBlock;
-        if (executionStack.isEmpty()) {
-            return null;
-        } else {
-            return executionStack.peek();
-        }
+        return executionStack.peek();
     }
 
     /**
@@ -116,10 +110,10 @@ public class Program {
      *
      * @param gameWorld The game world to operate on.
      *
-     * @effect The functionality of the current block is evaluated.
-     *
-     * @post The current block of this program is set to the next block
-     *       if the program is not finished yet.
+     * @effect If the program isn't finished, then the program is resettable.
+     * @effect If the program isn't finished yet, then is the next block popped from
+     *         the execution stack, it's functionality evaluated and the next blocks
+     *         pushed on the stack.
      *
      * @throws IllegalStateException
      *         If this program is not valid.
@@ -129,7 +123,7 @@ public class Program {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
-            isExecuting = true;
+            isResettable = true;
             Block currentBlock = executionStack.pop();
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock.pushNextBlocks(executionStack);
@@ -147,13 +141,13 @@ public class Program {
     }
 
     /**
-     * Checks whether this program is executing.
+     * Checks whether this program is resettable.
      *
      * @return True if the program has executed a step before,
      *         false otherwise.
      */
-    public boolean isExecuting() {
-        return isExecuting;
+    public boolean isResettable() {
+        return isResettable;
     }
 
     /**
@@ -178,7 +172,7 @@ public class Program {
     /**
      * Reset this program.
      *
-     * @post The current block is set to the start block.
+     * @post The execution stack only contains the start block.
      * @post The last result is set to the default result.
      * @post The executing variable is changed indicating the
      *       program is not executing anymore.
@@ -187,7 +181,7 @@ public class Program {
         executionStack.clear();
         executionStack.push(startBlock);
         this.lastResult = DEFAULT_RESULT;
-        isExecuting = false;
+        isResettable = false;
     }
 
     /**
@@ -224,8 +218,7 @@ public class Program {
      *
      * @param snapshot The snapshot to load.
      *
-     * @post The current block is set to the block at the snapshot index
-     *       in this program.
+     * @post The execution stack is set to the correct execution stack.
      * @post The last result is set to the result stored in the snapshot.
      * @post The execution state is set to the state stored in the snapshot.
      */
@@ -233,7 +226,7 @@ public class Program {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
         executionStack = programSnapshot.getBlockStack(startBlock);
         lastResult = programSnapshot.currentResult;
-        isExecuting = programSnapshot.isExecutingNow;
+        isResettable = programSnapshot.isExecutingNow;
     }
 
     /**
@@ -241,6 +234,9 @@ public class Program {
      */
     private class ProgramSnapshot implements Snapshot {
 
+        /**
+         * Variable referring to a stack with the indexes of the exectuion stack.
+         */
         private final Stack<Integer> executionStackCopy = getIndexStack(startBlock);
 
         /**
@@ -251,7 +247,7 @@ public class Program {
         /**
          * Variable referring to the execution state to remember.
          */
-        private final boolean isExecutingNow = isExecuting;
+        private final boolean isExecutingNow = isResettable;
 
         /**
          * Variable referring to the creation time of this snapshot.
@@ -279,31 +275,37 @@ public class Program {
         }
 
         /**
-         * TODO comments
-         * @param startingPoint
-         * @return
+         * Get the index stack from the given given starting point.
+         *
+         * @param startingPoint The block to compute the indexes from.
+         *
+         * @return An index stack with the index of the blocks in the execution stack
+         *         starting from the given block.
          */
         public Stack<Integer> getIndexStack(Block startingPoint) {
-            Stack<Block> toConvert = new Stack<>();
+            ExecutionStack toConvert = new ExecutionStack();
             toConvert.addAll(executionStack);
             Stack<Integer> indexStack = new Stack<>();
             while (!toConvert.isEmpty()) {
-                indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
+                indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new ExecutionStack()));
             }
             return indexStack;
         }
 
         /**
-         * TODO comments
-         * @param startingPoint
-         * @return
+         * Convert the index stack into a block stack with indexes from the given block.
+         *
+         * @param startingPoint The block to compute the indexes from.
+         *
+         * @return An execution stack of which all blocks are at the index of the index stack, starting
+         *         from the given block.
          */
-        public Stack<Block> getBlockStack(Block startingPoint) {
+        public ExecutionStack getBlockStack(Block startingPoint) {
             Stack<Integer> toConvert = new Stack<>();
             toConvert.addAll(executionStackCopy);
-            Stack<Block> blockStack = new Stack<>();
+            ExecutionStack blockStack = new ExecutionStack();
             while (!toConvert.isEmpty()) {
-                blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
+                blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new ExecutionStack()));
             }
             return blockStack;
         }

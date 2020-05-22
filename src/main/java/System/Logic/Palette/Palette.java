@@ -27,7 +27,6 @@ public class Palette implements ProcedureListener {
      * Variable referring to the list of procedure call blocks in this palette.
      */
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
-
     /**
      * Variable referring to all the listeners of this palette.
      */
@@ -85,13 +84,63 @@ public class Palette implements ProcedureListener {
     }
 
     /**
+     * Event to call when the procedure is deleted.
+     *
+     * @param procedureBlock The procedure which is deleted.
+     *
+     * @effect Delete the caller of the given procedure block.
+     * @effect Notify that the procedure is deleted at with the index of the caller.
+     */
+    @Override
+    public void onProcedureDeleted(ProcedureBlock procedureBlock) {
+        int index = deleteCaller(procedureBlock);
+        notifyProcedureDeleted(index);
+    }
+
+    /**
+     * Event to call when a procedure is created.
+     *
+     * @param procedureBlock The procedure which is created.
+     *
+     * @effect A caller for the given procedure is created.
+     * @effect The creation of a new procedure is notified.
+     */
+    @Override
+    public void onProcedureCreated(ProcedureBlock procedureBlock) {
+        createCaller(procedureBlock);
+        notifyProcedureCreated();
+    }
+
+    /**
+     * Subscribe a new palette listener.
+     *
+     * @param listener The listener to subscribe.
+     *
+     * @effect The given listener is added to the listeners of this palette.
+     */
+    public void subscribe(PaletteListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Unsubscribe a palette listener.
+     *
+     * @param listener The listener to unsubscribe.
+     *
+     * @effect The given listener is removed from the listeners of this palette.
+     */
+    public void unsubscribe(PaletteListener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
      * Create a caller for the given procedure block.
      *
      * @param lastProcedure The procedure to create a caller for.
      *
      * @effect A procedure call is added to the palette for the given procedure.
      */
-    public void createCaller(ProcedureBlock lastProcedure) {
+    private void createCaller(ProcedureBlock lastProcedure) {
         procedureCallList.add(new ProcedureCall(lastProcedure));
     }
 
@@ -107,7 +156,7 @@ public class Palette implements ProcedureListener {
      * @throws IllegalArgumentException
      *         If no call block for the given procedure exists in this palette.
      */
-    public int deleteCaller(ProcedureBlock lastProcedure) throws IllegalArgumentException {
+    private int deleteCaller(ProcedureBlock lastProcedure) throws IllegalArgumentException {
         int index = 0;
         for (ProcedureCall call : procedureCallList) {
             if (call.getProcedure() == lastProcedure) {
@@ -121,8 +170,11 @@ public class Palette implements ProcedureListener {
     }
 
     /**
-     * Notify that the procedure is deleted.
-     * TODO UPDATE ALL COMMENTS UNDER THIS
+     * Notify that a procedure is deleted.
+     *
+     * @param index The index of the call of the procedure.
+     *
+     * @effect Notify all listeners that a procedure is deleted with a call at the given index.
      */
     private void notifyProcedureDeleted(int index) {
         for (PaletteListener listener : new ArrayList<>(listeners)) {
@@ -130,28 +182,14 @@ public class Palette implements ProcedureListener {
         }
     }
 
+    /**
+     * Notify that a procedure is created.
+     *
+     * @effect Notify all listeners that a procedure is created.
+     */
     private void notifyProcedureCreated() {
         for (PaletteListener listener : new ArrayList<>(listeners)) {
             listener.procedureCreated();
         }
-    }
-    @Override
-    public void onProcedureDeleted(ProcedureBlock procedureBlock) {
-        int index = deleteCaller(procedureBlock);
-        notifyProcedureDeleted(index);
-    }
-
-    @Override
-    public void onProcedureCreated(ProcedureBlock procedureBlock) {
-        createCaller(procedureBlock);
-        notifyProcedureCreated();
-    }
-
-    public void subscribe(PaletteListener listener) {
-        listeners.add(listener);
-    }
-
-    public void unsubscribe(PaletteListener listener) {
-        listeners.remove(listener);
     }
 }

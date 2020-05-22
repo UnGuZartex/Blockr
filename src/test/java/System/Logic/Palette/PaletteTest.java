@@ -1,15 +1,25 @@
 package System.Logic.Palette;
 
+import Controllers.ControllerClasses.BlockHandlerController;
+import Controllers.IGUI_System_BlockLink;
+import GUI.Blocks.*;
+import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.BlockStructure.Functionality.DummyFunctionality;
+import System.Logic.CommandHistory;
+import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +30,18 @@ class PaletteTest {
     ArrayList<Block> blocks;
     GameWorldType type;
     ProcedureBlock procedure;
+    ProgramArea programArea;
+
+    PalettePanel panel;
+    int cornerX, cornerY, width, height;
+    Random random;
+    static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
+    static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 400, MAX_HEIGHT = 800;
+    GUIBlock procedureGUI, functional, conditional, operator;
+    String procedureName, functionalName, conditionalName, operatorName;
+    BlockHandlerController blockHandlerController;
+    IGUI_System_BlockLink converter;
+    PABlockHandler paBlockHandler;
 
     @BeforeEach
     void setUp() {
@@ -30,11 +52,44 @@ class PaletteTest {
         procedure = new ProcedureBlock();
         blocks = new ArrayList<>(Arrays.asList(block0, block1, block2));
         palette = new Palette(blocks);
-        palette.createCaller(procedure);
+
+
+        type = new LevelInitializer();
+        programArea = new ProgramArea(type.createNewGameWorld(), new CommandHistory());
+
+        random = new Random();
+        cornerX = random.nextInt(MAX_X + 1 - MIN_X) + MIN_X;
+        cornerY = random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y;
+        width = random.nextInt(MAX_WIDTH + 1 - MIN_WIDTH) + MIN_WIDTH;
+        height = random.nextInt(MAX_HEIGHT + 1 - MIN_HEIGHT) + MIN_HEIGHT;
+
+        procedureName = "def";
+        functionalName = "functional";
+        conditionalName = "conditional";
+        operatorName = "operator";
+
+        procedureGUI = new GUIProcedureBlock(procedureName, 0,0);
+        functional = new GUIFunctionalBlock(functionalName, 0,0);
+        conditional = new GUIConditionalBlock(conditionalName, 0,0);
+        operator = new GUIOperatorBlock(operatorName, 0,0);
+
+        converter = new IGUI_System_BlockLink();
+
+        paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), programArea);
+
+        blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
+
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(procedureGUI, functional, conditional, operator));
+
+        palette.subscribe(panel);
+
+        panel.getNewBlock(0);
+        palette.onProcedureCreated(procedure);
     }
 
     @AfterEach
     void tearDown() {
+        palette.unsubscribe(panel);
         type = null;
         block0 = null;
         block1 = null;
@@ -42,6 +97,17 @@ class PaletteTest {
         blocks = null;
         block = null;
         palette = null;
+        programArea = null;
+        random = null;
+        procedureName = null;
+        functionalName = null;
+        conditionalName = null;
+        operatorName = null;
+        procedureGUI = null;
+        functional = null;
+        conditional = null;
+        operator = null;
+        panel = null;
     }
 
     @Test
@@ -101,29 +167,38 @@ class PaletteTest {
     }
 
     @Test
-    void createCaller() {
+    void onProcedureCreated() {
         assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(4));
         ProcedureBlock block = new ProcedureBlock();
-        palette.createCaller(block);
+        palette.onProcedureCreated(block);
         Block caller = palette.getNewBlock(4);
         assertEquals(block, ((ProcedureCall)caller).getProcedure());
     }
 
     @Test
-    void deleteCaller() {
+    void onProcedureDeleted() {
         ProcedureBlock procedure1 = new ProcedureBlock();
         ProcedureBlock procedure2 = new ProcedureBlock();
-        palette.createCaller(procedure1);
-        palette.createCaller(procedure2);
+        palette.onProcedureCreated(procedure1);
+        palette.onProcedureCreated(procedure2);
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size() + 3));
 
-        assertEquals(2, palette.deleteCaller(procedure2));
-        assertEquals(0, palette.deleteCaller(procedure));
-        assertEquals(0, palette.deleteCaller(procedure1));
+        palette.getNewBlock(blocks.size() + 2);
+        palette.onProcedureDeleted(procedure2);
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size() + 2));
+
+        palette.getNewBlock(blocks.size() + 1);
+        palette.onProcedureDeleted(procedure);
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size() + 1));
+
+        palette.getNewBlock(blocks.size());
+        palette.onProcedureDeleted(procedure1);
+        assertThrows(IndexOutOfBoundsException.class, () -> palette.getNewBlock(blocks.size()));
     }
 
     @Test
-    void deleteCaller_notInPalette() {
+    void onProcedureDeleted_notInPalette() {
         ProcedureBlock procedure1 = new ProcedureBlock();
-        assertThrows(IllegalArgumentException.class, () -> palette.deleteCaller(procedure1));
+        assertThrows(IllegalArgumentException.class, () -> palette.onProcedureDeleted(procedure1));
     }
 }
