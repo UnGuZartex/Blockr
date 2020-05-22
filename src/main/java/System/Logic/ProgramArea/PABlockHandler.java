@@ -132,16 +132,9 @@ public class PABlockHandler {
      * @effect Program reset command is added to the program area.
      * @effect The given block is added to the program area.
      * @effect listeners are notified whether max blocks are reached.
-     * @effect if the given block is a procedure block, then is a caller created
-     *         and added to the palette and a notification is made.
      *
      * @throws IllegalStateException
      *         When max blocks has been reached.
-     */
-    /**
-     * TODO comments
-     * @param block
-     * @throws IllegalStateException
      */
     public void addToPA(Block block) throws IllegalStateException {
         if (hasReachedMaxBlocks()) {
@@ -207,6 +200,7 @@ public class PABlockHandler {
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is deleted from the program area.
      * @effect listeners are notified whether max blocks are reached.
+     * @effect The given block is terminated.
      */
     public void deleteProgram(Block block) {
         programArea.addProgramResetCommand();
@@ -268,5 +262,4 @@ public class PABlockHandler {
     private boolean hasReachedMaxBlocks() {
         return programArea.getAllBlocksCount() >= maxBlocks;
     }
-
 }

@@ -33,11 +33,6 @@ public class Program {
     private final Block startBlock;
 
     /**
-     * Variable referring to the block which should be executed next.
-     */
-    //private Block currentBlock;
-
-    /**
      * Variable referring to the result of the last executed step in the program.
      */
     private Result lastResult = DEFAULT_RESULT;
@@ -47,6 +42,9 @@ public class Program {
      */
     private boolean isExecuting = false;
 
+    /**
+     * Variable referring to the execution stack.
+     */
     private ExecutionStack executionStack = new ExecutionStack();
 
     /**
@@ -55,7 +53,8 @@ public class Program {
      * @param start The start block for this program.
      *
      * @post The start block of this program is set to the given block.
-     * @post The current block of this program is set to the given block.
+     *
+     * @effect The start block is pushed to the execution stack.
      *
      * @throws IllegalArgumentException
      *         If the given block is no valid start block.
@@ -111,10 +110,10 @@ public class Program {
      *
      * @param gameWorld The game world to operate on.
      *
-     * @effect The functionality of the current block is evaluated.
-     *
-     * @post The current block of this program is set to the next block
-     *       if the program is not finished yet.
+     * @effect If the program isn't finished, then is isExecuting to true.
+     * @effect If the program isn't finished yet, then is the next block popped from
+     *         the execution stack, it's functionality evaluated and the next blocks
+     *         pushed on the stack.
      *
      * @throws IllegalStateException
      *         If this program is not valid.
@@ -173,7 +172,7 @@ public class Program {
     /**
      * Reset this program.
      *
-     * @post The current block is set to the start block.
+     * @post The execution stack only contains the start block.
      * @post The last result is set to the default result.
      * @post The executing variable is changed indicating the
      *       program is not executing anymore.
@@ -219,8 +218,7 @@ public class Program {
      *
      * @param snapshot The snapshot to load.
      *
-     * @post The current block is set to the block at the snapshot index
-     *       in this program.
+     * @post The execution stack is set to the correct execution stack.
      * @post The last result is set to the result stored in the snapshot.
      * @post The execution state is set to the state stored in the snapshot.
      */
@@ -274,9 +272,12 @@ public class Program {
         }
 
         /**
-         * TODO comments
-         * @param startingPoint
-         * @return
+         * Get the index stack from the given given starting point.
+         *
+         * @param startingPoint The block to compute the indexes from.
+         *
+         * @return An index stack with the index of the blocks in the execution stack
+         *         starting from the given block.
          */
         public Stack<Integer> getIndexStack(Block startingPoint) {
             ExecutionStack toConvert = new ExecutionStack();
@@ -289,9 +290,12 @@ public class Program {
         }
 
         /**
-         * TODO comments
-         * @param startingPoint
-         * @return
+         * Convert the index stack into a block stack with indexes from the given block.
+         *
+         * @param startingPoint The block to compute the indexes from.
+         *
+         * @return An execution stack of which all blocks are at the index of the index stack, starting
+         *         from the given block.
          */
         public ExecutionStack getBlockStack(Block startingPoint) {
             Stack<Integer> toConvert = new Stack<>();
