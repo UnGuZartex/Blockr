@@ -5,8 +5,7 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 
 /**
@@ -80,7 +79,7 @@ public class FunctionalBlock extends Block {
      * @return The block at the given index in the linked link structure.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -107,7 +106,7 @@ public class FunctionalBlock extends Block {
      * @return The index of the given block in the structure of this block.
      */
     @Override
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
             return -1;
         }
@@ -122,12 +121,5 @@ public class FunctionalBlock extends Block {
             return 1 + nextBlock.getIndexOfBlock(block, systemStack);
         }
         return -1;
-    }
-
-    @Override
-    public void pushNextBlocks(Stack<Block> stack) {
-        if (hasNext()) {
-            stack.push(getSubConnectors().get(0).getConnectedBlock());
-        }
     }
 }

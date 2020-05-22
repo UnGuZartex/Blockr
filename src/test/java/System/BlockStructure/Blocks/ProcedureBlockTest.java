@@ -6,19 +6,19 @@ import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.DummyFunctionality;
 import System.Logic.Palette.Palette;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProcedureBlockTest {
 
-    Stack<Block> stack;
+    ExecutionStack stack;
     GameWorldType type;
     ProcedureBlock emptyProcedure, procedure, notCompleteProcedure, procedureRecursion;
     Block block1, block2, block3, blockRecursion;
@@ -36,7 +36,7 @@ class ProcedureBlockTest {
     void setUp() {
         palette = new Palette(new ArrayList<>(Arrays.asList(new WhileBlock(), new IfBlock())));
 
-        stack = new Stack<>();
+        stack = new ExecutionStack();
 
         type = new LevelInitializer();
 

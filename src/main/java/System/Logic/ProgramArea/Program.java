@@ -47,7 +47,7 @@ public class Program {
      */
     private boolean isExecuting = false;
 
-    private Stack<Block> executionStack = new Stack<>();
+    private ExecutionStack executionStack = new ExecutionStack();
 
     /**
      * Initialise a new program with given start block and reset the program.
@@ -94,12 +94,7 @@ public class Program {
      * @return The block which should be executed currently.
      */
     public Block getCurrentBlock() {
-        //return currentBlock;
-        if (executionStack.isEmpty()) {
-            return null;
-        } else {
-            return executionStack.peek();
-        }
+        return executionStack.peek();
     }
 
     /**
@@ -284,11 +279,11 @@ public class Program {
          * @return
          */
         public Stack<Integer> getIndexStack(Block startingPoint) {
-            Stack<Block> toConvert = new Stack<>();
+            ExecutionStack toConvert = new ExecutionStack();
             toConvert.addAll(executionStack);
             Stack<Integer> indexStack = new Stack<>();
             while (!toConvert.isEmpty()) {
-                indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new Stack<>()));
+                indexStack.push(startingPoint.getIndexOfBlock(toConvert.pop(), new ExecutionStack()));
             }
             return indexStack;
         }
@@ -298,12 +293,12 @@ public class Program {
          * @param startingPoint
          * @return
          */
-        public Stack<Block> getBlockStack(Block startingPoint) {
+        public ExecutionStack getBlockStack(Block startingPoint) {
             Stack<Integer> toConvert = new Stack<>();
             toConvert.addAll(executionStackCopy);
-            Stack<Block> blockStack = new Stack<>();
+            ExecutionStack blockStack = new ExecutionStack();
             while (!toConvert.isEmpty()) {
-                blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new Stack<>()));
+                blockStack.push(startingPoint.getBlockAtIndex(toConvert.pop(), new ExecutionStack()));
             }
             return blockStack;
         }

@@ -4,16 +4,16 @@ import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PredicateBlockTest {
 
+    ExecutionStack stack;
     Block block;
     PredicateBlock predicateConnected, predicateNotConnected;
     CavityBlock dummy;
@@ -21,6 +21,7 @@ class PredicateBlockTest {
 
     @BeforeEach
     void setUp() {
+        stack = new ExecutionStack();
         type = new LevelInitializer();
 
         predicateConnected = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0)));
@@ -33,6 +34,7 @@ class PredicateBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
         predicateConnected = null;
         predicateNotConnected =  null;
         dummy = null;
@@ -74,20 +76,20 @@ class PredicateBlockTest {
 
     @Test
     void getBlockAtIndex() {
-        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(1, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getBlockAtIndex(0, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(-1, new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(1, stack));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getBlockAtIndex(0, stack));
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getBlockAtIndex(-1, stack));
     }
 
     @Test
     void getIndexOfBlock() {
-        assertThrows(IllegalStateException.class, () -> predicateConnected.getIndexOfBlock(block, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getIndexOfBlock(block, new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> predicateConnected.getIndexOfBlock(block, stack));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.getIndexOfBlock(block, stack));
     }
 
     @Test
     void pushNextBlocks() {
-        assertThrows(IllegalStateException.class, () -> predicateConnected.pushNextBlocks(new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> predicateNotConnected.pushNextBlocks(new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> predicateConnected.pushNextBlocks(stack));
+        assertThrows(IllegalStateException.class, () -> predicateNotConnected.pushNextBlocks(stack));
     }
 }

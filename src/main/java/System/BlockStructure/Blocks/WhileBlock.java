@@ -1,8 +1,7 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 /**
  * A class for while blocks. These are cavity blocks which have a
@@ -36,7 +35,7 @@ public class WhileBlock extends CavityBlock {
      *         then is under the cavity counted.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -67,7 +66,7 @@ public class WhileBlock extends CavityBlock {
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
            return -1;
         }
@@ -101,13 +100,11 @@ public class WhileBlock extends CavityBlock {
     }
 
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
+    public void pushNextBlocks(ExecutionStack stack) {
         if (getFunctionality().getEvaluation()) {
             stack.push(this);
-            if (getCavitySubConnector().isConnected()) {
-                stack.push(getCavitySubConnector().getConnectedBlock());
-            }
-        } else if (getSubConnectorAt(0).isConnected()) {
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        } else {
             stack.push(getSubConnectorAt(0).getConnectedBlock());
         }
     }

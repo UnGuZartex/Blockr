@@ -2,17 +2,16 @@ package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.DummyFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProcedureCallTest {
 
-    Stack<Block> stack;
+    ExecutionStack stack;
     ProcedureBlock procedure, procedureTop, procedureBottom;
     ProcedureCall call, callTop, callBottom, callClone;
     Block blockBottom, blockTop;
@@ -20,7 +19,7 @@ class ProcedureCallTest {
 
     @BeforeEach
     void setUp() {
-        stack = new Stack<>();
+        stack = new ExecutionStack();
         procedure = new ProcedureBlock();
         procedureTop = new ProcedureBlock();
         procedureBottom = new ProcedureBlock();

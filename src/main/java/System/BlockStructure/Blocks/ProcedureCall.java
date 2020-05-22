@@ -2,6 +2,7 @@ package System.BlockStructure.Blocks;
 
 import Controllers.CallListener;
 import System.BlockStructure.Functionality.DummyFunctionality;
+import System.Logic.ProgramArea.ExecutionStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +129,7 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
      *         the procedure searched, otherwise is the super index used.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack)  {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack)  {
         if (index < 0) {
             return null;
         }
@@ -151,7 +152,7 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
      *         otherwise is the super block searched.
      */
     @Override
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack)  {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack)  {
         if (block == null) {
             return -1;
         }
@@ -224,10 +225,8 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
     }
 
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
-        if (hasNext() && getSubConnectorAt(0).isConnected()) {
-            stack.push(getSubConnectorAt(0).getConnectedBlock());
-        }
+    public void pushNextBlocks(ExecutionStack stack) {
+        stack.push(getSubConnectorAt(0).getConnectedBlock());
         stack.push(procedure);
     }
 }

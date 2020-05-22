@@ -5,16 +5,16 @@ import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.NotFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class NotBlockTest {
 
+    ExecutionStack stack;
     GameWorldType type;
     ConnectionHandler handler;
     NotBlock notFullConnected, notOnlyPredicate, notOnlyCavity, notNoConnections;
@@ -24,6 +24,7 @@ class NotBlockTest {
 
     @BeforeEach
     void setUp() {
+        stack = new ExecutionStack();
         type = new LevelInitializer();
 
         notFullConnected = new NotBlock();
@@ -46,6 +47,7 @@ class NotBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
         type = null;
         handler = null;
 
@@ -96,19 +98,19 @@ class NotBlockTest {
 
     @Test
     void getBlockAtIndex() {
-        assertThrows(IllegalStateException.class, () -> notFullConnected.getBlockAtIndex(1, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> notOnlyPredicate.getBlockAtIndex(0, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getBlockAtIndex(-1, new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> notFullConnected.getBlockAtIndex(1, stack));
+        assertThrows(IllegalStateException.class, () -> notOnlyPredicate.getBlockAtIndex(0, stack));
+        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getBlockAtIndex(-1, stack));
     }
 
     @Test
     void getIndexOfBlock() {
-        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getIndexOfBlock(block, new Stack<>()));
-        assertThrows(IllegalStateException.class, () -> notNoConnections.getIndexOfBlock(block, new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> notOnlyCavity.getIndexOfBlock(block, stack));
+        assertThrows(IllegalStateException.class, () -> notNoConnections.getIndexOfBlock(block, stack));
     }
 
     @Test
     void pushNextBlocks() {
-        assertThrows(IllegalStateException.class, () -> notNoConnections.pushNextBlocks(new Stack<>()));
+        assertThrows(IllegalStateException.class, () -> notNoConnections.pushNextBlocks(stack));
     }
 }

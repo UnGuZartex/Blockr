@@ -1,8 +1,7 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 /**
  * A class for if blocks. These are cavity blocks which have a
@@ -30,7 +29,7 @@ public class IfBlock extends CavityBlock {
      *         connected to any block.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -61,7 +60,7 @@ public class IfBlock extends CavityBlock {
      *         block checked.
      */
     @Override
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack)  {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack)  {
         if (block == null) {
             return -1;
         }
@@ -93,11 +92,9 @@ public class IfBlock extends CavityBlock {
     }
 
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
-        if (getSubConnectorAt(0).isConnected()) {
-            stack.push(getSubConnectorAt(0).getConnectedBlock());
-        }
-        if (getFunctionality().getEvaluation() && getCavitySubConnector().isConnected()) {
+    public void pushNextBlocks(ExecutionStack stack) {
+        stack.push(getSubConnectorAt(0).getConnectedBlock());
+        if (getFunctionality().getEvaluation()) {
             stack.push(getCavitySubConnector().getConnectedBlock());
         }
     }

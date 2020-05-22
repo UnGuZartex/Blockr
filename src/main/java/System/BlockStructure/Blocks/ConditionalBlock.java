@@ -4,8 +4,7 @@ import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
-
-import java.util.Stack;
+import System.Logic.ProgramArea.ExecutionStack;
 
 /**
  * An abstract class for conditional blocks. This is a block with a conditional
@@ -81,7 +80,7 @@ public abstract class ConditionalBlock extends Block {
      *         Always, this method may not be called for conditional blocks.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) throws IllegalStateException {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
@@ -94,12 +93,12 @@ public abstract class ConditionalBlock extends Block {
      *         Always, this method may not be called for conditional blocks.
      */
     @Override
-    public int getIndexOfBlock(Block block,  Stack<Block> systemStack) throws IllegalStateException {
+    public int getIndexOfBlock(Block block,  ExecutionStack systemStack) throws IllegalStateException {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
     @Override
-    public void pushNextBlocks(Stack<Block> stack) {
+    public void pushNextBlocks(ExecutionStack stack) {
         throw new IllegalStateException("Invalid call of pushing to stack in conditional!");
     }
 }

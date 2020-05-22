@@ -3,10 +3,10 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Functionality.BlockFunctionality;
+import System.Logic.ProgramArea.ExecutionStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * An abstract class for blocks with a functionality.
@@ -125,6 +125,10 @@ public abstract class Block {
         isTerminated = true;
     }
 
+    public void pushNextBlocks(ExecutionStack stack) {
+        stack.push(getSubConnectorAt(0).getConnectedBlock());
+    }
+
 
     /**
      * Get the main connector of this block.
@@ -154,7 +158,7 @@ public abstract class Block {
      *
      * @return The block which is at the given index in the structure of this block.
      */
-    public abstract Block getBlockAtIndex(int index, Stack<Block> systemStack);
+    public abstract Block getBlockAtIndex(int index, ExecutionStack systemStack);
 
     /**
      * Get the index of the given block.
@@ -163,7 +167,5 @@ public abstract class Block {
      *
      * @return The index of the given block in the structure of this block.
      */
-    public abstract int getIndexOfBlock(Block block, Stack<Block> systemStack);
-
-    public abstract void pushNextBlocks(Stack<Block> stack);
+    public abstract int getIndexOfBlock(Block block, ExecutionStack systemStack);
 }

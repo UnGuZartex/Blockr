@@ -6,10 +6,10 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.DummyFunctionality;
+import System.Logic.ProgramArea.ExecutionStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * A class for procedure blocks.
@@ -107,7 +107,7 @@ public class ProcedureBlock extends Block {
      * @return The block at the given index.
      */
     @Override
-    public Block getBlockAtIndex(int index, Stack<Block> systemStack) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -135,7 +135,7 @@ public class ProcedureBlock extends Block {
      * @return The index of the given block.
      */
     @Override
-    public int getIndexOfBlock(Block block, Stack<Block> systemStack) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
             return -1;
         }
@@ -163,14 +163,6 @@ public class ProcedureBlock extends Block {
     @Override
     public boolean isIllegalExtraStartingBlock() {
         return false;
-    }
-
-
-    @Override
-    public void pushNextBlocks(Stack<Block> stack) {
-        if (hasNext()) {
-            stack.push(getSubConnectors().get(0).getConnectedBlock());
-        }
     }
 
     /**
