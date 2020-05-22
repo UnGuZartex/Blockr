@@ -72,7 +72,6 @@ public class GUICavityBlock extends GUIBlock {
     public void changeHeight(int heightDelta, GUIBlock previousBlock) {
 
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
-            System.out.println("cavity changed " + heightDelta);
             changeCavityHeight(heightDelta);
         }
 

@@ -199,7 +199,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param y The amount to translate vertically.
      *
      * @effect The position is set to the current coordinates summed
-     *         with the change amount
+     *         with the change amount.
      */
     public void translate(int x, int y) {
         setPosition(this.x + x, this.y + y);
