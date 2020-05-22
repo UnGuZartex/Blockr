@@ -46,7 +46,6 @@ public abstract class ConditionalBlock extends Block {
         return false;
     }
 
-
     /**
      * Get the main connector of this conditional block.
      *
@@ -75,6 +74,7 @@ public abstract class ConditionalBlock extends Block {
      * Get the block at the given index.
      *
      * @param index The index to get the block at.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @throws IllegalStateException
      *         Always, this method may not be called for conditional blocks.
@@ -88,6 +88,7 @@ public abstract class ConditionalBlock extends Block {
      * Get the index of the given block in the structure of this block.
      *
      * @param block The block to get the index off.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @throws IllegalStateException
      *         Always, this method may not be called for conditional blocks.
@@ -97,8 +98,16 @@ public abstract class ConditionalBlock extends Block {
         throw new IllegalStateException("This method may not be called for blocks of " + this.getClass() + "!");
     }
 
+    /**
+     * Push the next blocks on the given stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @throws IllegalStateException
+     *         Always, this method may not be called for conditional blocks.
+     */
     @Override
-    public void pushNextBlocks(ExecutionStack stack) {
+    public void pushNextBlocks(ExecutionStack stack) throws IllegalStateException {
         throw new IllegalStateException("Invalid call of pushing to stack in conditional!");
     }
 }

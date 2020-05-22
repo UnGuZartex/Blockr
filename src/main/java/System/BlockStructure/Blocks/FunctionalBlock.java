@@ -75,8 +75,9 @@ public class FunctionalBlock extends Block {
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
-     * @return The block at the given index in the linked link structure.
+     * @return The block at the given index in the structure of this block.
      */
     @Override
     public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
@@ -100,6 +101,7 @@ public class FunctionalBlock extends Block {
      * Get the index of the given block from this block starting.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @pre The given block may not be connected through the main connector of this block.
      *

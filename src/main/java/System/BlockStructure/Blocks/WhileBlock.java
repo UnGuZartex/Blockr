@@ -30,6 +30,7 @@ public class WhileBlock extends CavityBlock {
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block at the index. First is in the cavity counted and
      *         then is under the cavity counted.
@@ -61,6 +62,7 @@ public class WhileBlock extends CavityBlock {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block. If this block has a cavity, then
      *         is in the cavity looked, otherwise there is in underneath the
@@ -99,13 +101,21 @@ public class WhileBlock extends CavityBlock {
         return new WhileBlock();
     }
 
+    /**
+     * Push the next blocks to execute on the stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect If the functionality evaluates to True, then is first this block pushed and then the cavity,
+     *         otherwise are the default blocks pushed to the stack.
+     */
     @Override
     public void pushNextBlocks(ExecutionStack stack) {
         if (getFunctionality().getEvaluation()) {
             stack.push(this);
             stack.push(getCavitySubConnector().getConnectedBlock());
         } else {
-            stack.push(getSubConnectorAt(0).getConnectedBlock());
+            super.pushNextBlocks(stack);
         }
     }
 }

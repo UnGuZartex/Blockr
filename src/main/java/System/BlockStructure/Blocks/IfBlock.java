@@ -24,6 +24,7 @@ public class IfBlock extends CavityBlock {
      * Get a clone of this block.
      *
      * @param index the index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return A new if block with a copy of the current functionality and which is not
      *         connected to any block.
@@ -54,6 +55,7 @@ public class IfBlock extends CavityBlock {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block. If this block has a cavity, then
      *         is in the cavity looked, otherwise there is in underneath the
@@ -91,9 +93,18 @@ public class IfBlock extends CavityBlock {
         return new IfBlock();
     }
 
+    /**
+     * Push the correct blocks to the given stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect First execute the super method, and if the functionality evaluates to True,
+     *         then is the cavity also added to the stack.
+     *
+     */
     @Override
     public void pushNextBlocks(ExecutionStack stack) {
-        stack.push(getSubConnectorAt(0).getConnectedBlock());
+        super.pushNextBlocks(stack);
         if (getFunctionality().getEvaluation()) {
             stack.push(getCavitySubConnector().getConnectedBlock());
         }

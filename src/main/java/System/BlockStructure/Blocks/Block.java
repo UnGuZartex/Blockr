@@ -13,7 +13,6 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-//TODO VOOR ALLE BLOKKEN COMMENTAAR UPDATEN
 public abstract class Block {
 
     /**
@@ -125,6 +124,13 @@ public abstract class Block {
         isTerminated = true;
     }
 
+    /**
+     * Push the next blocks on the stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect The block at the first sub connector is pushed.
+     */
     public void pushNextBlocks(ExecutionStack stack) {
         stack.push(getSubConnectorAt(0).getConnectedBlock());
     }
@@ -155,6 +161,7 @@ public abstract class Block {
      * Get the block at the given index.
      *
      * @param index The index to get the block from.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block which is at the given index in the structure of this block.
      */
@@ -164,6 +171,7 @@ public abstract class Block {
      * Get the index of the given block.
      *
      * @param block The block to get the index off.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block in the structure of this block.
      */

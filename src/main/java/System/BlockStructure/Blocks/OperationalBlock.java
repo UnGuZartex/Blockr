@@ -15,9 +15,9 @@ public abstract class OperationalBlock extends ConditionalBlock {
 
     /**
      * Variable referring to the current condition which should be checked. By
-     * default, this is set on 1.
+     * default, this is set on -1.
      */
-    private int counter;
+    private int counter = -1;
 
     /**
      * Initialise a new operational block with given functionality and number
@@ -45,12 +45,14 @@ public abstract class OperationalBlock extends ConditionalBlock {
      *
      * @return True if and only if the the sub connector at the counter of this
      *         operation is connected.
+     *
+     * @effect The counter is incremented, and then modulo the total number of sub connectors.
      */
     @Override
     public boolean hasNext() {
+        counter = (counter + 1) % getNbSubConnectors();
         return getSubConnectorAt(counter).isConnected();
     }
-
 
     /**
      * Check if this operational block has proper connections.

@@ -6,7 +6,6 @@ import System.Logic.ProgramArea.ExecutionStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * A class for procedure calls which can call a procedure.
@@ -119,11 +118,11 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
         return !procedure.isTerminated();
     }
 
-
     /**
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block at the given index, if this block has a next block is in
      *         the procedure searched, otherwise is the super index used.
@@ -147,6 +146,7 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return If this block has a next block, then is the default index used,
      *         otherwise is the super block searched.
@@ -183,7 +183,7 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
     /**
      * Notify that the procedure is deleted.
      *
-     * @effect Call the event "ProcedureDel" for all the listeners
+     * @effect Call the event on procedure deleted for all subscribed listeners.
      */
     private void notifyProcedureDeleted() {
         for (CallListener listener : new ArrayList<>(listeners)) {
@@ -218,15 +218,23 @@ public class ProcedureCall extends FunctionalBlock implements CallListener {
      *         different return to block then this call, then is the return to block of the procedure
      *         set to the return to block of this call.
      */
-    private void setReturnToOfNext(Stack<Block> systemStack) {
+    private void setReturnToOfNext(ExecutionStack systemStack) {
         if (getSubConnectorAt(0).isConnected()) {
             systemStack.push(getSubConnectorAt(0).getConnectedBlock());
         }
     }
 
+    /**
+     * Push the next blocks to the stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect First pushes the next blocks to the stack, and then push the
+     *         procedure to the stack.
+     */
     @Override
     public void pushNextBlocks(ExecutionStack stack) {
-        stack.push(getSubConnectorAt(0).getConnectedBlock());
+        super.pushNextBlocks(stack);
         stack.push(procedure);
     }
 }

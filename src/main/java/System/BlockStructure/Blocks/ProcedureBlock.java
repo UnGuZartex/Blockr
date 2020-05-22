@@ -22,7 +22,6 @@ public class ProcedureBlock extends Block {
      * A boolean to check whether or not this procedure has been passed.
      */
     private boolean passed;
-
     /**
      * Variable referring to all the listeners of this block.
      */
@@ -79,6 +78,9 @@ public class ProcedureBlock extends Block {
      * Clone this block.
      *
      * @return A new procedure block which is not connected.
+     *
+     * @effect All procedure listeners of this block are subscribed to the clone.
+     * @effect A notification is made that the clone is created.
      */
     @Override
     public Block clone() {
@@ -91,7 +93,10 @@ public class ProcedureBlock extends Block {
     }
 
     /**
-     * TODO func
+     * Terminates this block.
+     *
+     * @effect A notification that this procedure is deleted is made.
+     * @effect This block is terminated.
      */
     @Override
     public void terminate() {
@@ -103,8 +108,9 @@ public class ProcedureBlock extends Block {
      * Get the block at the given index.
      *
      * @param index The index to get the block from.
+     * @param systemStack The stack to use in the block calculation.
      *
-     * @return The block at the given index.
+     * @return The block at the given index in the structure of this block.
      */
     @Override
     public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
@@ -131,8 +137,9 @@ public class ProcedureBlock extends Block {
      * Get the index of the given block from this block.
      *
      * @param block The block to get the index off.
+     * @param systemStack The stack to use in the index calculation.
      *
-     * @return The index of the given block.
+     * @return The index of the given block in the structure of this block.
      */
     @Override
     public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
@@ -185,7 +192,9 @@ public class ProcedureBlock extends Block {
 
     /**
      * Notify that the procedure is deleted.
-     * TODO UPDATE ALL COMMENTS UNDER THIS
+     *
+     * @effect The event onProcedure deleted is called for all subscribed listeners
+     *         with this procedure.
      */
     private void notifyProcedureDeleted() {
         for (ProcedureListener listener : new ArrayList<>(listeners)) {
@@ -193,6 +202,14 @@ public class ProcedureBlock extends Block {
         }
     }
 
+    /**
+     * Notify that the procedure is created.
+     *
+     * @param created The procedure which is created.
+     *
+     * @effect The event onProcedure created is called for all subscribed listeners
+     *         with the given procedure.
+     */
     private void notifyProcedureCreated(ProcedureBlock created) {
         for (ProcedureListener listener : new ArrayList<>(listeners)) {
             listener.onProcedureCreated(created);
