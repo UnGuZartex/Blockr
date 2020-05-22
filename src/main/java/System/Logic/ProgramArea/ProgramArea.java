@@ -252,7 +252,7 @@ public class ProgramArea {
         if (hasExecutablePrograms()) {
             Program program = getProgram();
 
-            if (program.isValidProgram() && program.isExecuting()) {
+            if (program.isValidProgram() && program.isResettable()) {
                 history.execute(new ResetProgramCommand(this));
             }
         }

@@ -40,7 +40,7 @@ public class Program {
     /**
      * Variable referring to the execution state of the program.
      */
-    private boolean isExecuting = false;
+    private boolean isResettable = false;
 
     /**
      * Variable referring to the execution stack.
@@ -110,7 +110,7 @@ public class Program {
      *
      * @param gameWorld The game world to operate on.
      *
-     * @effect If the program isn't finished, then is isExecuting to true.
+     * @effect If the program isn't finished, then the program is resettable.
      * @effect If the program isn't finished yet, then is the next block popped from
      *         the execution stack, it's functionality evaluated and the next blocks
      *         pushed on the stack.
@@ -123,7 +123,7 @@ public class Program {
             throw new IllegalStateException("This program is not a valid program to execute!");
         }
         if (!isFinished()) {
-            isExecuting = true;
+            isResettable = true;
             Block currentBlock = executionStack.pop();
             lastResult = currentBlock.getFunctionality().evaluate(gameWorld);
             currentBlock.pushNextBlocks(executionStack);
@@ -141,13 +141,13 @@ public class Program {
     }
 
     /**
-     * Checks whether this program is executing.
+     * Checks whether this program is resettable.
      *
      * @return True if the program has executed a step before,
      *         false otherwise.
      */
-    public boolean isExecuting() {
-        return isExecuting;
+    public boolean isResettable() {
+        return isResettable;
     }
 
     /**
@@ -181,7 +181,7 @@ public class Program {
         executionStack.clear();
         executionStack.push(startBlock);
         this.lastResult = DEFAULT_RESULT;
-        isExecuting = false;
+        isResettable = false;
     }
 
     /**
@@ -226,7 +226,7 @@ public class Program {
         ProgramSnapshot programSnapshot = (ProgramSnapshot) snapshot;
         executionStack = programSnapshot.getBlockStack(startBlock);
         lastResult = programSnapshot.currentResult;
-        isExecuting = programSnapshot.isExecutingNow;
+        isResettable = programSnapshot.isExecutingNow;
     }
 
     /**
@@ -234,6 +234,9 @@ public class Program {
      */
     private class ProgramSnapshot implements Snapshot {
 
+        /**
+         * Variable referring to a stack with the indexes of the exectuion stack.
+         */
         private final Stack<Integer> executionStackCopy = getIndexStack(startBlock);
 
         /**
@@ -244,7 +247,7 @@ public class Program {
         /**
          * Variable referring to the execution state to remember.
          */
-        private final boolean isExecutingNow = isExecuting;
+        private final boolean isExecutingNow = isResettable;
 
         /**
          * Variable referring to the creation time of this snapshot.
