@@ -3,6 +3,7 @@ package GUI.Components;
 import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
 import System.BlockStructure.Connectors.SubConnector;
+import Utility.Position;
 
 import java.awt.*;
 
@@ -52,12 +53,52 @@ public class GUIConnector {
     }
 
     /**
+     * Get the parent block of this GUI connector.
+     *
+     * @return The parent block of this GUI connector.
+     */
+    public GUIBlock getParentBlock() {
+        return parentBlock;
+    }
+
+    /**
+     * Get the connector connected to this connector.
+     *
+     * @return the connector connected to this connector.
+     */
+    public GUIConnector getConnectedConnector() {
+        return connectedConnector;
+    }
+
+    /**
+     * Get the connected parent block to this GUI Connector.
+     *
+     * @return The parent block of the connected connector.
+     */
+    public GUIBlock getConnectedGUIBlock() {
+        if (isConnected()) {
+            return connectedConnector.getParentBlock();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get the collision circle of this GUI connector.
      *
      * @return The collision circle of this GUI connector.
      */
     public CollisionCircle getCollisionCircle() {
         return collisionCircle;
+    }
+
+    /**
+     * Return the position of this GUI connector.
+     *
+     * @return The position of this GUI connector.
+     */
+    public Position getPosition() {
+        return collisionCircle.getPosition();
     }
 
     /**
@@ -94,14 +135,26 @@ public class GUIConnector {
      * @throws IllegalArgumentException
      *         If the given connector is not effective.
      * @throws IllegalStateException
+     *         If the connectors don't collide.
+     * @throws IllegalStateException
      *         If this connector is already connected.
      * @throws IllegalArgumentException
      *         If the given connector is already connected.
      */
-    public void connect(GUIConnector other) {
+    /**
+     * TODO Comments
+     * @param other
+     * @throws IllegalArgumentException
+     * @throws IllegalStateException
+     */
+    public void connect(GUIConnector other) throws IllegalArgumentException, IllegalStateException {
 
         if (other == null) {
             throw new IllegalArgumentException("Given connector is null!");
+        }
+
+        if (!this.collisionCircle.intersects(other.collisionCircle)) {
+            throw new IllegalStateException("The connectors don't collide!");
         }
 
         if (isConnected()) {
@@ -112,38 +165,26 @@ public class GUIConnector {
             throw new IllegalArgumentException("The given connector is already connected!");
         }
 
+        this.alignWith(other);
         connectedConnector = other;
         other.connectAsSlave(this);
+        parentBlock.changeHeight(parentBlock.getTotalHeight(), parentBlock);
     }
 
-    /**
-     * Get the parent block of this GUI connector.
-     *
-     * @return The parent block of this GUI connector.
-     */
-    public GUIBlock getParentBlock() {
-        return parentBlock;
+    public void paint(Graphics g) {
+        collisionCircle.paint(g);
     }
 
-    /**
-     * Get the connector connected to this connector.
-     *
-     * @return the connector connected to this connector.
-     */
-    public GUIConnector getConnectedConnector() {
-        return connectedConnector;
+    public boolean canConnectWith(GUIConnector other) {
+        return other != null && !this.isConnected()
+                && !other.isConnected() && this.collisionCircle.intersects(other.collisionCircle);
     }
 
-    /**
-     * Get the connected parent block to this GUI Connector.
-     *
-     * @return The parent block of the connected connector.
-     */
-    public GUIBlock getConnectedGUIBlock() {
-        if (isConnected()) {
-            return connectedConnector.getParentBlock();
-        } else {
-            return null;
+    public void translate(int x, int y, boolean propagate) {
+        collisionCircle.translate(x, y);
+
+        if (propagate && isConnected()) {
+            getConnectedGUIBlock().translate(x, y);
         }
     }
 
@@ -159,7 +200,7 @@ public class GUIConnector {
      * @throws IllegalStateException
      *         If this connector is already connected.
      */
-    private void connectAsSlave(GUIConnector other) {
+    private void connectAsSlave(GUIConnector other) throws IllegalArgumentException, IllegalStateException {
 
         if (other == null) {
             throw new IllegalArgumentException("The given connector is null!");
@@ -170,5 +211,11 @@ public class GUIConnector {
         }
 
         connectedConnector = other;
+    }
+
+    private void alignWith(GUIConnector other) {
+        int deltaX = other.collisionCircle.getX() - this.collisionCircle.getX();
+        int deltaY = other.collisionCircle.getY() - this.collisionCircle.getY();
+        parentBlock.translate(deltaX, deltaY);
     }
 }

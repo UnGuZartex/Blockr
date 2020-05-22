@@ -3,7 +3,7 @@ package GUI.CollisionShapes;
 import java.awt.*;
 
 /**
- * A closs for rectangles.
+ * A class for rectangles.
  *
  * @author Alpha-team
  */
@@ -27,9 +27,26 @@ public class CollisionRectangle extends CollisionShape {
      * @param width The width for this collision rectangle.
      * @param height The height for this collision rectangle.
      * @param color The color for this collision rectangle.
+     *
+     * @post The width of this rectangle is set to the given width.
+     * @post The height of this rectangle is set to the given height.
+     *
+     * @throws IllegalArgumentException
+     *         If the given width is illegal.
+     * @throws IllegalArgumentException
+     *         If the given height is illegal.
      */
-    public CollisionRectangle(int x, int y, int width, int height, Color color) {
+    public CollisionRectangle(int x, int y, int width, int height, Color color) throws IllegalArgumentException {
         super(x, y, color);
+
+        if (width < 0) {
+            throw new IllegalArgumentException("The given width is illegal.");
+        }
+
+        if (height < 0) {
+            throw new IllegalArgumentException("The given height is illegal.");
+        }
+
         this.width = width;
         this.height = height;
     }
@@ -71,7 +88,7 @@ public class CollisionRectangle extends CollisionShape {
     }
 
     /**
-     * Checks whether or not a given rectangle is contained in this
+     * Checks whether a given rectangle is contained in this
      * rectangle.
      *
      * @param other The rectangle to check.
@@ -84,13 +101,13 @@ public class CollisionRectangle extends CollisionShape {
     }
 
     /**
-     * Check whether or not the given coordinates are contained into this
+     * Check whether the given coordinates are contained into this
      * collision rectangle.
      *
      * @param x The x coordinate of the point to check.
      * @param y The y coordinate of the point to check.
      *
-     * @return True if and only if the the given x coordinate is between the x
+     * @return True if and only if the given x coordinate is between the x
      *         coordinate of this rectangle and the collision with, and the y
      *         coordinate is between the y coordinate of this rectangle and the
      *         height of this rectangle.

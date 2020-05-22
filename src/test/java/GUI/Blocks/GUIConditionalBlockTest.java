@@ -129,6 +129,7 @@ class GUIConditionalBlockTest {
     @Test
     void disconnectMainConnector() {
         GUIOperatorBlock not = new GUIOperatorBlock("0", 0,0);
+        not.setPosition(cond1.getPosition().getX() - cond1.getWidth()/2 + cond1.mainConnector.getCollisionCircle().getRadius(), cond1.getPosition().getY());
         not.subConnectors.get(0).connect(cond1.mainConnector);
         assertTrue(cond1.mainConnector.isConnected());
         assertTrue(not.subConnectors.get(0).isConnected());

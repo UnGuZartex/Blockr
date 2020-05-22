@@ -45,7 +45,7 @@ public class GUIFunctionalBlock extends GUIBlock {
      *         further propagate the height change call.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) {
         if (mainConnector.isConnected()) {
             mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }

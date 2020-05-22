@@ -8,6 +8,7 @@ import Images.ImageLibrary;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ import java.util.List;
  * @author Alpha-team
  */
 public class PalettePanel extends GamePanel implements ProgramAreaListener, PaletteListener {
+
+    private static int PALETTE_COLUMNS = 2;
 
     /**
      * Variables referring to the blocks in this palette.
@@ -41,8 +44,6 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener, Pale
      * TODO Comments
      */
     private GUIBlock lastCreated;
-
-    private int columns = 2;
 
     /**
      * Initialize a new ui palette panel with given coordinates, dimensions and list of palette ui blocks.
@@ -184,10 +185,13 @@ public class PalettePanel extends GamePanel implements ProgramAreaListener, Pale
 
 
     private <T extends GUIBlock> void setBlockPositions(List<T> blocks, int column) {
+        List<T> sortedBlocks = new ArrayList<>(blocks);
+        sortedBlocks.sort(Comparator.comparing(GUIBlock::getName));
         int freeHeightPerBlock = (panelRectangle.getHeight() - getTotalBlockHeight(blocks)) / (blocks.size() + 1);
         int currentHeight = freeHeightPerBlock;
-        int panelWidth = panelRectangle.getWidth() / columns;
-        for (GUIBlock block : blocks) {
+        int panelWidth = panelRectangle.getWidth() / PALETTE_COLUMNS;
+
+        for (GUIBlock block : sortedBlocks) {
             block.setPosition((panelWidth * (column - 1)) + (panelWidth - block.getWidth()) / 2, currentHeight);
             currentHeight = currentHeight + block.getTotalHeight() + freeHeightPerBlock;
         }

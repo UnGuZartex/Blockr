@@ -82,7 +82,7 @@ public class ConnectionController {
     }
 
     /**
-     * Checks whether or not the given gui blocks can connect.
+     * Checks whether the given gui blocks can connect.
      *
      * @param withMain The block to connect through its main connector.
      * @param withSub The block to connect through a sub connector.

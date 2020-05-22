@@ -22,9 +22,19 @@ public class CollisionCircle extends CollisionShape {
      * @param y The y coordinate for this collision circle.
      * @param radius The radius for this collision circle.
      * @param color The color for this collision circle.
+     *
+     * @post The radius of this circle is set to the given radius.
+     *
+     * @throws IllegalArgumentException
+     *         If the given radius is illegal.
      */
-    public CollisionCircle(int x, int y, int radius, Color color) {
+    public CollisionCircle(int x, int y, int radius, Color color) throws IllegalArgumentException {
         super(x, y, color);
+
+        if (radius < 0) {
+            throw new IllegalArgumentException("The given radius is illegal.");
+        }
+
         this.radius = radius;
     }
 
@@ -47,7 +57,7 @@ public class CollisionCircle extends CollisionShape {
     }
 
     /**
-     * Check whether or not this circle intersects with the other circle.
+     * Check whether this circle intersects with the other circle.
      *
      * @param other The circle to check intersection with.
      *
@@ -59,7 +69,7 @@ public class CollisionCircle extends CollisionShape {
     }
 
     /**
-     * Check whether or not the given coordinates are contained in this circle.
+     * Check whether the given coordinates are contained in this circle.
      *
      * @param x The x coordinate of the point to check.
      * @param y The y coordinate of the point to check.

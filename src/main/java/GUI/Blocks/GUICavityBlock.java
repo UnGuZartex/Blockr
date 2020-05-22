@@ -51,10 +51,8 @@ public class GUICavityBlock extends GUIBlock {
     public void setColor(Color color) {
         super.setColor(color);
 
-        if (conditionalConnector != null) {
-            if (conditionalConnector.isConnected()) {
-                conditionalConnector.getConnectedGUIBlock().setColor(color);
-            }
+        if (conditionalConnector != null && conditionalConnector.isConnected()) {
+            conditionalConnector.getConnectedGUIBlock().setColor(color);
         }
     }
 
@@ -71,16 +69,14 @@ public class GUICavityBlock extends GUIBlock {
      *         further propagate the height change call.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) {
 
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
             changeCavityHeight(heightDelta);
         }
 
-        if (mainConnector != null) {
-            if (mainConnector.isConnected()) {
-                mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
-            }
+        if (mainConnector != null && mainConnector.isConnected()) {
+            mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
     }
 
@@ -92,12 +88,10 @@ public class GUICavityBlock extends GUIBlock {
      */
     @Override
     public int getTotalHeight() {
-        if (lowerSubConnector != null) {
-            if (lowerSubConnector.isConnected()) {
-                return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
-            }
-
+        if (lowerSubConnector != null && lowerSubConnector.isConnected()) {
+            return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
         }
+
         return height;
     }
 
@@ -163,10 +157,8 @@ public class GUICavityBlock extends GUIBlock {
 
         setNewCavityHeight(cavityHeight + heightDelta);
 
-        if (lowerSubConnector != null) {
-            if (lowerSubConnector.isConnected()) {
-                lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
-            }
+        if (lowerSubConnector != null && lowerSubConnector.isConnected()) {
+            lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
         }
     }
 
