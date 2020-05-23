@@ -6,6 +6,7 @@ import Controllers.ControllerClasses.BlockHandlerController;
 import GUI.Blocks.GUIBlock;
 import GUI.Components.ControlHandler;
 import GUI.Components.GUIBlockHandler;
+import GUI.Components.MouseHandler;
 import GUI.Panel.GameWorldPanel;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
@@ -25,7 +26,7 @@ public class BlockrCanvas extends CanvasWindow {
     private PalettePanel palettePanel;
     private ProgramAreaPanel programAreaPanel;
     private GameWorldPanel gameWorldPanel;
-    private GUIBlockHandler blockHandler;
+    private MouseHandler mouseHandler;
     private ControlHandler controlHandler;
 
     private GUIBlock highlightedBlock;
@@ -58,7 +59,7 @@ public class BlockrCanvas extends CanvasWindow {
         paBlockHandler.getPA().subscribe(programAreaPanel);
 
         gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
-        blockHandler = new GUIBlockHandler(palettePanel, programAreaPanel, historyController);
+        mouseHandler = new MouseHandler(new GUIBlockHandler(palettePanel, programAreaPanel), historyController);
         controlHandler = new ControlHandler(historyController);
     }
 
@@ -74,7 +75,7 @@ public class BlockrCanvas extends CanvasWindow {
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
         super.handleMouseEvent(id, x, y, clickCount);
         resetHighlightedBlock();
-        blockHandler.handleMouseEventPre(id, x, y);
+        mouseHandler.handleMouseEvent(id, x, y);
         updateHighLightedBlock();
         repaint();
     }

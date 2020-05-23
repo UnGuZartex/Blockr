@@ -1,6 +1,5 @@
 package GUI.Components;
 
-import Controllers.ControllerClasses.HistoryController;
 import GUI.Blocks.GUIBlock;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Panel.GamePanel;
@@ -21,8 +20,6 @@ import java.util.*;
  *        | palette != null
  * @invar The program area panel of this gui block handler may not be null.
  *        | programArea != null
- * @invar The history controller of this gui block handler may not be null.
- *        | historyController != null
  *
  * @author Alpha-team
  */
@@ -52,14 +49,6 @@ public class GUIBlockHandler {
      * Variable referring to the relation between the mouse and the current dragged block.
      */
     private Position dragDelta;
-    /**
-     * Variable referring to the mouse position where a mouse interaction first happened.
-     */
-    private Position startPosition;
-    /**
-     * Variable referring to the history controller in this gui block handler.
-     */
-    private final HistoryController historyController;
 
     /**
      * Variable referring to the block position data in the gui block handler.
@@ -72,56 +61,33 @@ public class GUIBlockHandler {
     private List<Integer> paletteIndices = new ArrayList<>();
 
     /**
-     * Create a new gui block handler with a given palette, program area panel and
-     * history controller.
+     * Create a new gui block handler with a given palette and program area panel.
      *
      * @param palette The given palette panel.
      * @param programArea The given program area panel.
-     * @param historyController The given history controller.
      *
      * @post The current palette panel is set to the given palette panel.
      * @post The current program area panel is set to the given program area panel.
-     * @post The current history controller is set to the given controller.
      *
      * @throws IllegalArgumentException
      *         When the given palette is not effective.
      * @throws IllegalArgumentException
      *         When the given program area is not effective.
-     * @throws IllegalArgumentException
-     *         When the given history controller is not effective.
      */
-    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea, HistoryController historyController) throws IllegalArgumentException {
+    public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) throws IllegalArgumentException {
         if (palette == null) {
             throw new IllegalArgumentException("The given palette is not effective!");
         }
         if (programArea == null) {
             throw new IllegalArgumentException("The given program area is not effective!");
         }
-        if (historyController == null) {
-            throw new IllegalArgumentException("The given history controller is not effective!");
-        }
+
         this.palette = palette;
         this.programArea = programArea;
-        this.historyController = historyController;
     }
 
-    /**
-     * Handle a new incoming mouse event with a given id, x and y coordinate.
-     *
-     * @param id The given mouse event id.
-     * @param x The given mouse x-coordinate.
-     * @param y The given mouse y-coordinate.
-     *
-     * @effect the history controller executes a block move command, if the mouse is released.
-     * @effect The mouse event is handled without command if the mouse is in another state than released.
-     */
-    public void handleMouseEventPre(int id, int x, int y) {
-        if (id == MouseEvent.MOUSE_RELEASED && draggedBlocks != null) {
-            historyController.execute(new MoveBlockCommand(startPosition, new Position(x, y), this));
-        }
-        else {
-            handleMouseEvent(id, x, y);
-        }
+    public boolean blocksAreDragged() {
+        return draggedBlocks != null;
     }
 
     /**
@@ -133,7 +99,7 @@ public class GUIBlockHandler {
      *
      * @effect The mouse event is handled accordingly depending on the given id.
      */
-    protected void handleMouseEvent(int id, int x, int y) {
+    public void handleMouseEvent(int id, int x, int y) {
         programArea.update();
         switch (id) {
             case MouseEvent.MOUSE_PRESSED:
@@ -188,7 +154,6 @@ public class GUIBlockHandler {
      * @post The drag delta of the dragged block is set accordingly.
      * @post The last valid position of the dragged block is set accordingly.
      * @post The source panel where the dragged block came from is set accordingly.
-     * @post The start position is set.
      *
      * @effect If the mouse was pressed in the program area on a block, a temporary block is set
      *         in the program area.
@@ -196,7 +161,6 @@ public class GUIBlockHandler {
      */
     private void handleMousePressed(int x, int y) {
         if (draggedBlocks == null) {
-            startPosition = new Position(x, y);
             int draggedBlockIndex = palette.getSelectedBlockIndex(x, y);
             boolean programAreaContainsMouse = programArea.getBlocks().stream().anyMatch(b -> b.contains(x, y));
             GUIBlock draggedBlock;
