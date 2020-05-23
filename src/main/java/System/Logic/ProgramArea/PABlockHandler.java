@@ -67,7 +67,7 @@ public class PABlockHandler {
     }
 
     /**
-     * Checks whether or not the given program area is valid or not.
+     * Checks whether the given program area is valid or not.
      *
      * @param programArea The program area to check.
      *
