@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorld.GameWorld;
@@ -34,7 +34,7 @@ class BlockHandlerControllerTest {
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     BlockHandlerController controller;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -68,7 +68,7 @@ class BlockHandlerControllerTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";
@@ -140,6 +140,18 @@ class BlockHandlerControllerTest {
     }
 
     @Test
+    void isValidIGUISystemBlockLink() {
+        assertTrue(BlockHandlerController.isValidIGUISystemBlockLink(converter));
+        assertFalse(BlockHandlerController.isValidIGUISystemBlockLink(null));
+    }
+
+    @Test
+    void isValidPABlockHandler() {
+        assertTrue(BlockHandlerController.isValidPABlockHandler(paBlockHandler));
+        assertFalse(BlockHandlerController.isValidPABlockHandler(null));
+    }
+
+    @Test
     void addBlockToPA() {
         controller.addBlockToPA(guiBlockOperator, 4);
         assertTrue(converter.getBlockFromGUIBlock(guiBlockOperator) instanceof NotBlock);
@@ -175,6 +187,22 @@ class BlockHandlerControllerTest {
         assertEquals(1, paBlockHandler.getPA().getAllBlocksCount());
         controller.deleteFromPA(guiBlockCavity);
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+
+    @Test
+    void addExistingBlockAsProgram() {
+        controller.addExistingBlockAsProgram(guiBlockCavity);
+        assertTrue(converter.getBlockFromGUIBlock(guiBlockCavity) instanceof IfBlock);
+        assertEquals(1, paBlockHandler.getPA().getAllBlocksCount());
+
+        controller.addExistingBlockAsProgram(guiBlockConditional);
+        assertTrue(converter.getBlockFromGUIBlock(guiBlockConditional) instanceof PredicateBlock);
+        assertEquals(2, paBlockHandler.getPA().getAllBlocksCount());
+
+        controller.addExistingBlockAsProgram(guiBlockOperator);
+        assertTrue(converter.getBlockFromGUIBlock(guiBlockOperator) instanceof NotBlock);
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
     }
 
     @Test

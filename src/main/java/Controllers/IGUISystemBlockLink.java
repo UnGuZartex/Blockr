@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author Alpha-team
  */
-public class IGUI_System_BlockLink {
+public class IGUISystemBlockLink {
 
     /**
      * Variable representing the map of paired graphical and system blocks.
@@ -54,7 +54,7 @@ public class IGUI_System_BlockLink {
     }
 
     /**
-     * Link a given graphical and system block together in the database.
+     * Link a given graphical and system block together.
      *
      * @param GUIBlock The given graphical block.
      * @param block The given system block.
@@ -72,9 +72,6 @@ public class IGUI_System_BlockLink {
      *
      * @post The link between the given graphical block and the
      *       linked system block is removed.
-     */
-    /**
-     * TODO comments
      */
     public void removeBlock(IGUIBlock block) {
         currentBlocks.remove(block);

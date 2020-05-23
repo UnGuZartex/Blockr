@@ -2,7 +2,7 @@ package System.Logic.ProgramArea;
 
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
@@ -47,7 +47,7 @@ class ProgramAreaTest {
     PalettePanel palette;
     BlockHandlerController blockHandlerController;
     ConnectionController connectionController;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
@@ -105,7 +105,7 @@ class ProgramAreaTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
         connectionController = new ConnectionController(converter, paBlockHandler);
