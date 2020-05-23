@@ -220,7 +220,7 @@ public class Palette implements ProcedureListener {
     }
 
     /**
-     * Notify the palette listeners whether the max amount
+     * Notify the palette listeners whether the max amount of blocks in the program area is reached.
      *
      * @effect The listeners are notified about the state of the max blocks.
      */

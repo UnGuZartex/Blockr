@@ -93,7 +93,7 @@
 //        manager.subscribe(programAreaPanel);
 //
 //        historyController = new HistoryController(history, programArea);
-//        guiBlockHandler = new GUIBlockHandler(palette, programAreaPanel, historyController);
+//        guiBlockHandler = new GUIBlockHandler(palette, programAreaPanel);
 //        start = new Position(100, 250);
 //        end = new Position(500, 320);
 //    }
