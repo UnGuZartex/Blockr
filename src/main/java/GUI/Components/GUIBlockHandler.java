@@ -311,7 +311,7 @@ public class GUIBlockHandler {
      */
     private void handleBlockFromPaletteToProgramArea() {
         programArea.addTemporaryBlockToProgramArea();
-        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(draggedBlocks.get(0))).findAny();
+        Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.canPotentiallyConnectWith(draggedBlocks.get(0))).findAny();
         connectedBlock.ifPresent(guiBlock -> draggedBlocks.get(0).connectWithStaticBlock(guiBlock, programArea.getConnectionController()));
     }
 
@@ -326,7 +326,7 @@ public class GUIBlockHandler {
         programArea.disconnectInProgramArea(draggedBlocks.get(0));
 
         for (GUIBlock block : draggedBlocks) {
-            Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.intersectsWithConnector(block)).findAny();
+            Optional<GUIBlock> connectedBlock = programArea.getBlocks().stream().filter(b -> b.canPotentiallyConnectWith(block)).findAny();
 
             if (connectedBlock.isPresent()) {
                 block.connectWithStaticBlock(connectedBlock.get(), programArea.getConnectionController());

@@ -8,7 +8,9 @@ import GUI.Components.GUIConnector;
 import Utility.Position;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -150,6 +152,19 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     }
 
     /**
+     * Translate the position of this block with the given amount
+     *
+     * @param x The amount to translate horizontally.
+     * @param y The amount to translate vertically.
+     *
+     * @effect The position is set to the current coordinates summed
+     *         with the change amount.
+     */
+    public void translate(int x, int y) {
+        setPosition(this.x + x, this.y + y);
+    }
+
+    /**
      * Return the index of the given sub connector in the sub connector list.
      *
      * @param subConnector The given sub connector.
@@ -162,47 +177,39 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
 
     /**
      * TODO commentaar
+     * @pre ......
      * @param controller
      */
     public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockhandlerController) {
         if (mainConnector != null) {
-            GUIBlock upperBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock downBlock = subConnectors.get(0).getConnectedGUIBlock();
+            GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
+            GUIBlock nextBlock = null;
             disconnectHeight();
 
-            if (downBlock != null) {
-                downBlock.disconnectMainConnector();
-            }
+            if (subConnectors.size() > 0) {
+                nextBlock = subConnectors.get(0).getConnectedGUIBlock();
 
-            if (upperBlock != null) {
-                GUIConnector sub = mainConnector.getConnectedConnector();
-                int subIndex = upperBlock.getConnectorIndex(sub);
-                disconnectMainConnector();
-
-                if (downBlock != null && connectionController.isValidConnection(downBlock, upperBlock, subIndex)) {
-                    downBlock.setPosition(getX(), getY());
-                    downBlock.mainConnector.connect(sub);
-                    connectionController.connectBlocks(downBlock, upperBlock, subIndex);
+                if (nextBlock != null) {
+                    nextBlock.disconnectMainConnector();
                 }
             }
 
-            if (downBlock != null) {
-                blockhandlerController.addExistingBlockAsProgram(downBlock);
+            if (prevBlock != null) {
+                GUIConnector sub = mainConnector.getConnectedConnector();
+                int subIndex = prevBlock.getConnectorIndex(sub);
+                disconnectMainConnector();
+
+                if (nextBlock != null && connectionController.isValidConnection(nextBlock, prevBlock, subIndex)) {
+                    nextBlock.setPosition(getX(), getY());
+                    nextBlock.mainConnector.connect(sub);
+                    connectionController.connectBlocks(nextBlock, prevBlock, subIndex);
+                }
+            }
+
+            if (nextBlock != null) {
+                blockhandlerController.addExistingBlockAsProgram(nextBlock);
             }
         }
-    }
-
-    /**
-     * Translate the position of this block with the given amount
-     *
-     * @param x The amount to translate horizontally.
-     * @param y The amount to translate vertically.
-     *
-     * @effect The position is set to the current coordinates summed
-     *         with the change amount.
-     */
-    public void translate(int x, int y) {
-        setPosition(this.x + x, this.y + y);
     }
 
     /**
@@ -249,15 +256,14 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     }
 
     /**
-     * Checks whether any connector and sub connector of this block
-     * collide with the given block.
+     * Checks whether any connector of this block can potentially connect with the given block.
      *
-     * @param other The other block to check collision with.
+     * @param other The other block to check connection with.
      *
-     * @return True if and only if the two blocks have colliding connectors.
+     * @return True if and only if the two blocks have colliding connectors that can potentially connect.
      */
-    public boolean intersectsWithConnector(GUIBlock other) {
-        return findValidSubConnector(subConnectors, other.mainConnector) != null || findValidSubConnector(other.subConnectors, mainConnector) != null;
+    public boolean canPotentiallyConnectWith(GUIBlock other) {
+        return this.findConnectableSubConnector(other.mainConnector) != null || other.findConnectableSubConnector(mainConnector) != null;
     }
 
     /**
@@ -272,21 +278,21 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @effect The colliding connectors are connected in the system through the connection controller.
      *
      * @throws IllegalArgumentException
-     *         when the given block does not have a colliding connector.
+     *         when the given block cannot connect with this block.
      */
     public void connectWithStaticBlock(GUIBlock other, ConnectionController connectionController) throws IllegalArgumentException {
         if (!terminated) {
-            GUIConnector intersectingConnectorSub;
-            GUIBlock main, sub;
+            if (!canPotentiallyConnectWith(other)) {
+                throw new IllegalArgumentException("Given block cannot connect with this block!");
+            }
 
-            if ((intersectingConnectorSub = findValidSubConnector(other.subConnectors, mainConnector)) != null) {
-                main = this;
-                sub = other;
-            } else if ((intersectingConnectorSub = findValidSubConnector(subConnectors, other.mainConnector)) != null) {
+            GUIConnector intersectingConnectorSub = other.findConnectableSubConnector(mainConnector);
+            GUIBlock main = this, sub = other;
+
+            if (intersectingConnectorSub == null) {
+                intersectingConnectorSub = this.findConnectableSubConnector(other.mainConnector);
                 main = other;
                 sub = this;
-            } else {
-                throw new IllegalArgumentException("Given block does not have a colliding connector!");
             }
 
             if (connectionController.isValidConnection(main, sub, sub.getConnectorIndex(intersectingConnectorSub))) {
@@ -372,20 +378,20 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     protected abstract void setShapes();
 
     /**
-     * Check whether any of the given sub connectors can connect with the main connector.
+     * Check whether any of the sub connectors on this block can connect with the given main connector.
      *
-     * @param subConnectors The given sub connectors.
      * @param mainConnector The given main connector.
      *
      * @return The sub connector which can connect with the given main connector. If no
      *         such connector is found, null is returned.
      */
-    private GUIConnector findValidSubConnector(List<GUIConnector> subConnectors, GUIConnector mainConnector) {
+    private GUIConnector findConnectableSubConnector(GUIConnector mainConnector) {
         for (GUIConnector connector : subConnectors) {
             if (connector.canConnectWith(mainConnector)) {
                 return connector;
             }
         }
+
         return null;
     }
 

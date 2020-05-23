@@ -119,10 +119,10 @@ class GUIConditionalBlockTest {
     }
 
     @Test
-    void intersectsWithConnector() {
+    void canPotentiallyConnectWith() {
 
         block = new GUIFunctionalBlock("id", x1, y1);
-        assertFalse(cond1.intersectsWithConnector(block));
+        assertFalse(cond1.canPotentiallyConnectWith(block));
     }
 
 
