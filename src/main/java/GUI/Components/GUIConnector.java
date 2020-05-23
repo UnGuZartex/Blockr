@@ -1,14 +1,16 @@
 package GUI.Components;
 
-import GUI.CollisionShapes.CollisionCircle;
 import GUI.Blocks.GUIBlock;
-import System.BlockStructure.Connectors.SubConnector;
+import GUI.CollisionShapes.CollisionCircle;
 import Utility.Position;
 
 import java.awt.*;
 
 /**
  * A class used as a GUI connector to connect GUI Blocks visually.
+ *
+ * @invar A GUI connector must have a valid parent block at all time.
+ *        | isValidParentBlock(parentBlock)
  *
  * @author Alpha-team
  */
@@ -18,17 +20,14 @@ public class GUIConnector {
      * Variable referring to the collision circle of this connector.
      */
     private final CollisionCircle collisionCircle;
-
     /**
      * Variable referring to the parent block of this connector.
      */
     private final GUIBlock parentBlock;
-
     /**
      * Variable referring to the connected connector to this connector.
      */
     private GUIConnector connectedConnector;
-
     /**
      * Variable referring to the default radius of a connector.
      */
@@ -46,10 +45,27 @@ public class GUIConnector {
      *         coordinates and the default radius and the given color.
      *
      * @post The parent block of this connector is set to the given connector.
+     *
+     * @throws IllegalArgumentException
+     *         When the given parent block is invalid.
      */
-    public GUIConnector(GUIBlock parentBlock, int x, int y, Color color) {
+    public GUIConnector(GUIBlock parentBlock, int x, int y, Color color) throws IllegalArgumentException {
+        if (!isValidParentBlock(parentBlock)) {
+            throw new IllegalArgumentException("The given parent block is not valid!");
+        }
         collisionCircle = new CollisionCircle(x, y, DEFAULT_CIRCLE_RADIUS, color);
         this.parentBlock = parentBlock;
+    }
+
+    /**
+     * Checks whether or not the given block is a valid parent block.
+     *
+     * @param block The block to check.
+     *
+     * @return True if and only if the given block is not null.
+     */
+    public static boolean isValidParentBlock(GUIBlock block) {
+        return block != null;
     }
 
     /**
@@ -133,53 +149,52 @@ public class GUIConnector {
      * @post The given connector is connected to this connector.
      *
      * @throws IllegalArgumentException
-     *         If the given connector is not effective.
-     * @throws IllegalStateException
-     *         If the connectors don't collide.
-     * @throws IllegalStateException
-     *         If this connector is already connected.
-     * @throws IllegalArgumentException
-     *         If the given connector is already connected.
+     *         If this connector can't connect with the given connector.
      */
-    /**
-     * TODO Comments
-     * @param other
-     * @throws IllegalArgumentException
-     * @throws IllegalStateException
-     */
-    public void connect(GUIConnector other) throws IllegalArgumentException, IllegalStateException {
-
-        if (other == null) {
+    public void connect(GUIConnector other) throws IllegalArgumentException {
+        if (!canConnectWith(other)) {
             throw new IllegalArgumentException("Given connector is null!");
         }
-
-        if (!this.collisionCircle.intersects(other.collisionCircle)) {
-            throw new IllegalStateException("The connectors don't collide!");
-        }
-
-        if (isConnected()) {
-            throw new IllegalStateException("This connector is already connected!");
-        }
-
-        if (other.isConnected()) {
-            throw new IllegalArgumentException("The given connector is already connected!");
-        }
-
         this.alignWith(other);
         connectedConnector = other;
         other.connectAsSlave(this);
         parentBlock.changeHeight(parentBlock.getTotalHeight(), parentBlock);
     }
 
+    /**
+     * Paint this connector.
+     *
+     * @param g The graphics to paint this connector with.
+     *
+     * @effect The collision circle is painted.
+     */
     public void paint(Graphics g) {
         collisionCircle.paint(g);
     }
 
+    /**
+     * Check whether or not this connector can connect with the given connector.
+     *
+     * @param other The connector to check compatibility off.
+     *
+     * @return True if and only if the given connector is effective, this and the given connector
+     *         isn't connected yet and the collision circles intersect.
+     */
     public boolean canConnectWith(GUIConnector other) {
         return other != null && !this.isConnected()
                 && !other.isConnected() && this.collisionCircle.intersects(other.collisionCircle);
     }
 
+    /**
+     * Translate this connector with the given coordinates.
+     *
+     * @param x The x coordinate to translate with.
+     * @param y The y coordinate to translate with.
+     * @param propagate Whether or not the translation should propagate to the connected block.
+     *
+     * @effect The collision circle is translated with the given amount.
+     * @effect If the translation should propgate, the connected block is also translated.
+     */
     public void translate(int x, int y, boolean propagate) {
         collisionCircle.translate(x, y);
 
@@ -213,6 +228,14 @@ public class GUIConnector {
         connectedConnector = other;
     }
 
+    /**
+     * Align this connector with the given connector.
+     *
+     * @param other The connector to align with.
+     *
+     * @effect The parent block is translated such that this connector and the given
+     *         connector align.
+     */
     private void alignWith(GUIConnector other) {
         int deltaX = other.collisionCircle.getX() - this.collisionCircle.getX();
         int deltaY = other.collisionCircle.getY() - this.collisionCircle.getY();

@@ -202,6 +202,7 @@ public class GUIBlockHandler {
      * @effect The palette indices are set to the indices of the blocks in the program area.
      */
     private void collectBlockData() {
+        System.out.println("Reached");
         blockPositions = new ArrayList<>();
         paletteIndices = new ArrayList<>();
 

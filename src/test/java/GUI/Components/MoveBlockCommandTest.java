@@ -1,9 +1,9 @@
 package GUI.Components;
 
-import Controllers.IGUISystemBlockLink;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
+import Controllers.IGUISystemBlockLink;
 import Controllers.ProgramEventManager;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
@@ -28,16 +28,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MoveBlockCommandTest {
 
+    MoveBlockCommand command;
+    int startX, startY, endX, endY;
     ProgramAreaPanel panel;
     PalettePanel palette;
     int cornerX, cornerY, width, height;
     Random random;
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
-    static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
+    static final int MIN_WIDTH = 400, MAX_WIDTH = 800, MIN_HEIGHT = 400, MAX_HEIGHT = 800;
     BlockHandlerController blockHandlerController;
     ConnectionController connectionController;
     IGUISystemBlockLink converter;
@@ -97,21 +99,28 @@ class MoveBlockCommandTest {
 
         manager = new ProgramEventManager();
         manager.subscribe(panel);
+        handler = new GUIBlockHandler(palette, panel);
 
-        block = palette.getNewBlock(0);
-        Map.Entry<GUIBlock, Integer> blockPair = new AbstractMap.SimpleEntry<>(block, 0);
-        panel.setTemporaryBlockPair(blockPair);
-        panel.addTemporaryBlockToProgramArea();
+        startX = random.nextInt(width + cornerX - cavity.getWidth() + 1 - (cornerX + cavity.getWidth())) + cornerX + cavity.getWidth();
+        endX = random.nextInt(width + cornerX - cavity.getWidth() + 1 - (cornerX + cavity.getWidth())) + cornerX + cavity.getWidth();
+        startY = random.nextInt(height + cornerY - cavity.getTotalHeight() + 1 - (cornerY + cavity.getTotalHeight())) + cornerY + cavity.getTotalHeight();
+        endY = random.nextInt(height + cornerY - cavity.getTotalHeight() + 1 - (cornerY + cavity.getTotalHeight())) + cornerY + cavity.getTotalHeight();
+
+        MoveBlockCommand moveBlockCommand = new MoveBlockCommand(new Position(cavity.getX(), cavity.getY()), new Position(startX, startY), handler);
+        moveBlockCommand.execute();
+        block = panel.getBlocks().get(0);
 
         historyController = new HistoryController(history, programArea);
 
-        handler = new GUIBlockHandler(palette, panel);
-        start = new Position(100, 250);
-        end = new Position(500, 320);
+        start = new Position(startX, startY);
+        end = new Position(endX, endY);
+
+        command = new MoveBlockCommand(start, end, handler);
     }
 
     @AfterEach
     void tearDown() {
+        command = null;
         manager.unsubscribe(panel);
         manager = null;
         random = null;
@@ -160,5 +169,48 @@ class MoveBlockCommandTest {
     @Test
     void moveBlockCommand_invalidGuiBlockHandler() {
         assertThrows(IllegalArgumentException.class, () -> new MoveBlockCommand(start, end, null));
+    }
+
+    @Test
+    void isValidStartPosition() {
+        assertTrue(MoveBlockCommand.isValidStartPosition(start));
+        assertFalse(MoveBlockCommand.isValidStartPosition(null));
+    }
+
+    @Test
+    void isValidEndPosition() {
+        assertTrue(MoveBlockCommand.isValidEndPosition(end));
+        assertFalse(MoveBlockCommand.isValidEndPosition(null));
+    }
+
+    @Test
+    void isValidBlockHandler() {
+        assertTrue(MoveBlockCommand.isValidBlockHandler(handler));
+        assertFalse(MoveBlockCommand.isValidBlockHandler(null));
+    }
+
+    @Test
+    void execute() {
+        assertEquals(startX, block.getX());
+        assertEquals(startY, block.getY());
+        command.execute();
+        assertEquals(endX, block.getX());
+        assertEquals(endY, block.getY());
+    }
+
+    @Test
+    void undo() {
+
+        assertEquals(startX, block.getX());
+        assertEquals(startY, block.getY());
+        System.out.println(panel.getBlocks().size());
+        command.execute();
+        assertNotEquals(startX, block.getX());
+        assertNotEquals(startY, block.getY());
+        System.out.println(panel.getBlocks().size());
+        command.undo();
+        System.out.println(panel.getBlocks().size());
+        assertEquals(startX, panel.getBlocks().get(0).getX());
+        assertEquals(startY, panel.getBlocks().get(0).getY());
     }
 }

@@ -78,6 +78,20 @@ class GUIConnectorTest {
     }
 
     @Test
+    void guiConnector_invalidParentBlock() {
+        assertThrows(IllegalArgumentException.class, () -> new GUIConnector(null, x1, y1, color1));
+    }
+
+    @Test
+    void isValidParentBlock() {
+        assertTrue(GUIConnector.isValidParentBlock(block1));
+        assertTrue(GUIConnector.isValidParentBlock(block2));
+        assertTrue(GUIConnector.isValidParentBlock(block3));
+        assertTrue(GUIConnector.isValidParentBlock(block4));
+        assertFalse(GUIConnector.isValidParentBlock(null));
+    }
+
+    @Test
     void getCollisionCircle() {
         assertEquals(x1, connector1.getCollisionCircle().getX());
         assertEquals(y1, connector1.getCollisionCircle().getY());
@@ -95,6 +109,20 @@ class GUIConnectorTest {
         assertEquals(y4, connector4.getCollisionCircle().getY());
         assertEquals(color4, connector4.getCollisionCircle().getColor());
     }
+
+    @Test
+    void getConnectedConnector() {
+        assertEquals(connector2, connector1.getConnectedConnector());
+        assertEquals(connector1, connector2.getConnectedConnector());
+        assertNull(connector3.getConnectedConnector());
+        assertNull(connector4.getConnectedConnector());
+    }
+
+//    @Test TODO test
+//    void getPosition() {
+//        assertEquals(x1, block1.getPosition().getX());
+//        assertEquals(y1, block1.getPosition().getY());
+//    }
 
     @Test
     void isConnected() {
@@ -124,7 +152,7 @@ class GUIConnectorTest {
 
     @Test
     void connect_AlreadyConnected() {
-        assertThrows(IllegalStateException.class, () -> { connector1.connect(connector3); });
+        assertThrows(IllegalArgumentException.class, () -> { connector1.connect(connector3); });
     }
 
     @Test

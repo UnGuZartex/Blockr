@@ -48,25 +48,58 @@ public class MoveBlockCommand implements Command
      * @post The current gui block handler is set to the given gui block handler.
      *
      * @throws IllegalArgumentException
-     *         When the given start position is not effective.
+     *         When the given start position is not valid.
      * @throws IllegalArgumentException
-     *         When the given end position is not effective.
+     *         When the given end position is not valid.
      * @throws IllegalArgumentException
-     *         When the given gui block handler is not effective.
+     *         When the given gui block handler is not valid.
      */
     public MoveBlockCommand(Position start, Position end, GUIBlockHandler guiBlockHandler) throws IllegalArgumentException {
-        if (start == null) {
-            throw new IllegalArgumentException("Start is not effective!");
+        if (!isValidStartPosition(start)) {
+            throw new IllegalArgumentException("Start is not valid!");
         }
-        if (end == null) {
-            throw new IllegalArgumentException("End is not effective!");
+        if (!isValidEndPosition(end)) {
+            throw new IllegalArgumentException("End is not valid!");
         }
-        if (guiBlockHandler == null) {
-            throw new IllegalArgumentException("The gui block handler is not effective!");
+        if (!isValidBlockHandler(guiBlockHandler)) {
+            throw new IllegalArgumentException("The gui block handler is not valid!");
         }
         this.start = start;
         this.end = end;
         this.guiBlockHandler = guiBlockHandler;
+    }
+
+    /**
+     * Check whether or not the given position is a valid start position.
+     *
+     * @param start The position to check.
+     *
+     * @return True if and only if the given position is not null.
+     */
+    public static boolean isValidStartPosition(Position start) {
+        return start != null;
+    }
+
+    /**
+     * Check whether or not the given position is a valid end position.
+     *
+     * @param end The position to check.
+     *
+     * @return True if and only if the given position is not null.
+     */
+    public static boolean isValidEndPosition(Position end) {
+        return end != null;
+    }
+
+    /**
+     * Check whether or not the given block handler is a valid.
+     *
+     * @param blockHandler The block handler to check.
+     *
+     * @return True if and only if the given block handler is not null.
+     */
+    public static boolean isValidBlockHandler(GUIBlockHandler blockHandler) {
+        return blockHandler != null;
     }
 
     /**
