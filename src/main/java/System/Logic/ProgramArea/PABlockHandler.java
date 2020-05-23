@@ -118,7 +118,7 @@ public class PABlockHandler {
      *
      * @effect Program reset command is added to the program area.
      * @effect The given block is added to the program area.
-     * @effect listeners are notified whether max blocks are reached.
+     * @effect Palette is updated.
      *
      * @throws IllegalStateException
      *         When max blocks has been reached.
