@@ -149,7 +149,7 @@ public class PABlockHandler {
      * @effect The two blocks are connected.
      * @effect The root block of the newly connected block structure is added as a program,
      *         if it isn't already.
-     * @effect listeners are notified whether max blocks are reached.
+     * @effect Palette is updated.
      */
     public void connectToExistingBlock(Block block, SubConnector subConnector) {
         programArea.addProgramResetCommand();
@@ -170,7 +170,7 @@ public class PABlockHandler {
      * @effect Program reset command is added to the program area.
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is added as a program.
-     * @effect palette is updated.
+     * @effect Palette is updated.
      */
     public void disconnectInPA(Block block) {
         programArea.addProgramResetCommand();
@@ -188,7 +188,7 @@ public class PABlockHandler {
      * @effect The given block is disconnected on its main connector.
      * @effect The given block is deleted from the program area.
      * @effect The given block is terminated.
-     * @effect palette is updated.
+     * @effect Palette is updated.
      */
     public void deleteProgram(Block block) {
         programArea.addProgramResetCommand();
