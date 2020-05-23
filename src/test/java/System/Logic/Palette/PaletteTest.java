@@ -1,7 +1,7 @@
 package System.Logic.Palette;
 
 import Controllers.ControllerClasses.BlockHandlerController;
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorldType.GameWorldType;
@@ -40,7 +40,7 @@ class PaletteTest {
     GUIBlock procedureGUI, functional, conditional, operator;
     String procedureName, functionalName, conditionalName, operatorName;
     BlockHandlerController blockHandlerController;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
 
     @BeforeEach
@@ -73,7 +73,7 @@ class PaletteTest {
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
 
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
 
         paBlockHandler = new PABlockHandler(Collections.singletonList(new FunctionalBlock(new DummyFunctionality())), programArea);
 

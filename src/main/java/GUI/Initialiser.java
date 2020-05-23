@@ -1,6 +1,6 @@
 package GUI;
 
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import Controllers.ControllerClasses.ConnectionController;
 import Controllers.ControllerClasses.HistoryController;
 import Controllers.ControllerClasses.BlockHandlerController;
@@ -95,7 +95,7 @@ public class Initialiser {
         HistoryController historyController = new HistoryController(history, programArea);
         PABlockHandler blockHandler = new PABlockHandler(systemPaletteBlocks, programArea);
         systemDefTemplate.subscribe(blockHandler.getPalette());
-        IGUI_System_BlockLink converter = new IGUI_System_BlockLink();
+        IGUISystemBlockLink converter = new IGUISystemBlockLink();
         ConnectionController connectionController = new ConnectionController(converter, blockHandler);
         BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),

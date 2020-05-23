@@ -1,6 +1,6 @@
 package GUI.Panel;
 
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import GUI.Blocks.*;
@@ -37,7 +37,7 @@ class ProgramAreaPanelTest {
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     BlockHandlerController blockHandlerController;
     ConnectionController connectionController;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -69,7 +69,7 @@ class ProgramAreaPanelTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";

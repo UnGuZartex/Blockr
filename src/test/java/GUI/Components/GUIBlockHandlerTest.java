@@ -406,3 +406,4 @@
 //        assertEquals(CORNER_Y_PA + HEIGHT/2, programAreaPanel.getBlocks().get(0).getY());
 //    }
 //}
+

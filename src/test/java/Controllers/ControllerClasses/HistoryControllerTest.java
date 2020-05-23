@@ -93,6 +93,18 @@ class HistoryControllerTest {
     }
 
     @Test
+    void isValidCommandHistory() {
+        assertTrue(HistoryController.isValidCommandHistory(history));
+        assertFalse(HistoryController.isValidCommandHistory(null));
+    }
+
+    @Test
+    void isValidProgramArea() {
+        assertTrue(HistoryController.isValidProgramArea(programArea));
+        assertFalse(HistoryController.isValidProgramArea(null));
+    }
+
+    @Test
     void execute_run() {
         WhileBlock whileBlock = (WhileBlock) paBlockHandler.getFromPalette(5);
         PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);

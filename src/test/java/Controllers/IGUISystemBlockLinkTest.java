@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class IGUISystemBlockLinkTest {
 
     GameWorldType type;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     GUIBlock cavity, functional, conditional, operator;
     String cavityName, functionalName, conditionalName, operatorName;
     int cornerX, cornerY, width, height;
@@ -44,7 +44,7 @@ class IGUISystemBlockLinkTest {
     @BeforeEach
     void setUp() {
         type = new LevelInitializer();
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
         programArea = new ProgramArea(type.createNewGameWorld(), new CommandHistory());
 
         random = new Random();

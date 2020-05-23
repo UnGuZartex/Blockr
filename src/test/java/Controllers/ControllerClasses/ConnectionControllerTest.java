@@ -1,6 +1,6 @@
 package Controllers.ControllerClasses;
 
-import Controllers.IGUI_System_BlockLink;
+import Controllers.IGUISystemBlockLink;
 import GUI.Blocks.*;
 import GUI.Panel.PalettePanel;
 import GameWorldAPI.GameWorld.GameWorld;
@@ -34,7 +34,7 @@ class ConnectionControllerTest {
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     ConnectionController connectionController;
-    IGUI_System_BlockLink converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -68,7 +68,7 @@ class ConnectionControllerTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new IGUI_System_BlockLink();
+        converter = new IGUISystemBlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";
@@ -139,6 +139,18 @@ class ConnectionControllerTest {
     @Test
     void connectionController_invalidBlockHandler() {
         assertThrows(IllegalArgumentException.class, () -> new ConnectionController(converter, null));
+    }
+
+    @Test
+    void isValidIGUISystemBlockLink() {
+        assertTrue(ConnectionController.isValidIGUISystemBlockLink(converter));
+        assertFalse(ConnectionController.isValidIGUISystemBlockLink(null));
+    }
+
+    @Test
+    void isValidPABlockHandler() {
+        assertTrue(ConnectionController.isValidPABlockHandler(paBlockHandler));
+        assertFalse(ConnectionController.isValidPABlockHandler(null));
     }
 
     @Test
