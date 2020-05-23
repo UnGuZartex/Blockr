@@ -76,8 +76,8 @@ class PABlockHandlerTest {
 
         handler.getPalette().subscribe(panel);
 
+        panel.getNewBlock(0);
         block.subscribe(handler.getPalette());
-
     }
 
     @AfterEach
