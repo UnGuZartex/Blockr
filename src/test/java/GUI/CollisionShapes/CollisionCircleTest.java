@@ -55,6 +55,34 @@ class CollisionCircleTest {
     }
 
     @Test
+    void collisionRectangle_invalidColor() {
+        assertThrows(IllegalArgumentException.class, () -> new CollisionCircle(x1, y1, r1, null));
+    }
+
+    @Test
+    void collisionRectangle_invalidRadius() {
+        assertThrows(IllegalArgumentException.class, () -> new CollisionCircle(x1, y1, -1, color1));
+    }
+
+    @Test
+    void isValidColor() {
+        assertTrue(CollisionShape.isValidColor(color1));
+        assertTrue(CollisionShape.isValidColor(color2));
+        assertTrue(CollisionShape.isValidColor(color3));
+        assertFalse(CollisionShape.isValidColor(null));
+    }
+
+    @Test
+    void isValidRadius() {
+        assertTrue(CollisionRectangle.isValidWidth(r1));
+        assertTrue(CollisionRectangle.isValidWidth(r2));
+        assertTrue(CollisionRectangle.isValidWidth(r3));
+        assertTrue(CollisionRectangle.isValidWidth(0));
+        assertFalse(CollisionRectangle.isValidWidth(-1));
+        assertFalse(CollisionRectangle.isValidWidth(-2));
+    }
+
+    @Test
     void getX() {
         assertEquals(x1, circle1.getX());
         assertEquals(x2, circle2.getX());

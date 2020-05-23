@@ -59,6 +59,49 @@ class CollisionRectangleTest {
     }
 
     @Test
+    void collisionRectangle_invalidColor() {
+        assertThrows(IllegalArgumentException.class, () -> new CollisionRectangle(x1, y1, width1, height1, null));
+    }
+
+    @Test
+    void collisionRectangle_invalidCWidth() {
+        assertThrows(IllegalArgumentException.class, () -> new CollisionRectangle(x1, y1, -1, height1, color1));
+    }
+
+    @Test
+    void collisionRectangle_invalidHeight() {
+        assertThrows(IllegalArgumentException.class, () -> new CollisionRectangle(x1, y1, width1, -1, color1));
+    }
+
+    @Test
+    void isValidColor() {
+        assertTrue(CollisionShape.isValidColor(color1));
+        assertTrue(CollisionShape.isValidColor(color2));
+        assertTrue(CollisionShape.isValidColor(color3));
+        assertFalse(CollisionShape.isValidColor(null));
+    }
+
+    @Test
+    void isValidWidth() {
+        assertTrue(CollisionRectangle.isValidWidth(width1));
+        assertTrue(CollisionRectangle.isValidWidth(width2));
+        assertTrue(CollisionRectangle.isValidWidth(width3));
+        assertTrue(CollisionRectangle.isValidWidth(0));
+        assertFalse(CollisionRectangle.isValidWidth(-1));
+        assertFalse(CollisionRectangle.isValidWidth(-2));
+    }
+
+    @Test
+    void isValidHeight() {
+        assertTrue(CollisionRectangle.isValidHeight(height1));
+        assertTrue(CollisionRectangle.isValidHeight(height2));
+        assertTrue(CollisionRectangle.isValidHeight(height3));
+        assertTrue(CollisionRectangle.isValidHeight(0));
+        assertFalse(CollisionRectangle.isValidHeight(-1));
+        assertFalse(CollisionRectangle.isValidHeight(-2));
+    }
+
+    @Test
     void getX() {
         assertEquals(x1, rect1.getX());
         assertEquals(x2, rect2.getX());

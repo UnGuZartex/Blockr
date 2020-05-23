@@ -5,6 +5,11 @@ import java.awt.*;
 /**
  * A class for rectangles.
  *
+ * @invar Each collision rectangle must have a valid width.
+ *        | !isValidWidth(width)
+ * @invar Each collision rectangle must have a valid height.
+ *        | !isValidHeight(height)
+ *
  * @author Alpha-team
  */
 public class CollisionRectangle extends CollisionShape {
@@ -38,17 +43,36 @@ public class CollisionRectangle extends CollisionShape {
      */
     public CollisionRectangle(int x, int y, int width, int height, Color color) throws IllegalArgumentException {
         super(x, y, color);
-
-        if (width < 0) {
+        if (!isValidWidth(width)) {
             throw new IllegalArgumentException("The given width is illegal.");
         }
-
-        if (height < 0) {
+        if (!isValidHeight(height)) {
             throw new IllegalArgumentException("The given height is illegal.");
         }
-
         this.width = width;
         this.height = height;
+    }
+
+    /**
+     * Check whether or not the given width is valid.
+     *
+     * @param width The width to check.
+     *
+     * @return True if and only if the given width is greater than or equal to 0.
+     */
+    public static boolean isValidWidth(int width) {
+        return width >= 0;
+    }
+
+    /**
+     * Check whether or not the given height is valid.
+     *
+     * @param height The width to check.
+     *
+     * @return True if and only if the given height is greater than or equal to 0.
+     */
+    public static boolean isValidHeight(int height) {
+        return height >= 0;
     }
 
     /**
