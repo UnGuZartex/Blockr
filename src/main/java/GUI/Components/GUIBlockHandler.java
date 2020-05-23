@@ -29,22 +29,27 @@ public class GUIBlockHandler {
      * Variable referring to the palette panel.
      */
     private final PalettePanel palette;
+
     /**
      * Variable referring to the program area panel.
      */
     private final ProgramAreaPanel programArea;
+
     /**
      * Variable referring to the panel where the current dragged block was first moved from.
      */
     private GamePanel blockSourcePanel;
+
     /**
      * Variable referring to the blocks connected to the current dragged block.
      */
     private List<GUIBlock> draggedBlocks;
+
     /**
      * Variable referring to the last valid positions of the current dragged blocks.
      */
     private List<Position> lastValidPositions;
+
     /**
      * Variable referring to the relation between the mouse and the current dragged block.
      */
@@ -354,6 +359,7 @@ public class GUIBlockHandler {
         return blocks.stream().anyMatch(b -> b.isInside(panel));
     }
 
+
     /**
      * A private inner class for gui block handler snapshots.
      */
@@ -364,11 +370,11 @@ public class GUIBlockHandler {
          */
         private final List<Position> blockPositionsSnapshot = new ArrayList<>(blockPositions);
 
-      
         /**
          * Variable referring to the stored palette indices currently set in the gui block handler.
          */
         private final List<Integer> paletteIndicesSnapshot = new ArrayList<>(paletteIndices);
+
         /**
          * Variable referring to the creation time of this snapshot.
          */
