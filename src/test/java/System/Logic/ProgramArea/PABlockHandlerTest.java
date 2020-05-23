@@ -74,7 +74,7 @@ class PABlockHandlerTest {
 
         panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(procedure, functional, conditional, operator));
 
-        handler.subscribe(panel);
+        handler.getPalette().subscribe(panel);
 
         block.subscribe(handler.getPalette());
 
@@ -254,7 +254,7 @@ class PABlockHandlerTest {
 
     @Test
     void unsubscribedListener() {
-        handler.unSubscribe(panel);
+        handler.getPalette().unsubscribe(panel);
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));

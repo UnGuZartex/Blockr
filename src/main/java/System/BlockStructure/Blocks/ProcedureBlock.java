@@ -186,7 +186,7 @@ public class ProcedureBlock extends Block {
      *
      * @param listener The listener to unsubscribe.
      */
-    public void unSubscribe(ProcedureListener listener) {
+    public void unsubscribe(ProcedureListener listener) {
         listeners.remove(listener);
     }
 

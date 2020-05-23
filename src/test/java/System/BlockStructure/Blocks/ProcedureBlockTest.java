@@ -71,7 +71,7 @@ class ProcedureBlockTest {
 
     @AfterEach
     void tearDown() {
-        procedure.unSubscribe(palette);
+        procedure.unsubscribe(palette);
         stack = null; 
         type = null;
         procedure = null;

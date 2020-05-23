@@ -23,14 +23,21 @@ public class Palette implements ProcedureListener {
      * Variable referring to the blocks in the palette.
      */
     private final List<Block> paletteBlocks;
+
     /**
      * Variable referring to the list of procedure call blocks in this palette.
      */
     private final List<ProcedureCall> procedureCallList = new ArrayList<>();
+
     /**
      * Variable referring to all the listeners of this palette.
      */
     private final List<PaletteListener> listeners = new ArrayList<>();
+
+    /**
+     * Variable stating if this palette can create more blocks.
+     */
+    private boolean reachedMaxBlocks;
 
     /**
      * Create a new palette with the given blocks as available palette blocks.
@@ -71,16 +78,35 @@ public class Palette implements ProcedureListener {
      *
      * @throws IndexOutOfBoundsException
      *         If the given index is smaller than 0 or greater than the number of blocks in this palette.
+     *
+     * @throws IllegalStateException
+     *         When the palette can't create anymore blocks.
      */
-    public Block getNewBlock(int index) throws IndexOutOfBoundsException {
+    public Block getNewBlock(int index) throws IndexOutOfBoundsException, IllegalStateException {
+
+        if (reachedMaxBlocks) {
+            throw new IllegalStateException("The max amount of blocks is reached, the palette can't create anymore blocks.");
+        }
+
         if (index < 0 || index >= (paletteBlocks.size() + procedureCallList.size())) {
             throw new IndexOutOfBoundsException("The given index for the block to choose is out of bounds!");
         }
+
         if (index >= paletteBlocks.size()) {
             index %= paletteBlocks.size();
             return procedureCallList.get(index).clone();
         }
         return paletteBlocks.get(index).clone();
+    }
+
+    /**
+     * Update whether the palette can create anymore blocks.
+     *
+     * @param reachedMaxBlocks Indicates whether the max amount of blocks in the program area is reached.
+     */
+    public void update(boolean reachedMaxBlocks) {
+        this.reachedMaxBlocks = reachedMaxBlocks;
+        notifyMaxBlocksReached();
     }
 
     /**
@@ -170,7 +196,7 @@ public class Palette implements ProcedureListener {
     }
 
     /**
-     * Notify that a procedure is deleted.
+     * Notify the palette listeners that a procedure is deleted.
      *
      * @param index The index of the call of the procedure.
      *
@@ -183,13 +209,24 @@ public class Palette implements ProcedureListener {
     }
 
     /**
-     * Notify that a procedure is created.
+     * Notify the palette listeners that a procedure is created.
      *
      * @effect Notify all listeners that a procedure is created.
      */
     private void notifyProcedureCreated() {
         for (PaletteListener listener : new ArrayList<>(listeners)) {
             listener.procedureCreated();
+        }
+    }
+
+    /**
+     * Notify the palette listeners whether the max amount
+     *
+     * @effect The listeners are notified about the state of the max blocks.
+     */
+    private void notifyMaxBlocksReached() {
+        for (PaletteListener listener : new ArrayList<>(listeners)) {
+            listener.onMaxBlocksReached(reachedMaxBlocks);
         }
     }
 }
