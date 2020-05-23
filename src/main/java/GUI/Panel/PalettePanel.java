@@ -1,7 +1,6 @@
 package GUI.Panel;
 
 import Controllers.PaletteListener;
-import Controllers.ProgramAreaListener;
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUICallerBlock;
 import Images.ImageLibrary;
@@ -20,7 +19,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class PalettePanel extends GamePanel implements ProgramAreaListener, PaletteListener {
+public class PalettePanel extends GamePanel implements PaletteListener {
 
     private static int PALETTE_COLUMNS = 2;
 

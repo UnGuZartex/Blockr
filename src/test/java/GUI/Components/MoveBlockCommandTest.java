@@ -104,7 +104,8 @@ class MoveBlockCommandTest {
         panel.addTemporaryBlockToProgramArea();
 
         historyController = new HistoryController(history, programArea);
-        handler = new GUIBlockHandler(palette, panel, historyController);
+
+        handler = new GUIBlockHandler(palette, panel);
         start = new Position(100, 250);
         end = new Position(500, 320);
     }
