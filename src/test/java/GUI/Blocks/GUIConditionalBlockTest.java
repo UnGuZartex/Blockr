@@ -65,7 +65,7 @@ class GUIConditionalBlockTest {
     @Test
     void setColor() {
         for (CollisionRectangle rect : cond1.blockRectangles) {
-            assertEquals(GUIConditionalBlock.DEFAULT_COLOR, rect.getColor());
+            assertEquals(GUIConditionalBlock.DEFAULT_BLOCK_COLOR, rect.getColor());
         }
         cond1.setColor(Color.black);
         for (CollisionRectangle rect : cond1.blockRectangles) {

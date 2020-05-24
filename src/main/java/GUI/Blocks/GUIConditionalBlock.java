@@ -3,7 +3,6 @@ package GUI.Blocks;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -17,10 +16,6 @@ public class GUIConditionalBlock extends GUIBlock {
      * Variables referring to the default with and height.
      */
     public static final int DEFAULT_HEIGHT = 30, DEFAULT_WIDTH = 100;
-    /**
-     * Variable referring to the color of
-     */
-    public static final Color DEFAULT_COLOR = Color.WHITE;
 
     /**
      * Initialise a new conditional block with given name and coordinates.
@@ -59,8 +54,8 @@ public class GUIConditionalBlock extends GUIBlock {
         height = DEFAULT_HEIGHT;
         width = DEFAULT_WIDTH;
         blockRectangles = new ArrayList<>();
-        blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_COLOR));
-        mainConnector = new GUIConnector( this, 0, height / 2, Color.blue);
+        blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_BLOCK_COLOR));
+        mainConnector = new GUIConnector( this, 0, height / 2, DEFAULT_MAIN_CONNECTOR_COLOR);
     }
 
     /**

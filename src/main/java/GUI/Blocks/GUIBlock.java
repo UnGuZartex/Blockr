@@ -2,15 +2,12 @@ package GUI.Blocks;
 
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
-import GUI.CollisionShapes.CollisionCircle;
 import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
 import Utility.Position;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,11 +37,17 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * Variable referring to the id of this block.
      */
     protected String name;
-
     /**
      * Variable indicating if this block is terminated.
      */
     private boolean terminated;
+
+    /**
+     * Variable referring to the colours of blocks and it's components.
+     */
+    public static final Color DEFAULT_BLOCK_COLOR = Color.WHITE;
+    public static final Color DEFAULT_SUB_CONNECTOR_COLOR = Color.RED;
+    public static final Color DEFAULT_MAIN_CONNECTOR_COLOR = Color.BLUE;
 
     /**
      * Initialise a new GUI block with given name and coordinates.
@@ -112,17 +115,48 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     }
 
     /**
+     * Get the name of this block.
+     *
+     * @return The name of this block.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Terminate this block.
+     *
+     * @post This block is terminated.
+     */
+    public void terminate() {
+        this.terminated = true;
+    }
+
+    /**
+     * Check whether or not this block is terminated.
+     *
+     * @return True if and only if this block is terminated.
+     */
+    public boolean isTerminated() {
+        return terminated;
+    }
+
+    /**
      * Set the color of this block.
      *
      * @param color The new color for this block.
      *
      * @post Every rectangle in this block has the given color.
+     *
+     * @throws IllegalStateException
+     *         If this block is terminated.
      */
-    public void setColor(Color color) {
-        if (!terminated) {
-            for (CollisionRectangle rectangle : blockRectangles) {
-                rectangle.setColor(color);
-            }
+    public void setColor(Color color) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This block is terminated!");
+        }
+        for (CollisionRectangle rectangle : blockRectangles) {
+            rectangle.setColor(color);
         }
     }
 
@@ -133,6 +167,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param y The new y coordinate for this block.
      *
      * @post The coordinates of this block are set to the given coordinates.
+     *
      * @effect All rectangles in this block are translated to the given position.
      * @effect All sub connectors are translated to the given position.
      * @effect The main connector is translated to the given position.
@@ -176,11 +211,19 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     }
 
     /**
-     * TODO commentaar
-     * @pre ......
-     * @param controller
+     * Remove this block from between its main connector and its sub connector below.
+     *
+     * @param connectionController The connection controller to execute the removal with.
+     * @param blockHandlerController The block handler controller to execute the removal with.
+     *
+     * @post If this block is only connected on its main connector, it is disconnected and the
+     *       connected block is also disconnected.
+     * @post If this block is only connected on its sub connector below, it is disconnected and the
+     *       connected block is also disconnected.
+     * @post If this block is connected on its main connector and sub connector below, than it is on
+     *       both connectors disconnected and the block which where connected are connected onto eachother.
      */
-    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockhandlerController) {
+    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) {
         if (mainConnector != null) {
             GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
             GUIBlock nextBlock = null;
@@ -207,7 +250,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
             }
 
             if (nextBlock != null) {
-                blockhandlerController.addExistingBlockAsProgram(nextBlock);
+                blockHandlerController.addExistingBlockAsProgram(nextBlock);
             }
         }
     }
@@ -357,6 +400,20 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     }
 
     /**
+     * Compare this block to the given block.
+     *
+     * @return a negative integer, zero, or a positive integer as this object
+     *         is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(GUIBlock other) {
+        int comparison = Integer.compare(other.priority, this.priority);
+        comparison = (comparison == 0) ? Integer.compare(this.getY(), other.getY()) : comparison;
+        comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
+        return comparison;
+    }
+
+    /**
      * Clone this gui block and return the clone.
      *
      * @return A clone of this gui block.
@@ -393,41 +450,5 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
         }
 
         return null;
-    }
-
-    /**
-     * TODO comments
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * TODO comments
-     * @return
-     */
-    public void terminate() {
-        this.terminated = true;
-    }
-
-    /**
-     * TODO comments
-     * @return
-     */
-    public boolean isTerminated() {
-        return terminated;
-    }
-
-    /**
-     * TODO comments
-     * @return
-     */
-    @Override
-    public int compareTo(GUIBlock other) {
-        int comparison = Integer.compare(other.priority, this.priority);
-        comparison = (comparison == 0) ? Integer.compare(this.getY(), other.getY()) : comparison;
-        comparison = (comparison == 0) ? Integer.compare(this.getX(), other.getX()) : comparison;
-        return comparison;
     }
 }
