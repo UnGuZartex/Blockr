@@ -16,9 +16,9 @@ import java.util.List;
  * to the program.
  *
  * @invar The program area panel must contain a valid block handler controller at all time.
- *        | blockHandlerController != null
+ *        | isValidBlockHandlerController(blockHandlerController)
  * @invar The program area panel must contain a valid connection controller at all time.
- *        | connectionController != null
+ *        | isValidBlockConnectionController(connectionController)
  *
  * @author ALpha-team
  */
@@ -62,24 +62,46 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @effect Calls the super constructor with given coordinates and dimensions.
      *
      * @throws IllegalArgumentException
-     *         when the given block handler controller is null.
+     *         when the given block handler controller is not valid.
      * @throws IllegalArgumentException
-     *         when the given connection controller is null.
+     *         when the given connection controller is not valid.
      */
-    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController,
-                ConnectionController connectionController) throws IllegalArgumentException {
+    public ProgramAreaPanel(int cornerX, int cornerY, int width, int height, BlockHandlerController blockHandlerController, ConnectionController connectionController)
+            throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
 
-        if (blockHandlerController == null) {
-            throw new IllegalArgumentException("The given block handler controller is null.");
+        if (!isValidBlockHandlerController(blockHandlerController)) {
+            throw new IllegalArgumentException("The given block handler controller is not valid!");
         }
 
-        if (connectionController == null) {
-            throw new IllegalArgumentException("The given connection controller is null.");
+        if (!isValidBlockConnectionController(connectionController)) {
+            throw new IllegalArgumentException("The given connection controller is not valid!");
         }
 
         this.blockHandlerController = blockHandlerController;
         this.connectionController = connectionController;
+    }
+
+    /**
+     * Check whether or not the given block handler controller is valid.
+     *
+     * @param controller The block handler controller to check.
+     *
+     * @return True if and only if the given block handler controller is effective.
+     */
+    public static boolean isValidBlockHandlerController(BlockHandlerController controller) {
+        return controller != null;
+    }
+
+    /**
+     * Check whether or not the given connection controller is valid.
+     *
+     * @param controller The connection controller to check.
+     *
+     * @return True if and only if the given connection controller is effective.
+     */
+    public static boolean isValidBlockConnectionController(ConnectionController controller) {
+        return controller != null;
     }
 
     /**
@@ -146,11 +168,10 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
      * @param GUIBlocks The blocks to delete from the program area.
      *
      * @post All given blocks are deleted from the program area block pair list.
+     * @post All blocks are terminated if they are in this panel.
+     *
      * @effect All given blocks are internally deleted from the program area.
-     */
-    /**
-     * TODO
-     * @param GUIBlocks
+     * @effect This panel is updated.
      */
     public void deleteBlockFromProgramArea(List<GUIBlock> GUIBlocks) {
         for (Map.Entry<GUIBlock, Integer> block : blockPairs) {
@@ -266,15 +287,6 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     }
 
     /**
-     * Change the color of the blocks to the given color.
-     *
-     * @param color The new color for the blocks.
-     */
-    private void changeBlockColors(Color color) {
-        blockPairs.forEach(x -> x.getKey().setColor(color));
-    }
-
-    /**
      * Paint this panel.
      *
      * @param g The given graphics.
@@ -289,6 +301,30 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         drawBackGround(g, library, "programAreaBackground");
         drawBlocks(g);
         drawGameState(g);
+    }
+
+    /**
+     * Update the blocks in this panel.
+     *
+     * @effect All terminated blocks are are removed from the program area.
+     */
+    public void update() {
+        for (Map.Entry<GUIBlock, Integer> block : new ArrayList<>(blockPairs)) {
+            if (block.getKey().isTerminated()) {
+                blockPairs.remove(block);
+                blockHandlerController.deleteFromPA(block.getKey());
+                block.getKey().removeInBetween(connectionController, blockHandlerController);
+            }
+        }
+    }
+
+    /**
+     * Change the color of the blocks to the given color.
+     *
+     * @param color The new color for the blocks.
+     */
+    private void changeBlockColors(Color color) {
+        blockPairs.forEach(x -> x.getKey().setColor(color));
     }
 
     /**
@@ -314,18 +350,5 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
         g.setFont(newFont);
         g.drawString(gameState, panelRectangle.getX(), 100);
         g.setFont(currentFont);
-    }
-
-    /**
-     * TODO comments
-     */
-    public void update() {
-        for (Map.Entry<GUIBlock, Integer> block : new ArrayList<>(blockPairs)) {
-            if (block.getKey().isTerminated()) {
-                blockPairs.remove(block);
-                blockHandlerController.deleteFromPA(block.getKey());
-                block.getKey().removeInBetween(connectionController, blockHandlerController);
-            }
-        }
     }
 }

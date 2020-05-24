@@ -129,6 +129,19 @@ class ProgramAreaPanelTest {
     }
 
     @Test
+    void isValidBlockHandlerController() {
+        assertTrue(ProgramAreaPanel.isValidBlockHandlerController(blockHandlerController));
+        assertTrue(ProgramAreaPanel.isValidBlockHandlerController(blockHandlerController));
+        assertFalse(ProgramAreaPanel.isValidBlockHandlerController(null));
+    }
+
+    @Test
+    void isValidBlockConnectionController() {
+        assertTrue(ProgramAreaPanel.isValidBlockConnectionController(connectionController));
+        assertFalse(ProgramAreaPanel.isValidBlockConnectionController(null));
+    }
+
+    @Test
     void getConnectionController() {
         assertEquals(connectionController, panel.getConnectionController());
     }
@@ -286,7 +299,9 @@ class ProgramAreaPanelTest {
         assertTrue(panel.getBlockPairs().contains(blockPair3));
         assertEquals(4, panel.getBlockPairs().size());
 
+        assertFalse(block1.isTerminated());
         panel.deleteBlockFromProgramArea( new ArrayList<>(Collections.singletonList(block1)));
+        assertTrue(block1.isTerminated());
         assertNull(programArea.getProgram());
         assertTrue(panel.getBlockPairs().contains(blockPair0));
         assertTrue(panel.getBlockPairs().contains(blockPair2));
@@ -323,7 +338,11 @@ class ProgramAreaPanelTest {
         assertTrue(panel.getBlockPairs().contains(blockPair3));
         assertEquals(4, panel.getBlockPairs().size());
 
+        assertFalse(block1.isTerminated());
+        assertFalse(block3.isTerminated());
         panel.deleteBlockFromProgramArea( new ArrayList<>(Arrays.asList(block1, block3)));
+        assertTrue(block1.isTerminated());
+        assertTrue(block3.isTerminated());
         assertNull(programArea.getProgram());
         assertTrue(panel.getBlockPairs().contains(blockPair0));
         assertTrue(panel.getBlockPairs().contains(blockPair2));
@@ -740,5 +759,34 @@ class ProgramAreaPanelTest {
         assertEquals(Color.red, block0.getColor());
         assertEquals(Color.red, block1.getColor());
         assertEquals("INVALID PROGRAM!", panel.gameState);
+    }
+
+    @Test
+    void update() {
+        GUIBlock block0 = palette.getNewBlock(0);
+        Map.Entry<GUIBlock, Integer> blockPair0 = new AbstractMap.SimpleEntry<>(block0, 0);
+        panel.setTemporaryBlockPair(blockPair0);
+        panel.addTemporaryBlockToProgramArea();
+        GUIBlock block1 = palette.getNewBlock(1);
+        Map.Entry<GUIBlock, Integer> blockPair1 = new AbstractMap.SimpleEntry<>(block1, 1);
+        panel.setTemporaryBlockPair(blockPair1);
+        panel.addTemporaryBlockToProgramArea();
+
+        assertEquals(2, panel.getBlocks().size());
+        converter.getBlockFromGUIBlock(block0);
+        converter.getBlockFromGUIBlock(block1);
+
+        block0.terminate();
+        block1.terminate();
+
+        assertEquals(2, panel.getBlocks().size());
+        converter.getBlockFromGUIBlock(block0);
+        converter.getBlockFromGUIBlock(block1);
+
+        panel.update();
+
+        assertEquals(0, panel.getBlocks().size());
+        assertThrows(IllegalArgumentException.class, () -> converter.getBlockFromGUIBlock(block0));
+        assertThrows(IllegalArgumentException.class, () -> converter.getBlockFromGUIBlock(block1));
     }
 }
