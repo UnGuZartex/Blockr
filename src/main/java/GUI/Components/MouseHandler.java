@@ -85,8 +85,8 @@ public class MouseHandler {
      *
      * @post The mouse start position is set when the mouse is pressed.
      *
-     * @effect the history controller executes a block move command, if the mouse is released.
-     * @effect The block handler handles the mouse event if the mouse is in another state than released.
+     * @effect the history controller executes a block move command, if the mouse is released and blocks are being dragged.
+     * @effect The block handler handles the mouse event if the mouse is in another state than released or no blocks are being dragged.
      */
     public void handleMouseEvent(int id, int x, int y) {
         if (id == MouseEvent.MOUSE_RELEASED && blockHandler.blocksAreDragged()) {

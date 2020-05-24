@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -146,6 +147,25 @@ class GUIBlockHandlerTest {
     @Test
     void guiBlockHandler_invalidProgramAreaPanel() {
         assertThrows(IllegalArgumentException.class, () -> new GUIBlockHandler(palette, null));
+    }
+
+    @Test
+    void isValidPalettePanel() {
+        assertTrue(GUIBlockHandler.isValidPalettePanel(palette));
+        assertFalse(GUIBlockHandler.isValidPalettePanel(null));
+    }
+
+    @Test
+    void isValidProgramAreaPanel() {
+        assertTrue(GUIBlockHandler.isValidProgramAreaPanel(programAreaPanel));
+        assertFalse(GUIBlockHandler.isValidProgramAreaPanel(null));
+    }
+
+    @Test
+    void blocksAreDragged() {
+        assertFalse(guiBlockHandler.blocksAreDragged());
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, cavity.getX(), cavity.getY());
+        assertTrue(guiBlockHandler.blocksAreDragged());
     }
 
     @Test
@@ -379,6 +399,21 @@ class GUIBlockHandlerTest {
         assertTrue(programAreaPanel.getBlocks().get(0) instanceof GUIFunctionalBlock);
         assertEquals(CORNER_X_PA + WIDTH/2, programAreaPanel.getBlocks().get(0).getX());
         assertEquals(CORNER_Y_PA + HEIGHT/2, programAreaPanel.getBlocks().get(0).getY());
+    }
+
+    @Test
+    void snapshot_getName() {
+        Snapshot snapshot = guiBlockHandler.createSnapshot();
+        assertEquals("GUIBlockHandler snapshot " + snapshot, snapshot.getName());
+    }
+
+    @Test
+    void snapshot_getSnapshotDate() {
+        LocalDateTime dateBefore = LocalDateTime.now().minusSeconds(1);
+        Snapshot snapshot = guiBlockHandler.createSnapshot();
+        LocalDateTime dateAfter = LocalDateTime.now().plusSeconds(1);
+        assertTrue(dateBefore.isBefore(snapshot.getSnapshotDate()));
+        assertTrue(dateAfter.isAfter(snapshot.getSnapshotDate()));
     }
 }
 

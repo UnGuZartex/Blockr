@@ -16,10 +16,10 @@ import java.util.*;
  * A class used to handle the movement of GUI blocks between the
  * palette and program area panels.
  *
- * @invar The palette panel of this gui block handler may not be null.
- *        | palette != null
- * @invar The program area panel of this gui block handler may not be null.
- *        | programArea != null
+ * @invar The palette panel of this gui block handler must be valid.
+ *        | isValidPalettePanel(palette)
+ * @invar The program area panel of this gui block handler must be valid.
+ *        | isValidProgramAreaPanel(programArea)
  *
  * @author Alpha-team
  */
@@ -29,37 +29,30 @@ public class GUIBlockHandler {
      * Variable referring to the palette panel.
      */
     private final PalettePanel palette;
-
     /**
      * Variable referring to the program area panel.
      */
     private final ProgramAreaPanel programArea;
-
     /**
      * Variable referring to the panel where the current dragged block was first moved from.
      */
     private GamePanel blockSourcePanel;
-
     /**
      * Variable referring to the blocks connected to the current dragged block.
      */
     private List<GUIBlock> draggedBlocks;
-
     /**
      * Variable referring to the last valid positions of the current dragged blocks.
      */
     private List<Position> lastValidPositions;
-
     /**
      * Variable referring to the relation between the mouse and the current dragged block.
      */
     private Position dragDelta;
-
     /**
      * Variable referring to the block position data in the gui block handler.
      */
     private List<Position> blockPositions = new ArrayList<>();
-
     /**
      * Variable referring to the palette indices data in the gui block handler.
      */
@@ -75,22 +68,48 @@ public class GUIBlockHandler {
      * @post The current program area panel is set to the given program area panel.
      *
      * @throws IllegalArgumentException
-     *         When the given palette is not effective.
+     *         When the given palette is not valid.
      * @throws IllegalArgumentException
-     *         When the given program area is not effective.
+     *         When the given program area is not valid.
      */
     public GUIBlockHandler(PalettePanel palette, ProgramAreaPanel programArea) throws IllegalArgumentException {
-        if (palette == null) {
-            throw new IllegalArgumentException("The given palette is not effective!");
+        if (!isValidPalettePanel(palette)) {
+            throw new IllegalArgumentException("The given palette is not valid!");
         }
-        if (programArea == null) {
-            throw new IllegalArgumentException("The given program area is not effective!");
+        if (!isValidProgramAreaPanel(programArea)) {
+            throw new IllegalArgumentException("The given program area is not valid!");
         }
-
         this.palette = palette;
         this.programArea = programArea;
     }
 
+    /**
+     * Check whether or not the given palette panel is valid or not.
+     *
+     * @param panel The palette panel to check.
+     *
+     * @return True if and only if the given palette panel is not null.
+     */
+    public static boolean isValidPalettePanel(PalettePanel panel) {
+        return panel != null;
+    }
+
+    /**
+     * Check whether or not the given program area panel is valid or not.
+     *
+     * @param panel The program area panel to check.
+     *
+     * @return True if and only if the given program area panel is not null.
+     */
+    public static boolean isValidProgramAreaPanel(ProgramAreaPanel panel) {
+        return panel != null;
+    }
+
+    /**
+     * Check whether or not blocks are being dragged.
+     *
+     * @return True if and only if the dragged blocks list is not effective.
+     */
     public boolean blocksAreDragged() {
         return draggedBlocks != null;
     }
