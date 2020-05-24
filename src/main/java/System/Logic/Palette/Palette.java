@@ -92,11 +92,9 @@ public class Palette implements ProcedureListener {
             throw new IndexOutOfBoundsException("The given index for the block to choose is out of bounds!");
         }
 
-        if (index >= paletteBlocks.size()) {
-            index %= paletteBlocks.size();
-            return procedureCallList.get(index).clone();
-        }
-        return paletteBlocks.get(index).clone();
+        List<Block> combined = new ArrayList<>(paletteBlocks);
+        combined.addAll(procedureCallList);
+        return combined.get(index).clone();
     }
 
     /**

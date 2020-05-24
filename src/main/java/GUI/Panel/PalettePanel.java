@@ -102,13 +102,9 @@ public class PalettePanel extends GamePanel implements PaletteListener {
             throw new IllegalArgumentException("The given index is invalid for this palette!");
         }
 
-        if (index >= blocks.size()) {
-            index %= blocks.size();
-            lastCreated = callerBlocks.get(index).clone();
-        }
-        else {
-            lastCreated = blocks.get(index).clone();
-        }
+        List<GUIBlock> combined = new ArrayList<>(blocks);
+        combined.addAll(callerBlocks);
+        lastCreated = combined.get(index).clone();
         return lastCreated;
     }
 
