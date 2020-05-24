@@ -102,9 +102,13 @@ class MoveBlockCommandTest {
         handler = new GUIBlockHandler(palette, panel);
 
         startX = random.nextInt(width + cornerX - cavity.getWidth() + 1 - (cornerX + cavity.getWidth())) + cornerX + cavity.getWidth();
-        endX = random.nextInt(width + cornerX - cavity.getWidth() + 1 - (cornerX + cavity.getWidth())) + cornerX + cavity.getWidth();
         startY = random.nextInt(height + cornerY - cavity.getTotalHeight() + 1 - (cornerY + cavity.getTotalHeight())) + cornerY + cavity.getTotalHeight();
-        endY = random.nextInt(height + cornerY - cavity.getTotalHeight() + 1 - (cornerY + cavity.getTotalHeight())) + cornerY + cavity.getTotalHeight();
+        endX = startX;
+        endY = startY;
+        while(endX == startX && endY == startY) {
+            endX = random.nextInt(width + cornerX - cavity.getWidth() + 1 - (cornerX + cavity.getWidth())) + cornerX + cavity.getWidth();
+            endY = random.nextInt(height + cornerY - cavity.getTotalHeight() + 1 - (cornerY + cavity.getTotalHeight())) + cornerY + cavity.getTotalHeight();
+        }
 
         MoveBlockCommand moveBlockCommand = new MoveBlockCommand(new Position(cavity.getX(), cavity.getY()), new Position(startX, startY), handler);
         moveBlockCommand.execute();
@@ -200,16 +204,12 @@ class MoveBlockCommandTest {
 
     @Test
     void undo() {
-
         assertEquals(startX, block.getX());
         assertEquals(startY, block.getY());
-        System.out.println(panel.getBlocks().size());
         command.execute();
-        assertNotEquals(startX, block.getX());
-        assertNotEquals(startY, block.getY());
-        System.out.println(panel.getBlocks().size());
+        assertNotEquals(startX, panel.getBlocks().get(0).getX());
+        assertNotEquals(startY, panel.getBlocks().get(0).getY());
         command.undo();
-        System.out.println(panel.getBlocks().size());
         assertEquals(startX, panel.getBlocks().get(0).getX());
         assertEquals(startY, panel.getBlocks().get(0).getY());
     }
