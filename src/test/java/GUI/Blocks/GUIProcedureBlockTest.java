@@ -2,6 +2,7 @@ package GUI.Blocks;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -26,7 +27,7 @@ class GUIProcedureBlockTest {
         procedure = null;
     }
 
-    @Test
+    @Test @Order(1)
     void testClone() {
         GUIBlock clone1 = procedure.clone();
         assertNotEquals(clone1, procedure);
@@ -72,10 +73,6 @@ class GUIProcedureBlockTest {
         assertEquals("Def 2", clone5.getName());
         assertEquals("Def 3", clone3.getName());
         assertEquals("Def 4", clone4.getName());
-
-        clone3.terminate();
-        clone4.terminate();
-        clone5.terminate();
     }
 
     @Test
