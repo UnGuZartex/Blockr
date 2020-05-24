@@ -415,5 +415,36 @@ class GUIBlockHandlerTest {
         assertTrue(dateBefore.isBefore(snapshot.getSnapshotDate()));
         assertTrue(dateAfter.isAfter(snapshot.getSnapshotDate()));
     }
-}
 
+    @Test
+    void connectInProgramArea() {
+        assertEquals(0, programAreaPanel.getBlocks().size());
+        assertNull(programArea.getProgram());
+
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, (int) (CORNER_X_PA + WIDTH*0.25), (int) (CORNER_Y_PA + HEIGHT*0.25));
+
+        GUIBlock block1 = programAreaPanel.getBlocks().get(0);
+        assertEquals(1, programAreaPanel.getBlocks().size());
+        assertNotNull(programArea.getProgram());
+
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, functional.getX(), functional.getY());
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, (int) (CORNER_X_PA + WIDTH*0.75), (int) (CORNER_Y_PA + HEIGHT*0.75));
+
+        assertEquals(2, programAreaPanel.getBlocks().size());
+        assertNull(programArea.getProgram());
+        GUIBlock block2 = programAreaPanel.getBlocks().get(1);
+        assertNotEquals(block1, block2);
+        assertEquals(1, block1.getConnectedBlocks().size());
+
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_PRESSED, block1.getX() + GUIFunctionalBlock.DEFAULT_WIDTH/2, block1.getY() + GUIFunctionalBlock.DEFAULT_HEIGHT/2);
+        assertTrue(guiBlockHandler.blocksAreDragged());
+        mouseHandler.handleMouseEvent(MouseEvent.MOUSE_RELEASED, block2.getX() + GUIFunctionalBlock.DEFAULT_WIDTH/2, block2.getY() - GUIFunctionalBlock.DEFAULT_HEIGHT/2);
+
+        assertEquals(2, programAreaPanel.getBlocks().size());
+        assertNotNull(programArea.getProgram());
+
+        assertEquals(2, block1.getConnectedBlocks().size());
+        assertTrue(block1.getConnectedBlocks().contains(block2));
+    }
+}
