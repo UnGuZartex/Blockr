@@ -211,6 +211,8 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param connectionController The connection controller to execute the removal with.
      * @param blockHandlerController The block handler controller to execute the removal with.
      *
+     * @pre This block is already disconnected in the system.
+     *
      * @post If this block is only connected on its main connector, it is disconnected and the
      *       connected block is also disconnected.
      * @post If this block is only connected on its sub connector below, it is disconnected and the
