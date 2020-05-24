@@ -18,7 +18,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
      * taken. If entry i is true, then the index i is taken. If i exceeds the
      * length of the list, then i is not taken.
      */
-    private static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
+    protected static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
     /**
      * Variable referring to the current priority of this block, which is initially
      * the max value.

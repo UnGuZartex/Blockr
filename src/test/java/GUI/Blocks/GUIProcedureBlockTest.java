@@ -18,6 +18,7 @@ class GUIProcedureBlockTest {
     @BeforeEach
     void setUp() {
         random = new Random();
+        GUIProcedureBlock.takenProcedureNumbers.clear();
         procedure = new GUIProcedureBlock("Procedure", random.nextInt(MAX_X + 1 - MIN_X) + MIN_X, random.nextInt(MAX_Y + 1 - MIN_Y) + MIN_Y);
     }
 
