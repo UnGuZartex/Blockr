@@ -30,8 +30,9 @@ class PalettePanelTest {
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 400, MAX_HEIGHT = 800;
     GUIBlock cavity, functional, conditional, operator;
-    String cavityName, functionalName, conditionalName, operatorName;
+    String cavityName, functionalName, conditionalName, operatorName, procedureName;
     BlockHandlerController blockHandlerController;
+    GUIProcedureBlock procedure;
     IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     GameWorldType type;
@@ -52,11 +53,13 @@ class PalettePanelTest {
         functionalName = "functional";
         conditionalName = "conditional";
         operatorName = "operator";
+        procedureName = "procedure";
 
         cavity = new GUICavityBlock(cavityName, 0,0);
         functional = new GUIFunctionalBlock(functionalName, 0,0);
         conditional = new GUIConditionalBlock(conditionalName, 0,0);
         operator = new GUIOperatorBlock(operatorName, 0,0);
+        procedure = new GUIProcedureBlock(procedureName, 0,0);
 
         converter = new IGUISystemBlockLink();
 
@@ -64,7 +67,7 @@ class PalettePanelTest {
 
         blockHandlerController = new BlockHandlerController(converter, paBlockHandler);
 
-        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator));
+        panel = new PalettePanel(cornerX, cornerY, width, height, Arrays.asList(cavity, functional, conditional, operator, procedure));
     }
 
     @AfterEach
@@ -120,7 +123,7 @@ class PalettePanelTest {
     @Test
     void getNewBlock_outOfRange() {
         assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(-1));
-        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(4));
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(5));
     }
 
     @Test
@@ -140,6 +143,25 @@ class PalettePanelTest {
         block = panel.getNewBlock(3);
         assertNotEquals(operator, block);
         assertEquals(operator.getClass(), block.getClass());
+
+        block = panel.getNewBlock(4);
+        assertNotEquals(procedure, block);
+        assertEquals(procedure.getClass(), block.getClass());
+    }
+
+    @Test
+    void getNewBlock_caller() {
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(5));
+
+        GUIBlock block = panel.getNewBlock(4);
+        panel.procedureCreated();
+        assertNotEquals(procedure, block);
+        assertEquals(procedure.getClass(), block.getClass());
+
+        block = panel.getNewBlock(5);
+        assertEquals(GUICallerBlock.class, block.getClass());
+
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(6));
     }
 
     @Test
@@ -158,5 +180,56 @@ class PalettePanelTest {
         assertThrows(IllegalStateException.class, () -> panel.getNewBlock(0));
         panel.onMaxBlocksReached(false);
         panel.getNewBlock(0);
+    }
+
+    @Test
+    void procedureCreated() {
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(5));
+
+        GUIBlock block = panel.getNewBlock(4);
+        panel.procedureCreated();
+        assertNotEquals(procedure, block);
+        assertEquals(procedure.getClass(), block.getClass());
+
+        block = panel.getNewBlock(5);
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(6));
+        int x = block.getX();
+        int y = block.getY();
+
+        block = panel.getNewBlock(4);
+        panel.procedureCreated();
+        assertNotEquals(procedure, block);
+        assertEquals(procedure.getClass(), block.getClass());
+
+        panel.getNewBlock(6);
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(7));
+
+        assertEquals(x, panel.getNewBlock(5).getX());
+        assertNotEquals(y, panel.getNewBlock(5).getY());
+    }
+
+    @Test
+    void procedureDeleted() {
+        panel.getNewBlock(4);
+        panel.procedureCreated();
+
+        GUIBlock block = panel.getNewBlock(5);
+        int x = block.getX();
+        int y = block.getY();
+
+        panel.getNewBlock(4);
+        panel.procedureCreated();
+
+        GUIBlock secondCaller = panel.getNewBlock(6);
+
+        assertFalse(secondCaller.isTerminated());
+        assertEquals(x, panel.getNewBlock(5).getX());
+        assertNotEquals(y, panel.getNewBlock(5).getY());
+
+        panel.procedureDeleted(1);
+        assertTrue(secondCaller.isTerminated());
+        assertEquals(x, panel.getNewBlock(5).getX());
+        assertEquals(y, panel.getNewBlock(5).getY());
+        assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(6));
     }
 }

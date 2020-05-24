@@ -9,7 +9,7 @@ import java.awt.*;
  * A class for representing the game world panel.
  *
  * @invar The game world panel must contain a valid game world at all time.
- *        | gameWorld != null
+ *        | isValidGameWorld(gameWorld)
  *
  * @author Alpha-team
  */
@@ -34,16 +34,25 @@ public class GameWorldPanel extends GamePanel {
      * @effect Calls the super constructor with the given coordinates and dimensions.
      *
      * @throws IllegalArgumentException
-     *         If the given game world is null.
+     *         If the given game world is not valid.
      */
     public GameWorldPanel(GameWorld gameWorld, int cornerX, int cornerY, int width, int height) throws IllegalArgumentException {
         super(cornerX, cornerY, width, height);
-
-        if (gameWorld == null) {
-            throw new IllegalArgumentException("The given game world is null!");
+        if (!isValidGameWorld(gameWorld)) {
+            throw new IllegalArgumentException("The given game world is not valid!");
         }
-
         this.gameWorld = gameWorld;
+    }
+
+    /**
+     * Check whether or not the given game world is valid.
+     *
+     * @param gameWorld The game world to check.
+     *
+     * @return True if and only if the given game world is not null.
+     */
+    public static boolean isValidGameWorld(GameWorld gameWorld) {
+        return gameWorld != null;
     }
 
     /**

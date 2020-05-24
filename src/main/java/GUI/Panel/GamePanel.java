@@ -15,7 +15,7 @@ public abstract class GamePanel {
     /**
      * Variable referring to the area of the panel.
      */
-    protected CollisionRectangle panelRectangle;
+    protected final CollisionRectangle panelRectangle;
 
     /**
      * Initialise a new game panel with given corner coordinates and dimension.
@@ -25,8 +25,7 @@ public abstract class GamePanel {
      * @param width The width of the area.
      * @param height The height of the area.
      *
-     * @effect The panel rectangle is set to a new rectangle with given parameters
-     *         the color black.
+     * @effect The panel rectangle is set to a new rectangle with given parameters and the colour light gray.
      */
     protected GamePanel(int cornerX, int cornerY, int width, int height) {
         panelRectangle = new CollisionRectangle(cornerX, cornerY, width, height, Color.lightGray);
@@ -54,7 +53,7 @@ public abstract class GamePanel {
      * Paint this panel.
      *
      * @param g The given graphics.
-     * @library library The image library.
+     * @param library The image library.
      */
     abstract void paint(Graphics g, ImageLibrary library);
 
@@ -62,7 +61,8 @@ public abstract class GamePanel {
      * Paint the panel background.
      *
      * @param g The given graphics.
-     * @library library The image library.
+     * @param library The image library.
+     * @param imageName The name of the image to draw.
      *
      * @effect The panel boundaries are drawn.
      * @effect The panel background is drawn if an image name is given.

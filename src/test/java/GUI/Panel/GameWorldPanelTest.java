@@ -1,5 +1,6 @@
 package GUI.Panel;
 
+import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import org.junit.jupiter.api.AfterEach;
@@ -18,6 +19,7 @@ class GameWorldPanelTest {
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     GameWorldType type;
+    GameWorld gameWorld;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +29,8 @@ class GameWorldPanelTest {
         width = random.nextInt(MAX_WIDTH + 1 - MIN_WIDTH) + MIN_WIDTH;
         height = random.nextInt(MAX_HEIGHT + 1 - MIN_HEIGHT) + MIN_HEIGHT;
         type = new LevelInitializer();
-        panel = new GameWorldPanel(type.createNewGameWorld(), cornerX, cornerY, width, height);
+        gameWorld = type.createNewGameWorld();
+        panel = new GameWorldPanel(gameWorld, cornerX, cornerY, width, height);
     }
 
     @AfterEach
@@ -40,5 +43,11 @@ class GameWorldPanelTest {
     @Test
     void gameWorldPanel_invalidGameWorld() {
         assertThrows(IllegalArgumentException.class, () -> new GameWorldPanel(null, cornerX, cornerY, width, height));
+    }
+
+    @Test
+    void isValidGameWorld() {
+        assertTrue(GameWorldPanel.isValidGameWorld(gameWorld));
+        assertFalse(GameWorldPanel.isValidGameWorld(null));
     }
 }
