@@ -153,7 +153,7 @@ public class GUIConnector {
      */
     public void connect(GUIConnector other) throws IllegalArgumentException {
         if (!canConnectWith(other)) {
-            throw new IllegalArgumentException("Given connector is null!");
+            throw new IllegalArgumentException("Given connector can not connect with this connector!");
         }
         this.alignWith(other);
         connectedConnector = other;

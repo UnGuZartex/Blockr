@@ -146,15 +146,10 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      *
      * @param color The new color for this block.
      *
-     * @post Every rectangle in this block has the given color.
-     *
-     * @throws IllegalStateException
-     *         If this block is terminated.
+     * @post Every rectangle in this block has the given color, if this block isn't terminated.
      */
-    public void setColor(Color color) throws IllegalStateException {
-        if (isTerminated()) {
-            throw new IllegalStateException("This block is terminated!");
-        }
+    public void setColor(Color color) {
+        if (isTerminated()) return;
         for (CollisionRectangle rectangle : blockRectangles) {
             rectangle.setColor(color);
         }

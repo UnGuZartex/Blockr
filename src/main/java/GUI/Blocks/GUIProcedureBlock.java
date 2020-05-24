@@ -16,9 +16,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
 
     /**
      * TODO
-     * @param name
-     * @param x
-     * @param y
      */
     public GUIProcedureBlock(int x, int y, int procedureNr) {
         super("Def " + procedureNr, x, y);

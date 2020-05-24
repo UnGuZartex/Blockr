@@ -199,7 +199,9 @@ class GUIFunctionalBlockTest {
     @Test
     void setColor_terminated() {
         block.terminate();
-        assertThrows(IllegalStateException.class, () -> block.setColor(Color.pink));
+        assertEquals(block.getColor(), GUIBlock.DEFAULT_BLOCK_COLOR);
+        block.setColor(Color.pink);
+        assertEquals(block.getColor(), GUIBlock.DEFAULT_BLOCK_COLOR);
     }
 
     @Test

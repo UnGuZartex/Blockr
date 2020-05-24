@@ -67,7 +67,9 @@ class GUIOperatorBlockTest {
     void setColor_terminated() {
         connectedBlock.terminate();
         assertTrue(connectedBlock.isTerminated());
-        assertThrows(IllegalStateException.class, () ->connectedBlock.setColor(Color.pink));
+        assertEquals(connectedBlock.getColor(), GUIBlock.DEFAULT_BLOCK_COLOR);
+        connectedBlock.setColor(Color.pink);
+        assertEquals(connectedBlock.getColor(), GUIBlock.DEFAULT_BLOCK_COLOR);
     }
 
     @Test

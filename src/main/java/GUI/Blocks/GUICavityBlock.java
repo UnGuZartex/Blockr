@@ -5,6 +5,12 @@ import GUI.Components.GUIConnector;
 
 import java.awt.*;
 
+/**
+ * A class for gui cavity blocks. These are blocks which have a conditional and
+ * have blocks in a cavity.
+ *
+ * @author Alpha-team
+ */
 public class GUICavityBlock extends GUIBlock {
 
     /**
@@ -50,7 +56,6 @@ public class GUICavityBlock extends GUIBlock {
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-
         if (conditionalConnector != null && conditionalConnector.isConnected()) {
             conditionalConnector.getConnectedGUIBlock().setColor(color);
         }
@@ -70,11 +75,9 @@ public class GUICavityBlock extends GUIBlock {
      */
     @Override
     public void changeHeight(int heightDelta, GUIBlock previousBlock) {
-
         if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
             changeCavityHeight(heightDelta);
         }
-
         if (mainConnector != null && mainConnector.isConnected()) {
             mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
@@ -96,7 +99,22 @@ public class GUICavityBlock extends GUIBlock {
     }
 
     /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A new cavity block with the same name and coordinates as this block.
+     */
+    @Override
+    public GUIBlock clone() {
+        return new GUICavityBlock(name, x, y);
+    }
+
+    /**
      * Set the shapes of this cavity block.
+     *
+     * @post The width is set to the default with plus the default cavity width.
+     * @post The cavity height up is set to the default value.
+     * @post The cavity height down is set to the default value.
+     * @post The height is set to the cavity up height plus the cavity down height.
      *
      * @effect A new rectangle for the upper part is initialised and
      *         added to the collision rectangles.
@@ -104,12 +122,7 @@ public class GUICavityBlock extends GUIBlock {
      *         added to the collision rectangles.
      * @effect A new rectangle for the cavity is initialised and added
      *         to the collision rectangles.
-     * @effect A new sub connector for the cavity is initialised and added
-     *         to the sub connectors.
-     * @effect A new sub connector for the lower part is initialised and added
-     *         to the sub connectors.
-     * @effect A new sub connector for the conditional is initialised and added
-     *         to the sub connectors.
+     * @effect The connectors are set.
      */
     @Override
     protected void setShapes() {
@@ -118,10 +131,10 @@ public class GUICavityBlock extends GUIBlock {
         cavityDownHeight = DEFAULT_CAVITY_DOWN_HEIGHT;
         height = cavityUpHeight + cavityDownHeight;
 
-        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, DEFAULT_CAVITY_WIDTH, 0, Color.white);
-        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, Color.white);
+        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, DEFAULT_CAVITY_WIDTH, 0, DEFAULT_BLOCK_COLOR);
+        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, DEFAULT_BLOCK_COLOR);
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, Color.white));
+        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, DEFAULT_BLOCK_COLOR));
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
@@ -129,13 +142,23 @@ public class GUICavityBlock extends GUIBlock {
     }
 
     /**
-     * Clone this gui block and return the clone.
+     * Set the connectors of this cavity block.
      *
-     * @return A clone of this gui block.
+     * @effect The main connector is set to a new connector which is on top in the middle of the block.
+     * @effect The conditional sub connector is set to a new connector which is besides the block.
+     * @effect The cavity sub connector is set to a new connector which is between the 2 parts of the block.
+     * @effect The lower sub connector is set to a new connector which is below in the middle of the block.
+     * @effect The sub connectors list is set to a new list to which first the sub connector below is added,
+     *         then the cavity sub connector and last the conditional sub connector.
      */
-    @Override
-    public GUIBlock clone() {
-        return new GUICavityBlock(name, x, y);
+    protected void setConnectors() {
+        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, DEFAULT_MAIN_CONNECTOR_COLOR);
+        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, DEFAULT_SUB_CONNECTOR_COLOR);
+        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, DEFAULT_SUB_CONNECTOR_COLOR);
+        conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, DEFAULT_SUB_CONNECTOR_COLOR);
+        subConnectors.add(lowerSubConnector);
+        subConnectors.add(cavityConnector);
+        subConnectors.add(conditionalConnector);
     }
 
     /**
@@ -173,7 +196,7 @@ public class GUICavityBlock extends GUIBlock {
      *
      * @effect The height of the rectangle representing the cavity is set to the given cavity height.
      * @effect The position of the lower cavity rectangle is changed accordingly.
-     * @effect The position of the lower sub connector is changed accordingly.
+     * @effect The position of the lower sub connector is changed accordingly, if it exists.
      */
     private void setNewCavityHeight(int newCavityHeight) {
         cavityHeight = newCavityHeight;
@@ -183,15 +206,5 @@ public class GUICavityBlock extends GUIBlock {
         if (lowerSubConnector != null) {
             lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY() + cavityDownHeight);
         }
-    }
-
-    protected void setConnectors() {
-        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
-        conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, Color.red);
-        subConnectors.add(lowerSubConnector);
-        subConnectors.add(cavityConnector);
-        subConnectors.add(conditionalConnector);
     }
 }
