@@ -12,16 +12,15 @@ import GUI.Panel.PalettePanel;
 import GUI.Panel.ProgramAreaPanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import Images.ImageLibrary;
-import System.Logic.ProgramArea.PABlockHandler;
 
 import java.awt.*;
 import java.util.List;
 
 public class BlockrCanvas extends CanvasWindow {
 
-    public static final double PALETTE_WIDTH_RATIO = 0.2;
-    public static final double PROGRAM_AREA_WIDTH_RATIO = 0.4;
-    public static final double GAME_WORLD_WIDTH_RATIO = 0.4;
+    private static final double PALETTE_WIDTH_RATIO = 0.2;
+    private static final double PROGRAM_AREA_WIDTH_RATIO = 0.4;
+    private static final double GAME_WORLD_WIDTH_RATIO = 0.4;
 
     private PalettePanel palettePanel;
     private ProgramAreaPanel programAreaPanel;
@@ -31,8 +30,7 @@ public class BlockrCanvas extends CanvasWindow {
 
     private GUIBlock highlightedBlock;
     private final BlockHandlerController blockHandlerController;
-    private final ConnectionController connectionController;
-    private ImageLibrary library;
+    private final ImageLibrary library;
 
     /**
      * Initializes a CanvasWindow object.
@@ -40,26 +38,30 @@ public class BlockrCanvas extends CanvasWindow {
      */
     // TODO exception throw (@throws)
     protected BlockrCanvas(ImageLibrary library, BlockHandlerController blockHandlerController,
-                           ConnectionController connectionController) {
+                           ConnectionController connectionController, HistoryController historyController,
+                           List<GUIBlock> panelBlocks, GameWorld gw) {
         super("Blockr");
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.width = screenSize.width;
         this.height = screenSize.height;
         this.library = library;
         this.blockHandlerController = blockHandlerController;
-        this.connectionController = connectionController;
+
+        createPanels(connectionController, panelBlocks, gw);
+        createHandlers(historyController);
     }
 
-    public void setPanels(List<GUIBlock> panelBlocks, GameWorld gw, HistoryController historyController, PABlockHandler paBlockHandler) {
-        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
-        paBlockHandler.getPalette().subscribe(palettePanel);
+    public PalettePanel getPalettePanel() {
+        return palettePanel;
+    }
 
-        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, blockHandlerController, connectionController);
-        paBlockHandler.getPA().subscribe(programAreaPanel);
+    public ProgramAreaPanel getProgramAreaPanel() {
+        return programAreaPanel;
+    }
 
-        gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
-        mouseHandler = new MouseHandler(new GUIBlockHandler(palettePanel, programAreaPanel), historyController);
-        controlHandler = new ControlHandler(historyController);
+    public GameWorldPanel getGameWorldPanel() {
+        return gameWorldPanel;
     }
 
     @Override
@@ -94,5 +96,16 @@ public class BlockrCanvas extends CanvasWindow {
 
     private void resetHighlightedBlock() {
         if (highlightedBlock != null) highlightedBlock.setColor(Color.white);
+    }
+
+    private void createPanels(ConnectionController connectionController, List<GUIBlock> panelBlocks, GameWorld gw) {
+        palettePanel = new PalettePanel(0, 0, (int)(width * PALETTE_WIDTH_RATIO), height, panelBlocks);
+        programAreaPanel = new ProgramAreaPanel((int)(width * PALETTE_WIDTH_RATIO),0, (int)(width * PROGRAM_AREA_WIDTH_RATIO), height, blockHandlerController, connectionController);
+        gameWorldPanel = new GameWorldPanel(gw, (int)(width * PALETTE_WIDTH_RATIO) + (int)(width * PROGRAM_AREA_WIDTH_RATIO),0, (int)(width * GAME_WORLD_WIDTH_RATIO), height);
+    }
+
+    private void createHandlers(HistoryController historyController) {
+        mouseHandler = new MouseHandler(new GUIBlockHandler(palettePanel, programAreaPanel), historyController);
+        controlHandler = new ControlHandler(historyController);
     }
 }

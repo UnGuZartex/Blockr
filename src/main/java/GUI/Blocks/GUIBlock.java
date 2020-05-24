@@ -216,7 +216,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @post If this block is only connected on its sub connector below, it is disconnected and the
      *       connected block is also disconnected.
      * @post If this block is connected on its main connector and sub connector below, than it is on
-     *       both connectors disconnected and the block which where connected are connected onto eachother.
+     *       both connectors disconnected and the block which where connected are connected onto each other.
      */
     public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) {
         if (mainConnector != null) {
@@ -226,10 +226,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
 
             if (subConnectors.size() > 0) {
                 nextBlock = subConnectors.get(0).getConnectedGUIBlock();
-
-                if (nextBlock != null) {
-                    nextBlock.disconnectMainConnector();
-                }
+                subConnectors.get(0).disconnect();
             }
 
             if (prevBlock != null) {
