@@ -72,6 +72,10 @@ class GUIProcedureBlockTest {
         assertEquals("Def 2", clone5.getName());
         assertEquals("Def 3", clone3.getName());
         assertEquals("Def 4", clone4.getName());
+
+        clone3.terminate();
+        clone4.terminate();
+        clone5.terminate();
     }
 
     @Test
