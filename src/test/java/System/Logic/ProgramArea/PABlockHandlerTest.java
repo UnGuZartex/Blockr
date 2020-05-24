@@ -76,7 +76,7 @@ class PABlockHandlerTest {
 
         handler.getPalette().subscribe(panel);
 
-        panel.getNewBlock(0);
+        panel.getNewBlock(1);
         block.subscribe(handler.getPalette());
     }
 
@@ -165,12 +165,13 @@ class PABlockHandlerTest {
 
     @Test
     void addToPA_procedure() {
-        panel.getNewBlock(0);
+        GUIBlock guiBlock = panel.getNewBlock(0);
         assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
         Block block = handler.getFromPalette(0);
         handler.addToPA(block);
         ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
         assertEquals(block, call.getProcedure());
+        guiBlock.terminate();
     }
 
     @Test
@@ -219,13 +220,14 @@ class PABlockHandlerTest {
 
     @Test
     void deleteProgram_procedure() {
-        panel.getNewBlock(0);
+        GUIBlock guiBlock = panel.getNewBlock(0);
         Block block = handler.getFromPalette(0);
         handler.addToPA(block);
         ProcedureCall call = (ProcedureCall) handler.getFromPalette(1);
         assertEquals(block, call.getProcedure());
         handler.deleteProgram(block);
         assertThrows(IndexOutOfBoundsException.class, () -> handler.getFromPalette(1));
+        guiBlock.terminate();
     }
 
     @Test
@@ -258,6 +260,8 @@ class PABlockHandlerTest {
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))));
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))));
         handler.addToPA(new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))));
-        assertEquals(procedure.getClass(), panel.getNewBlock(0).getClass());
+        GUIBlock guiBlock = panel.getNewBlock(0);
+        assertEquals(procedure.getClass(), guiBlock.getClass());
+        guiBlock.terminate();
     }
 }

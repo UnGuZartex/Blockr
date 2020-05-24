@@ -2,7 +2,6 @@ package GUI.Blocks;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -27,7 +26,7 @@ class GUIProcedureBlockTest {
         procedure = null;
     }
 
-    @Test @Order(1)
+    @Test
     void testClone() {
         GUIBlock clone1 = procedure.clone();
         assertNotEquals(clone1, procedure);
