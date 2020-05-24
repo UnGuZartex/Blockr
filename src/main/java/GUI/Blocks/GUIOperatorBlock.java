@@ -44,7 +44,6 @@ public class GUIOperatorBlock extends GUIBlock {
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-
         if (subConnector.isConnected()) {
             subConnector.getConnectedGUIBlock().setColor(color);
         }
@@ -61,6 +60,16 @@ public class GUIOperatorBlock extends GUIBlock {
     public void changeHeight(int heightDelta, GUIBlock previousBlock) { }
 
     /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A new GUI operator block with the same name and coordinates as this block.
+     */
+    @Override
+    public GUIBlock clone() {
+        return new GUIOperatorBlock(name, x, y);
+    }
+
+    /**
      * Set the shapes of this operator block.
      *
      * @post The height of this block is set to the default height.
@@ -75,19 +84,9 @@ public class GUIOperatorBlock extends GUIBlock {
         height = DEFAULT_HEIGHT;
         width = DEFAULT_WIDTH;
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
-        mainConnector = new GUIConnector(this, 0, height / 2, Color.blue);
-        subConnector = new GUIConnector( this, width, height / 2, Color.red);
+        blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_BLOCK_COLOR));
+        mainConnector = new GUIConnector(this, 0, height / 2, DEFAULT_MAIN_CONNECTOR_COLOR);
+        subConnector = new GUIConnector( this, width, height / 2, DEFAULT_SUB_CONNECTOR_COLOR);
         subConnectors.add(subConnector);
-    }
-
-    /**
-     * Clone this gui block and return the clone.
-     *
-     * @return A clone of this gui block.
-     */
-    @Override
-    public GUIBlock clone() {
-        return new GUIOperatorBlock(name, x, y);
     }
 }
