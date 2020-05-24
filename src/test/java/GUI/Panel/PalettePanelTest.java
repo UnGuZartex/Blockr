@@ -192,7 +192,6 @@ class PalettePanelTest {
         panel.procedureCreated();
         assertNotEquals(procedure, block);
         assertEquals(procedure.getClass(), block.getClass());
-        block.terminate();
 
         block = panel.getNewBlock(5);
         assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(6));
@@ -203,7 +202,6 @@ class PalettePanelTest {
         panel.procedureCreated();
         assertNotEquals(procedure, block);
         assertEquals(procedure.getClass(), block.getClass());
-        block.terminate();
 
         panel.getNewBlock(6);
         assertThrows(IllegalArgumentException.class, () -> panel.getNewBlock(7));
