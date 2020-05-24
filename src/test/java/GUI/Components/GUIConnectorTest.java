@@ -2,6 +2,7 @@ package GUI.Components;
 
 import GUI.Blocks.GUIBlock;
 import GUI.Blocks.GUIFunctionalBlock;
+import Utility.Position;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,24 +16,14 @@ class GUIConnectorTest {
 
     GUIBlock block1, block2, block3, block4;
     GUIConnector connector1, connector2, connector3, connector4;
-    String id1, id2, id3, id4;
     int x1, y1, x2, y2, x3, y3, x4, y4;
+    Position pos1, pos2, pos3, pos4;
     Random random;
     final static int MAX_X = 10, MAX_Y = 10;
     Color color1, color2, color3, color4;
 
     @BeforeEach
     void setUp() {
-        block1 = new GUIFunctionalBlock( "id1",3,3);
-        block2 =new GUIFunctionalBlock("id2",3,3);
-        block3 =new GUIFunctionalBlock("id3",3,3);
-        block4 = new GUIFunctionalBlock("id4",3,3);
-
-        id1 = "1";
-        id2 = "2";
-        id3 = "3";
-        id4 = "4";
-
         random = new Random();
         x1 = random.nextInt(MAX_X) + 1;
         x2 = random.nextInt(MAX_X) + 1;
@@ -42,6 +33,11 @@ class GUIConnectorTest {
         y2 = random.nextInt(MAX_Y) + 1;
         y3 = random.nextInt(MAX_Y) + 1;
         y4 = random.nextInt(MAX_Y) + 1;
+
+        block1 = new GUIFunctionalBlock( "id1",x1,y1);
+        block2 =new GUIFunctionalBlock("id2",x2,y2);
+        block3 =new GUIFunctionalBlock("id3",x3,y3);
+        block4 = new GUIFunctionalBlock("id4",x4,y4);
 
         color1 = Color.RED;
         color2 = Color.GREEN;
@@ -55,10 +51,19 @@ class GUIConnectorTest {
         connector3 = new GUIConnector(block3, x3, y3, color3);
         connector4 = new GUIConnector(block4, x4, y4, color4);
 
+        pos1 = connector1.getPosition();
+        pos2 = connector2.getPosition();
+        pos3 = connector3.getPosition();
+        pos4 = connector4.getPosition();
     }
 
     @AfterEach
     void tearDown() {
+        pos1 = null;
+        pos2 = null;
+        pos3 = null;
+        pos4 = null;
+
         block1 = null;
         block2 = null;
         block3 = null;
@@ -118,11 +123,11 @@ class GUIConnectorTest {
         assertNull(connector4.getConnectedConnector());
     }
 
-//    @Test TODO test
-//    void getPosition() {
-//        assertEquals(x1, block1.getPosition().getX());
-//        assertEquals(y1, block1.getPosition().getY());
-//    }
+    @Test
+    void getPosition() {
+        assertEquals(x1, connector1.getPosition().getX());
+        assertEquals(y1, connector1.getPosition().getY());
+    }
 
     @Test
     void isConnected() {
@@ -147,17 +152,17 @@ class GUIConnectorTest {
 
     @Test
     void connect_NullArgument() {
-        assertThrows(IllegalArgumentException.class, () -> { connector3.connect(null); });
+        assertThrows(IllegalArgumentException.class, () -> connector3.connect(null));
     }
 
     @Test
     void connect_AlreadyConnected() {
-        assertThrows(IllegalArgumentException.class, () -> { connector1.connect(connector3); });
+        assertThrows(IllegalArgumentException.class, () -> connector1.connect(connector3));
     }
 
     @Test
     void connect_OtherAlreadyConnected() {
-        assertThrows(IllegalArgumentException.class, () -> { connector3.connect(connector1); });
+        assertThrows(IllegalArgumentException.class, () -> connector3.connect(connector1));
     }
 
     @Test
@@ -187,5 +192,27 @@ class GUIConnectorTest {
         assertEquals(block1, connector2.getConnectedGUIBlock());
         assertNull(connector3.getConnectedGUIBlock());
         assertNull(connector4.getConnectedGUIBlock());
+    }
+
+    @Test
+    void translate_propagate() {
+        connector1.translate(10,15, true);
+        assertEquals(x1 + 10, connector1.getPosition().getX());
+        assertEquals(y1 + 15, connector1.getPosition().getY());
+        assertEquals(x2 + 10, block2.getPosition().getX());
+        assertEquals(y2 + 15, block2.getPosition().getY());
+
+        connector3.translate(-10,-15, true);
+        assertEquals(x3 - 10, connector3.getPosition().getX());
+        assertEquals(y3 - 15, connector3.getPosition().getY());
+    }
+
+    @Test
+    void translate_noPropagate() {
+        connector1.translate(10,15, false);
+        assertEquals(x1 + 10, connector1.getPosition().getX());
+        assertEquals(y1 + 15, connector1.getPosition().getY());
+        assertNotEquals(x2 + 10, block2.getPosition().getX());
+        assertNotEquals(y2 + 15, block2.getPosition().getY());
     }
 }

@@ -193,7 +193,7 @@ public class GUIConnector {
      * @param propagate Whether or not the translation should propagate to the connected block.
      *
      * @effect The collision circle is translated with the given amount.
-     * @effect If the translation should propgate, the connected block is also translated.
+     * @effect If the translation should propagate, the connected block is also translated.
      */
     public void translate(int x, int y, boolean propagate) {
         collisionCircle.translate(x, y);
