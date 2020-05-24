@@ -4,6 +4,7 @@ import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * A class for gui cavity blocks. These are blocks which have a conditional and
@@ -156,6 +157,7 @@ public class GUICavityBlock extends GUIBlock {
         cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, DEFAULT_SUB_CONNECTOR_COLOR);
         lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, DEFAULT_SUB_CONNECTOR_COLOR);
         conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, DEFAULT_SUB_CONNECTOR_COLOR);
+        subConnectors = new ArrayList<>();
         subConnectors.add(lowerSubConnector);
         subConnectors.add(cavityConnector);
         subConnectors.add(conditionalConnector);
