@@ -147,6 +147,7 @@ class PalettePanelTest {
         block = panel.getNewBlock(4);
         assertNotEquals(procedure, block);
         assertEquals(procedure.getClass(), block.getClass());
+        block.terminate();
     }
 
     @Test
@@ -157,6 +158,7 @@ class PalettePanelTest {
         panel.procedureCreated();
         assertNotEquals(procedure, block);
         assertEquals(procedure.getClass(), block.getClass());
+        block.terminate();
 
         block = panel.getNewBlock(5);
         assertEquals(GUICallerBlock.class, block.getClass());
