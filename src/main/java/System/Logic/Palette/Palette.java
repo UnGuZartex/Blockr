@@ -1,7 +1,7 @@
 package System.Logic.Palette;
 
-import Controllers.PaletteListener;
-import Controllers.ProcedureListener;
+import Controllers.ListenerInterfaces.PaletteListener;
+import Controllers.ListenerInterfaces.ProcedureListener;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.ProcedureBlock;
 import System.BlockStructure.Blocks.ProcedureCall;

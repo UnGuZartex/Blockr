@@ -1,8 +1,8 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.DummyFunctionality;
-import System.Logic.ProgramArea.ConnectionHandler;
-import System.Logic.ProgramArea.ExecutionStack;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

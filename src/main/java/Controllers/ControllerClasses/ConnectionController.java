@@ -1,11 +1,11 @@
 package Controllers.ControllerClasses;
 
-import Controllers.IGUISystemBlockLink;
+import Controllers.Utility.IGUISystemBlockLink;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 
 /**
  * A controller class for the connections between GUI and system.

@@ -1,5 +1,6 @@
 package Controllers;
 
+import Controllers.Utility.JarLoader;
 import GameWorldUtility.LevelInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

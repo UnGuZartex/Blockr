@@ -1,9 +1,9 @@
 package System.Logic.ProgramArea;
 
 import Controllers.ControllerClasses.BlockHandlerController;
-import Controllers.IGUISystemBlockLink;
+import Controllers.Utility.IGUISystemBlockLink;
 import GUI.Blocks.*;
-import GUI.Panel.PalettePanel;
+import GUI.Panels.PalettePanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
@@ -11,6 +11,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.DummyFunctionality;
 import System.Logic.CommandHistory;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

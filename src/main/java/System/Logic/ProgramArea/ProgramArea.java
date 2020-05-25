@@ -1,7 +1,7 @@
 package System.Logic.ProgramArea;
 
-import Controllers.ProgramEventManager;
-import Controllers.ProgramListener;
+import Controllers.Utility.ProgramEventManager;
+import Controllers.ListenerInterfaces.ProgramListener;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.Utility.Snapshot;

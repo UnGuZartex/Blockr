@@ -1,6 +1,6 @@
 package GUI.Blocks;
 
-import Controllers.CallListener;
+import Controllers.ListenerInterfaces.CallListener;
 
 import java.util.ArrayList;
 import java.util.List;

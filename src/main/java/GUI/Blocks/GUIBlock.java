@@ -3,7 +3,7 @@ package GUI.Blocks;
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
 import GUI.CollisionShapes.CollisionRectangle;
-import GUI.Components.GUIConnector;
+import GUI.Utility.GUIConnector;
 import Utility.Position;
 
 import java.awt.*;

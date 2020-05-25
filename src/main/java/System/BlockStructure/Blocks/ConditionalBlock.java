@@ -4,7 +4,7 @@ import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.ConditionalBlockFunctionality;
-import System.Logic.ProgramArea.ExecutionStack;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 
 /**
  * An abstract class for conditional blocks. This is a block with a conditional

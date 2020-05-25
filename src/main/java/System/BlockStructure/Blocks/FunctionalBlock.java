@@ -5,7 +5,7 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
-import System.Logic.ProgramArea.ExecutionStack;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 
 
 /**

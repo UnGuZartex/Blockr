@@ -1,7 +1,7 @@
 package GUI.Blocks;
 
 import GUI.CollisionShapes.CollisionRectangle;
-import GUI.Components.GUIConnector;
+import GUI.Utility.GUIConnector;
 
 /**
  * A class for functional GUI blocks.

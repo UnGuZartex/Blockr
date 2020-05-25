@@ -1,8 +1,7 @@
 package GUI.Blocks;
 
-import GUI.Components.GUIConnector;
+import GUI.Utility.GUIConnector;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * A class for gui cavity blocks. These are blocks which have a conditional and

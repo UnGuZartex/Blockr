@@ -1,9 +1,9 @@
 package Controllers.ControllerClasses;
 
-import Controllers.IGUISystemBlockLink;
+import Controllers.Utility.IGUISystemBlockLink;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 
 /**
  * Controller class to handle the blocks in the system.
