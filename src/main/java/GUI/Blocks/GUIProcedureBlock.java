@@ -61,6 +61,11 @@ public class GUIProcedureBlock extends GUISimpleCavityBlock {
         priority = currentPriority--;
     }
 
+    @Override
+    public void disconnectMainConnector() {
+        //throw new N
+    }
+
     /**
      * Clone this procedure.
      *

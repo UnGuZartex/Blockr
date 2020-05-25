@@ -221,31 +221,29 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      *       both connectors disconnected and the block which where connected are connected onto each other.
      */
     public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) {
-        if (mainConnector != null) {
-            GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock nextBlock = null;
-            disconnectHeight();
+        GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
+        GUIBlock nextBlock = null;
+        disconnectHeight();
 
-            if (subConnectors.size() > 0) {
-                nextBlock = subConnectors.get(0).getConnectedGUIBlock();
-                subConnectors.get(0).disconnect();
+        if (subConnectors.size() > 0) {
+            nextBlock = subConnectors.get(0).getConnectedGUIBlock();
+            subConnectors.get(0).disconnect();
+        }
+
+        if (prevBlock != null) {
+            GUIConnector sub = mainConnector.getConnectedConnector();
+            int subIndex = prevBlock.getConnectorIndex(sub);
+            disconnectMainConnector();
+
+            if (nextBlock != null && connectionController.isValidConnection(nextBlock, prevBlock, subIndex)) {
+                nextBlock.setPosition(getX(), getY());
+                nextBlock.mainConnector.connect(sub);
+                connectionController.connectBlocks(nextBlock, prevBlock, subIndex);
             }
+        }
 
-            if (prevBlock != null) {
-                GUIConnector sub = mainConnector.getConnectedConnector();
-                int subIndex = prevBlock.getConnectorIndex(sub);
-                disconnectMainConnector();
-
-                if (nextBlock != null && connectionController.isValidConnection(nextBlock, prevBlock, subIndex)) {
-                    nextBlock.setPosition(getX(), getY());
-                    nextBlock.mainConnector.connect(sub);
-                    connectionController.connectBlocks(nextBlock, prevBlock, subIndex);
-                }
-            }
-
-            if (nextBlock != null) {
-                blockHandlerController.addExistingBlockAsProgram(nextBlock);
-            }
+        if (nextBlock != null) {
+            blockHandlerController.addExistingBlockAsProgram(nextBlock);
         }
     }
 
@@ -358,14 +356,10 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     /**
      * Disconnect the main connector of this block.
      *
-     * @post The main connector is not connected anymore.
-     * @post The sub connector which was connected to the main connector
-     *       is not connected anymore.
+     * @effect The main connector is disconnected.
      */
     public void disconnectMainConnector() {
-        if (mainConnector != null) {
-            mainConnector.disconnect();
-        }
+        mainConnector.disconnect();
     }
 
     /**

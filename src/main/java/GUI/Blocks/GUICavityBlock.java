@@ -2,6 +2,7 @@ package GUI.Blocks;
 
 import GUI.Components.GUIConnector;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * A class for gui cavity blocks. These are blocks which have a conditional and
@@ -109,7 +110,7 @@ public class GUICavityBlock extends GUISimpleCavityBlock {
         mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, DEFAULT_MAIN_CONNECTOR_COLOR);
         lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, height, DEFAULT_SUB_CONNECTOR_COLOR);
         conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, DEFAULT_SUB_CONNECTOR_COLOR);
-        subConnectors.add(lowerSubConnector);
+        subConnectors.add(0, lowerSubConnector);
         subConnectors.add(conditionalConnector);
     }
 
