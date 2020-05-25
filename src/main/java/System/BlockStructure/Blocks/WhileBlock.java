@@ -1,6 +1,7 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 
 /**
  * A class for while blocks. These are cavity blocks which have a
@@ -29,12 +30,13 @@ public class WhileBlock extends CavityBlock {
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block at the index. First is in the cavity counted and
      *         then is under the cavity counted.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -45,13 +47,13 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                Block toReturn = nextBlock.getBlockAtIndex(index - 1);
+                systemStack.push(this);
+                Block toReturn = nextBlock.getBlockAtIndex(index - 1, systemStack);
                 passed = false;
                 return toReturn;
             }
             else {
-                return super.getBlockAtIndex(index);
+                return super.getBlockAtIndex(index, systemStack);
             }
         }
     }
@@ -60,14 +62,15 @@ public class WhileBlock extends CavityBlock {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block. If this block has a cavity, then
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
-            return -1;
+           return -1;
         }
         if (block == this) {
             return 0;
@@ -76,25 +79,15 @@ public class WhileBlock extends CavityBlock {
             if (cavitySubConnector.isConnected() && !passed) {
                 passed = true;
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                int toReturn = nextBlock.getIndexOfBlock(block);
+                systemStack.push(this);
+                int toReturn = nextBlock.getIndexOfBlock(block, systemStack);
                 passed = false;
                 return 1 + toReturn;
             }
             else {
-                return super.getIndexOfBlock(block);
+                return super.getIndexOfBlock(block, systemStack);
             }
         }
-    }
-
-    /**
-     * Get the new return to block for this block.
-     *
-     * @return This block.
-     */
-    @Override
-    protected Block getNewReturnBlock() {
-        return this;
     }
 
     /**
@@ -106,5 +99,23 @@ public class WhileBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new WhileBlock();
+    }
+
+    /**
+     * Push the next blocks to execute on the stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect If the functionality evaluates to True, then is first this block pushed and then the cavity,
+     *         otherwise are the default blocks pushed to the stack.
+     */
+    @Override
+    public void pushNextBlocks(ExecutionStack stack) {
+        if (getFunctionality().getEvaluation()) {
+            stack.push(this);
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        } else {
+            super.pushNextBlocks(stack);
+        }
     }
 }

@@ -2,9 +2,11 @@ package Controllers;
 
 import Controllers.ControllerClasses.BlockHandlerController;
 import Controllers.ControllerClasses.ConnectionController;
+import Controllers.Utility.IGUISystemBlockLink;
+import Controllers.Utility.ProgramEventManager;
 import GUI.Blocks.*;
-import GUI.Panel.PalettePanel;
-import GUI.Panel.ProgramAreaPanel;
+import GUI.Panels.PalettePanel;
+import GUI.Panels.ProgramAreaPanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.GameWorldType.GameWorldType;
@@ -17,7 +19,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +40,7 @@ class ProgramEventManagerTest {
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     BlockHandlerController blockHandlerController;
     ConnectionController connectionController;
-    BlockLinkDatabase converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -72,7 +74,7 @@ class ProgramEventManagerTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new BlockLinkDatabase();
+        converter = new IGUISystemBlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";

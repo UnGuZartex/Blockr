@@ -12,7 +12,8 @@ import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
-import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WhileBlockTest {
 
+    ExecutionStack stack;
     WhileBlock while1, while2, while3, while4, while5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
-
+    ConnectionHandler handler;
     WhileBlock whileBlock1, innerWhileBlock1, whileBlock2, outerWhileBlock2;
     ConditionalBlock condBlock1, condBlock2;
 
@@ -39,8 +41,7 @@ class WhileBlockTest {
 
     @BeforeEach
     void setUp() {
-
-
+        stack = new ExecutionStack();
         PositionUpOnBlankBeforeWall = new GridPosition(1,1);
         PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
         PositionLeftOnGoalBeforeGoal = new GridPosition(1,1);
@@ -106,7 +107,7 @@ class WhileBlockTest {
         condBlock1 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
         condBlock2 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
-        ConnectionHandler handler = new ConnectionHandler();
+        handler = new ConnectionHandler();
         handler.connect(while1, func3.getSubConnectorAt(0));
         handler.connect(func11, func1.getSubConnectorAt(0));
         handler.connect(func1, while1.getCavitySubConnector());
@@ -124,6 +125,8 @@ class WhileBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
+
         while1 = null;
         while2 = null;
         while3 = null;
@@ -163,6 +166,8 @@ class WhileBlockTest {
         levelDownOnGoalBeforeBlank = null;
         levelLeftOnGoalBeforeGoal = null;
         levelRightOnBlankBeforeWall = null;
+
+        handler = null;
     }
 
     @Test
@@ -210,30 +215,6 @@ class WhileBlockTest {
     }
 
     @Test
-    void getNext() {
-        assertEquals(func1Under, while1.getNext());
-        assertNull(while2.getNext());
-        assertNull(while3.getNext());
-        assertNull(while4.getNext());
-        assertEquals(func5Under, while5.getNext());
-
-        while1.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertEquals(func1, while1.getNext());
-
-        while2.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
-        assertNull(while2.getNext());
-
-        while3.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
-        assertEquals(while3, while3.getNext());
-
-        while4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
-        assertNull(while4.getNext());
-
-        while5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertEquals(while5, while5.getNext());
-    }
-
-    @Test
     void hasProperConnections() {
         assertTrue(while1.hasProperConnections());
         assertFalse(while2.hasProperConnections());
@@ -244,7 +225,6 @@ class WhileBlockTest {
         assertFalse(whileBlock2.hasProperConnections());
     }
 
-
     @Test
     void getNbSubConnectors() {
         assertEquals(3, while1.getNbSubConnectors());
@@ -252,15 +232,6 @@ class WhileBlockTest {
         assertEquals(3, while3.getNbSubConnectors());
         assertEquals(3, while4.getNbSubConnectors());
         assertEquals(3, while5.getNbSubConnectors());
-    }
-
-    @Test
-    void getNewReturnBlock() {
-        assertEquals(while1, while1.getNewReturnBlock());
-        assertEquals(while2, while2.getNewReturnBlock());
-        assertEquals(while3, while3.getNewReturnBlock());
-        assertEquals(while4, while4.getNewReturnBlock());
-        assertEquals(while5, while5.getNewReturnBlock());
     }
 
     @Test
@@ -274,5 +245,118 @@ class WhileBlockTest {
         assertFalse(block.getSubConnectorAt(1).isConnected());
         assertFalse(block.getSubConnectorAt(2).isConnected());
         assertFalse(block.getMainConnector().isConnected());
+    }
+
+    @Test
+    void getBlockAtIndex_negativeIndex() {
+        assertNull(while1.getBlockAtIndex(-1, stack));
+    }
+
+    @Test
+    void getBlockAtIndex_indexOutOfRange() {
+        assertNull(while1.getBlockAtIndex(5, stack));
+    }
+
+    @Test
+    void getBlockAtIndex() {
+        assertEquals(while1, while1.getBlockAtIndex(0, stack));
+        assertEquals(func1, while1.getBlockAtIndex(1, stack));
+        assertEquals(func11, while1.getBlockAtIndex(2, stack));
+        assertEquals(while1, while1.getBlockAtIndex(3, stack));
+        assertEquals(func1Under, while1.getBlockAtIndex(4, stack));
+    }
+
+    @Test
+    void getIndexOfBlock_invalidBlock() {
+        assertEquals(-1, while1.getIndexOfBlock(null, stack));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertEquals(0, while1.getIndexOfBlock(while1, stack));
+        assertEquals(1, while1.getIndexOfBlock(func1, stack));
+        assertEquals(2, while1.getIndexOfBlock(func11, stack));
+        assertEquals(0, while1.getIndexOfBlock(while1, stack));
+        assertEquals(4, while1.getIndexOfBlock(func1Under, stack));
+    }
+
+    @Test
+    void pushNextBlock_true_blockInCavity_blockUnder() {
+        while1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(2, stack.size());
+        assertEquals(func1, stack.pop());
+        assertEquals(while1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_blockInCavity_blockUnder() {
+        while1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_true_noBlockInCavity_blockUnder() {
+        handler.disconnect(func1);
+        while1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(while1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_noBlockInCavity_blockUnder() {
+        handler.disconnect(func1);
+        while1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_true_blockInCavity_noBlockUnder() {
+        handler.disconnect(func1Under);
+        while1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(2, stack.size());
+        assertEquals(func1, stack.pop());
+        assertEquals(while1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_blockInCavity_noBlockUnder() {
+        handler.disconnect(func1Under);
+        while1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
+    }
+
+    @Test
+    void pushNextBlock_true_noBlockInCavity_noBlockUnder() {
+        handler.disconnect(func1);
+        handler.disconnect(func1Under);
+        while1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(while1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_noBlockInCavity_noBlockUnder() {
+        handler.disconnect(func1);
+        handler.disconnect(func1Under);
+        while1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(while1.getFunctionality().getEvaluation());
+        while1.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
     }
 }

@@ -1,6 +1,7 @@
 package System.BlockStructure.Blocks;
 
 import System.BlockStructure.Functionality.CavityFunctionality;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 
 /**
  * A class for if blocks. These are cavity blocks which have a
@@ -20,29 +21,16 @@ public class IfBlock extends CavityBlock {
     }
 
     /**
-     * Get the new return to block.
-     *
-     * @return If a block below this if is connected, that block, otherwise
-     *         the default return to block.
-     */
-    @Override
-    protected Block getNewReturnBlock() {
-        if (getSubConnectorAt(0).isConnected()) {
-            return getSubConnectorAt(0).getConnectedBlock();
-        }
-        return getReturnToBlock();
-    }
-
-    /**
      * Get a clone of this block.
      *
      * @param index the index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return A new if block with a copy of the current functionality and which is not
      *         connected to any block.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -52,11 +40,13 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                return nextBlock.getBlockAtIndex(index - 1);
+                if (getSubConnectorAt(0).isConnected()) {
+                    systemStack.push(getSubConnectorAt(0).getConnectedBlock());
+                }
+                return nextBlock.getBlockAtIndex(index - 1, systemStack);
             }
             else {
-                return super.getBlockAtIndex(index);
+                return super.getBlockAtIndex(index, systemStack);
             }
         }
     }
@@ -65,13 +55,14 @@ public class IfBlock extends CavityBlock {
      * Get the index of the given block.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block. If this block has a cavity, then
      *         is in the cavity looked, otherwise there is in underneath the
      *         block checked.
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack)  {
         if (block == null) {
             return -1;
         }
@@ -81,11 +72,13 @@ public class IfBlock extends CavityBlock {
         else {
             if (cavitySubConnector.isConnected()) {
                 Block nextBlock = getCavitySubConnector().getConnectedBlock();
-                nextBlock.setReturnToBlock(getNewReturnBlock());
-                return 1 + nextBlock.getIndexOfBlock(block);
+                if (getSubConnectorAt(0).isConnected()) {
+                    systemStack.push(getSubConnectorAt(0).getConnectedBlock());
+                }
+                return 1 + nextBlock.getIndexOfBlock(block, systemStack);
             }
             else {
-                return super.getIndexOfBlock(block);
+                return super.getIndexOfBlock(block, systemStack);
             }
         }
     }
@@ -98,5 +91,22 @@ public class IfBlock extends CavityBlock {
     @Override
     public Block clone() {
         return new IfBlock();
+    }
+
+    /**
+     * Push the correct blocks to the given stack.
+     *
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect First execute the super method, and if the functionality evaluates to True,
+     *         then is the cavity also added to the stack.
+     *
+     */
+    @Override
+    public void pushNextBlocks(ExecutionStack stack) {
+        super.pushNextBlocks(stack);
+        if (getFunctionality().getEvaluation()) {
+            stack.push(getCavitySubConnector().getConnectedBlock());
+        }
     }
 }

@@ -1,9 +1,7 @@
 package GUI.Blocks;
 
 import GUI.CollisionShapes.CollisionRectangle;
-import GUI.Components.GUIConnector;
-
-import java.awt.*;
+import GUI.Utility.GUIConnector;
 
 /**
  * A class for functional GUI blocks.
@@ -22,7 +20,7 @@ public class GUIFunctionalBlock extends GUIBlock {
     private GUIConnector lowerSubConnector;
 
     /**
-     * Initialise a new functionality block with given name and coordinates
+     * Create a new functional block with a given name and coordinates.
      *
      * @param name The name for this block.
      * @param x The x coordinate for this block.
@@ -45,7 +43,7 @@ public class GUIFunctionalBlock extends GUIBlock {
      *         further propagate the height change call.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) {
         if (mainConnector.isConnected()) {
             mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
         }
@@ -59,13 +57,21 @@ public class GUIFunctionalBlock extends GUIBlock {
      *         return this height + the additional height of its connected block otherwise.
      */
     @Override
-    public int getHeight() {
-
+    public int getTotalHeight() {
         if (lowerSubConnector.isConnected()) {
-            return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+            return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
         }
-
         return height;
+    }
+
+    /**
+     * Clone this gui block and return the clone.
+     *
+     * @return A clone of this gui block.
+     */
+    @Override
+    public GUIBlock clone() {
+        return new GUIFunctionalBlock(name, x, y);
     }
 
     /**
@@ -84,19 +90,9 @@ public class GUIFunctionalBlock extends GUIBlock {
         height = DEFAULT_HEIGHT;
         width = DEFAULT_WIDTH;
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, height, Color.white));
-        mainConnector = new GUIConnector(this, width / 2, 0, Color.blue);
-        lowerSubConnector = new GUIConnector( this, width / 2, height, Color.red);
+        blockRectangles.add(new CollisionRectangle(0, 0, width, height, DEFAULT_BLOCK_COLOR));
+        mainConnector = new GUIConnector(this, width / 2, 0, DEFAULT_MAIN_CONNECTOR_COLOR);
+        lowerSubConnector = new GUIConnector( this, width / 2, height, DEFAULT_SUB_CONNECTOR_COLOR);
         subConnectors.add(lowerSubConnector);
-    }
-
-    /**
-     * Clone this gui block and return the clone.
-     *
-     * @return A clone of this gui block.
-     */
-    @Override
-    public GUIBlock clone() {
-        return new GUIFunctionalBlock(name, x, y);
     }
 }

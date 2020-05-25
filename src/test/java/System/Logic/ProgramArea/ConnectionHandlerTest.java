@@ -5,6 +5,7 @@ import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Blocks.FunctionalBlock;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

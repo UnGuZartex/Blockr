@@ -11,7 +11,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeleteBlockTest {
 
@@ -32,6 +33,7 @@ public class DeleteBlockTest {
     CavityBlock cavityBlock, cavityBlockIn, cavityBlockUnder;
     OperationalBlock operationalBlock1, operationalBlock2;
     PredicateBlock predicateBlock1, predicateBlock2;
+    ProcedureBlock procedure;
     int initialNbBlocks;
 
     @BeforeEach
@@ -46,10 +48,10 @@ public class DeleteBlockTest {
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
+        procedure = new ProcedureBlock();
 
-
-        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
-
+        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandler.getPalette());
 
         functionalBlockUp = (FunctionalBlock) paBlockHandler.getFromPalette(0);
         functionalBlockUnder = (FunctionalBlock) paBlockHandler.getFromPalette(1);
@@ -216,5 +218,54 @@ public class DeleteBlockTest {
         paBlockHandler.deleteProgram(wallInFront);
 
         assertEquals(3 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+
+    @Test
+    void removeProcedure_noCall() {
+        WhileBlock whileBlock = (WhileBlock) paBlockHandler.getFromPalette(5);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        Block block = paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(whileBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, whileBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnRight, whileBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(moveForward, whileBlock.getSubConnectorAt(0));
+
+        paBlockHandler.addToPA(procedure);
+        paBlockHandler.connectToExistingBlock(block, procedure.getSubConnectorAt(0));
+
+        assertEquals(6 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+
+        paBlockHandler.deleteProgram(procedure);
+
+        assertEquals(4 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+
+    @Test
+    void removeProcedure_call() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call1 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call3 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        paBlockHandler.connectToExistingBlock(call2, call1.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(call3, call2.getSubConnectorAt(0));
+
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        paBlockHandler.connectToExistingBlock(turnRight, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, call3.getSubConnectorAt(0));
+
+        assertEquals(6 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+
+        paBlockHandler.deleteProgram(procedure);
+        assertEquals(1 + initialNbBlocks, paBlockHandler.getPA().getAllBlocksCount());
     }
 }

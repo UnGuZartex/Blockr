@@ -1,5 +1,8 @@
 package GUI;
 
+import GUI.Initialisation.BlockrCanvas;
+import GUI.Initialisation.Initialiser;
+
 /**
  * Starter class for this project.
  */

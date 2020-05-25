@@ -1,8 +1,8 @@
 package Controllers.ControllerClasses;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.Utility.IGUISystemBlockLink;
 import GUI.Blocks.*;
-import GUI.Panel.PalettePanel;
+import GUI.Panels.PalettePanel;
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.Actions.MoveForwardAction;
@@ -14,7 +14,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ class ConnectionControllerTest {
     static final int MIN_X = 0, MAX_X = 150, MIN_Y = 0, MAX_Y = 150;
     static final int MIN_WIDTH = 100, MAX_WIDTH = 800, MIN_HEIGHT = 100, MAX_HEIGHT = 800;
     ConnectionController connectionController;
-    BlockLinkDatabase converter;
+    IGUISystemBlockLink converter;
     PABlockHandler paBlockHandler;
     ProgramArea programArea;
     GameWorldType type;
@@ -68,7 +68,7 @@ class ConnectionControllerTest {
         ifBlock = new IfBlock();
 
         paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), programArea);
-        converter = new BlockLinkDatabase();
+        converter = new IGUISystemBlockLink();
 
         cavityName = "Cavity";
         functionalName = "functional";
@@ -139,6 +139,18 @@ class ConnectionControllerTest {
     @Test
     void connectionController_invalidBlockHandler() {
         assertThrows(IllegalArgumentException.class, () -> new ConnectionController(converter, null));
+    }
+
+    @Test
+    void isValidIGUISystemBlockLink() {
+        assertTrue(ConnectionController.isValidIGUISystemBlockLink(converter));
+        assertFalse(ConnectionController.isValidIGUISystemBlockLink(null));
+    }
+
+    @Test
+    void isValidPABlockHandler() {
+        assertTrue(ConnectionController.isValidPABlockHandler(paBlockHandler));
+        assertFalse(ConnectionController.isValidPABlockHandler(null));
     }
 
     @Test

@@ -19,7 +19,7 @@ import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 import System.Logic.ProgramArea.ProgramCommand;
 import System.Logic.ProgramArea.RunProgramCommand;
@@ -41,6 +41,7 @@ public class RunProgramTest {
     GameWorldType type;
     GameWorld gameWorld;
     Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -60,8 +61,10 @@ public class RunProgramTest {
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
+        procedure = new ProcedureBlock();
 
-        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
+        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandler.getPalette());
         command = new RunProgramCommand(paBlockHandler.getPA());
     }
 
@@ -78,7 +81,8 @@ public class RunProgramTest {
         notBlock = null;
         whileBlock = null;
         ifBlock = null;
-        command = null; 
+        procedure = null;
+        command = null;
     }
 
     void stateCheck(Block block, Result result, int x, int y, Direction direction) {
@@ -422,6 +426,25 @@ public class RunProgramTest {
     }
 
     @Test
+    void multipleProgramsAndProcedure() {
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        Block block = paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(turnRight);
+        paBlockHandler.addToPA(moveForward);
+        paBlockHandler.addToPA(procedure);
+        paBlockHandler.connectToExistingBlock(block, procedure.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        assertNull(paBlockHandler.getPA().getProgram());
+
+        assertThrows(IllegalStateException.class, () -> command.execute());
+    }
+
+    @Test
     void noPrograms() {
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
         assertTrue(paBlockHandler.hasProperNbBlocks());
@@ -444,5 +467,556 @@ public class RunProgramTest {
         assertTrue(paBlockHandler.hasProperNbBlocks());
 
         assertThrows(IllegalStateException.class, () -> command.execute());
+    }
+
+    @Test
+    void invalidCalledProcedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(6);
+        paBlockHandler.addToPA(procedure);
+        paBlockHandler.connectToExistingBlock(cavity, procedure.getSubConnectorAt(0));
+
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        paBlockHandler.addToPA(turnLeft);
+        paBlockHandler.connectToExistingBlock(call, turnLeft.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, call.getSubConnectorAt(0));
+
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        assertFalse(procedure.hasProperConnections());
+
+        assertThrows(IllegalStateException.class, () -> command.execute());
+    }
+
+    @Test
+    void invalidNoneCalledProcedure() {
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        CavityBlock cavity = (CavityBlock) paBlockHandler.getFromPalette(6);
+
+        paBlockHandler.addToPA(turnLeft);
+        paBlockHandler.connectToExistingBlock(moveForward, turnLeft.getSubConnectorAt(0));
+        paBlockHandler.addToPA(procedure);
+        paBlockHandler.connectToExistingBlock(cavity, procedure.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        assertFalse(procedure.hasProperConnections());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void onlyProcedures() {
+        ProcedureBlock procedure1 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        Block block1 = paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure2 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        Block block21 = paBlockHandler.getFromPalette(1);
+        Block block22 = paBlockHandler.getFromPalette(2);
+
+        paBlockHandler.addToPA(procedure1);
+        paBlockHandler.connectToExistingBlock(block1, procedure1.getSubConnectorAt(0));
+
+        paBlockHandler.addToPA(procedure2);
+        paBlockHandler.connectToExistingBlock(block21, procedure2.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(block22, block21.getSubConnectorAt(0));
+
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+
+        assertThrows(IllegalStateException.class, () -> command.execute());
+    }
+
+    @Test
+    void withProcedureNotCalled() {
+        WhileBlock whileBlock = (WhileBlock) paBlockHandler.getFromPalette(5);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        Block block = paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(whileBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, whileBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnRight, whileBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(moveForward, whileBlock.getSubConnectorAt(0));
+
+        paBlockHandler.addToPA(procedure);
+        paBlockHandler.connectToExistingBlock(block, procedure.getSubConnectorAt(0));
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void turnLeft_call_moveForwardProcedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(turnLeft);
+        paBlockHandler.connectToExistingBlock(call, turnLeft.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, procedure.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call_turnLeftProcedure_moveForward() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(turnLeft);
+        paBlockHandler.connectToExistingBlock(turnLeft, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, call.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call_turnLeftProcedure_moveForwardProcedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(call);
+        paBlockHandler.connectToExistingBlock(turnLeft, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, turnLeft.getSubConnectorAt(0));
+
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void while_wallInFront_call_turnRightProcedure_moveForward() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        WhileBlock whileBlock = (WhileBlock) paBlockHandler.getFromPalette(5);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(whileBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, whileBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(call, whileBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(turnRight, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, whileBlock.getSubConnectorAt(0));
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(whileBlock, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void if_wallInFront_turnLeftProcedure_moveForward() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(ifBlock);
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(call, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(turnLeft, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, ifBlock.getSubConnectorAt(0));
+
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call_ifProcedure_wallInFrontProcedure_turnLeftProcedure_moveForward() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(call);
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnLeft, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(ifBlock, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, call.getSubConnectorAt(0));
+
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call_ifProcedure_wallInFrontProcedure_turnLeftProcedure_moveForwardProcedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(call);
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(turnLeft, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(ifBlock, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, ifBlock.getSubConnectorAt(0));
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call_turnRightProcedure_call_turnRightProcedure_call_turnRightProcedure_moveForward() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call1 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call3 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        paBlockHandler.connectToExistingBlock(call2, call1.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(call3, call2.getSubConnectorAt(0));
+
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        paBlockHandler.connectToExistingBlock(turnRight, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, call3.getSubConnectorAt(0));
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call1, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(call2, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(call3, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void call1_turnLeftProcedure1_call2_moveForwardProcedure2() {
+        ProcedureBlock procedure1 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure1);
+        ProcedureCall call1 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        ProcedureBlock procedure2 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure2);
+        ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(9);
+
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(call1);
+        paBlockHandler.connectToExistingBlock(call2, call1.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(moveForward, procedure2.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(turnLeft, procedure1.getSubConnectorAt(0));
+
+        assertEquals(6, paBlockHandler.getPA().getAllBlocksCount());
+        assertTrue(paBlockHandler.hasProperNbBlocks());
+        robot = ((Level)paBlockHandler.getPA().getGameWorld()).getRobot();
+
+        stateCheck(call1, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure1, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(call2, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(procedure2, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void recursion() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall callRecursion = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock moveForward = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+
+        paBlockHandler.addToPA(call);
+        paBlockHandler.connectToExistingBlock(turnRight, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(ifBlock, turnRight.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(callRecursion, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(moveForward, call.getSubConnectorAt(0));
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(callRecursion, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(callRecursion, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(moveForward, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+        command.execute();
+        stateCheck(null, Result.END, 1,2,Direction.DOWN);
+    }
+
+    @Test
+    void recursion_blocksAfter() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure);
+        ProcedureCall call = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall callRecursion = (ProcedureCall) paBlockHandler.getFromPalette(8);
+
+        IfBlock ifBlock = (IfBlock) paBlockHandler.getFromPalette(6);
+        PredicateBlock wallInFront = (PredicateBlock) paBlockHandler.getFromPalette(3);
+        FunctionalBlock turnRight = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+        FunctionalBlock turnLeft = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+
+        paBlockHandler.addToPA(call);
+        paBlockHandler.connectToExistingBlock(turnRight, procedure.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(ifBlock, turnRight.getSubConnectorAt(0));
+        paBlockHandler.connectToExistingBlock(wallInFront, ifBlock.getConditionalSubConnector());
+        paBlockHandler.connectToExistingBlock(callRecursion, ifBlock.getCavitySubConnector());
+        paBlockHandler.connectToExistingBlock(turnLeft, ifBlock.getSubConnectorAt(0));
+
+        stateCheck(call, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.LEFT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(callRecursion, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.UP);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(callRecursion, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(procedure, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(turnRight, Result.SUCCESS, 1,1,Direction.RIGHT);
+        command.execute();
+        stateCheck(ifBlock, Result.SUCCESS, 1,1,Direction.DOWN);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1, Direction.DOWN);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1, Direction.RIGHT);
+        command.execute();
+        stateCheck(turnLeft, Result.SUCCESS, 1,1, Direction.UP);
+        command.execute();
+        stateCheck(null, Result.SUCCESS, 1,1, Direction.LEFT);
+        command.execute();
+        stateCheck(null, Result.SUCCESS, 1,1, Direction.LEFT);
     }
 }

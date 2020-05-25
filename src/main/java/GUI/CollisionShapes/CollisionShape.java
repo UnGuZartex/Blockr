@@ -7,6 +7,9 @@ import java.awt.*;
 /**
  * An abstract class for shapes which can collide with other shapes.
  *
+ * @invar A collision shape must have a valid color at all time.
+ *        | isValidColor(color)
+ *
  * @author Alpha-team
  */
 public abstract class CollisionShape {
@@ -27,12 +30,31 @@ public abstract class CollisionShape {
      * @param y The y coordinate for this collision shape.
      * @param color The color for this collision shape.
      *
-     * @post The properties of this collision shape are set to the given parameters.
+     * @post The x-coordinate of this collision shape is set to the given x-coordinate.
+     * @post The y-coordinate of this collision shape is set to the given y-coordinate.
+     * @post The color of this collision shape is set to the given color.
+     *
+     * @throws IllegalArgumentException
+     *         If the given color is not valid.
      */
-    protected CollisionShape(int x, int y, Color color) {
+    protected CollisionShape(int x, int y, Color color) throws IllegalArgumentException {
+        if (!isValidColor(color)) {
+            throw new IllegalArgumentException("Given color is not valid!");
+        }
         this.x = x;
         this.y = y;
         this.color = color;
+    }
+
+    /**
+     * Check whether or not the given color is valid or not.
+     *
+     * @param color The color to check.
+     *
+     * @return True if and only if the given color is effective.
+     */
+    public static boolean isValidColor(Color color) {
+        return color != null;
     }
 
     /**
@@ -142,7 +164,7 @@ public abstract class CollisionShape {
     public abstract void paintNonFill(Graphics g);
 
     /**
-     * Checks whether or not the given coordinates are contained in
+     * Checks whether the given coordinates are contained in
      * this collision shape.
      *
      * @param x The x coordinate of the point to check.

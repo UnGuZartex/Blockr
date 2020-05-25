@@ -3,6 +3,8 @@ package System.BlockStructure.Blocks;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Functionality.BlockFunctionality;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +16,17 @@ import java.util.List;
 public abstract class Block {
 
     /**
-     * Variable referring to the last cavity visited
-     */
-    private Block returnToBlock;
-
-    /**
      * Variable referring to the functionality of this block.
      */
     protected BlockFunctionality functionality;
-
     /**
      * Variable referring to all the sub connectors of this block.
      */
-    private final List<SubConnector> subConnector = new ArrayList<>();
+    private final List<SubConnector> subConnectors = new ArrayList<>();
+    /**
+     * Variable referring to whether or not this block is terminated or not.
+     */
+    private boolean isTerminated;
 
     /**
      * Initialise a new block with given functionality
@@ -49,13 +49,41 @@ public abstract class Block {
     }
 
     /**
+     * Check whether or not this block is terminated or not.
+     *
+     * @return True if and only if this block is terminated, otherwise false.
+     */
+    public boolean isTerminated() {
+        return isTerminated;
+    }
+
+    /**
      * Check whether this block has proper connections.
      *
      * @return True if and only if this block has no following up blocks
      *         or its next block has valid following up blocks.
      */
     public boolean hasProperConnections() {
-        return !hasNext() || getNext().hasProperConnections();
+        return !hasNext() || getSubConnectorAt(0).getConnectedBlock().hasProperConnections();
+    }
+
+    /**
+     * Checks whether or not this block is an illegal extra starting block.
+     *
+     * @return Always true.
+     */
+    public boolean isIllegalExtraStartingBlock() {
+        return true;
+    }
+
+    /**
+     * Return whether the block is connected on a main connector.
+     *
+     * @return true when the block has a main connector and that connector is
+     *         connected, false otherwise.
+     */
+    public boolean isConnectedOnMain() {
+        return getMainConnector() != null && getMainConnector().isConnected();
     }
 
     /**
@@ -64,7 +92,7 @@ public abstract class Block {
      * @return The sub connectors of this block.
      */
     protected List<SubConnector> getSubConnectors() {
-        return subConnector;
+        return subConnectors;
     }
 
     /**
@@ -75,7 +103,7 @@ public abstract class Block {
      * @return The sub connector of this block at the given index.
      */
     public SubConnector getSubConnectorAt(int index) {
-        return subConnector.get(index);
+        return subConnectors.get(index);
     }
 
     /**
@@ -84,44 +112,29 @@ public abstract class Block {
      * @return The number of sub connectors.
      */
     public int getNbSubConnectors() {
-        return subConnector.size();
+        return subConnectors.size();
     }
 
     /**
-     * Reset this block and all its connected blocks.
+     * Terminate this block.
      *
-     * @effect The already ran variable is set to null.
-     * @effect The connected blocks are reset.
+     * @post This block is terminated.
      */
-    public void reset() {
-        setReturnToBlock(null);
-        for(int i = 0; i < getSubConnectors().size(); i++) {
-            if (getSubConnectors().get(i).isConnected()) {
-                Block connectBlock = getSubConnectors().get(i).getConnectedBlock();
-                connectBlock.reset();
-            }
-        }
+    public void terminate() {
+        isTerminated = true;
     }
 
     /**
-     * Get the return to block.
+     * Push the next blocks on the stack.
      *
-     * @return The block to return to.
+     * @param stack The stack to push the blocks on.
+     *
+     * @effect The block at the first sub connector is pushed.
      */
-    protected Block getReturnToBlock() {
-        return returnToBlock;
+    public void pushNextBlocks(ExecutionStack stack) {
+        stack.push(getSubConnectorAt(0).getConnectedBlock());
     }
 
-    /**
-     * Set the return to block.
-     *
-     * @param returnToBlock The new return to block.
-     *
-     * @post The return to block is set to the given block.
-     */
-    protected void setReturnToBlock(Block returnToBlock) {
-        this.returnToBlock = returnToBlock;
-    }
 
     /**
      * Get the main connector of this block.
@@ -138,13 +151,6 @@ public abstract class Block {
     public abstract boolean hasNext();
 
     /**
-     * Get the block which should be executed after this block.
-     *
-     * @return The block which should be executed after this block.
-     */
-    public abstract Block getNext();
-
-    /**
      * Clone this block.
      *
      * @return A new block with the with the same properties as this block.
@@ -155,17 +161,19 @@ public abstract class Block {
      * Get the block at the given index.
      *
      * @param index The index to get the block from.
+     * @param systemStack The stack to use in the block calculation.
      *
      * @return The block which is at the given index in the structure of this block.
      */
-    public abstract Block getBlockAtIndex(int index);
+    public abstract Block getBlockAtIndex(int index, ExecutionStack systemStack);
 
     /**
      * Get the index of the given block.
      *
      * @param block The block to get the index off.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @return The index of the given block in the structure of this block.
      */
-    public abstract int getIndexOfBlock(Block block);
+    public abstract int getIndexOfBlock(Block block, ExecutionStack systemStack);
 }

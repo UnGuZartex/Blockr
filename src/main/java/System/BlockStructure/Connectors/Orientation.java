@@ -64,7 +64,7 @@ public enum Orientation {
     };
 
     /**
-     * Checks whether or not the given Orientations is opposite to
+     * Checks whether the given Orientations is opposite to
      * this Orientation.
      *
      * @param other

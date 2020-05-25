@@ -5,6 +5,7 @@ import System.BlockStructure.Connectors.Orientation;
 import System.BlockStructure.Connectors.SubConnector;
 import System.BlockStructure.Connectors.Type;
 import System.BlockStructure.Functionality.BlockFunctionality;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 
 
 /**
@@ -46,22 +47,7 @@ public class FunctionalBlock extends Block {
      */
     @Override
     public boolean hasNext() {
-        return getSubConnectors().get(0).isConnected();
-    }
-
-    /**
-     * Get the next block of this functional block.
-     *
-     * @return The block connected to the sub connector of this functional block.
-     */
-    @Override
-    public Block getNext() {
-        if (hasNext()) {
-            Block nextBlock = getSubConnectors().get(0).getConnectedBlock();
-            nextBlock.setReturnToBlock(this.getReturnToBlock());
-            return nextBlock;
-        }
-        return getReturnToBlock();
+        return getSubConnectorAt(0).isConnected();
     }
 
     /**
@@ -89,12 +75,12 @@ public class FunctionalBlock extends Block {
      * Get the block at the given index.
      *
      * @param index The index of the block to get.
+     * @param systemStack The stack to use in the block calculation.
      *
-     * @return The block at the given index in the linked link structure. If the
-     *         given index is out of range, or the index is illegal, null is returned.
+     * @return The block at the given index in the structure of this block.
      */
     @Override
-    public Block getBlockAtIndex(int index) {
+    public Block getBlockAtIndex(int index, ExecutionStack systemStack) {
         if (index < 0) {
             return null;
         }
@@ -102,28 +88,27 @@ public class FunctionalBlock extends Block {
             return this;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
-            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1);
+            return getSubConnectorAt(0).getConnectedBlock().getBlockAtIndex(index - 1, systemStack);
         }
-        if (getReturnToBlock() == null) {
-            return null;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            return nextBlock.getBlockAtIndex(index - 1, systemStack);
         }
-        return getReturnToBlock().getBlockAtIndex(index - 1);
+        return null;
     }
 
     /**
      * Get the index of the given block from this block starting.
      *
      * @param block The block to get the index of.
+     * @param systemStack The stack to use in the index calculation.
      *
      * @pre The given block may not be connected through the main connector of this block.
      *
-     * @return The index of the given block in the structure of this block. If the
-     *         given block is null, or the block does not exist inside the connected
-     *         block structure, null is returned.
+     * @return The index of the given block in the structure of this block.
      */
     @Override
-    public int getIndexOfBlock(Block block) {
+    public int getIndexOfBlock(Block block, ExecutionStack systemStack) {
         if (block == null) {
             return -1;
         }
@@ -131,12 +116,12 @@ public class FunctionalBlock extends Block {
             return 0;
         }
         if (getSubConnectorAt(0).isConnected()) {
-            getSubConnectorAt(0).getConnectedBlock().setReturnToBlock(this.getReturnToBlock());
-            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block);
+            return 1 + getSubConnectorAt(0).getConnectedBlock().getIndexOfBlock(block, systemStack);
         }
-        if (getReturnToBlock() == null) {
-            return -1;
+        if (!systemStack.isEmpty()) {
+            Block nextBlock = systemStack.pop();
+            return 1 + nextBlock.getIndexOfBlock(block, systemStack);
         }
-        return 1 + getReturnToBlock().getIndexOfBlock(block);
+        return -1;
     }
 }

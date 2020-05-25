@@ -12,7 +12,8 @@ import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.CavityFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
-import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IfBlockTest {
 
+    ConnectionHandler handler;
+    ExecutionStack stack;
     IfBlock if1, if2, if3, if4, if5;
     FunctionalBlock func1, func11, func2, func3, func1Under, func5Under;
     ConditionalBlock cond1, cond3, cond5;
@@ -36,6 +39,7 @@ class IfBlockTest {
 
     @BeforeEach
     void setUp() {
+        stack = new ExecutionStack();
 
         PositionUpOnBlankBeforeWall = new GridPosition(1,1);
         PositionDownOnGoalBeforeBlank = new GridPosition(1,1);
@@ -96,7 +100,7 @@ class IfBlockTest {
         cond3 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
         cond5 = new PredicateBlock(new PredicateFunctionality(new WallInFrontPredicate()));
 
-        ConnectionHandler handler = new ConnectionHandler();
+        handler = new ConnectionHandler();
         handler.connect(if1, func3.getSubConnectorAt(0));
         handler.connect(func11, func1.getSubConnectorAt(0));
         handler.connect(func1, if1.getCavitySubConnector());
@@ -110,6 +114,8 @@ class IfBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
+        
         if1 = null;
         if2 = null;
         if3 = null;
@@ -145,6 +151,8 @@ class IfBlockTest {
         levelDownOnGoalBeforeBlank = null;
         levelLeftOnGoalBeforeGoal = null;
         levelRightOnBlankBeforeWall = null;
+
+        handler = null;
     }
 
     @Test
@@ -193,30 +201,6 @@ class IfBlockTest {
     }
 
     @Test
-    void getNext() {
-        assertEquals(func1Under, if1.getNext());
-        assertNull(if2.getNext());
-        assertNull(if3.getNext());
-        assertNull(if4.getNext());
-        assertEquals(func5Under, if5.getNext());
-
-        if1.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
-        assertEquals(func1Under, if1.getNext());
-
-        if2.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
-        assertNull(if2.getNext());
-
-        if3.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertNull(if3.getNext());
-
-        if4.getFunctionality().evaluate(levelLeftOnGoalBeforeGoal);
-        assertNull(if4.getNext());
-
-        if5.getFunctionality().evaluate(levelUpOnBlankBeforeWall);
-        assertEquals(func5Under, if5.getNext());
-    }
-
-    @Test
     void hasProperConnections() {
         assertTrue(if1.hasProperConnections());
         assertFalse(if2.hasProperConnections());
@@ -225,7 +209,6 @@ class IfBlockTest {
         assertTrue(if5.hasProperConnections());
     }
 
-
     @Test
     void getNbSubConnectors() {
         assertEquals(3, if1.getNbSubConnectors());
@@ -233,14 +216,6 @@ class IfBlockTest {
         assertEquals(3, if3.getNbSubConnectors());
         assertEquals(3, if4.getNbSubConnectors());
         assertEquals(3, if5.getNbSubConnectors());
-    }
-
-    @Test
-    void getNewReturnBlock() {
-        assertTrue(if1.getSubConnectorAt(0).isConnected());
-        assertEquals(func1Under, if1.getNewReturnBlock());
-        assertFalse(if3.getSubConnectorAt(0).isConnected());
-        assertEquals(if3.getReturnToBlock(), if3.getNewReturnBlock());
     }
 
     @Test
@@ -257,12 +232,127 @@ class IfBlockTest {
     }
 
     @Test
-    void reset() {
-        if1.reset();
-        assertNull(if1.getReturnToBlock());
-        assertNull(func1.getReturnToBlock());
-        assertNull(func11.getReturnToBlock());
-        assertNull(func1Under.getReturnToBlock());
-        assertNull(cond1.getReturnToBlock());
+    void terminate() {
+        if1.terminate();
+        assertTrue(if1.isTerminated());
+        assertFalse(func1.isTerminated());
+        assertFalse(func11.isTerminated());
+        assertFalse(func1Under.isTerminated());
+        assertFalse(cond1.isTerminated());
+    }
+
+    @Test
+    void getBlockAtIndex_negativeIndex() {
+        assertNull(if1.getBlockAtIndex(-1, stack));
+    }
+
+    @Test
+    void getBlockAtIndex_indexOutOfRange() {
+        assertNull(if1.getBlockAtIndex(5, stack));
+    }
+
+    @Test
+    void getBlockAtIndex() {
+        assertEquals(if1, if1.getBlockAtIndex(0, stack));
+        assertEquals(func1, if1.getBlockAtIndex(1, stack));
+        assertEquals(func11, if1.getBlockAtIndex(2, stack));
+        assertEquals(func1Under, if1.getBlockAtIndex(3, stack));
+
+        assertEquals(if5, if5.getBlockAtIndex(0, stack));
+        assertEquals(func5Under, if5.getBlockAtIndex(1, stack));
+    }
+
+    @Test
+    void getIndexOfBlock() {
+        assertEquals(0, if1.getIndexOfBlock(if1, stack));
+        assertEquals(1, if1.getIndexOfBlock(func1, stack));
+        assertEquals(2, if1.getIndexOfBlock(func11, stack));
+        assertEquals(3, if1.getIndexOfBlock(func1Under, stack));
+
+        assertEquals(0, if5.getIndexOfBlock(if5, stack));
+        assertEquals(1, if5.getIndexOfBlock(func5Under, stack));
+    }
+
+    @Test
+    void getIndexOfBlock_invalidBlock() {
+        assertEquals(-1, if1.getIndexOfBlock(null, stack));
+    }
+
+    @Test
+    void pushNextBlock_true_blockInCavity_blockUnder() {
+        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(2, stack.size());
+        assertEquals(func1, stack.pop());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_blockInCavity_blockUnder() {
+        if1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_true_noBlockInCavity_blockUnder() {
+        handler.disconnect(func1);
+        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_noBlockInCavity_blockUnder() {
+        handler.disconnect(func1);
+        if1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1Under, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_true_blockInCavity_noBlockUnder() {
+        handler.disconnect(func1Under);
+        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(func1, stack.pop());
+    }
+
+    @Test
+    void pushNextBlock_false_blockInCavity_noBlockUnder() {
+        handler.disconnect(func1Under);
+        if1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
+    }
+
+    @Test
+    void pushNextBlock_true_noBlockInCavity_noBlockUnder() {
+        handler.disconnect(func1);
+        handler.disconnect(func1Under);
+        if1.getFunctionality().evaluate(levelRightOnBlankBeforeWall);
+        assertTrue(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
+    }
+
+    @Test
+    void pushNextBlock_false_noBlockInCavity_noBlockUnder() {
+        handler.disconnect(func1);
+        handler.disconnect(func1Under);
+        if1.getFunctionality().evaluate(levelDownOnGoalBeforeBlank);
+        assertFalse(if1.getFunctionality().getEvaluation());
+        if1.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
     }
 }

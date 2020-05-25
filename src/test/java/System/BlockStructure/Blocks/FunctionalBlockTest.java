@@ -4,7 +4,8 @@ package System.BlockStructure.Blocks;
 import GameWorldAPI.GameWorldType.GameWorldType;
 import GameWorldUtility.LevelInitializer;
 import System.BlockStructure.Functionality.ActionFunctionality;
-import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
+import System.Logic.ProgramArea.Utility.ExecutionStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FunctionalBlockTest {
 
+    ExecutionStack stack;
     GameWorldType type;
     FunctionalBlock blockConnectedTop, blockConnectedBottom, blockNotConnected, blockConnectedTopBottom;
     Block block;
 
     @BeforeEach
     void setUp() {
+        stack = new ExecutionStack();
         type = new LevelInitializer();
         blockConnectedBottom = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0)));
         blockConnectedTop = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1)));
@@ -32,6 +35,7 @@ class FunctionalBlockTest {
 
     @AfterEach
     void tearDown() {
+        stack = null;
         type = null;
         blockConnectedTop = null;
         blockConnectedBottom = null;
@@ -65,14 +69,6 @@ class FunctionalBlockTest {
     }
 
     @Test
-    void getNext() {
-        assertNull(blockConnectedTop.getNext());
-        assertNull(blockNotConnected.getNext());
-        assertEquals(blockConnectedTopBottom, blockConnectedBottom.getNext());
-        assertEquals(blockConnectedTop, blockConnectedTopBottom.getNext());
-    }
-
-    @Test
     void cloneTest() {
         block = blockConnectedTopBottom.clone();
         assertNotEquals(block, blockConnectedTopBottom);
@@ -84,47 +80,101 @@ class FunctionalBlockTest {
 
     @Test
     void getBlockAtIndex_negativeIndex() {
-        assertNull(blockConnectedTop.getBlockAtIndex(-1));
+        assertNull(blockConnectedTop.getBlockAtIndex(-1, stack));
     }
 
     @Test
     void getBlockAtIndex_indexOutOfRange() {
-        assertNull(blockConnectedTop.getBlockAtIndex(1));
-        assertNull(blockNotConnected.getBlockAtIndex(1));
-        assertNull(blockConnectedBottom.getBlockAtIndex(3));
-        assertNull(blockConnectedTopBottom.getBlockAtIndex(2));
+        assertNull(blockConnectedTop.getBlockAtIndex(1, stack));
+        assertNull(blockNotConnected.getBlockAtIndex(1, stack));
+        assertNull(blockConnectedBottom.getBlockAtIndex(3, stack));
+        assertNull(blockConnectedTopBottom.getBlockAtIndex(2, stack));
+        assertNull(blockConnectedTop.getBlockAtIndex(1, stack));
     }
 
     @Test
     void getBlockAtIndex() {
-        assertEquals(blockConnectedTop, blockConnectedTop.getBlockAtIndex(0));
+        assertEquals(blockConnectedTop, blockConnectedTop.getBlockAtIndex(0, stack));
 
-        assertEquals(blockNotConnected, blockNotConnected.getBlockAtIndex(0));
+        assertEquals(blockNotConnected, blockNotConnected.getBlockAtIndex(0, stack));
 
-        assertEquals(blockConnectedBottom, blockConnectedBottom.getBlockAtIndex(0));
-        assertEquals(blockConnectedTopBottom, blockConnectedBottom.getBlockAtIndex(1));
-        assertEquals(blockConnectedTop, blockConnectedBottom.getBlockAtIndex(2));
+        assertEquals(blockConnectedBottom, blockConnectedBottom.getBlockAtIndex(0, stack));
+        assertEquals(blockConnectedTopBottom, blockConnectedBottom.getBlockAtIndex(1, stack));
+        assertEquals(blockConnectedTop, blockConnectedBottom.getBlockAtIndex(2, stack));
 
-        assertEquals(blockConnectedTopBottom, blockConnectedTopBottom.getBlockAtIndex(0));
-        assertEquals(blockConnectedTop, blockConnectedTopBottom.getBlockAtIndex(1));
+        assertEquals(blockConnectedTopBottom, blockConnectedTopBottom.getBlockAtIndex(0, stack));
+        assertEquals(blockConnectedTop, blockConnectedTopBottom.getBlockAtIndex(1, stack));
     }
 
     @Test
     void getIndexOfBlock_invalidBlock() {
-        assertEquals(-1, blockNotConnected.getIndexOfBlock(blockConnectedTop));
+        assertEquals(-1, blockNotConnected.getIndexOfBlock(blockConnectedTop, stack));
+        assertEquals(-1, blockNotConnected.getIndexOfBlock(null, stack));
+        assertEquals(1, blockConnectedBottom.getIndexOfBlock(blockNotConnected, stack));
+        assertEquals(0, blockConnectedTopBottom.getIndexOfBlock(blockNotConnected, stack));
+        assertEquals(-1, blockConnectedTop.getIndexOfBlock(blockNotConnected, stack));
+        assertEquals(-1, blockConnectedTop.getIndexOfBlock(blockConnectedTopBottom, stack));
     }
 
     @Test
     void getIndexOfBlock() {
-        assertEquals(0, blockConnectedTop.getIndexOfBlock(blockConnectedTop));
+        assertEquals(0, blockConnectedTop.getIndexOfBlock(blockConnectedTop, stack));
 
-        assertEquals(0, blockNotConnected.getIndexOfBlock(blockNotConnected));
+        assertEquals(0, blockNotConnected.getIndexOfBlock(blockNotConnected, stack));
 
-        assertEquals(0, blockConnectedBottom.getIndexOfBlock(blockConnectedBottom));
-        assertEquals(1, blockConnectedBottom.getIndexOfBlock(blockConnectedTopBottom));
-        assertEquals(2, blockConnectedBottom.getIndexOfBlock(blockConnectedTop));
+        assertEquals(0, blockConnectedBottom.getIndexOfBlock(blockConnectedBottom, stack));
+        assertEquals(1, blockConnectedBottom.getIndexOfBlock(blockConnectedTopBottom, stack));
+        assertEquals(2, blockConnectedBottom.getIndexOfBlock(blockConnectedTop, stack));
 
-        assertEquals(0, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTopBottom));
-        assertEquals(1, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTop));
+        assertEquals(0, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTopBottom, stack));
+        assertEquals(1, blockConnectedTopBottom.getIndexOfBlock(blockConnectedTop, stack));
+    }
+
+    @Test
+    void terminate() {
+        assertFalse(blockConnectedTop.isTerminated());
+        assertFalse(blockConnectedBottom.isTerminated());
+        assertFalse(blockNotConnected.isTerminated());
+        assertFalse(blockConnectedTopBottom.isTerminated());
+
+        blockConnectedTopBottom.terminate();
+        blockNotConnected.terminate();
+
+        assertFalse(blockConnectedTop.isTerminated());
+        assertFalse(blockConnectedBottom.isTerminated());
+        assertTrue(blockNotConnected.isTerminated());
+        assertTrue(blockConnectedTopBottom.isTerminated());
+
+        blockConnectedBottom.terminate();
+
+        assertFalse(blockConnectedTop.isTerminated());
+        assertTrue(blockConnectedBottom.isTerminated());
+        assertTrue(blockNotConnected.isTerminated());
+        assertTrue(blockConnectedTopBottom.isTerminated());
+    }
+
+    @Test
+    void isIllegalExtraStartingBlock() {
+        assertTrue(blockConnectedTop.isIllegalExtraStartingBlock());
+        assertTrue(blockConnectedBottom.isIllegalExtraStartingBlock());
+        assertTrue(blockNotConnected.isIllegalExtraStartingBlock());
+        assertTrue(blockConnectedTopBottom.isIllegalExtraStartingBlock());
+    }
+
+    @Test
+    void pushNextBlocks() {
+        blockConnectedBottom.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(blockConnectedTopBottom, stack.pop());
+
+        blockConnectedTopBottom.pushNextBlocks(stack);
+        assertEquals(1, stack.size());
+        assertEquals(blockConnectedTop, stack.pop());
+
+        blockConnectedTop.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
+
+        blockNotConnected.pushNextBlocks(stack);
+        assertEquals(0, stack.size());
     }
 }

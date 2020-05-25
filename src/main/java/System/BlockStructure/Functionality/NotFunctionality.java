@@ -21,7 +21,7 @@ public class NotFunctionality extends ConditionalBlockFunctionality<OperationalB
      */
     @Override
     public Result evaluate(GameWorld gameWorld) {
-        BlockFunctionality functionality = block.getNext().getFunctionality();
+        BlockFunctionality functionality = block.getSubConnectorAt(0).getConnectedBlock().getFunctionality();
         functionality.evaluate(gameWorld);
         evaluation = !functionality.getEvaluation();
         return Result.SUCCESS;

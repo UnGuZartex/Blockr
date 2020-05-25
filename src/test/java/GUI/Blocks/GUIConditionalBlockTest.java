@@ -54,7 +54,7 @@ class GUIConditionalBlockTest {
 
     @Test
     void getHeight() {
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
     }
 
     @Test
@@ -65,7 +65,7 @@ class GUIConditionalBlockTest {
     @Test
     void setColor() {
         for (CollisionRectangle rect : cond1.blockRectangles) {
-            assertEquals(GUIConditionalBlock.DEFAULT_COLOR, rect.getColor());
+            assertEquals(GUIConditionalBlock.DEFAULT_BLOCK_COLOR, rect.getColor());
         }
         cond1.setColor(Color.black);
         for (CollisionRectangle rect : cond1.blockRectangles) {
@@ -83,13 +83,13 @@ class GUIConditionalBlockTest {
     @Test
     void changeHeight() {
         cond1.changeHeight(5, block);
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
     }
 
     @Test
     void setShapes() {
         cond1.setShapes();
-        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getHeight());
+        assertEquals(GUIConditionalBlock.DEFAULT_HEIGHT, cond1.getTotalHeight());
         assertEquals(GUIConditionalBlock.DEFAULT_WIDTH, cond1.getWidth());
         assertEquals(0, cond1.subConnectors.size());
         assertEquals(1, cond1.blockRectangles.size());
@@ -119,16 +119,17 @@ class GUIConditionalBlockTest {
     }
 
     @Test
-    void intersectsWithConnector() {
+    void canPotentiallyConnectWith() {
 
         block = new GUIFunctionalBlock("id", x1, y1);
-        assertFalse(cond1.intersectsWithConnector(block));
+        assertFalse(cond1.canPotentiallyConnectWith(block));
     }
 
 
     @Test
     void disconnectMainConnector() {
         GUIOperatorBlock not = new GUIOperatorBlock("0", 0,0);
+        not.setPosition(cond1.getPosition().getX() - cond1.getWidth()/2 + cond1.mainConnector.getCollisionCircle().getRadius(), cond1.getPosition().getY());
         not.subConnectors.get(0).connect(cond1.mainConnector);
         assertTrue(cond1.mainConnector.isConnected());
         assertTrue(not.subConnectors.get(0).isConnected());

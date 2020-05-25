@@ -1,19 +1,19 @@
 package Controllers.ControllerClasses;
 
-import Controllers.BlockLinkDatabase;
+import Controllers.Utility.IGUISystemBlockLink;
 import GUI.Blocks.IGUIBlock;
 import System.BlockStructure.Blocks.Block;
 import System.BlockStructure.Connectors.MainConnector;
 import System.BlockStructure.Connectors.SubConnector;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 
 /**
  * A controller class for the connections between GUI and system.
  *
- * @invar A connection controller must have an effective block link database.
- *        | converter != null
- * @invar A connection controller must have an effective pa block handler.
- *        | blockHandler != null
+ * @invar A connection controller must have a valid block link database.
+ *        | isValidIGUISystemBlockLink(converter)
+ * @invar A connection controller must have a valid pa block handler.
+ *        | isValidPABlockHandler(blockHandler)
  *
  * @author Alpha-team
  */
@@ -22,7 +22,7 @@ public class ConnectionController {
     /**
      * Variable referring to the block link database of this controller.
      */
-    private final BlockLinkDatabase converter;
+    private final IGUISystemBlockLink converter;
     /**
      * Variable referring to the pa block handler of this controller.
      */
@@ -38,19 +38,41 @@ public class ConnectionController {
      * @post The block handler of this controller is set to the given block handler.
      *
      * @throws IllegalArgumentException
-     *         When the given converter is not effective.
+     *         When the given converter is not valid.
      * @throws IllegalArgumentException
-     *         When the given block handler is not effective.
+     *         When the given block handler is not valid.
      */
-    public ConnectionController(BlockLinkDatabase converter, PABlockHandler blockHandler) throws IllegalArgumentException {
-        if (converter == null) {
-            throw new IllegalArgumentException("The given converter is not effective!");
+    public ConnectionController(IGUISystemBlockLink converter, PABlockHandler blockHandler) throws IllegalArgumentException {
+        if (!isValidIGUISystemBlockLink(converter)) {
+            throw new IllegalArgumentException("The given converter is not valid!");
         }
-        if (blockHandler == null) {
-            throw new IllegalArgumentException("The given block handler is not effective!");
+        if (!isValidPABlockHandler(blockHandler)) {
+            throw new IllegalArgumentException("The given block handler is not valid!");
         }
         this.converter = converter;
         this.blockHandler = blockHandler;
+    }
+
+    /**
+     * Checks whether or not the given block link is valid.
+     *
+     * @param blockLink The block link to check.
+     *
+     * @return True if and only if the given block link is effective.
+     */
+    public static boolean isValidIGUISystemBlockLink(IGUISystemBlockLink blockLink) {
+        return blockLink != null;
+    }
+
+    /**
+     * Checks whether or not the given pa block handler is valid.
+     *
+     * @param blockHandler The pa block handler to check.
+     *
+     * @return True if and only if the given pa block handler is effective.
+     */
+    public static boolean isValidPABlockHandler(PABlockHandler blockHandler) {
+        return blockHandler != null;
     }
 
     /**
@@ -73,7 +95,7 @@ public class ConnectionController {
      *
      * @param withMain The gui block of which its system block should be disconnected.
      *
-     * @effect The block compatibel with the given gui block is disconnected in on
+     * @effect The block compatible with the given gui block is disconnected in on
      *         its main connector.
      */
     public void disconnectBlock(IGUIBlock withMain) {
@@ -82,7 +104,7 @@ public class ConnectionController {
     }
 
     /**
-     * Checks whether or not the given gui blocks can connect.
+     * Checks whether the given gui blocks can connect.
      *
      * @param withMain The block to connect through its main connector.
      * @param withSub The block to connect through a sub connector.

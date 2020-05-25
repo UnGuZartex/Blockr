@@ -1,32 +1,23 @@
 package GUI.Blocks;
 
-import GUI.CollisionShapes.CollisionRectangle;
-import GUI.Components.GUIConnector;
-
+import GUI.Utility.GUIConnector;
 import java.awt.*;
 
-public class GUICavityBlock extends GUIBlock {
+/**
+ * A class for gui cavity blocks. These are blocks which have a conditional and
+ * have blocks in a cavity.
+ *
+ * @author Alpha-team
+ */
+public class GUICavityBlock extends GUISimpleCavityBlock {
 
-    /**
-     * Variables referring to the default lengths for a cavity block.
-     */
-    public static final int DEFAULT_CAVITY_WIDTH = 10, DEFAULT_CAVITY_UP_HEIGHT = 30,
-            DEFAULT_CAVITY_DOWN_HEIGHT = 30, DEFAULT_WIDTH = 100;
-    /**
-     * Variables referring to the height of the cavity.
-     */
-    private int cavityHeight, cavityUpHeight, cavityDownHeight;
-    /**
-     * Variables referring to the collision rectangles for this block.
-     */
-    private CollisionRectangle cavityRectangle, cavityRectangleUnder;
     /**
      * Variables referring to the connectors of this cavity block.
      */
-    private GUIConnector cavityConnector, conditionalConnector, lowerSubConnector;
+    protected GUIConnector conditionalConnector, lowerSubConnector;
 
     /**
-     * Initialise a new cavity block with given name and coordinates.
+     * Create a new GUI cavity block with a given name and coordinates.
      *
      * @param name The name for this cavity block.
      * @param x The x coordinate for this block.
@@ -45,7 +36,7 @@ public class GUICavityBlock extends GUIBlock {
      *
      * @post The color of this block is set to the given color.
      *
-     * @effect The conditional is set to the given color, if any exists.
+     * @effect The conditional is set to the given color, if possible.
      */
     @Override
     public void setColor(Color color) {
@@ -63,17 +54,13 @@ public class GUICavityBlock extends GUIBlock {
      * @param heightDelta The given height difference.
      * @param previousBlock The previous block that called this method.
      *
-     * @effect If the cavity connector is connected and the method call came from that connected block,
-     *         then the cavity changes height based on the given height delta.
+     * @effect The super is called to change the cavity height of this cavity block.
      * @effect If the main connector is connected to a block, this method is called on that connected block to
      *         further propagate the height change call.
      */
     @Override
-    protected void changeHeight(int heightDelta, GUIBlock previousBlock) {
-
-        if (cavityConnector.isConnected() && cavityConnector.getConnectedGUIBlock().equals(previousBlock)) {
-            changeCavityHeight(heightDelta);
-        }
+    public void changeHeight(int heightDelta, GUIBlock previousBlock) {
+        super.changeHeight(heightDelta, previousBlock);
 
         if (mainConnector.isConnected()) {
             mainConnector.getConnectedGUIBlock().changeHeight(heightDelta, this);
@@ -87,57 +74,18 @@ public class GUICavityBlock extends GUIBlock {
      *         connected block to the lower sub connector, if any is connected.
      */
     @Override
-    public int getHeight() {
+    public int getTotalHeight() {
         if (lowerSubConnector.isConnected()) {
-            return height + lowerSubConnector.getConnectedGUIBlock().getHeight();
+            return height + lowerSubConnector.getConnectedGUIBlock().getTotalHeight();
         }
 
         return height;
     }
 
     /**
-     * Set the shapes of this cavity block.
-     *
-     * @effect A new rectangle for the upper part is initialised and
-     *         added to the collision rectangles.
-     * @effect A new rectangle for the lower part is initialised and
-     *         added to the collision rectangles.
-     * @effect A new rectangle for the cavity is initialised and added
-     *         to the collision rectangles.
-     * @effect A new sub connector for the cavity is initialised and added
-     *         to the sub connectors.
-     * @effect A new sub connector for the lower part is initialised and added
-     *         to the sub connectors.
-     * @effect A new sub connector for the conditional is initialised and added
-     *         to the sub connectors.
-     */
-    @Override
-    protected void setShapes() {
-        width = DEFAULT_WIDTH + DEFAULT_CAVITY_WIDTH;
-        cavityUpHeight = DEFAULT_CAVITY_UP_HEIGHT;
-        cavityDownHeight = DEFAULT_CAVITY_DOWN_HEIGHT;
-        height = cavityUpHeight + cavityDownHeight;
-
-        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, DEFAULT_CAVITY_WIDTH, 0, Color.white);
-        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, Color.white);
-
-        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, Color.white));
-        blockRectangles.add(cavityRectangle);
-        blockRectangles.add(cavityRectangleUnder);
-
-        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, Color.blue);
-        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, Color.red);
-        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight+cavityDownHeight+cavityHeight, Color.red);
-        conditionalConnector = new GUIConnector(this, width, cavityUpHeight / 2, Color.red);
-        subConnectors.add(lowerSubConnector);
-        subConnectors.add(cavityConnector);
-        subConnectors.add(conditionalConnector);
-    }
-
-    /**
      * Clone this gui block and return the clone.
      *
-     * @return A clone of this gui block.
+     * @return A new cavity block with the same name and coordinates as this block.
      */
     @Override
     public GUIBlock clone() {
@@ -145,23 +93,37 @@ public class GUICavityBlock extends GUIBlock {
     }
 
     /**
+     * Set the connectors of this cavity block.
+     *
+     * @effect The super method is called which sets the default cavity connectors.
+     * @effect The main connector is set to a new connector which is on top in the middle of the block.
+     * @effect The conditional sub connector is set to a new connector which is besides the block.
+     * @effect The lower sub connector is set to a new connector which is below in the middle of the block.
+     * @effect The sub connectors list is set to a new list that contains the sub connector below,
+     *         then the cavity sub connector and last the conditional sub connector.
+     */
+    @Override
+    protected void setConnectors() {
+        super.setConnectors();
+        mainConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, 0, DEFAULT_MAIN_CONNECTOR_COLOR);
+        conditionalConnector = new GUIConnector(this, width, DEFAULT_CAVITY_UP_HEIGHT / 2, DEFAULT_SUB_CONNECTOR_COLOR);
+        lowerSubConnector = new GUIConnector(this, (width - DEFAULT_CAVITY_WIDTH) / 2, height, DEFAULT_SUB_CONNECTOR_COLOR);
+        subConnectors.add(0, lowerSubConnector);
+        subConnectors.add(conditionalConnector);
+    }
+
+    /**
      * Change the cavity height of this cavity block with the given height difference.
      *
      * @param heightDelta The given height difference.
      *
-     * @effect Set the cavity height to the newly calculated height.
+     * @effect The super method is called which changes the cavity height.
      * @effect If the lower sub connector is connected, the blocks connected to that connector
      *         are translated to correct their position after the cavity height change.
-     *
-     * @throws IllegalArgumentException
-     *         when the given height delta is invalid.
      */
-    private void changeCavityHeight(int heightDelta) throws IllegalArgumentException {
-        if (cavityHeight + heightDelta < 0) {
-            throw new IllegalArgumentException("The given height delta is invalid, cavity height can't be < 0!");
-        }
-
-        setNewCavityHeight(cavityHeight + heightDelta);
+    @Override
+    protected void changeCavityHeight(int heightDelta) {
+        super.changeCavityHeight(heightDelta);
 
         if (lowerSubConnector.isConnected()) {
             lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
@@ -174,18 +136,12 @@ public class GUICavityBlock extends GUIBlock {
      *
      * @param newCavityHeight The given cavity height.
      *
-     * @post The cavity height is set to the given cavity height.
-     * @post The block height is set the correct value, factoring in the new cavity height.
-     *
-     * @effect The height of the rectangle representing the cavity is set to the given cavity height.
-     * @effect The position of the lower cavity rectangle is changed accordingly.
-     * @effect The position of the lower sub connector is changed accordingly.
+     * @effect The super method is called to set the new cavity height.
+     * @effect The position of the lower sub connector is changed accordingly, if it exists.
      */
-    private void setNewCavityHeight(int newCavityHeight) {
-        cavityHeight = newCavityHeight;
-        height = cavityUpHeight + cavityHeight + cavityDownHeight;
-        cavityRectangle.setHeight(cavityHeight);
-        cavityRectangleUnder.setY(getY() + cavityUpHeight + cavityHeight);
-        lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY() + cavityDownHeight);
+    @Override
+    protected void setNewCavityHeight(int newCavityHeight) {
+        super.setNewCavityHeight(newCavityHeight);
+        lowerSubConnector.getCollisionCircle().setY(cavityRectangleUnder.getY() + DEFAULT_CAVITY_DOWN_HEIGHT);
     }
 }

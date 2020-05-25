@@ -6,7 +6,7 @@ import GameWorld.Grid;
 import GameWorld.Level;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.LevelInitializer;
@@ -15,9 +15,12 @@ import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -151,9 +154,9 @@ class ProgramTest {
 
     @Test
     void isExecuting() {
-        assertFalse(validProgram.isExecuting());
+        assertFalse(validProgram.isResettable());
         validProgram.executeStep(level);
-        assertTrue(validProgram.isExecuting());
+        assertTrue(validProgram.isResettable());
     }
 
     @Test
@@ -215,5 +218,20 @@ class ProgramTest {
         validProgram.loadSnapshot(snapshot);
         assertEquals(Result.END, validProgram.getLastResult());
         assertNull(validProgram.getCurrentBlock());
+    }
+
+    @Test
+    void snapshot_getName() {
+        Snapshot snapshot = validProgram.createSnapshot();
+        assertEquals("Program snapshot " + snapshot, snapshot.getName());
+    }
+
+    @Test
+    void snapshot_getSnapshotDate() {
+        LocalDateTime dateBefore = LocalDateTime.now().minusSeconds(1);
+        Snapshot snapshot = validProgram.createSnapshot();
+        LocalDateTime dateAfter = LocalDateTime.now().plusSeconds(1);
+        assertTrue(dateBefore.isBefore(snapshot.getSnapshotDate()));
+        assertTrue(dateAfter.isAfter(snapshot.getSnapshotDate()));
     }
 }

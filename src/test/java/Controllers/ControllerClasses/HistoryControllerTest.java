@@ -20,6 +20,7 @@ import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
 import System.Logic.ProgramArea.*;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -90,6 +91,18 @@ class HistoryControllerTest {
     @Test
     void historyController_invalidProgramArea() {
         assertThrows(IllegalArgumentException.class, () -> new HistoryController(history, null));
+    }
+
+    @Test
+    void isValidCommandHistory() {
+        assertTrue(HistoryController.isValidCommandHistory(history));
+        assertFalse(HistoryController.isValidCommandHistory(null));
+    }
+
+    @Test
+    void isValidProgramArea() {
+        assertTrue(HistoryController.isValidProgramArea(programArea));
+        assertFalse(HistoryController.isValidProgramArea(null));
     }
 
     @Test

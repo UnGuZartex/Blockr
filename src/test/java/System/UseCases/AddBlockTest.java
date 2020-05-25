@@ -2,17 +2,13 @@ package System.UseCases;
 
 import GameWorldAPI.GameWorld.GameWorld;
 import GameWorldAPI.GameWorldType.GameWorldType;
-import GameWorldUtility.Actions.MoveForwardAction;
-import GameWorldUtility.Actions.TurnLeftAction;
-import GameWorldUtility.Actions.TurnRightAction;
 import GameWorldUtility.LevelInitializer;
-import GameWorldUtility.Predicates.WallInFrontPredicate;
 import System.BlockStructure.Blocks.*;
 import System.BlockStructure.Functionality.ActionFunctionality;
 import System.BlockStructure.Functionality.PredicateFunctionality;
 import System.Logic.CommandHistory;
-import System.Logic.ProgramArea.ConnectionHandler;
-import System.Logic.ProgramArea.PABlockHandler;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
+import System.Logic.ProgramArea.Handlers.PABlockHandler;
 import System.Logic.ProgramArea.ProgramArea;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +26,7 @@ public class AddBlockTest {
     GameWorldType type;
     GameWorld gameWorld;
     Block moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock;
+    ProcedureBlock procedure;
 
     @BeforeEach
     void setUp() {
@@ -38,16 +35,17 @@ public class AddBlockTest {
         type = new LevelInitializer();
         gameWorld = type.createNewGameWorld();
 
-        moveForward = new FunctionalBlock(new ActionFunctionality((MoveForwardAction) type.getAllActions().get(0)));
-        turnLeft = new FunctionalBlock(new ActionFunctionality((TurnLeftAction) type.getAllActions().get(1)));
-        turnRight = new FunctionalBlock(new ActionFunctionality((TurnRightAction) type.getAllActions().get(2)));
-        wallInFront = new PredicateBlock(new PredicateFunctionality((WallInFrontPredicate) type.getAllPredicates().get(0)));
+        moveForward = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(0))); // MoveForwardAction
+        turnLeft = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(1))); // TurnLeftAction
+        turnRight = new FunctionalBlock(new ActionFunctionality(type.getAllActions().get(2))); // TurnRightAction
+        wallInFront = new PredicateBlock(new PredicateFunctionality(type.getAllPredicates().get(0))); // WallInFrontPredicate
         notBlock = new NotBlock();
         whileBlock = new WhileBlock();
         ifBlock = new IfBlock();
+        procedure = new ProcedureBlock();
 
-
-        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock)), new ProgramArea(gameWorld, new CommandHistory()));
+        paBlockHandler = new PABlockHandler(new ArrayList<>(Arrays.asList(moveForward, turnLeft, turnRight, wallInFront, notBlock, whileBlock, ifBlock, procedure)), new ProgramArea(gameWorld, new CommandHistory()));
+        procedure.subscribe(paBlockHandler.getPalette());
     }
 
     @AfterEach
@@ -62,6 +60,7 @@ public class AddBlockTest {
         notBlock = null;
         whileBlock = null;
         ifBlock = null;
+        procedure = null;
     }
 
     @Test
@@ -70,6 +69,7 @@ public class AddBlockTest {
         PredicateBlock statement = (PredicateBlock) paBlockHandler.getFromPalette(3);
         OperationalBlock operational = (NotBlock) paBlockHandler.getFromPalette(4);
         FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
 
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(cavity);
@@ -80,6 +80,8 @@ public class AddBlockTest {
         assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(functional);
         assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(procedure);
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 
     @Test
@@ -88,15 +90,17 @@ public class AddBlockTest {
         PredicateBlock statement = (PredicateBlock) paBlockHandler.getFromPalette(3);
         OperationalBlock operational = (NotBlock) paBlockHandler.getFromPalette(4);
         FunctionalBlock functional = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
 
+        connectionHandler.connect(functional, procedure.getSubConnectorAt(0));
         connectionHandler.connect(cavity, functional.getSubConnectorAt(0));
         connectionHandler.connect(statement, operational.getSubConnectorAt(0));
 
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
-        paBlockHandler.addToPA(functional);
-        assertEquals(2, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(procedure);
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(operational);
-        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 
     @Test
@@ -200,5 +204,57 @@ public class AddBlockTest {
         assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
         paBlockHandler.addToPA(functional2);
         assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void addHighest_procedure() {
+        ProcedureBlock procedure = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock functional3 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+
+        connectionHandler.connect(functional1, procedure.getSubConnectorAt(0));
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+        connectionHandler.connect(functional3, functional2.getSubConnectorAt(0));
+
+        assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(functional3);
+        assertEquals(4, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void addHighest_fromMiddle() {
+        FunctionalBlock functional1 = (FunctionalBlock) paBlockHandler.getFromPalette(0);
+        FunctionalBlock functional2 = (FunctionalBlock) paBlockHandler.getFromPalette(1);
+        FunctionalBlock functional3 = (FunctionalBlock) paBlockHandler.getFromPalette(2);
+
+        connectionHandler.connect(functional2, functional1.getSubConnectorAt(0));
+        connectionHandler.connect(functional3, functional2.getSubConnectorAt(0));
+
+        assertEquals(0, paBlockHandler.getPA().getAllBlocksCount());
+        paBlockHandler.addToPA(functional2);
+        assertEquals(3, paBlockHandler.getPA().getAllBlocksCount());
+    }
+
+    @Test
+    void getProcedureFromPalette() {
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(8));
+        ProcedureBlock procedure1 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure1);
+        ProcedureCall call11 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        ProcedureCall call12 = (ProcedureCall) paBlockHandler.getFromPalette(8);
+        assertEquals(procedure1, call11.getProcedure());
+        assertEquals(procedure1, call12.getProcedure());
+        paBlockHandler.addToPA(call11);
+        paBlockHandler.addToPA(call12);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> paBlockHandler.getFromPalette(9));
+        ProcedureBlock procedure2 = (ProcedureBlock) paBlockHandler.getFromPalette(7);
+        paBlockHandler.addToPA(procedure2);
+        ProcedureCall call2 = (ProcedureCall) paBlockHandler.getFromPalette(9);
+        assertEquals(procedure2, call2.getProcedure());
+        paBlockHandler.addToPA(call2);
+
+        assertEquals(5, paBlockHandler.getPA().getAllBlocksCount());
     }
 }

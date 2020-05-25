@@ -11,7 +11,7 @@ import RobotCollection.Utility.GridPosition;
 import System.BlockStructure.Blocks.NotBlock;
 import System.BlockStructure.Blocks.OperationalBlock;
 import System.BlockStructure.Blocks.PredicateBlock;
-import System.Logic.ProgramArea.ConnectionHandler;
+import System.Logic.ProgramArea.Handlers.ConnectionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
