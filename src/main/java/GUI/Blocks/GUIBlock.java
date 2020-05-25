@@ -50,7 +50,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     public static final Color DEFAULT_MAIN_CONNECTOR_COLOR = Color.BLUE;
 
     /**
-     * Initialise a new GUI block with given name and coordinates.
+     * Create a new GUI block with a given name and coordinates.
      *
      * @param name The name for this block.
      * @param x The x coordinate for this block.

@@ -18,7 +18,7 @@ public class GUIConditionalBlock extends GUIBlock {
     public static final int DEFAULT_HEIGHT = 30, DEFAULT_WIDTH = 100;
 
     /**
-     * Initialise a new conditional block with given name and coordinates.
+     * Create a new GUI conditional block with a given name and coordinates.
      *
      * @param name The name for this block.
      * @param x The x coordinate for this block.

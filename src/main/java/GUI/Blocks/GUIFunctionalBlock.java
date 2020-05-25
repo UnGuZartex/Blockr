@@ -20,7 +20,7 @@ public class GUIFunctionalBlock extends GUIBlock {
     private GUIConnector lowerSubConnector;
 
     /**
-     * Initialise a new functionality block with given name and coordinates
+     * Create a new functional block with a given name and coordinates.
      *
      * @param name The name for this block.
      * @param x The x coordinate for this block.
