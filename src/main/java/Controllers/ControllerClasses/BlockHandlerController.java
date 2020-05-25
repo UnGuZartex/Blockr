@@ -102,7 +102,7 @@ public class BlockHandlerController {
     }
 
     /**
-     * Add the given block to the program area as an existing block.
+     * Add the given block to the program area as a potential program.
      *
      * @param block The block to add.
      *
