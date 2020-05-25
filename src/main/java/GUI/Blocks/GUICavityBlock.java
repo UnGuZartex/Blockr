@@ -1,10 +1,7 @@
 package GUI.Blocks;
 
-import GUI.CollisionShapes.CollisionRectangle;
 import GUI.Components.GUIConnector;
-
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * A class for gui cavity blocks. These are blocks which have a conditional and
@@ -130,7 +127,7 @@ public class GUICavityBlock extends GUISimpleCavityBlock {
      */
     @Override
     protected void changeCavityHeight(int heightDelta) {
-        super.setNewCavityHeight(heightDelta);
+        super.changeCavityHeight(heightDelta);
 
         if (lowerSubConnector.isConnected()) {
             lowerSubConnector.getConnectedGUIBlock().translate(0, heightDelta);
