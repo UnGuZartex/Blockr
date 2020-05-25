@@ -225,6 +225,8 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
         GUIBlock nextBlock = null;
         disconnectHeight();
 
+        blockHandlerController.deleteFromPA(this);
+
         if (subConnectors.size() > 0) {
             nextBlock = subConnectors.get(0).getConnectedGUIBlock();
             subConnectors.get(0).disconnect();

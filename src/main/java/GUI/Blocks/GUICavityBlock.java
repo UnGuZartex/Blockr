@@ -141,11 +141,7 @@ public class GUICavityBlock extends GUISimpleCavityBlock {
      *
      * @param newCavityHeight The given cavity height.
      *
-     * @post The cavity height is set to the given cavity height.
-     * @post The block height is set the correct value, factoring in the new cavity height.
-     *
-     * @effect The height of the rectangle representing the cavity is set to the given cavity height.
-     * @effect The position of the lower cavity rectangle is changed accordingly.
+     * @effect The super is called to set the new cavity height.
      * @effect The position of the lower sub connector is changed accordingly, if it exists.
      */
     @Override
