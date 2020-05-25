@@ -88,6 +88,11 @@ public class Initialiser {
      *         When an image could not be loaded while
      *         creating the image library.
      */
+    /**
+     * TODO commentaar
+     * @return
+     * @throws IOException
+     */
     public BlockrCanvas createNewCanvas() throws IOException {
 
         CommandHistory history = new CommandHistory();
@@ -100,8 +105,9 @@ public class Initialiser {
         BlockHandlerController blockHandlerController = new BlockHandlerController(converter, blockHandler);
         BlockrCanvas canvas = new BlockrCanvas(initialiseImageLibrary(),
                 blockHandlerController,
-                connectionController);
-        canvas.setPanels(GUIPaletteBlocks, gameWorld, historyController, blockHandler);
+                connectionController, historyController, GUIPaletteBlocks, gameWorld);
+        blockHandler.getPalette().subscribe(canvas.getPalettePanel());
+        blockHandler.getPA().subscribe(canvas.getProgramAreaPanel());
         return canvas;
     }
 

@@ -43,7 +43,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     private boolean terminated;
 
     /**
-     * Variable referring to the colours of blocks and it's components.
+     * Variable referring to the colours of blocks, and it's components.
      */
     public static final Color DEFAULT_BLOCK_COLOR = Color.WHITE;
     public static final Color DEFAULT_SUB_CONNECTOR_COLOR = Color.RED;
@@ -211,42 +211,41 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
      * @param connectionController The connection controller to execute the removal with.
      * @param blockHandlerController The block handler controller to execute the removal with.
      *
+     * @pre This block is already disconnected in the system.
+     *
      * @post If this block is only connected on its main connector, it is disconnected and the
      *       connected block is also disconnected.
      * @post If this block is only connected on its sub connector below, it is disconnected and the
      *       connected block is also disconnected.
      * @post If this block is connected on its main connector and sub connector below, than it is on
-     *       both connectors disconnected and the block which where connected are connected onto eachother.
+     *       both connectors disconnected and the block which where connected are connected onto each other.
      */
     public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) {
-        if (mainConnector != null) {
-            GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
-            GUIBlock nextBlock = null;
-            disconnectHeight();
+        GUIBlock prevBlock = mainConnector.getConnectedGUIBlock();
+        GUIBlock nextBlock = null;
+        disconnectHeight();
 
-            if (subConnectors.size() > 0) {
-                nextBlock = subConnectors.get(0).getConnectedGUIBlock();
+        blockHandlerController.deleteFromPA(this);
 
-                if (nextBlock != null) {
-                    nextBlock.disconnectMainConnector();
-                }
+        if (subConnectors.size() > 0) {
+            nextBlock = subConnectors.get(0).getConnectedGUIBlock();
+            subConnectors.get(0).disconnect();
+        }
+
+        if (prevBlock != null) {
+            GUIConnector sub = mainConnector.getConnectedConnector();
+            int subIndex = prevBlock.getConnectorIndex(sub);
+            disconnectMainConnector();
+
+            if (nextBlock != null && connectionController.isValidConnection(nextBlock, prevBlock, subIndex)) {
+                nextBlock.setPosition(getX(), getY());
+                nextBlock.mainConnector.connect(sub);
+                connectionController.connectBlocks(nextBlock, prevBlock, subIndex);
             }
+        }
 
-            if (prevBlock != null) {
-                GUIConnector sub = mainConnector.getConnectedConnector();
-                int subIndex = prevBlock.getConnectorIndex(sub);
-                disconnectMainConnector();
-
-                if (nextBlock != null && connectionController.isValidConnection(nextBlock, prevBlock, subIndex)) {
-                    nextBlock.setPosition(getX(), getY());
-                    nextBlock.mainConnector.connect(sub);
-                    connectionController.connectBlocks(nextBlock, prevBlock, subIndex);
-                }
-            }
-
-            if (nextBlock != null) {
-                blockHandlerController.addExistingBlockAsProgram(nextBlock);
-            }
+        if (nextBlock != null) {
+            blockHandlerController.addExistingBlockAsProgram(nextBlock);
         }
     }
 
@@ -359,14 +358,10 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     /**
      * Disconnect the main connector of this block.
      *
-     * @post The main connector is not connected anymore.
-     * @post The sub connector which was connected to the main connector
-     *       is not connected anymore.
+     * @effect The main connector is disconnected.
      */
     public void disconnectMainConnector() {
-        if (mainConnector != null) {
-            mainConnector.disconnect();
-        }
+        mainConnector.disconnect();
     }
 
     /**

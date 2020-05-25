@@ -306,13 +306,13 @@ public class ProgramAreaPanel extends GamePanel implements ProgramListener {
     /**
      * Update the blocks in this panel.
      *
-     * @effect All terminated blocks are are removed from the program area.
+     * @effect All terminated blocks are removed from the program area list.
+     * @effect All terminated blocks are graphically removed from their current programs.
      */
     public void update() {
         for (Map.Entry<GUIBlock, Integer> block : new ArrayList<>(blockPairs)) {
             if (block.getKey().isTerminated()) {
                 blockPairs.remove(block);
-                blockHandlerController.deleteFromPA(block.getKey());
                 block.getKey().removeInBetween(connectionController, blockHandlerController);
             }
         }

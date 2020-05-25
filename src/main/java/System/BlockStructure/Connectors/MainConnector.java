@@ -66,7 +66,7 @@ public class MainConnector extends Connector {
      *       anymore.
      *
      * @throws IllegalStateException
-     *         If the this connector is not connected.
+     *         When this connector is not connected.
      */
     @Override
     public void disconnect() throws IllegalStateException {

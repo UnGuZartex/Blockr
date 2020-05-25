@@ -1,6 +1,7 @@
 package GUI.Blocks;
 
-import GUI.Components.GUIConnector;
+import Controllers.ControllerClasses.BlockHandlerController;
+import Controllers.ControllerClasses.ConnectionController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,14 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class GUIProcedureBlock extends GUICavityBlock {
+public class GUIProcedureBlock extends GUISimpleCavityBlock {
 
     /**
      * Variable referring to the different procedure indexes which are already
      * taken. If entry i is true, then the index i is taken. If i exceeds the
      * length of the list, then i is not taken.
      */
-    protected static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
+    public static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
     /**
      * Variable referring to the current priority of this block, which is initially
      * the max value.
@@ -64,6 +65,27 @@ public class GUIProcedureBlock extends GUICavityBlock {
     }
 
     /**
+     * Disconnect the main connector of this block.
+     * Disconnecting the main connector has no effect.
+     */
+    @Override
+    public void disconnectMainConnector() { }
+
+    /**
+     * Remove this block from between its main connector and its sub connector below.
+     *
+     * @param connectionController The connection controller to execute the removal with.
+     * @param blockHandlerController The block handler controller to execute the removal with.
+     *
+     * @throws IllegalStateException
+     *         Because the procedure block can't be removed between blocks."
+     */
+    @Override
+    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) throws IllegalStateException{
+        throw new IllegalStateException("Procedure block can't be removed between blocks.");
+    }
+
+    /**
      * Clone this procedure.
      *
      * @return A new gui block with the same coordinates and a new procedure block.
@@ -76,7 +98,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
     /**
      * Terminate this block.
      *
-     * @effect This block is terminated
+     * @effect This block is terminated.
      * @effect The procedure number of this block is set to not taken if this is not the initial procedure block.
      * @effect If the procedure number of this block is the size of the total number of taken numbers, then it is removed.
      */
@@ -91,19 +113,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
                 takenProcedureNumbers.remove(takenProcedureNumbers.size() - 1);
             }
         }
-    }
-
-    /**
-     * Set the connectors of this procedure block.
-     *
-     * @effect The cavity connector is set to a new connector on the middle below the top part of this block in the default colour.
-     * @effect The sub connectors list is set to a new list and the cavity sub connector is added.
-     */
-    @Override
-    protected void setConnectors() {
-        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, DEFAULT_SUB_CONNECTOR_COLOR);
-        subConnectors = new ArrayList<>();
-        subConnectors.add(cavityConnector);
     }
 
     /**

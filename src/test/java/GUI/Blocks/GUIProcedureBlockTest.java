@@ -89,8 +89,6 @@ class GUIProcedureBlockTest {
 
     @Test
     void subConnectors() {
-        assertNull(procedure.conditionalConnector);
-        assertNull(procedure.lowerSubConnector);
         assertNotNull(procedure.cavityConnector);
         assertEquals(GUIBlock.DEFAULT_SUB_CONNECTOR_COLOR, procedure.cavityConnector.getCollisionCircle().getColor());
     }
