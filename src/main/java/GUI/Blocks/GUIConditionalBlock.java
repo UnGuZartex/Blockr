@@ -15,7 +15,7 @@ public class GUIConditionalBlock extends GUIBlock {
     /**
      * Variables referring to the default with and height.
      */
-    protected static final int DEFAULT_HEIGHT = 30, DEFAULT_WIDTH = 100;
+    public static final int DEFAULT_HEIGHT = 30, DEFAULT_WIDTH = 100;
 
     /**
      * Initialise a new conditional block with given name and coordinates.

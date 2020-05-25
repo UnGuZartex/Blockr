@@ -1,7 +1,5 @@
 package GUI.Blocks;
 
-import GUI.Components.GUIConnector;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class GUIProcedureBlock extends GUISimpleCavityBlock {
      * taken. If entry i is true, then the index i is taken. If i exceeds the
      * length of the list, then i is not taken.
      */
-    protected static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
+    public static final List<Boolean> takenProcedureNumbers = new ArrayList<>();
     /**
      * Variable referring to the current priority of this block, which is initially
      * the max value.

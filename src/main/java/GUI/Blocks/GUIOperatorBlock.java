@@ -15,7 +15,7 @@ public class GUIOperatorBlock extends GUIBlock {
     /**
      * Variables referring to the default width and height of a block.
      */
-    protected static final int DEFAULT_WIDTH = 40, DEFAULT_HEIGHT = 30;
+    public static final int DEFAULT_WIDTH = 40, DEFAULT_HEIGHT = 30;
     /**
      * Variable referring to the sub connector of this operator block.
      */

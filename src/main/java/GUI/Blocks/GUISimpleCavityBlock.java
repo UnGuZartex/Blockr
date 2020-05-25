@@ -10,7 +10,7 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
     /**
      * Variables referring to the default lengths for a cavity block.
      */
-    protected static final int DEFAULT_CAVITY_WIDTH = 10, DEFAULT_CAVITY_UP_HEIGHT = 30,
+    public static final int DEFAULT_CAVITY_WIDTH = 10, DEFAULT_CAVITY_UP_HEIGHT = 30,
             DEFAULT_CAVITY_DOWN_HEIGHT = 30, DEFAULT_WIDTH = 100;
     /**
      * Variables referring to the height of the cavity.
