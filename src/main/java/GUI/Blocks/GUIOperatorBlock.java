@@ -15,7 +15,7 @@ public class GUIOperatorBlock extends GUIBlock {
     /**
      * Variables referring to the default width and height of a block.
      */
-    public static final int DEFAULT_WIDTH = 40, DEFAULT_HEIGHT = 30;
+    protected static final int DEFAULT_WIDTH = 40, DEFAULT_HEIGHT = 30;
     /**
      * Variable referring to the sub connector of this operator block.
      */
@@ -39,7 +39,8 @@ public class GUIOperatorBlock extends GUIBlock {
      *
      * @param color The new color for this block.
      *
-     * @effect The color of the connected block is also set to the given color.
+     * @effect The color of this block is set to the given color
+     * @effect The color of the connected block is set to the given color.
      */
     @Override
     public void setColor(Color color) {

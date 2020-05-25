@@ -13,7 +13,7 @@ public class GUIFunctionalBlock extends GUIBlock {
     /**
      * Variables referring to the default width and height of a block.
      */
-    public static final int DEFAULT_WIDTH = 100, DEFAULT_HEIGHT = 50;
+    protected static final int DEFAULT_WIDTH = 100, DEFAULT_HEIGHT = 50;
     /**
      * Variable referring to the lower sub connector of this
      */

@@ -43,7 +43,7 @@ public abstract class GUIBlock implements IGUIBlock, Comparable<GUIBlock> {
     private boolean terminated;
 
     /**
-     * Variable referring to the colours of blocks and it's components.
+     * Variable referring to the colours of blocks, and it's components.
      */
     public static final Color DEFAULT_BLOCK_COLOR = Color.WHITE;
     public static final Color DEFAULT_SUB_CONNECTOR_COLOR = Color.RED;

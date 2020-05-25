@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Alpha-team
  */
-public class GUIProcedureBlock extends GUICavityBlock {
+public class GUIProcedureBlock extends GUISimpleCavityBlock {
 
     /**
      * Variable referring to the different procedure indexes which are already
@@ -76,7 +76,7 @@ public class GUIProcedureBlock extends GUICavityBlock {
     /**
      * Terminate this block.
      *
-     * @effect This block is terminated
+     * @effect This block is terminated.
      * @effect The procedure number of this block is set to not taken if this is not the initial procedure block.
      * @effect If the procedure number of this block is the size of the total number of taken numbers, then it is removed.
      */
@@ -91,19 +91,6 @@ public class GUIProcedureBlock extends GUICavityBlock {
                 takenProcedureNumbers.remove(takenProcedureNumbers.size() - 1);
             }
         }
-    }
-
-    /**
-     * Set the connectors of this procedure block.
-     *
-     * @effect The cavity connector is set to a new connector on the middle below the top part of this block in the default colour.
-     * @effect The sub connectors list is set to a new list and the cavity sub connector is added.
-     */
-    @Override
-    protected void setConnectors() {
-        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, DEFAULT_SUB_CONNECTOR_COLOR);
-        subConnectors = new ArrayList<>();
-        subConnectors.add(cavityConnector);
     }
 
     /**
