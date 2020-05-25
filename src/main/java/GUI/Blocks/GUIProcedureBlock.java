@@ -1,5 +1,8 @@
 package GUI.Blocks;
 
+import Controllers.ControllerClasses.BlockHandlerController;
+import Controllers.ControllerClasses.ConnectionController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +64,29 @@ public class GUIProcedureBlock extends GUISimpleCavityBlock {
         priority = currentPriority--;
     }
 
+    /**
+     * Disconnect the main connector of this block.
+     *
+     * @throws IllegalStateException
+     *         Because the procedure block doesn't support disconnecting a main connector.
+     */
     @Override
-    public void disconnectMainConnector() {
-        //throw new N
+    public void disconnectMainConnector() throws IllegalStateException {
+        throw new IllegalStateException("Procedure block doesn't support disconnecting a main connector.");
+    }
+
+    /**
+     * Remove this block from between its main connector and its sub connector below.
+     *
+     * @param connectionController The connection controller to execute the removal with.
+     * @param blockHandlerController The block handler controller to execute the removal with.
+     *
+     * @throws IllegalStateException
+     *         Because the procedure block can't be removed between blocks."
+     */
+    @Override
+    public void removeInBetween(ConnectionController connectionController, BlockHandlerController blockHandlerController) throws IllegalStateException{
+        throw new IllegalStateException("Procedure block can't be removed between blocks.");
     }
 
     /**
