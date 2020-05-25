@@ -66,14 +66,10 @@ public class GUIProcedureBlock extends GUISimpleCavityBlock {
 
     /**
      * Disconnect the main connector of this block.
-     *
-     * @throws IllegalStateException
-     *         Because the procedure block doesn't support disconnecting a main connector.
+     * Disconnecting the main connector has no effect.
      */
     @Override
-    public void disconnectMainConnector() throws IllegalStateException {
-        throw new IllegalStateException("Procedure block doesn't support disconnecting a main connector.");
-    }
+    public void disconnectMainConnector() { }
 
     /**
      * Remove this block from between its main connector and its sub connector below.
