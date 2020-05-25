@@ -31,31 +31,33 @@ public class GUIProcedureBlock extends GUISimpleCavityBlock {
     private int procedureNr;
 
     /**
-     * Initialise a new procedure block with given coordinates and procedure number.
+     * Create a new GUI procedure block with given coordinates and procedure number.
      *
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      * @param procedureNr The procedure number for this block.
      *
      * @post The procedure number is set to the given number.
-     * @post The priority is set to the current priority and it is decremented.
+     * @post The priority is set to the current priority.
+     * @post The current priority is decreased.
      *
      * @effect Calls super constructor with given coordinates and the name "Def 'procedureNr'"
      */
-    public GUIProcedureBlock(int x, int y, int procedureNr){
+    public GUIProcedureBlock(int x, int y, int procedureNr) {
         super("Def " + procedureNr, x, y);
         this.procedureNr = procedureNr;
         priority = currentPriority--;
     }
 
     /**
-     * Initialise a new procedure block with given coordinates and procedure number.
+     * Create a new GUI procedure block with a given name and coordinates.
      *
      * @param name The name of this procedure block.
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
      *
-     * @post The priority is set to the current priority and it is decremented.
+     * @post The priority is set to the current priority
+     * @post The current priority is decreased.
      *
      * @effect Calls super constructor with given coordinates and name.
      */

@@ -5,6 +5,11 @@ import GUI.Components.GUIConnector;
 
 import java.util.ArrayList;
 
+/**
+ * An abstract class for gui cavity blocks without a top, bottom and conditional connector.
+ *
+ * @author Alpha-team
+ */
 public abstract class GUISimpleCavityBlock extends GUIBlock {
 
     /**
@@ -15,7 +20,7 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
     /**
      * Variables referring to the height of the cavity.
      */
-    protected int cavityHeight, cavityUpHeight, cavityDownHeight;
+    protected int cavityHeight;
     /**
      * Variables referring to the collision rectangles for this block.
      */
@@ -26,7 +31,7 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
     protected GUIConnector cavityConnector;
 
     /**
-     * Initialise a new cavity block with given name and coordinates.
+     * Create a new GUI cavity block with given name and coordinates.
      *
      * @param name The name for this cavity block.
      * @param x The x coordinate for this block.
@@ -45,7 +50,7 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
      * @param heightDelta The given height difference.
      * @param previousBlock The previous block that called this method.
      *
-     * @effect If the cavity connector is connected and the method call came from that connected block,
+     * @effect If the cavity connector is connected, and the method call came from that connected block,
      *         then the cavity changes height based on the given height delta.
      */
     @Override
@@ -74,14 +79,12 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
     @Override
     protected void setShapes() {
         width = DEFAULT_WIDTH + DEFAULT_CAVITY_WIDTH;
-        cavityUpHeight = DEFAULT_CAVITY_UP_HEIGHT;
-        cavityDownHeight = DEFAULT_CAVITY_DOWN_HEIGHT;
-        height = cavityUpHeight + cavityDownHeight;
+        height = DEFAULT_CAVITY_UP_HEIGHT + DEFAULT_CAVITY_DOWN_HEIGHT;
 
-        cavityRectangle = new CollisionRectangle(0, cavityUpHeight, DEFAULT_CAVITY_WIDTH, 0, DEFAULT_BLOCK_COLOR);
-        cavityRectangleUnder = new CollisionRectangle(0, cavityUpHeight, width, cavityDownHeight, DEFAULT_BLOCK_COLOR);
+        cavityRectangle = new CollisionRectangle(0, DEFAULT_CAVITY_UP_HEIGHT, DEFAULT_CAVITY_WIDTH, 0, DEFAULT_BLOCK_COLOR);
+        cavityRectangleUnder = new CollisionRectangle(0, DEFAULT_CAVITY_UP_HEIGHT, width, DEFAULT_CAVITY_DOWN_HEIGHT, DEFAULT_BLOCK_COLOR);
 
-        blockRectangles.add(new CollisionRectangle(0, 0, width, cavityUpHeight, DEFAULT_BLOCK_COLOR));
+        blockRectangles.add(new CollisionRectangle(0, 0, width, DEFAULT_CAVITY_UP_HEIGHT, DEFAULT_BLOCK_COLOR));
         blockRectangles.add(cavityRectangle);
         blockRectangles.add(cavityRectangleUnder);
 
@@ -95,7 +98,7 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
      * @effect The sub connectors list is set to a new list with the cavity sub connector.
      */
     protected void setConnectors() {
-        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, cavityUpHeight, DEFAULT_SUB_CONNECTOR_COLOR);
+        cavityConnector = new GUIConnector(this, (width + DEFAULT_CAVITY_WIDTH) / 2, DEFAULT_CAVITY_UP_HEIGHT, DEFAULT_SUB_CONNECTOR_COLOR);
         subConnectors = new ArrayList<>();
         subConnectors.add(cavityConnector);
     }
@@ -132,8 +135,8 @@ public abstract class GUISimpleCavityBlock extends GUIBlock {
      */
     protected void setNewCavityHeight(int newCavityHeight) {
         cavityHeight = newCavityHeight;
-        height = cavityUpHeight + cavityHeight + cavityDownHeight;
+        height = DEFAULT_CAVITY_UP_HEIGHT + DEFAULT_CAVITY_DOWN_HEIGHT + cavityHeight;
         cavityRectangle.setHeight(cavityHeight);
-        cavityRectangleUnder.setY(getY() + cavityUpHeight + cavityHeight);
+        cavityRectangleUnder.setY(getY() + DEFAULT_CAVITY_UP_HEIGHT + cavityHeight);
     }
 }

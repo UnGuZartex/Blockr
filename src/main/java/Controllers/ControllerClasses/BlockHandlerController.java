@@ -79,13 +79,12 @@ public class BlockHandlerController {
      * @param block The gui block to connect.
      * @param index The index of the block in the palette.
      *
-     * @effect The given block and a new block from the palette is added to the database.
-     * @effect The new block from the palette is added to the program area.
+     * @effect The given block and a new block from the system palette is added to the database.
+     * @effect The new block from the palette is added to the program area as a program.
      */
     public void addBlockToPA(IGUIBlock block, int index) {
         blockLink.addBlockPair(block, blockHandler.getFromPalette(index));
-        Block toAdd = blockLink.getBlockFromGUIBlock(block);
-        blockHandler.addToPA(toAdd);
+        addExistingBlockAsProgram(block);
     }
 
     /**
@@ -103,11 +102,13 @@ public class BlockHandlerController {
     }
 
     /**
-     * Add the given block to the program area as an existing block.
+     * Add the given block to the program area as a potential program.
      *
      * @param block The block to add.
      *
-     * @effect The compatibel system block is received and added to the program area.
+     * @pre The given block is already linked with a system block.
+     *
+     * @effect The compatible system block is received and added to the program area.
      */
     public void addExistingBlockAsProgram(IGUIBlock block) {
         Block toAdd = blockLink.getBlockFromGUIBlock(block);

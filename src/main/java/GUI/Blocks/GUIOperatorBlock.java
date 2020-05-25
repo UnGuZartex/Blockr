@@ -22,7 +22,7 @@ public class GUIOperatorBlock extends GUIBlock {
     private GUIConnector subConnector;
 
     /**
-     * Initialise a new operator GUI block with given name and coordinates.
+     * Create a new GUI operator block with a given name and coordinates.
      *
      * @param name The name for this GUI block.
      * @param x The x coordinate for this GUI block.

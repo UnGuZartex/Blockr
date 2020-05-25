@@ -26,11 +26,12 @@ public class GUICallerBlock extends GUIFunctionalBlock implements CallListener {
     private final List<CallListener> listeners = new ArrayList<>();
 
     /**
-     * Initialise a new functionality block with given name and coordinates
+     * Create a new GUI caller block with a given procedure number
+     * and coordinates.
      *
      * @param x The x coordinate for this block.
      * @param y The y coordinate for this block.
-     * @param procedureNr  The procedure number for this call.
+     * @param procedureNr The procedure number for this call.
      *
      * @post The procedure number of this call is set to the given procedure number.
      *
@@ -44,11 +45,12 @@ public class GUICallerBlock extends GUIFunctionalBlock implements CallListener {
         if (!isValidProcedureNr(procedureNr)) {
             throw new IllegalArgumentException("The given procedure number is invalid!");
         }
+
         this.procedureNr = procedureNr;
     }
 
     /**
-     * Check whether or not the given procedure number is valid.
+     * Check whether the given procedure number is valid.
      *
      * @param procedureNr The procedure number to check.
      *
